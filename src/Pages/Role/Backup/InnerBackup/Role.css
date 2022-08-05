@@ -1,0 +1,102 @@
+/* .x_panel {
+    padding: 0px !important;
+}
+
+
+.x_content {
+    padding: 0px !important;
+    margin-top: 0px;
+}
+
+
+
+.table.jambo_table {
+    border: 0px !important;
+}
+
+
+table.jambo_table thead {
+    background: #003a4d;
+} */
+
+
+.fa-trash-o,
+.fa-close {
+    color: #dc3545;
+    font-size: 16px !important;
+}
+
+.fa-edit {
+    font-size: 16px !important;
+}
+
+
+.modal-content {
+    border-radius: 0px !important;
+    border: 1px solid rgba(0, 0, 0, .2);
+
+}
+
+.modal-header {
+
+    padding: 6px 12px;
+
+}
+
+.modal-body {
+
+    padding-bottom: 0.2rem;
+}
+
+.modal-footer {
+
+    padding: 4px;
+    border-top: none !important;
+
+}
+
+
+
+.required {
+    color: #dc3545 !important;
+    padding-left: 4px;
+}
+
+
+.ModalButtonPositionAdjectment {
+    margin-right: 22px !important;
+}
+
+
+
+.page-link {
+    background-color: #ddd !important;
+    color: #f79c74;
+}
+
+.border-radius-none {
+    border-radius: 0px !important;
+}
+
+.height-page-link {
+    height: 30px !important;
+}
+
+
+.wisthOfOtions {
+    width: 100px;
+}
+
+
+.btn-sm{
+    padding-top: 1.75px;
+    padding-bottom: 1.75px;
+}
+
+
+.removePaddingModuleName{
+    padding: -2px auto !important;
+}
+.moduleBgColor{
+    background:#fac4ac !important;
+}
