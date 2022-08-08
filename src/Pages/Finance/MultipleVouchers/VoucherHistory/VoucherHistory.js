@@ -8,12 +8,16 @@ import { customStyles } from '../../../../Components/reactCustomSelectStyle.jsx'
 import dateToday from '../../../../config/todayDate.js';
 
 import ReactToPrint from 'react-to-print'
+
+import { useLocation, useNavigate } from "react-router-dom"; 
 import VoucherReportReciept from "./VoucherReportReciept.js";
 
 import Select from 'react-select'
 const VoucherHistory = () => {
 
     const componentRef = useRef();
+    
+    const navigate = useNavigate();
     const [isValidateOK, setIsValidateOK] = useState(true)
     const [voucherTypeOption, setvoucherTypeOption] = useState([])
     const [voucherTypeValue, setvoucherTypeValue] = useState("")
@@ -251,7 +255,28 @@ const VoucherHistory = () => {
                                                             }}> {each_voucher_record.balance}</strong> </div>
                                                             <div className='py-0'>
                                                                 <span className='text-customOrange' onClick={() => console.log(numberToEnglish(123))} >
-                                                                    <u> Edit</u>
+                                                                    <u onClick={()=>{
+                                                                         navigate('/BankPaymentAccess', {
+                                                                            state: {
+                                                                                   data: "dateToParseNAvigation"
+                                                                                   }
+                
+                                                                        });
+
+
+
+                                                                        // navigate('/GatePassReport', {
+                                                                        //     state: {
+                                                                        //       data: dateToParseNAvigation
+                                                                        //     }
+                                          
+                                                                        //   });
+                                          
+                                          
+                                                                        //   // ----------------
+                                                                        //   navigate(state.pathname, { replace: true });
+                                                                        // }}
+                                                                    }}> Edit</u>
                                                                 </span>
                                                             </div>
                                                         </td>

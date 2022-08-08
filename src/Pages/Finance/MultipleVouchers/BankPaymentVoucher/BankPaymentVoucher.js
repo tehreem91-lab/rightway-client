@@ -1,21 +1,27 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react'
-
+import Loader from '../../../../Layout/Loader/Loader'
 import { useSelector } from "react-redux";
 import Select from 'react-select'
 import { endPoint } from '../../../../config/Config'
 import { customStyles } from '../../../../Components/reactCustomSelectStyle';
 import dateToday, { dateFormaterForInput } from '../../../../config/todayDate';
 import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 const BankPaymentVoucher = () => {
 
   const user_id = localStorage.getItem("user_id");
   const ref = useRef();
+
+  const { state } = useLocation();
   // JV for Jornal Vocuher
   const voucherAbbr = 'BPV'
   const accountAbbr = 'allexceptcash'
   const voucher_type_id = 4;
   const showNavMenu = useSelector((state) => state.NavState);
+
+  const [isLoading, setisLoading] = useState(true)
+
   const [accountOptions, setAccountOptions] = useState([])
   const [voucherDetail, setVoucherDetail] = useState()
   const [voucherDate, setVoucherDate] = useState(dateToday)
@@ -105,6 +111,7 @@ const BankPaymentVoucher = () => {
             })
           })
           setAccountOptions(accOptions)
+          setisLoading(false)
         }
       })
       .catch(function (error) {
@@ -164,31 +171,7 @@ const BankPaymentVoucher = () => {
     setmainEntriesState(main_state_arr)
     setReRendered(!reRendered)
   }
-  // const handleDropDownEntries = (main_state_index) => { // removed after scenario changed
-  //   const main_state_arr = mainEntriesState;
-  //   main_state_arr[main_state_index] = {
-  //     ...mainEntriesState[main_state_index],
-  //     showChild: !mainEntriesState[main_state_index].showChild
-  //   }
 
-  //   // check if it have child account but not any sub entries then add new sub entry 
-  //   // bassically this function is created to add new sub ladger whenever after user deleted all sub ladger
-
-  //   if (main_state_arr[main_state_index].sub_account_State.length === 0) {
-  //     main_state_arr[main_state_index] = {
-  //       ...mainEntriesState[main_state_index],
-  //       showChild: !mainEntriesState[main_state_index].showChild,
-  //       sub_account_State: [{
-  //         //first sub_ladger 
-  //         selected_sub_account: { label: "", value: "" },
-  //         chart_id: "", account_name: "", account_code: "",
-  //         credit: "", debit: ""
-  //       }]
-  //     }
-  //   }
-  //   setmainEntriesState(main_state_arr)
-  //   setReRendered(!reRendered)
-  // }
   const UploadFile = async (e) => {
     setIsFileUploadingModeOn(true)
     const options = {
@@ -394,12 +377,12 @@ const BankPaymentVoucher = () => {
             "naration": each_main_entry.naration,
             "debit": Number(each_main_entry.debit),
             "credit": Number(each_main_entry.credit),
-            "sub_account_entries": sub_account_entries===undefined? [] : sub_account_entries
+            "sub_account_entries": sub_account_entries === undefined ? [] : sub_account_entries
           }
           return state_to_return;
         });
 
-        
+
 
         var data = JSON.stringify({
           "fiscal_year": 1,
@@ -596,7 +579,13 @@ const BankPaymentVoucher = () => {
   };
 
   useEffect(() => {
+
+    
     fetchInitiallAlldata()
+    // console.log(state , "asdasdasdadasd");
+    if(state!==null){
+      console.log("ladaasdfadadadadsadadad" , state.data);
+    }
   }, [])
 
   return (
@@ -612,7 +601,9 @@ const BankPaymentVoucher = () => {
         className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
           } `}
       >
-        <div className="x_panel">
+
+{
+  isLoading?<><Loader/> </>: <div className="x_panel">
           <div className="x_content mt-3">
             <span className="section pl-4">
               <i className="fa fa-edit"></i>&nbsp;Add/Edit Bank Payment Voucher
@@ -684,7 +675,7 @@ const BankPaymentVoucher = () => {
                     type="checkbox"
                     className="flat"
                     checked={isPostDatedCheck}
-                    onClick={() => setisPostDatedCheck(!isPostDatedCheck)}
+                    onChange={() => setisPostDatedCheck(!isPostDatedCheck)}
                   />
                 </div>
               </div>
@@ -980,6 +971,9 @@ const BankPaymentVoucher = () => {
 
           </div>
         </div>
+}
+
+       
       </div>
     </>
   )
