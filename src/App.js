@@ -37,6 +37,8 @@ import TestDataTable from "./Pages/Role/TestDataTable";
 import BranchesPermission from "./Pages/Role/BranchesPermission";
 import BankPaymentVoucher from "./Pages/Finance/MultipleVouchers/BankPaymentVoucher/BankPaymentVoucher";
 import VoucherHistory from "./Pages/Finance/MultipleVouchers/VoucherHistory/VoucherHistory";
+import AddBranches from "./Pages/Role/AddBranches";
+import OpeningBalances from "./Pages/Finance/OpeningBalances";
 function App() {
   const [isLogin, setisLogin] = useState(null);
   const [showMainLoader, setShowMainLoader] = useState(true);
@@ -65,7 +67,6 @@ function App() {
 
   return (
     <>
-
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -116,7 +117,6 @@ function App() {
                       path="PermissionAccess"
                       element={<RolePermission />}
                     /> */}
-
 
                     <Route
                       path="RoleAccess"
@@ -184,13 +184,6 @@ function App() {
                       }
                     />
 
-
-
-
-
-
-
-
                     {/* --------------- */}
                     <Route
                       path="TestDataTable"
@@ -226,7 +219,39 @@ function App() {
                       }
                     />
 
+                    <Route
+                      path="AddBranchesAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "AddBranchesAccess"
+                          )}
+                        >
+                          <AddBranches
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "AddBranchesAccess"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
 
+<Route
+                      path="OpeningBalances"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "OpeningBalances"
+                          )}
+                        >
+                          <OpeningBalances
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "OpeningBalances"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
 
                     <Route
                       path="BankPaymentAccess"
@@ -244,19 +269,6 @@ function App() {
                         </PrivateRoute>
                       }
                     />
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     <Route
                       path="PermissionAccess"
@@ -304,14 +316,14 @@ function App() {
                             (o) => o.pageURL === "CompanyInfo"
                           )}
                         >
-                          <CompanyInfo pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "CompanyInfo"
-                          )} />
+                          <CompanyInfo
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "CompanyInfo"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
-
-
 
                     <Route
                       path="Banknames"
@@ -321,23 +333,18 @@ function App() {
                             (o) => o.pageURL === "Banknames"
                           )}
                         >
-                          <Banknames pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "Banknames"
-                          )} />
+                          <Banknames
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "Banknames"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
 
-
-
-
                     {/* <Route path="CompanyInfo" element={<CompanyInfo />} /> */}
 
                     {/* <Route path="Banknames" element={<Banknames />} /> */}
-
-
-
-
 
                     <Route
                       path="Designation"
@@ -347,15 +354,14 @@ function App() {
                             (o) => o.pageURL === "Designation"
                           )}
                         >
-                          <EmployeeDesignations pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "Designation"
-                          )} />
+                          <EmployeeDesignations
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "Designation"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
-
-
-
 
                     <Route
                       path="CurrencyUnits"
@@ -365,15 +371,14 @@ function App() {
                             (o) => o.pageURL === "CurrencyUnits"
                           )}
                         >
-                          <CurrencyUnits pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "CurrencyUnits"
-                          )} />
+                          <CurrencyUnits
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "CurrencyUnits"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
-
-
-
 
                     <Route
                       path="Machines"
@@ -383,13 +388,14 @@ function App() {
                             (o) => o.pageURL === "Machines"
                           )}
                         >
-                          <AddMachines pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "Machines"
-                          )} />
+                          <AddMachines
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "Machines"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
-
 
                     <Route
                       path="Shifts"
@@ -399,16 +405,14 @@ function App() {
                             (o) => o.pageURL === "Shifts"
                           )}
                         >
-                          <AddShifts pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "Shifts"
-                          )} />
+                          <AddShifts
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "Shifts"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
-
-
-
-
 
                     <Route
                       path="CityNames"
@@ -418,14 +422,14 @@ function App() {
                             (o) => o.pageURL === "CityNames"
                           )}
                         >
-                          <CityNames pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "CityNames"
-                          )} />
+                          <CityNames
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "CityNames"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
-
-
 
                     <Route
                       path="StockUnits"
@@ -435,13 +439,14 @@ function App() {
                             (o) => o.pageURL === "StockUnits"
                           )}
                         >
-                          <StockUnits pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "StockUnits"
-                          )} />
+                          <StockUnits
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "StockUnits"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
-
 
                     <Route
                       path="Categories"
@@ -451,9 +456,11 @@ function App() {
                             (o) => o.pageURL === "Categories"
                           )}
                         >
-                          <Categories pagePermission={allPagesData.find(
-                            (o) => o.pageURL === "Categories"
-                          )} />
+                          <Categories
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "Categories"
+                            )}
+                          />
                         </PrivateRoute>
                       }
                     />
