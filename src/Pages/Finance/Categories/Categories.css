@@ -100,3 +100,27 @@
   top: 1em; /* (line-height/2) */
   bottom: 0;
 }
+
+.min-height{
+  min-height: 480px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

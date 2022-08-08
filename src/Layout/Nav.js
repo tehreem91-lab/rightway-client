@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setNavMd } from "../store/actions/NavState";
 
-const Nav = ({ navigationResult, isLogin }) => {
-  const [multiLevelDropDown, setMultiLevelDropSown] = useState(false)
+const Nav = ({ navigationResult, isLogin }) => { 
   const showNavMenu = useSelector((state) => state.NavState); 
   const [currentBlock, setCurrentBlock] = useState("");
   const [currentPage, setCurrentPage] = useState("");
