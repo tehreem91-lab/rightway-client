@@ -37,6 +37,7 @@ import TestDataTable from "./Pages/Role/TestDataTable";
 import BranchesPermission from "./Pages/Role/BranchesPermission";
 import BankPaymentVoucher from "./Pages/Finance/MultipleVouchers/BankPaymentVoucher/BankPaymentVoucher";
 import VoucherHistory from "./Pages/Finance/MultipleVouchers/VoucherHistory/VoucherHistory";
+import AddBranches from "./Pages/Role/AddBranches";
 function App() {
   const [isLogin, setisLogin] = useState(null);
   const [showMainLoader, setShowMainLoader] = useState(true);
@@ -385,6 +386,21 @@ function App() {
                         >
                           <AddMachines pagePermission={allPagesData.find(
                             (o) => o.pageURL === "Machines"
+                          )} />
+                        </PrivateRoute>
+                      }
+                    />
+
+                    <Route
+                      path="AddBranchesAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "AddBranchesAccess"
+                          )}
+                        >
+                          <AddBranches pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "AddBranchesAccess"
                           )} />
                         </PrivateRoute>
                       }
