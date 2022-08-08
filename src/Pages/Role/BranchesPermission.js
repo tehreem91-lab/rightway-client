@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import Select from "react-select"; 
+import Select from "react-select";
 import { customStyles } from "../../Components/reactCustomSelectStyle";
 import { endPoint } from "../../config/Config";
 const BranchesPermission = () => {
@@ -13,7 +13,7 @@ const BranchesPermission = () => {
   const [userBranchesMainState, setUserBranchesMainState] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const accessToken = localStorage.getItem("access_token");
-const [isEditModeOn , setIsEditModeOn] = useState(false)
+  const [isEditModeOn, setIsEditModeOn] = useState(false)
   const fetchUser = () => {
     // fetching user for selector
     var myHeaders = new Headers();
@@ -86,20 +86,43 @@ const [isEditModeOn , setIsEditModeOn] = useState(false)
       requestOptions
     )
       .then((response) => {
-        if (response.status===200) {
-                toast.success("Updated Successfully"); 
-                fetchUser()
-                setIsEditModeOn(false)
-           
-                
+        if (response.status === 200) {
+          toast.success("Updated Successfully");
+          // fetchUser()
+          setIsEditModeOn(false)
 
 
-                setUserValue("");
-              
-                setBranchesValues("");
-                setIsEditModeOn(false)
+
+
+          // setUserValue("");
+
+          // setBranchesValues("");
+
+          // fetching user for selector
+          var myHeaders2 = new Headers();
+          myHeaders2.append(
+            "Authorization",
+            "Bearer " + JSON.parse(accessToken).access_token
+          );
+
+          var requestOptions2 = {
+            method: "GET",
+            headers: myHeaders2,
+            redirect: "follow",
+          };
+
+          setIsEditModeOn(false)
+          fetch(`${endPoint}/api/UserBranches/GetData`, requestOptions2)
+            .then((response) => response.json())
+            .then((result) => {
+              console.log(result , 'fethc after');
+              setUserBranchesMainState(result);
+              // setisLoading(false);
+            })
+            .catch((error) => console.log("error", error));
+
         }
- 
+
         return response.json();
       })
       .then((result) => console.log(result))
@@ -116,9 +139,8 @@ const [isEditModeOn , setIsEditModeOn] = useState(false)
   return (
     <>
       <div
-        className={`container-fluid page-title-bar ${
-          showNavMenu == false ? "right_col-margin-remove" : ""
-        }   `}
+        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+          }   `}
       >
         <span>&nbsp; Branches Management</span>
       </div>
@@ -129,11 +151,11 @@ const [isEditModeOn , setIsEditModeOn] = useState(false)
           {" "}
           <div
             role="main"
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "right_col-margin-remove" : " "
-            } `}
+            className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
+              } `}
           >
-            <div className="x_panel">
+            {
+              isEditModeOn &&    <div className="x_panel">
               <div className="x_content my-3">
                 <span className="section pl-4">
                   <i className="fa fa-edit"></i>&nbsp;Add Branches Permission
@@ -173,9 +195,9 @@ const [isEditModeOn , setIsEditModeOn] = useState(false)
                         isDisabled={!isEditModeOn}
                         value={branchesValues}
                         onChange={(e) => {
-                          setBranchesValues(e); 
+                          setBranchesValues(e);
                         }}
-                   
+
                         styles={customStyles}
                         isSearchable={true}
                         name="branches"
@@ -187,20 +209,40 @@ const [isEditModeOn , setIsEditModeOn] = useState(false)
               </div>
 
               <div className="col-md-12 text-right x_footer">
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: " #f79c74 ",
-                    color: "white",
-                    borderRadius: "20px ",
-                  }}
-                  className="btn  btn-sm px-3 mt-2"
-                  onClick={() => updateBranchesPermission()}
-                >
-                  Submit
-                </button>
+           
+ 
+                    <button
+                      className="btn btn-dark"
+                      type="button"
+            onClick={()=>setIsEditModeOn(false)}
+                    >
+                      Cancel
+                    </button>
+ 
+                    <button
+                  
+                      className="btn "
+                      type="button"
+                      onClick={() => updateBranchesPermission()}
+                      style={{
+                        backgroundColor: " #f79c74 ",
+                        color: "white",
+                        borderColor:"#f79c74 "
+                      
+                      }}
+                      >
+               
+                      Update
+                    </button>
+
+
+
+
+
               </div>
             </div>
+            }
+          
 
             <div className="x_panel  ">
               <div className="x_content">
@@ -277,7 +319,10 @@ const [isEditModeOn , setIsEditModeOn] = useState(false)
                                     });
                                   });
                                   setBranchesValues(branchesOpt);
-                                  setIsEditModeOn(true)
+                                  setIsEditModeOn(true) 
+                                  //==========================================================
+                                  //Add here function to go to top of screen window.scrol
+                                  //==========================================================
                                 }}
                               ></i>
                             </td>

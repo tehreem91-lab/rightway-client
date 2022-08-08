@@ -359,6 +359,7 @@ function Categories({ pagePermission }) {
       filterFields={filterFields}
       filterFormSubmit={() => { }}
       clearFilterFields={() => { }}
+      isShowSelector={true}
       showFilterButtons={false}
       changeFilterFieldValue={changeFilterFieldValue}
     />

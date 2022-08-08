@@ -263,6 +263,7 @@ const AddRole = ({pagePermission}) => {
       clearFields={clearFields}
       changeFieldValue={changeFieldValue}
       showButtons={true}
+      isShowSelector={true}
     />
     </>
   )

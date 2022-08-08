@@ -5,8 +5,7 @@ import { setNavMd } from "../store/actions/NavState";
 
 const Nav = ({ navigationResult, isLogin }) => {
   const [multiLevelDropDown, setMultiLevelDropSown] = useState(false)
-  const showNavMenu = useSelector((state) => state.NavState);
-  // const [currentBlock, setCurrentBlock] = useState(1);
+  const showNavMenu = useSelector((state) => state.NavState); 
   const [currentBlock, setCurrentBlock] = useState("");
   const [currentPage, setCurrentPage] = useState("");
   const showNavResult = useSelector((state) => state.NavReducer.data);
@@ -15,11 +14,7 @@ const Nav = ({ navigationResult, isLogin }) => {
     setCurrentBlock(modules)
     setCurrentPage(page)
   } 
-
-  useEffect(() => {
-   console.log( showNavResult);
-
-  }, [])
+ 
   
   return (
     <>

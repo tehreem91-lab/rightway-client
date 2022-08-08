@@ -5,44 +5,8 @@ import { useSelector } from "react-redux";
 import { endPoint } from "../../config/Config";
 import axios from "axios";
 import Select from "react-select";
-import { toast } from "react-toastify";
-import { State } from "../../store/reducers";
-
-const customStyles = {
-  control: (provided, state, base) => ({
-    ...provided,
-    border: "1px solid #c2cad8",
-    borderRadius: "5px",
-    minHeight: "30px",
-    height: "30px",
-    color: "#555",
-    ...base,
-    boxShadow: "none",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    color: state.isSelected ? "#f79c74" : "#555",
-    background: "#fff",
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-    padding: "0 6px",
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-    color: "#555",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-  }),
-};
+import { toast } from "react-toastify"; 
+import { customStyles } from "../../Components/reactCustomSelectStyle";
 const RolePermission = () => {
   const accessToken = localStorage.getItem("access_token");
   const notifyAdd = () => toast("Page Permission updated!");

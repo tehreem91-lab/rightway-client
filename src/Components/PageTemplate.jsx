@@ -3,21 +3,14 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CustomForm from "./CustomForm";
 import FilterForm from "./FilterForm";
-import CustomListing from "./CustomListing";
-import { customStyles } from "./reactCustomSelectStyle";
-import Select from "react-select";
-function PageTemplate(props) {
-  const showNavResult = useSelector((state) => state.NavReducer.data);
-  // Nav Toggle State
+import CustomInnerHeader from "./CustomInnerHeader";
+import CustomListing from "./CustomListing"; 
+function PageTemplate(props) {  
   const showNavMenu = useSelector((state) => state.NavState);
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
-  const [selectedBranchValue, setSelectedBranchValue] = useState(localStorage.getItem("selectedBranch_idValue"))
-  const [selectedBranchLabel, setSelectedBranchLabel] = useState(localStorage.getItem("selectedBranch_idLabel"))
-//   const selectedBranchValue = (localStorage.getItem("selectedBranch_idValue"))
-//   const selectedBranchLabel = (localStorage.getItem("selectedBranch_idLabel"))
+  
   return (
     <>
-
       {props.isLoading ? (
         <Loader />
       ) : (
@@ -27,28 +20,8 @@ function PageTemplate(props) {
               showNavMenu == false ? "right_col-margin-remove" : ""
             }   `}
           >
-            <div className="row">
-              <div className={`col-md-${showNavMenu == false ? "9" : "7"} `}>
-                <span>&nbsp;{props.moduleName} </span>
-              </div>
-              <div className="col-md-3  ">
-                {" "}
-                <span>
-                  <Select
-                    isSearchable={true}
-                    value={{value:selectedBranchValue , label:selectedBranchLabel}}
-                    onChange={async (e) => {
-                        localStorage.setItem("selectedBranch_idValue",e.value );
-                        localStorage.setItem("selectedBranch_idLabel", e.label);
-                        setSelectedBranchValue(e.value) 
-                        setSelectedBranchLabel(e.label)
-                    }}
-                    styles={customStyles}
-                    options={showNavResult.assignBranches}
-                  />
-                </span>
-              </div>
-            </div>
+            <CustomInnerHeader moduleName={props.moduleName} isShowSelector={props.isShowSelector}/>
+          
           </div>
           <div
             className={`right_col  h-100 ${

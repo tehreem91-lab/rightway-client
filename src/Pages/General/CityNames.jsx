@@ -227,6 +227,7 @@ function CityNames({ pagePermission }) {
             setIsLoading={setIsLoading}
             fetchData={fetchData}
             clearFields={clearFields}
+            isShowSelector={true}
             changeFieldValue={changeFieldValue}
             showButtons={true}
         />

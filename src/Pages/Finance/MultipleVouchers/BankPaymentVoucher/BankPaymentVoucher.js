@@ -378,7 +378,7 @@ const BankPaymentVoucher = () => {
     })
     if (isValidationOk === true) {
       if (balanceEntries.total_debit - balanceEntries.total_credit !== 0) {
-        toast.error("Current Balance isnot satisfy")
+        toast.error("Current Balance Is Not Satisfy")
       } else {
 
         const reFactoredState = mainEntriesState.map((each_main_entry) => {
@@ -394,11 +394,12 @@ const BankPaymentVoucher = () => {
             "naration": each_main_entry.naration,
             "debit": Number(each_main_entry.debit),
             "credit": Number(each_main_entry.credit),
-            "sub_account_entries": sub_account_entries
+            "sub_account_entries": sub_account_entries===undefined? [] : sub_account_entries
           }
           return state_to_return;
         });
 
+        
 
         var data = JSON.stringify({
           "fiscal_year": 1,
@@ -417,7 +418,7 @@ const BankPaymentVoucher = () => {
           "branch_id": 1,
           "account_entries": reFactoredState
         });
-
+        console.log(reFactoredState, "refacotored");
         var config = {
           method: 'post',
           url: `${endPoint}api/MultipleVoucher/PostDataL`,
@@ -960,19 +961,19 @@ const BankPaymentVoucher = () => {
             </div>
           </div>
           <div className="col-md-12 d-flex justify-content-between x_footer mt-0">
-    
-        
-            <button className="btn btn-primary" type="submit"  onClick={() => {
-                setmainEntriesState([...mainEntriesState, {
-                  naration: "", debit: "", credit: "",
-                }])
-              }}>
+
+
+            <button className="btn btn-primary" type="submit" onClick={() => {
+              setmainEntriesState([...mainEntriesState, {
+                naration: "", debit: "", credit: "",
+              }])
+            }}>
               Add Line
             </button>
-            <button className="btn btn-primary" type="submit"  onClick={() => post_as_draft()}>
+            <button className="btn btn-primary" type="submit" onClick={() => post_as_draft()}>
               Save Draft
             </button>
- 
+
             <button className="btn btn-primary" type="submit" onClick={() => post_multiple_voucher()}>
               Submit
             </button>

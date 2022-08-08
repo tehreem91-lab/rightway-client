@@ -3,45 +3,10 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import Select from 'react-select'
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
-import { Button } from "react-bootstrap";
+import Swal from "sweetalert2"; 
 import { Modal } from "react-bootstrap";
-
-const customStyles = {
-  control: (provided, state, base) => ({
-      ...provided,
-      border: '1px solid #c2cad8',
-      borderRadius: "5px",
-      minHeight: '30px',
-      height: '30px',
-      color: '#555',
-      ...base, boxShadow: 'none'
-  }),
-  option: (provided, state) => ({
-      ...provided,
-      color: state.isSelected ? "#f79c74" : "#555",
-      background: '#fff',
-  }),
-  valueContainer: (provided, state) => ({
-      ...provided,
-      height: '30px',
-      padding: '0 6px',
-  }),
-
-  input: (provided, state) => ({
-      ...provided,
-      margin: '0px',
-      color: "#555"
-  }),
-  indicatorSeparator: state => ({
-      display: 'none',
-  }),
-  indicatorsContainer: (provided, state) => ({
-      ...provided,
-      height: '30px',
-  }),
-
-}
+import { customStyles } from "../../Components/reactCustomSelectStyle";
+import { endPoint } from "../../config/Config";
 
 
 
@@ -49,7 +14,7 @@ const customStyles = {
 
 const AddUser = ({ pagePermission }) => {
   const accessToken = localStorage.getItem("access_token");
- 
+
   const rolePermissionTable = {
     Add: pagePermission.AddPermission,
     Delete: pagePermission.DelPermission,
@@ -68,14 +33,15 @@ const AddUser = ({ pagePermission }) => {
     user_role_id: 0,
     user_role_name: "",
   });
-const [roleOptions, setRoleOptions] = useState([])
-const [roleValue , setRoleValue] = useState({label:"" , value:""})
+  const [roleOptions, setRoleOptions] = useState([])
+  const [roleValue, setRoleValue] = useState({ label: "", value: "" })
 
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    setRoleValue({label:"" , value:""})
-    setShow(false)};
+    setRoleValue({ label: "", value: "" })
+    setShow(false)
+  };
   const handleShow = () => setShow(true);
 
 
@@ -93,7 +59,7 @@ const [roleValue , setRoleValue] = useState({label:"" , value:""})
     {
       label: "Email",
       name: "user_email",
-      type: "text",
+      type: "email",
       placeholder: "Enter Email",
       required: true,
       disabled: false,
@@ -102,7 +68,7 @@ const [roleValue , setRoleValue] = useState({label:"" , value:""})
     {
       label: "Password",
       name: "user_password",
-      type: "text",
+      type: "password",
       placeholder: "Enter Password (8 characters strong Password)",
       required: true,
       disabled: false,
@@ -264,8 +230,8 @@ const [roleValue , setRoleValue] = useState({label:"" , value:""})
         setIsLoading(false);
       });
   };
-  const fetchCityNames =async () => {
-  await   fetch(URL + "api/Roles", {
+  const fetchCityNames = async () => {
+    await fetch(URL + "api/Roles", {
       method: "GET",
       headers: {
         Authorization: "Bearer " + JSON.parse(accessToken).access_token,
@@ -282,8 +248,8 @@ const [roleValue , setRoleValue] = useState({label:"" , value:""})
         var arrFields = formFields;
         arrFields[3].defaultValue = arr[0];
         arrFields[3].options = arr;
-        setFormFields(arrFields); 
-        setRoleOptions( arr.slice(1)) 
+        setFormFields(arrFields);
+        setRoleOptions(arr.slice(1))
       });
   };
   //     .then((json) => {
@@ -295,8 +261,8 @@ const [roleValue , setRoleValue] = useState({label:"" , value:""})
   //     setRoleOptions(arr)
   //     });
   // };
-  const fetchDataForEdit = (UserId) => { 
-    setUpdateMode(false);  
+  const fetchDataForEdit = (UserId) => {
+    setUpdateMode(false);
     fetch(URL + "api/UserRoles/" + UserId, {
       method: "GET",
       headers: {
@@ -305,14 +271,14 @@ const [roleValue , setRoleValue] = useState({label:"" , value:""})
     })
       .then((response) => response.json())
       .then((json) => {
-const roleId = json[0].RoleId;
-        const fetchingRoleLabel= formFields[3].options.filter((EachRoleValue)=>{
-            return EachRoleValue.value===roleId
+        const roleId = json[0].RoleId;
+        const fetchingRoleLabel = formFields[3].options.filter((EachRoleValue) => {
+          return EachRoleValue.value === roleId
         })
         setRoleValue(fetchingRoleLabel[0])
-        console.log(fetchingRoleLabel , "----------");
+        console.log(fetchingRoleLabel, "----------");
 
-});
+      });
 
 
     handleShow()
@@ -336,43 +302,53 @@ const roleId = json[0].RoleId;
         }),
       }
     ).then((response) => {
+
       response.json().then((json) => {
-        console.log(json.Id);
+console.log(json);
+        if (response.status === 200) {
+          const requestOptionsForRole = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              UserId: json,
+              RoleId: data.user_role,
+            }),
+          };
+          fetch(URL + "/api/UserRoles", requestOptionsForRole)
+            .then((response) => {
+              if (response.status === 200) {
+                toast.success(
+                  "User has been " +
+                  (updateMode ? "Updated" : "Added" + " successfully!")
+                );
+                clearFields();
+                fetchCityNames();
+                fetchData();
+              } else {
+
+              }
+              response.json();
+            })
+
+            .catch((err) => {
+              console.log("err", err);
+            });
+        } else {
+          toast.error(json)
+        }
+
+        toast.error(json.Message)
 
         // calling another api to set role against this user id
-        const requestOptionsForRole = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            UserId: json.Id,
-            RoleId: data.user_role,
-          }),
-        };
-        fetch(URL + "/api/UserRoles", requestOptionsForRole)
-          .then((response) => {
-            if (response.status === 200) {
-              toast.success(
-                "User has been " +
-                (updateMode ? "Updated" : "Added" + " successfully!")
-              );
-              clearFields();
-              fetchCityNames();
-              fetchData();
-            } else {
-              toast.error(json.Message);
-            }
-            response.json();
-          })
 
-          .catch((err) => {
-            console.log("err", err);
-          });
       });
       //   }
     });
   };
 
-  const deleteBankName = (bank_id) => {
+  const deleteBankName = (user_id) => {
+    // http://localhost:63145/api/Users/4585320dfb074864b8795823b245269d?page_name=page_name
+    console.log(user_id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this city name!",
@@ -383,7 +359,7 @@ const roleId = json[0].RoleId;
       confirmButtonText: "Yes, Do it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(URL + "api/BankNames/DeleteData?id=" + bank_id, {
+        fetch(`${endPoint}api/Users/${user_id}?page_name=ManageUser`, {
           method: "DELETE",
           headers: {
             Authorization: "Bearer " + JSON.parse(accessToken).access_token,
@@ -424,12 +400,12 @@ const roleId = json[0].RoleId;
 
 
 
-              <Select 
+              <Select
                 className="basic-single"
                 classNamePrefix="select"
-                 value={roleValue}
+                value={roleValue}
                 onChange={(e) => {
-                 setRoleValue(e)
+                  setRoleValue(e)
                 }
                 }
                 options={roleOptions}
@@ -439,21 +415,37 @@ const roleId = json[0].RoleId;
                 styles={customStyles}
               />
 
-                
+
 
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="success"
-            className="btn-sm px-3 ModalButtonPositionAdjectment"
-            onClick={() => {
-              console.log("update");
+        <div className="row mr-3">
+             <button
+            className="btn btn-dark"
+            type="button"
+            onClick={() => handleClose()}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn "
+            style={{
+              backgroundColor: " #f79c74 ",
+              color: "white",
+              borderColor: "#f79c74 "
+
             }}
+            type="button"
+            onClick={() =>{
+              toast.success("Updated Successfully")
+              handleClose()}}
           >
             Update
-          </Button>
+          </button>
+        </div>
+       
         </Modal.Footer>
       </Modal>
 
@@ -474,6 +466,7 @@ const roleId = json[0].RoleId;
         clearFields={clearFields}
         changeFieldValue={changeFieldValue}
         showButtons={true}
+        isShowSelector={true}
       /></>
   );
 };
