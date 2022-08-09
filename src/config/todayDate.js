@@ -18,3 +18,8 @@ return   y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 
  
 }
+
+export const dateConverterFromCShartDateTimeToJS = (e)=>{
+   return `${e.slice(8,10)}/${e.slice(5,7)}/${e.slice(0,4)}`
+
+}

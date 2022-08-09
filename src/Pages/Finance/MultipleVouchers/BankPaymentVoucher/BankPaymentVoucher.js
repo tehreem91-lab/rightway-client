@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Select from 'react-select'
 import { endPoint } from '../../../../config/Config'
 import { customStyles } from '../../../../Components/reactCustomSelectStyle';
-import dateToday, { dateFormaterForInput } from '../../../../config/todayDate';
+import dateToday, { dateConverterFromCShartDateTimeToJS, dateFormaterForInput } from '../../../../config/todayDate';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 const BankPaymentVoucher = () => {
@@ -47,6 +47,11 @@ const BankPaymentVoucher = () => {
 
   const [isPostDatedCheck, setisPostDatedCheck] = useState(false)
 
+
+
+
+
+
   const reset = () => {
     ref.current.value = "";
   };
@@ -62,7 +67,6 @@ const BankPaymentVoucher = () => {
 
     axios(configDrafGet)
       .then(function (response) {
-        console.log(response.data, "---one two three ");
         setDraftEntries(response.data)
       })
       .catch(function (error) {
@@ -71,6 +75,7 @@ const BankPaymentVoucher = () => {
 
   }
   const fetchInitiallAlldata = () => {
+    let voucher_detail_temprary;
     // fetching voucher detail 
     var config = {
       method: 'get',
@@ -83,7 +88,9 @@ const BankPaymentVoucher = () => {
     axios(config)
       .then(function (response) {
         if (response.status === 200) {
+          console.log(response.data, "------------");
           setVoucherDetail(response.data)
+          voucher_detail_temprary = response.data;
         }
       })
       .catch(function (error) {
@@ -102,7 +109,6 @@ const BankPaymentVoucher = () => {
       .then(function (res) {
         if (res.status === 200) {
           let accOptions = [];
-          console.log(res.data, "selection ");
           res.data.map((eachAccount) => {
             accOptions.push({
               value: eachAccount.chart_id,
@@ -111,15 +117,80 @@ const BankPaymentVoucher = () => {
             })
           })
           setAccountOptions(accOptions)
-          setisLoading(false)
+
         }
       })
       .catch(function (error) {
         console.log(error);
       });
 
-    fetch_draft_data()
 
+    if (state !== null) {
+
+      var config2 = {
+        method: 'get',
+        url: `http://localhost:63145/api/MultipleVoucher/GetReportForUpdate?voucher_id=${state.data}`,
+        headers: {
+          'Authorization': "Bearer " +
+            JSON.parse(localStorage.getItem("access_token")).access_token
+        }
+      };
+
+      axios(config2)
+        .then(function (response) {
+          console.log(response.data);
+          // voucherDetail?.next_voucher_inv
+          setVoucherDetail({ ...voucher_detail_temprary, next_voucher_inv: response.data.voucher_no })
+          setisPostDatedCheck(response.data.is_post_dated === 0 ? false : true)
+          setPostDatedCheckDate(response.data.post_dated_date.slice(0, 10))
+          // setFileEntity(response.data.attachments_paths.slice(","))
+
+          if (response.data.attachments_paths !== "") {
+
+            setFileEntity(response.data.attachments_paths.split(","));
+          }
+          const formal_state_to_rearrange_entries = response.data.entries.map((each_account) => {
+
+            return {
+              naration: each_account.naration,
+              debit: each_account.debit,
+              credit: each_account.credit,
+              selectedOptionValue: {
+                value: each_account.selectedOptionValue.value,
+                label: each_account.selectedOptionValue.label,
+                children: each_account.selectedOptionValue.children,
+                wholeData: each_account.selectedOptionValue.wholeData,
+                // each_account.selectedOptionValue
+
+              },
+              showChild: each_account.selectedOptionValue.showChild,
+              numberOfChild: each_account.selectedOptionValue.numberOfChild,
+              sub_account_options: each_account.selectedOptionValue.sub_account_options,
+              sub_account_State: each_account.selectedOptionValue.sub_account_State,
+
+
+            }
+
+          })
+
+           setmainEntriesState(formal_state_to_rearrange_entries)
+
+          if (response.status === 200) {
+            setisLoading(false)
+          }
+
+
+
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+
+    } else {
+      fetch_draft_data()
+      setisLoading(false)
+    }
     // fetch(`${url}/api/userDraft?userId=${userId}`, {
     //   method: "GET",
     //   headers: myHeadersGetDraft,
@@ -184,11 +255,9 @@ const BankPaymentVoucher = () => {
     let data = new FormData();
     data.append("UploadedImage", selectedAttachmentFile);
     await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedAttachmentName}`, data, options).then(res => {
-      console.log(res.data);
       setFileEntity([...fileEntity, res.data])
       if (res.status === 200) {
         setIsFileUploadingModeOn(false)
-        console.log(res.data);
         reset()
       }
     })
@@ -401,7 +470,7 @@ const BankPaymentVoucher = () => {
           "branch_id": 1,
           "account_entries": reFactoredState
         });
-        console.log(reFactoredState, "refacotored");
+
         var config = {
           method: 'post',
           url: `${endPoint}api/MultipleVoucher/PostDataL`,
@@ -488,7 +557,6 @@ const BankPaymentVoucher = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         if (response.status === 200) {
           fetchInitiallAlldata();
           setFileEntity([])
@@ -534,8 +602,7 @@ const BankPaymentVoucher = () => {
 
     // let e_json=JSON.parse(e) 
 
-    // deleing selecting api from backend 
-    console.log(JSON.parse(e.draft_json));
+    // deleing selecting api from backend  
     setAccountOptions((JSON.parse(e.draft_json)).accountOptions)
     setBalanceEntries((JSON.parse(e.draft_json)).balanceEntries)
     setFileEntity((JSON.parse(e.draft_json)).fileEntity)
@@ -580,12 +647,9 @@ const BankPaymentVoucher = () => {
 
   useEffect(() => {
 
-    
+
     fetchInitiallAlldata()
-    // console.log(state , "asdasdasdadasd");
-    if(state!==null){
-      console.log("ladaasdfadadadadsadadad" , state.data);
-    }
+
   }, [])
 
   return (
@@ -602,378 +666,378 @@ const BankPaymentVoucher = () => {
           } `}
       >
 
-{
-  isLoading?<><Loader/> </>: <div className="x_panel">
-          <div className="x_content mt-3">
-            <span className="section pl-4">
-              <i className="fa fa-edit"></i>&nbsp;Add/Edit Bank Payment Voucher
-            </span>
-            <div className="row">
-              <div className="field item form-group col-md-6 col-sm-6">
-                <label className="col-form-label col-md-3 col-sm-3 label-align"> Voucher # <span className="required">*</span></label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    disabled
-                    className="form-control"
-                    data-validate-length-range={6}
-                    data-validate-words={2}
-                    name="name"
-                    placeholder="BP-2344"
-                    value={voucherDetail?.next_voucher_inv}
-                  />
-                </div>
-              </div>
-              <div className="field item form-group col-md-6 col-sm-6">
-                <label className="col-form-label col-md-3 col-sm-3 label-align"> Date <span className="required">*</span></label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    type="date"
-                    className="form-control"
-                    data-validate-length-range={6}
-                    data-validate-words={2}
-                    name="name"
-                    value={voucherDate}
-                    onChange={(e) => setVoucherDate(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="field item form-group col-md-6 col-sm-6">
-                <label className="col-form-label col-md-3 col-sm-3 label-align">Last Voucher # <span className="required">*</span></label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    disabled
-                    className="form-control"
-                    data-validate-length-range={6}
-                    data-validate-words={2}
-                    name="name"
-                    value={voucherDetail?.last_voucher_inv}
-                  />
-                </div>
-              </div>
-              <div className="field item form-group col-md-6 col-sm-6">
-                <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Last Voucher Date <span className="required">*</span></label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    disabled
-                    type="date"
-                    className="form-control"
-                    data-validate-length-range={6}
-                    data-validate-words={2}
-                    name="name"
-                    value={dateFormaterForInput(voucherDetail?.last_voucher_created_date)}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="field item form-group col-md-6 col-sm-6">
-                <label className="col-form-label col-md-3 col-sm-3 px-0 label-align">Is Post Dated Check</label>
-                <div className="col-md-8 col-sm-8 pt-2">
-                  <input
-                    type="checkbox"
-                    className="flat"
-                    checked={isPostDatedCheck}
-                    onChange={() => setisPostDatedCheck(!isPostDatedCheck)}
-                  />
-                </div>
-              </div>
-              {
-                isPostDatedCheck &&
+        {
+          isLoading ? <><Loader /> </> : <div className="x_panel">
+            <div className="x_content mt-3">
+              <span className="section pl-4">
+                <i className="fa fa-edit"></i>&nbsp;Add/Edit Bank Payment Voucher
+              </span>
+              <div className="row">
                 <div className="field item form-group col-md-6 col-sm-6">
-                  <label className="col-form-label col-md-3 col-sm-3 label-align pl-0  ">Post Check Date <span className="required">*</span></label>
+                  <label className="col-form-label col-md-3 col-sm-3 label-align"> Voucher # <span className="required">*</span></label>
+                  <div className="col-md-8 col-sm-8">
+                    <input
+                      disabled
+                      className="form-control"
+                      data-validate-length-range={6}
+                      data-validate-words={2}
+                      name="name"
+                      placeholder="BP-2344"
+                      value={voucherDetail?.next_voucher_inv}
+                    />
+                  </div>
+                </div>
+                <div className="field item form-group col-md-6 col-sm-6">
+                  <label className="col-form-label col-md-3 col-sm-3 label-align"> Date <span className="required">*</span></label>
                   <div className="col-md-8 col-sm-8">
                     <input
                       type="date"
                       className="form-control"
                       data-validate-length-range={6}
                       data-validate-words={2}
-                      onChange={(e) => setPostDatedCheckDate(e.target.value)}
                       name="name"
-                      value={postDatedCheckDate}
+                      value={voucherDate}
+                      onChange={(e) => setVoucherDate(e.target.value)}
                     />
                   </div>
-                </div>}
-            </div>
-            <div className="row">
-              <div className="field item form-group col-md-6 col-sm-6">
-                <label className="col-form-label col-md-3 col-sm-3 label-align px-0">Select Attachment</label>
-                <div className="col-md-8 col-sm-8 ">
-                  <div className="row">
-                    <div className="col-md-10 ">  <input
-                      ref={ref}
-                      type="file"
-                      className="form-control form-control-sm customStyleForInput"
+                </div>
+              </div>
+              <div className="row">
+                <div className="field item form-group col-md-6 col-sm-6">
+                  <label className="col-form-label col-md-3 col-sm-3 label-align">Last Voucher # <span className="required">*</span></label>
+                  <div className="col-md-8 col-sm-8">
+                    <input
+                      disabled
+                      className="form-control"
                       data-validate-length-range={6}
                       data-validate-words={2}
                       name="name"
-                      onChange={(e) => {
-                        setSelectedAttachmentName((e.target.files[0].name.split("."))[0])
-                        setSelectedAttachmentFile(e.target.files[0])
-                      }}
-                    /></div>
-                    <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-                      {
-                        isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
-                          <span className="sr-only">Loading...</span>
-                        </div> : <button
-                          disabled={ref?.current?.value === "" ? true : false}
-                          className="btn btn-sm btn-outline-success" onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
-                      }
-                    </div>
+                      value={voucherDetail?.last_voucher_inv}
+                    />
+                  </div>
+                </div>
+                <div className="field item form-group col-md-6 col-sm-6">
+                  <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Last Voucher Date <span className="required">*</span></label>
+                  <div className="col-md-8 col-sm-8">
+                    <input
+                      disabled
+                      type="date"
+                      className="form-control"
+                      data-validate-length-range={6}
+                      data-validate-words={2}
+                      name="name"
+                      value={dateFormaterForInput(voucherDetail?.last_voucher_created_date)}
+                    />
                   </div>
                 </div>
               </div>
-              {fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6">
-                <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
-                <div className="col-md-8 col-sm-8 ">
-                  {
-                    fileEntity.map((each_attachment, index) => {
-                      return <button className="btn btn-sm  bg-customBlue  text-light">
-                        <a href={`${endPoint + each_attachment}`} target="_blank" rel="noopener noreferrer" className='text-light'>
-                          {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
-                        {/* <span className='bg-light text-danger px-1  ml-2 ' style={ {borderRadius: '15px'}} >
+              <div className="row">
+                <div className="field item form-group col-md-6 col-sm-6">
+                  <label className="col-form-label col-md-3 col-sm-3 px-0 label-align">Is Post Dated Check</label>
+                  <div className="col-md-8 col-sm-8 pt-2">
+                    <input
+                      type="checkbox"
+                      className="flat"
+                      checked={isPostDatedCheck}
+                      onChange={() => setisPostDatedCheck(!isPostDatedCheck)}
+                    />
+                  </div>
+                </div>
+                {
+                  isPostDatedCheck &&
+                  <div className="field item form-group col-md-6 col-sm-6">
+                    <label className="col-form-label col-md-3 col-sm-3 label-align pl-0  ">Post Check Date <span className="required">*</span></label>
+                    <div className="col-md-8 col-sm-8">
+                      <input
+                        type="date"
+                        className="form-control"
+                        data-validate-length-range={6}
+                        data-validate-words={2}
+                        onChange={(e) => setPostDatedCheckDate(e.target.value)}
+                        name="name"
+                        value={postDatedCheckDate}
+                      />
+                    </div>
+                  </div>}
+              </div>
+              <div className="row">
+                <div className="field item form-group col-md-6 col-sm-6">
+                  <label className="col-form-label col-md-3 col-sm-3 label-align px-0">Select Attachment</label>
+                  <div className="col-md-8 col-sm-8 ">
+                    <div className="row">
+                      <div className="col-md-10 ">  <input
+                        ref={ref}
+                        type="file"
+                        className="form-control form-control-sm customStyleForInput"
+                        data-validate-length-range={6}
+                        data-validate-words={2}
+                        name="name"
+                        onChange={(e) => {
+                          setSelectedAttachmentName((e.target.files[0].name.split("."))[0])
+                          setSelectedAttachmentFile(e.target.files[0])
+                        }}
+                      /></div>
+                      <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                        {
+                          isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </div> : <button
+                            disabled={ref?.current?.value === "" ? true : false}
+                            className="btn btn-sm btn-outline-success" onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6">
+                  <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
+                  <div className="col-md-8 col-sm-8 ">
+                    {
+                      fileEntity.map((each_attachment, index) => {
+                        return <button className="btn btn-sm  bg-customBlue  text-light">
+                          <a href={`${endPoint + each_attachment}`} target="_blank" rel="noopener noreferrer" className='text-light'>
+                            {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
+                          {/* <span className='bg-light text-danger px-1  ml-2 ' style={ {borderRadius: '15px'}} >
                              */}
 
-                        <i class="fa fa-times   text-light ml-1 " aria-hidden="true"
-                          onClick={() => {
-                            let arr_data = fileEntity.filter((each_image) => {
-                              return (fileEntity.indexOf(each_image) !== index);
-                            });
-                            setFileEntity(arr_data)
-                            setReRendered(!reRendered)
-                          }}
-                        ></i>
+                          <i class="fa fa-times   text-light ml-1 " aria-hidden="true"
+                            onClick={() => {
+                              let arr_data = fileEntity.filter((each_image) => {
+                                return (fileEntity.indexOf(each_image) !== index);
+                              });
+                              setFileEntity(arr_data)
+                              setReRendered(!reRendered)
+                            }}
+                          ></i>
 
-                        {/* </span> */}
-                      </button>
-                    })
-                  }
-                </div>
-              </div>}
-            </div>
-            <div className="row mt-2">
-              <div className="table-responsive px-3 pb-0" style={{ overflowX: "unset" }}>
-                <table className="table table-striped jambo_table bulk_action">
-                  <thead >
-                    <tr className="headings">
-                      <th className="column-title   text-center" width="20%">ACCOUNT</th>
-                      <th className="column-title   text-center" width="15%">A/C BALANCE</th>
-                      <th className="column-title   text-center" width="32%">NARATION</th>
-                      <th className="column-title   text-center" width="13%">DEBIT(RS)</th>
-                      <th className="column-title   text-center" width="13%">CREDIT(RS)</th>
-                      <th className="column-title   text-center" width="2%">&nbsp;</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {
-                      mainEntriesState.map((eachEntry, index) => {
-                        return <tr className="even pointer"   >
-                          <td className="py-0 " colSpan={6}>
-                            <table className="table table-striped jambo_table bulk_action border-none-only mb-0">
-
-                              <tbody>
-                                <tr className="even pointer"   >
-                                  <td className=" " width="20%">
-                                    <div className="row">
-                                      <div className="col-md-11">
-                                        <Select
-                                          value={mainEntriesState[index].selectedOptionValue}
-                                          isSearchable={true}
-                                          styles={customStyles}
-                                          options={accountOptions}
-                                          onChange={(e) => handleAccountSelector(e, index)}
-                                        />
-                                        {!isValidateAllStates && (mainEntriesState[index].selectedOptionValue === "" || mainEntriesState[index].selectedOptionValue === undefined) && <span className="text-danger">First Select this </span>}
-
-                                      </div>
-                                      <div className="col-md-1 px-0 ">
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td className=" " width="15%">
-                                    <input
-                                      disabled
-                                      type="text"
-                                      className="form-control"
-                                      data-validate-length-range={6}
-                                      data-validate-words={2}
-                                      name="name"
-                                      value={mainEntriesState[index].selectedOptionValue?.wholeData?.balance}
-
-                                    />
-                                  </td>
-                                  <td className=" " width="32%">
-                                    <input
-                                      type="text"
-                                      // disabled={mainEntriesState[index].numberOfChild > 0}
-                                      className="form-control"
-                                      data-validate-length-range={6}
-                                      data-validate-words={2}
-                                      name="name"
-                                      placeholder='Enter Naration/Description here'
-                                      value={mainEntriesState[index]?.naration}
-                                      onChange={(e) => { update_naration(index, e) }}
-                                    />
-                                    {!isValidateAllStates && mainEntriesState[index]?.naration === "" && <span className="text-danger">First Select this </span>}
-
-                                  </td>
-                                  <td className=" " width="13%">
-                                    <input
-                                      disabled={mainEntriesState[index].numberOfChild > 0}
-                                      type="number"
-                                      className="form-control  "
-                                      data-validate-length-range={6}
-                                      data-validate-words={2}
-                                      name="name"
-                                      placeholder='Enter Debit here'
-                                      value={mainEntriesState[index].debit}
-                                      onChange={(e) => { update_debit(index, e) }}
-                                    />
-                                    {!isValidateAllStates && mainEntriesState[index].debit === "" && <span className="text-danger">First Select this </span>}
-
-                                  </td>
-                                  <td className=" " width="13%">
-                                    <input
-                                      disabled={mainEntriesState[index].numberOfChild > 0}
-                                      type="number"
-                                      className="form-control"
-                                      data-validate-length-range={6}
-                                      data-validate-words={2}
-                                      name="name"
-                                      placeholder='Enter Credit here'
-                                      value={mainEntriesState[index].credit}
-                                      onChange={(e) => { update_credit(index, e) }}
-                                    />
-                                    {!isValidateAllStates && mainEntriesState[index].credit === "" && <span className="text-danger">First Select this </span>}
-
-                                  </td>
-                                  <td className="" width="2%" >
-                                    {
-                                      mainEntriesState.length > 2 &&
-                                      <i class="fa fa-times pt-2 text-danger" aria-hidden="true"
-                                        onClick={() => remove_account(index)}
-                                      ></i>
-                                    }
-                                  </td>
-                                </tr>
-                                {
-                                  mainEntriesState[index].showChild && mainEntriesState[index].sub_account_State?.map((each_sub_entry, i) => {
-                                    return <tr className="even pointer">
-                                      <td className="border-none text-right " colSpan={2} >
-                                        {
-                                          mainEntriesState[index].sub_account_State.length < mainEntriesState[index].numberOfChild && <span >
-                                            <i className="fa fa-plus-circle text-customBlue"
-                                              onClick={() => { add_new_sub_account(index, i) }}
-                                            ></i>
-                                          </span>}
-                                      </td>
-                                      <td className="border-none ">
-                                        <Select
-                                          value={mainEntriesState[index].sub_account_State[i]?.selected_sub_account}
-                                          isSearchable={true}
-                                          styles={customStyles}
-                                          options={mainEntriesState[index].sub_account_options}
-                                          onChange={(e) => update_selcted_sub_account(index, i, e)}
-                                        />
-                                        {!isValidateAllStates && (mainEntriesState[index].sub_account_State[i]?.selected_sub_account === "" || mainEntriesState[index].sub_account_State[i]?.selected_sub_account === undefined) && <span className="text-danger">First Select this </span>}
-
-                                      </td>
-                                      <td className="border-none ">
-                                        <input
-                                          placeholder='Enter Debit '
-                                          type="number"
-                                          className="form-control"
-                                          data-validate-length-range={6}
-                                          data-validate-words={2}
-                                          name="name"
-                                          value={mainEntriesState[index].sub_account_State[i]?.debit}
-                                          onChange={(e) => update_sub_account_debit(index, i, e)}
-                                        />
-                                        {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.debit === "" && <span className="text-danger">First Select this </span>}
-
-                                      </td>
-                                      <td className="border-none ">
-                                        <input
-                                          type="number"
-                                          className="form-control"
-                                          data-validate-length-range={6}
-                                          data-validate-words={2}
-                                          name="name"
-                                          placeholder='Enter Credit '
-                                          value={mainEntriesState[index].sub_account_State[i]?.credit}
-                                          onChange={(e) => update_sub_account_credit(index, i, e)}
-                                        />
-                                        {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.credit === "" && <span className="text-danger">First Select this </span>}
-
-                                      </td>
-                                      <td className="border-none ">
-                                        {
-                                          mainEntriesState[index].sub_account_State.length === 1 ? <></> : <i class="fa fa-times pt-2 text-danger" aria-hidden="true"
-                                            onClick={() => remove_sub_account_entry(index, i)}
-                                          ></i>
-                                        }
-                                      </td>
-                                    </tr>
-                                  })
-                                }
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
+                          {/* </span> */}
+                        </button>
                       })
                     }
-                  </tbody>
-                </table>
-                <strong>     Current Balance: {balanceEntries.total_debit - balanceEntries.total_credit} </strong>
-                <div>    <strong>   Drafts: &nbsp;   </strong>
-                  {
-                    draftEntries.map((each_draft, index) => {
-                      return <button className="btn btn-sm bg-customBlue text-light mt-1">
+                  </div>
+                </div>}
+              </div>
+              <div className="row mt-2">
+                <div className="table-responsive px-3 pb-0" style={{ overflowX: "unset" }}>
+                  <table className="table table-striped jambo_table bulk_action">
+                    <thead >
+                      <tr className="headings">
+                        <th className="column-title   text-center" width="20%">ACCOUNT</th>
+                        <th className="column-title   text-center" width="15%">A/C BALANCE</th>
+                        <th className="column-title   text-center" width="32%">NARATION</th>
+                        <th className="column-title   text-center" width="13%">DEBIT(RS)</th>
+                        <th className="column-title   text-center" width="13%">CREDIT(RS)</th>
+                        <th className="column-title   text-center" width="2%">&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        mainEntriesState.map((eachEntry, index) => {
+                          return <tr className="even pointer"   >
+                            <td className="py-0 " colSpan={6}>
+                              <table className="table table-striped jambo_table bulk_action border-none-only mb-0">
 
-                        {/* {((each_draft.split("_"))[0]).slice(15)} {index + 1}  */}
-                        {/* <span className='bg-light text-danger px-1  ml-2 ' style={ {borderRadius: '15px'}} >
+                                <tbody>
+                                  <tr className="even pointer"   >
+                                    <td className=" " width="20%">
+                                      <div className="row">
+                                        <div className="col-md-11">
+                                          <Select
+                                            value={mainEntriesState[index].selectedOptionValue}
+                                            isSearchable={true}
+                                            styles={customStyles}
+                                            options={accountOptions}
+                                            onChange={(e) => handleAccountSelector(e, index)}
+                                          />
+                                          {!isValidateAllStates && (mainEntriesState[index].selectedOptionValue === "" || mainEntriesState[index].selectedOptionValue === undefined) && <span className="text-danger">First Select this </span>}
+
+                                        </div>
+                                        <div className="col-md-1 px-0 ">
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td className=" " width="15%">
+                                      <input
+                                        disabled
+                                        type="text"
+                                        className="form-control"
+                                        data-validate-length-range={6}
+                                        data-validate-words={2}
+                                        name="name"
+                                        value={mainEntriesState[index].selectedOptionValue?.wholeData?.balance}
+
+                                      />
+                                    </td>
+                                    <td className=" " width="32%">
+                                      <input
+                                        type="text"
+                                        // disabled={mainEntriesState[index].numberOfChild > 0}
+                                        className="form-control"
+                                        data-validate-length-range={6}
+                                        data-validate-words={2}
+                                        name="name"
+                                        placeholder='Enter Naration/Description here'
+                                        value={mainEntriesState[index]?.naration}
+                                        onChange={(e) => { update_naration(index, e) }}
+                                      />
+                                      {!isValidateAllStates && mainEntriesState[index]?.naration === "" && <span className="text-danger">First Select this </span>}
+
+                                    </td>
+                                    <td className=" " width="13%">
+                                      <input
+                                        disabled={mainEntriesState[index].numberOfChild > 0}
+                                        type="number"
+                                        className="form-control  "
+                                        data-validate-length-range={6}
+                                        data-validate-words={2}
+                                        name="name"
+                                        placeholder='Enter Debit here'
+                                        value={mainEntriesState[index].debit}
+                                        onChange={(e) => { update_debit(index, e) }}
+                                      />
+                                      {!isValidateAllStates && mainEntriesState[index].debit === "" && <span className="text-danger">First Select this </span>}
+
+                                    </td>
+                                    <td className=" " width="13%">
+                                      <input
+                                        disabled={mainEntriesState[index].numberOfChild > 0}
+                                        type="number"
+                                        className="form-control"
+                                        data-validate-length-range={6}
+                                        data-validate-words={2}
+                                        name="name"
+                                        placeholder='Enter Credit here'
+                                        value={mainEntriesState[index].credit}
+                                        onChange={(e) => { update_credit(index, e) }}
+                                      />
+                                      {!isValidateAllStates && mainEntriesState[index].credit === "" && <span className="text-danger">First Select this </span>}
+
+                                    </td>
+                                    <td className="" width="2%" >
+                                      {
+                                        mainEntriesState.length > 2 &&
+                                        <i class="fa fa-times pt-2 text-danger" aria-hidden="true"
+                                          onClick={() => remove_account(index)}
+                                        ></i>
+                                      }
+                                    </td>
+                                  </tr>
+                                  {
+                                    mainEntriesState[index].showChild && mainEntriesState[index].sub_account_State?.map((each_sub_entry, i) => {
+                                      return <tr className="even pointer">
+                                        <td className="border-none text-right " colSpan={2} >
+                                          {
+                                            mainEntriesState[index].sub_account_State.length < mainEntriesState[index].numberOfChild && <span >
+                                              <i className="fa fa-plus-circle text-customBlue"
+                                                onClick={() => { add_new_sub_account(index, i) }}
+                                              ></i>
+                                            </span>}
+                                        </td>
+                                        <td className="border-none ">
+                                          <Select
+                                            value={mainEntriesState[index].sub_account_State[i]?.selected_sub_account}
+                                            isSearchable={true}
+                                            styles={customStyles}
+                                            options={mainEntriesState[index].sub_account_options}
+                                            onChange={(e) => update_selcted_sub_account(index, i, e)}
+                                          />
+                                          {!isValidateAllStates && (mainEntriesState[index].sub_account_State[i]?.selected_sub_account === "" || mainEntriesState[index].sub_account_State[i]?.selected_sub_account === undefined) && <span className="text-danger">First Select this </span>}
+
+                                        </td>
+                                        <td className="border-none ">
+                                          <input
+                                            placeholder='Enter Debit '
+                                            type="number"
+                                            className="form-control"
+                                            data-validate-length-range={6}
+                                            data-validate-words={2}
+                                            name="name"
+                                            value={mainEntriesState[index].sub_account_State[i]?.debit}
+                                            onChange={(e) => update_sub_account_debit(index, i, e)}
+                                          />
+                                          {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.debit === "" && <span className="text-danger">First Select this </span>}
+
+                                        </td>
+                                        <td className="border-none ">
+                                          <input
+                                            type="number"
+                                            className="form-control"
+                                            data-validate-length-range={6}
+                                            data-validate-words={2}
+                                            name="name"
+                                            placeholder='Enter Credit '
+                                            value={mainEntriesState[index].sub_account_State[i]?.credit}
+                                            onChange={(e) => update_sub_account_credit(index, i, e)}
+                                          />
+                                          {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.credit === "" && <span className="text-danger">First Select this </span>}
+
+                                        </td>
+                                        <td className="border-none ">
+                                          {
+                                            mainEntriesState[index].sub_account_State.length === 1 ? <></> : <i class="fa fa-times pt-2 text-danger" aria-hidden="true"
+                                              onClick={() => remove_sub_account_entry(index, i)}
+                                            ></i>
+                                          }
+                                        </td>
+                                      </tr>
+                                    })
+                                  }
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        })
+                      }
+                    </tbody>
+                  </table>
+                  <strong>     Current Balance: {balanceEntries.total_debit - balanceEntries.total_credit} </strong>
+                  <div>    <strong>   Drafts: &nbsp;   </strong>
+                    {
+                      draftEntries.map((each_draft, index) => {
+                        return <button className="btn btn-sm bg-customBlue text-light mt-1">
+
+                          {/* {((each_draft.split("_"))[0]).slice(15)} {index + 1}  */}
+                          {/* <span className='bg-light text-danger px-1  ml-2 ' style={ {borderRadius: '15px'}} >
                              */}
-                        <span onClick={() => { refactor_draft_data(each_draft) }}>
-                          {each_draft.draft_name}
-                        </span>
+                          <span onClick={() => { refactor_draft_data(each_draft) }}>
+                            {each_draft.draft_name}
+                          </span>
 
-                        <i class="fa fa-times   text-light ml-1 " aria-hidden="true"
-                          onClick={() => { delete_draft(each_draft.draft_id) }}
-                        ></i>
+                          <i class="fa fa-times   text-light ml-1 " aria-hidden="true"
+                            onClick={() => { delete_draft(each_draft.draft_id) }}
+                          ></i>
 
-                        {/* </span> */}
-                      </button>
-                    })
-                  }
+                          {/* </span> */}
+                        </button>
+                      })
+                    }
+                  </div>
                 </div>
               </div>
             </div>
+            <div className="col-md-12 d-flex justify-content-between x_footer mt-0">
+
+
+              <button className="btn btn-primary" type="submit" onClick={() => {
+                setmainEntriesState([...mainEntriesState, {
+                  naration: "", debit: "", credit: "",
+                }])
+              }}>
+                Add Line
+              </button>
+              <button className="btn btn-primary" type="submit" onClick={() => post_as_draft()}>
+                Save Draft
+              </button>
+
+              <button className="btn btn-primary" type="submit" onClick={() => post_multiple_voucher()}>
+                Submit
+              </button>
+
+            </div>
           </div>
-          <div className="col-md-12 d-flex justify-content-between x_footer mt-0">
+        }
 
 
-            <button className="btn btn-primary" type="submit" onClick={() => {
-              setmainEntriesState([...mainEntriesState, {
-                naration: "", debit: "", credit: "",
-              }])
-            }}>
-              Add Line
-            </button>
-            <button className="btn btn-primary" type="submit" onClick={() => post_as_draft()}>
-              Save Draft
-            </button>
-
-            <button className="btn btn-primary" type="submit" onClick={() => post_multiple_voucher()}>
-              Submit
-            </button>
-
-          </div>
-        </div>
-}
-
-       
       </div>
     </>
   )

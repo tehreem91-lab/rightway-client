@@ -254,11 +254,11 @@ const VoucherHistory = () => {
                                                                 fetch_selected_voucher_detail(each_voucher_record.finance_main_id)
                                                             }}> {each_voucher_record.balance}</strong> </div>
                                                             <div className='py-0'>
-                                                                <span className='text-customOrange' onClick={() => console.log(numberToEnglish(123))} >
+                                                                <span className='text-customOrange'>
                                                                     <u onClick={()=>{
                                                                          navigate('/BankPaymentAccess', {
                                                                             state: {
-                                                                                   data: "dateToParseNAvigation"
+                                                                                   data: each_voucher_record.finance_main_id
                                                                                    }
                 
                                                                         });
