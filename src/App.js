@@ -42,6 +42,7 @@ import BankReceiveVoucher from "./Pages/Finance/MultipleVouchers/BankReceiveVouc
 import CashPaymentVoucher from "./Pages/Finance/MultipleVouchers/CashPaymentVoucher/CashPaymentVoucher";
 import CashReceiveVoucher from "./Pages/Finance/MultipleVouchers/CashReceiveVoucher/CashReceiveVoucher";
 import JournalVoucher from "./Pages/Finance/MultipleVouchers/JournalVoucher/JournalVoucher";
+import JournalVoucherSingle from "./Pages/Finance/SingleMultipleVoucher/JournalVoucherSingle";
 function App() {
   const [isLogin, setisLogin] = useState(null);
   const [showMainLoader, setShowMainLoader] = useState(true);
@@ -312,6 +313,24 @@ function App() {
                           <JournalVoucher
                             pagePermission={allPagesData.find(
                               (o) => o.pageURL === "JournalVoucherAccess"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
+
+
+                    <Route
+                      path="JournalVoucherSingleAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "JournalVoucherSingleAccess"
+                          )}
+                        >
+                          <JournalVoucherSingle
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "JournalVoucherSingleAccess"
                             )}
                           />
                         </PrivateRoute>

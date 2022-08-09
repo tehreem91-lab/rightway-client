@@ -356,7 +356,7 @@ const VoucherHistory = () => {
                                                                     state: {
                                                                         data: selectedVoucher.voucher_id
                                                                     }
-                                                                    // here im using Dynamic rout path check nd blnce that on whicj route we have to go
+                                                                    // here im using Dynamic rout path check nd blnce that on which route we have to go
                                                                 });
                                                             }}
                                                         >
