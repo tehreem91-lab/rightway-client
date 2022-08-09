@@ -7,6 +7,7 @@ import { endPoint } from '../../../../config/Config'
 import { customStyles } from '../../../../Components/reactCustomSelectStyle';
 import dateToday, { dateConverterFromCShartDateTimeToJS, dateFormaterForInput } from '../../../../config/todayDate';
 import { toast } from 'react-toastify';
+import { preventMinus } from '../../../../config/preventMinus'
 import { useLocation, useNavigate } from "react-router-dom";
 const BankPaymentVoucher = () => {
 
@@ -846,10 +847,11 @@ const BankPaymentVoucher = () => {
                                             isSearchable={true}
                                             styles={customStyles}
                                             options={accountOptions}
-                                            onChange={(e) => {handleAccountSelector(e, index)
+                                            onChange={(e) => {
+                                              handleAccountSelector(e, index)
                                               Number(mainEntriesState[index].debit) === 0 ? update_credit(index, { target: { value: 0 } }) : update_debit(index, { target: { value: 0 } })
-                                             
-                                            
+
+
                                             }}
                                           />
                                           {!isValidateAllStates && (mainEntriesState[index].selectedOptionValue === "" || mainEntriesState[index].selectedOptionValue === undefined) && <span className="text-danger">First Select this </span>}
@@ -889,10 +891,13 @@ const BankPaymentVoucher = () => {
                                       <input
                                         disabled={mainEntriesState[index].numberOfChild > 0}
                                         type="number"
+                                        onKeyPress={(e) => preventMinus(e)}
+                                        min="0"
                                         className="form-control  "
                                         data-validate-length-range={6}
                                         data-validate-words={2}
-                                        name="name"
+                                        name="debit"
+
                                         placeholder='Enter Debit here'
                                         value={mainEntriesState[index].debit}
                                         onChange={(e) => { update_debit(index, e) }}
@@ -904,10 +909,12 @@ const BankPaymentVoucher = () => {
                                       <input
                                         disabled={mainEntriesState[index].numberOfChild > 0}
                                         type="number"
+                                        onKeyPress={(e) => preventMinus(e)}
+                                        min="0"
                                         className="form-control"
                                         data-validate-length-range={6}
                                         data-validate-words={2}
-                                        name="name"
+                                        name="credit"
                                         placeholder='Enter Credit here'
                                         value={mainEntriesState[index].credit}
                                         onChange={(e) => { update_credit(index, e) }}
@@ -949,10 +956,12 @@ const BankPaymentVoucher = () => {
                                           <input
                                             placeholder='Enter Debit '
                                             type="number"
+                                            onKeyPress={(e) => preventMinus(e)}
+                                            min="0"
                                             className="form-control"
                                             data-validate-length-range={6}
                                             data-validate-words={2}
-                                            name="name"
+                                            name="sub_debit"
                                             value={mainEntriesState[index].sub_account_State[i]?.debit}
                                             onChange={(e) => update_sub_account_debit(index, i, e)}
                                           />
@@ -961,10 +970,12 @@ const BankPaymentVoucher = () => {
                                         <td className="border-none ">
                                           <input
                                             type="number"
+                                            onKeyPress={(e) => preventMinus(e)}
+                                            min="0"
                                             className="form-control"
                                             data-validate-length-range={6}
                                             data-validate-words={2}
-                                            name="name"
+                                            name="sub_credit"
                                             placeholder='Enter Credit '
                                             value={mainEntriesState[index].sub_account_State[i]?.credit}
                                             onChange={(e) => update_sub_account_credit(index, i, e)}
