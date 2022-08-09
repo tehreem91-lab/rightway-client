@@ -35,9 +35,13 @@ import Categories from "./Pages/Finance/Categories/Categories";
 import DataTable from "./DataTable/DataTable";
 import TestDataTable from "./Pages/Role/TestDataTable";
 import BranchesPermission from "./Pages/Role/BranchesPermission";
-import BankPaymentVoucher from "./Pages/Finance/MultipleVouchers/BankPaymentVoucher/BankPaymentVoucher";
 import VoucherHistory from "./Pages/Finance/MultipleVouchers/VoucherHistory/VoucherHistory";
 import AddBranches from "./Pages/Role/AddBranches";
+import BankPaymentVoucher from "./Pages/Finance/MultipleVouchers/BankPaymentVoucher/BankPaymentVoucher";
+import BankReceiveVoucher from "./Pages/Finance/MultipleVouchers/BankReceiveVoucher/BankReceiveVoucher";
+import CashPaymentVoucher from "./Pages/Finance/MultipleVouchers/CashPaymentVoucher/CashPaymentVoucher";
+import CashReceiveVoucher from "./Pages/Finance/MultipleVouchers/CashReceiveVoucher/CashReceiveVoucher";
+import JournalVoucher from "./Pages/Finance/MultipleVouchers/JournalVoucher/JournalVoucher";
 function App() {
   const [isLogin, setisLogin] = useState(null);
   const [showMainLoader, setShowMainLoader] = useState(true);
@@ -245,6 +249,76 @@ function App() {
                         </PrivateRoute>
                       }
                     />
+
+                    <Route
+                      path="BankReceiveAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "BankReceiveAccess"
+                          )}
+                        >
+                          <BankReceiveVoucher
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "BankReceiveAccess"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="CashPaymentAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "CashPaymentAccess"
+                          )}
+                        >
+                          <CashPaymentVoucher
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "CashPaymentAccess"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
+
+                    <Route
+                      path="CashReceiveAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "CashReceiveAccess"
+                          )}
+                        >
+                          <CashReceiveVoucher
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "CashReceiveAccess"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
+
+
+                    <Route
+                      path="JournalVoucherAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "JournalVoucherAccess"
+                          )}
+                        >
+                          <JournalVoucher
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "JournalVoucherAccess"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
+
+
 
 
 
