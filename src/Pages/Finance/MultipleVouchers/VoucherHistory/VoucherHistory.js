@@ -329,6 +329,8 @@ const VoucherHistory = () => {
                                                                 navigate('/BankPaymentAccess', {
                                                                     state: null
                                                                 });
+
+
                                                             }
                                                             }
                                                         >
@@ -348,13 +350,14 @@ const VoucherHistory = () => {
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
                                                             onClick={() => {
-                                                                navigate('/BankPaymentAccess', {
+                                                                navigate(`/${voucherTypes.find(
+                                                                    (o) => o.voucher_id === selectedVoucher.voucher_type_id
+                                                                ).multiple_router_path}`, {
                                                                     state: {
                                                                         data: selectedVoucher.voucher_id
                                                                     }
+                                                                    // here im using Dynamic rout path check nd blnce that on whicj route we have to go
                                                                 });
-
-
                                                             }}
                                                         >
                                                             <i className="fa fa-edit"></i>
