@@ -1,14 +1,16 @@
 import React from 'react'
 import MultiVoucherGlobalTemplate from '../MultiVoucherGlobalTemplate'
+import voucherTypes from '../../../../config/voucherTypes'
 
 const CashReceiveVoucher = () => {
   return (
     <MultiVoucherGlobalTemplate
-    voucherAbbr={`CRV`}
-    accountAbbr={`allexceptbank`}
-    voucher_type_id={2}
-    page_name={`Cash Receive Voucher`}
-  /> 
+      accountAbbr={`allexceptbank`}
+      voucherAbbr={voucherTypes[0].abbreviation}
+      voucher_type_id={voucherTypes[0].voucher_id}
+      page_name={voucherTypes[0].type_name}
+
+    />
   )
 }
 

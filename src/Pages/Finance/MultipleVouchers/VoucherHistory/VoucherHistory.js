@@ -12,10 +12,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import VoucherReportReciept from "./VoucherReportReciept.js";
 
 import Select from 'react-select'
+import voucherTypes from '../../../../config/voucherTypes.js';
 const VoucherHistory = () => {
 
     const componentRef = useRef();
-
+    const [routePathToBeNavigate, setroutePathToBeNavigate] = useState("JournalVoucherAccess")
     const navigate = useNavigate();
 
     const { state } = useLocation();
@@ -101,8 +102,6 @@ const VoucherHistory = () => {
     };
 
     const fetch_selected_voucher_detail = (e) => {
-        var axios = require('axios');
-
         var config = {
             method: 'get',
             url: `${endPoint}api/MultipleVoucher/GetReport?voucher_id=${e}`,
@@ -115,6 +114,12 @@ const VoucherHistory = () => {
             .then(function (response) {
                 console.log(response.data);
                 setSelectedVoucher(response.data)
+
+                setroutePathToBeNavigate(voucherTypes.find(
+                    (o) => o.voucher_id === response.data.voucher_type_id
+                ).multiple_router_path)
+
+
                 setisShowVoucher(true)
             })
             .catch(function (error) {
@@ -259,10 +264,13 @@ const VoucherHistory = () => {
                                                             <div className='py-0'>
                                                                 <span className='text-customOrange'>
                                                                     <u onClick={() => {
-                                                                        navigate('/BankPaymentAccess', {
+                                                                        navigate(`/${voucherTypes.find(
+                                                                            (o) => o.voucher_id === each_voucher_record.voucher_type_id
+                                                                        ).multiple_router_path}`, {
                                                                             state: {
                                                                                 data: each_voucher_record.finance_main_id
                                                                             }
+                                                                            // here im using Dynamic rout path check nd blnce that on whicj route we have to go
                                                                         });
                                                                     }}> Edit</u>
                                                                 </span>
