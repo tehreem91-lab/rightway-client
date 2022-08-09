@@ -1,23 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 
-import { useSelector } from "react-redux";
-import numberToEnglish from '../../../../config/numberToWordConverter.js'
+import { useSelector } from "react-redux"; 
 import { endPoint } from '../../../../config/Config.js';
 import { customStyles } from '../../../../Components/reactCustomSelectStyle.jsx';
 import dateToday from '../../../../config/todayDate.js';
 
 import ReactToPrint from 'react-to-print'
 
-import { useLocation, useNavigate } from "react-router-dom"; 
+import { useLocation, useNavigate } from "react-router-dom";
 import VoucherReportReciept from "./VoucherReportReciept.js";
 
 import Select from 'react-select'
 const VoucherHistory = () => {
 
     const componentRef = useRef();
-    
+
     const navigate = useNavigate();
+    
+  const { state } = useLocation();
     const [isValidateOK, setIsValidateOK] = useState(true)
     const [voucherTypeOption, setvoucherTypeOption] = useState([])
     const [voucherTypeValue, setvoucherTypeValue] = useState("")
@@ -104,7 +105,7 @@ const VoucherHistory = () => {
 
         var config = {
             method: 'get',
-            url: `http://localhost:63145/api/MultipleVoucher/GetReport?voucher_id=${e}`,
+            url: `${endPoint}api/MultipleVoucher/GetReport?voucher_id=${e}`,
             headers: {
                 'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
             }
@@ -123,6 +124,8 @@ const VoucherHistory = () => {
     }
     useEffect(() => {
         fetchInitialData()
+state!==null && fetch_selected_voucher_detail(state.data)
+
     }, [])
 
     return (
@@ -242,8 +245,8 @@ const VoucherHistory = () => {
                                                         </td>
                                                     </tr>
                                                 }
-                                                {voucherHistoryRecord.map((each_voucher_record) => {
-                                                    return <tr className="even pointer" style={{ cursor: "pointer" }}>
+                                                {voucherHistoryRecord.map((each_voucher_record , index) => {
+                                                    return <tr className="even pointer" style={{ cursor: "pointer" }} key={index}>
 
                                                         <td className='text-left pb-0 pt-1' onClick={() => fetch_selected_voucher_detail(each_voucher_record.finance_main_id)} >
                                                             <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_date.slice(0, 10)}</strong></div>
@@ -255,27 +258,12 @@ const VoucherHistory = () => {
                                                             }}> {each_voucher_record.balance}</strong> </div>
                                                             <div className='py-0'>
                                                                 <span className='text-customOrange'>
-                                                                    <u onClick={()=>{
-                                                                         navigate('/BankPaymentAccess', {
+                                                                    <u onClick={() => {
+                                                                        navigate('/BankPaymentAccess', {
                                                                             state: {
-                                                                                   data: each_voucher_record.finance_main_id
-                                                                                   }
-                
+                                                                                data: each_voucher_record.finance_main_id
+                                                                            }
                                                                         });
-
-
-
-                                                                        // navigate('/GatePassReport', {
-                                                                        //     state: {
-                                                                        //       data: dateToParseNAvigation
-                                                                        //     }
-                                          
-                                                                        //   });
-                                          
-                                          
-                                                                        //   // ----------------
-                                                                        //   navigate(state.pathname, { replace: true });
-                                                                        // }}
                                                                     }}> Edit</u>
                                                                 </span>
                                                             </div>
@@ -290,78 +278,92 @@ const VoucherHistory = () => {
                         </div>
                     </div>
 
-{
-    isShowVoucher &&    <div className="col-md-8">
-    <div className="x_panel p-0">
-        <div className="x_content ">
-            <span className="section pb-0">
-                <div className="row px-2 ">
-                    <div className="col-3  pt-3">
-                        <i className='fa fa-list'></i>&nbsp;Report
-                    </div>
-                    <div className="col-9 text-right ">
-                        <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+                    {
+                        isShowVoucher && <div className="col-md-8">
+                            <div className="x_panel p-0">
+                                <div className="x_content ">
+                                    <span className="section pb-0">
+                                        <div className="row px-2 ">
+                                            <div className="col-3  pt-3">
+                                                <i className='fa fa-list'></i>&nbsp;Report
+                                            </div>
+                                            <div className="col-9 text-right ">
+                                                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
 
-                            <li>
-                                <ReactToPrint
-                                    trigger={() => {
-                                        return (
-                                            <button
-                                                className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
-                                            >
-                                                <i className="fa fa-print"></i>
-                                            </button>
-                                        );
-                                    }}
-                                    content={() => componentRef.current}
-                                    documentTitle="new docs"
-                                    pageStyle="print"
-                                />
-                            </li>
-                            <li>
-                                <button
-                                onClick={()=>setshowAttachment(!showAttachment)}
-                                    className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                    data-toggle="tooltip" data-placement="top" title="View Attachments"
-                                ><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                    data-toggle="tooltip" data-placement="top" title="View Attachments"
-                                >
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                    data-toggle="tooltip" data-placement="top" title="View Attachments"
-                                >
-                                    <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                    <li>
+                                                        <ReactToPrint
+                                                            trigger={() => {
+                                                                return (
+                                                                    <button
+                                                                        className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                                                                    >
+                                                                        <i className="fa fa-print"></i>
+                                                                    </button>
+                                                                );
+                                                            }}
+                                                            content={() => componentRef.current}
+                                                            documentTitle="new docs"
+                                                            pageStyle="print"
+                                                        />
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            data-toggle="tooltip" data-placement="top" title="View Attachments"
+                                                        ><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            data-toggle="tooltip" data-placement="top" title="View Attachments"
+                                                            onClick={() => {
+                                                                navigate('/BankPaymentAccess', {
+                                                                    state: null
+                                                                });
+                                                            }
+                                                            }
+                                                        >
+                                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            data-toggle="tooltip" data-placement="top" title="View Attachments"
+                                                            onClick={() => setshowAttachment(!showAttachment)}
+                                                        >
+                                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            onClick={() => {
+                                                                navigate('/BankPaymentAccess', {
+                                                                    state: {
+                                                                        data: selectedVoucher.voucher_id
+                                                                    }
+                                                                });
 
-                                >
-                                    <i onClick={() => { fetchHistory() }} className="fa fa-edit"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </span>
-            <VoucherReportReciept
-            showAttachment={showAttachment}   
-                selectedVoucher={selectedVoucher} ref={componentRef} />
-        </div>
-    </div>
-</div>
-}
-                  
+
+                                                            }}
+                                                        >
+                                                            <i className="fa fa-edit"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <VoucherReportReciept
+                                        showAttachment={showAttachment}
+                                        selectedVoucher={selectedVoucher} ref={componentRef} />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
 
 
 

@@ -6,13 +6,15 @@ import Select from 'react-select'
 import { endPoint } from '../../../../config/Config'
 import { customStyles } from '../../../../Components/reactCustomSelectStyle';
 import dateToday, { dateConverterFromCShartDateTimeToJS, dateFormaterForInput } from '../../../../config/todayDate';
-import { toast } from 'react-toastify';
-import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify'; 
+import { useLocation, useNavigate } from "react-router-dom";
 const BankPaymentVoucher = () => {
 
   const user_id = localStorage.getItem("user_id");
   const ref = useRef();
 
+  const navigate = useNavigate();
+    
   const { state } = useLocation();
   // JV for Jornal Vocuher
   const voucherAbbr = 'BPV'
@@ -51,7 +53,7 @@ const BankPaymentVoucher = () => {
 
 
 
-
+  // a function to reset file input after uploading image 
   const reset = () => {
     ref.current.value = "";
   };
@@ -74,8 +76,10 @@ const BankPaymentVoucher = () => {
       });
 
   }
+  // fetch initial data for form includes selectors nd other detail
+  // but also fetch specially data if its in edit/update mode 
   const fetchInitiallAlldata = () => {
-    let voucher_detail_temprary;
+    let voucher_detail_temprary; // a state to manage voucher detail while updating
     // fetching voucher detail 
     var config = {
       method: 'get',
@@ -124,12 +128,12 @@ const BankPaymentVoucher = () => {
         console.log(error);
       });
 
-
+    // fetching detail to update vocuher
     if (state !== null) {
 
       var config2 = {
         method: 'get',
-        url: `http://localhost:63145/api/MultipleVoucher/GetReportForUpdate?voucher_id=${state.data}`,
+        url: `${endPoint}api/MultipleVoucher/GetReportForUpdate?voucher_id=${state.data}`,
         headers: {
           'Authorization': "Bearer " +
             JSON.parse(localStorage.getItem("access_token")).access_token
@@ -139,16 +143,12 @@ const BankPaymentVoucher = () => {
       axios(config2)
         .then(function (response) {
           console.log(response.data);
-          // voucherDetail?.next_voucher_inv
           setVoucherDetail({ ...voucher_detail_temprary, next_voucher_inv: response.data.voucher_no })
           setisPostDatedCheck(response.data.is_post_dated === 0 ? false : true)
           setPostDatedCheckDate(response.data.post_dated_date.slice(0, 10))
-          // setFileEntity(response.data.attachments_paths.slice(","))
-
           if (response.data.attachments_paths !== "") {
-
             setFileEntity(response.data.attachments_paths.split(","));
-          }
+          }  // setting files path from string to array with validation of being empty
           const formal_state_to_rearrange_entries = response.data.entries.map((each_account) => {
 
             return {
@@ -160,27 +160,25 @@ const BankPaymentVoucher = () => {
                 label: each_account.selectedOptionValue.label,
                 children: each_account.selectedOptionValue.children,
                 wholeData: each_account.selectedOptionValue.wholeData,
-                // each_account.selectedOptionValue
-
               },
+              //data fetching from backend api is very well but strucute was a little bit messy as 
+              //these following line should come seperately but they received in nested
+              //but its working well so move on
+
               showChild: each_account.selectedOptionValue.showChild,
               numberOfChild: each_account.selectedOptionValue.numberOfChild,
               sub_account_options: each_account.selectedOptionValue.sub_account_options,
               sub_account_State: each_account.selectedOptionValue.sub_account_State,
 
-
             }
 
           })
 
-           setmainEntriesState(formal_state_to_rearrange_entries)
+          setmainEntriesState(formal_state_to_rearrange_entries)
 
           if (response.status === 200) {
             setisLoading(false)
           }
-
-
-
         })
         .catch(function (error) {
           console.log(error);
@@ -191,18 +189,6 @@ const BankPaymentVoucher = () => {
       fetch_draft_data()
       setisLoading(false)
     }
-    // fetch(`${url}/api/userDraft?userId=${userId}`, {
-    //   method: "GET",
-    //   headers: myHeadersGetDraft,
-    // })
-    //   .then((response) => response.json())
-    //   .then((userDraftTable) => {
-    //     setUserDraftBox(userDraftTable)
-    //     setisLoading(false);
-
-    //   });
-
-
 
   }
   const handleAccountSelector = (e, index) => {
@@ -243,6 +229,30 @@ const BankPaymentVoucher = () => {
     setReRendered(!reRendered)
   }
 
+  const remove_account = (main_state_index) => {
+    let arr_data = mainEntriesState.filter((eachShift) => {
+      return (mainEntriesState.indexOf(eachShift) !== main_state_index);
+    });
+    setmainEntriesState(arr_data)
+    setReRendered(!reRendered)
+    update_total_balance() 
+  }
+  const remove_sub_account_entry = (main_state_index, sub_account_index) => {
+    let arr_data = mainEntriesState[main_state_index].sub_account_State.filter((each_sub_state) => {
+      return (mainEntriesState[main_state_index].sub_account_State.indexOf(each_sub_state) !== sub_account_index);
+    });
+
+    const main_state_arr = mainEntriesState;
+    main_state_arr[main_state_index] = {
+      ...mainEntriesState[main_state_index],
+      sub_account_State: arr_data
+    }
+    setmainEntriesState(main_state_arr)
+    setReRendered(!reRendered)
+    update_total_balance()
+    
+  }
+
   const UploadFile = async (e) => {
     setIsFileUploadingModeOn(true)
     const options = {
@@ -261,28 +271,6 @@ const BankPaymentVoucher = () => {
         reset()
       }
     })
-  }
-  const remove_account = (main_state_index) => {
-    let arr_data = mainEntriesState.filter((eachShift) => {
-      return (mainEntriesState.indexOf(eachShift) !== main_state_index);
-    });
-    setmainEntriesState(arr_data)
-    setReRendered(!reRendered)
-    update_total_balance()
-  }
-  const remove_sub_account_entry = (main_state_index, sub_account_index) => {
-    let arr_data = mainEntriesState[main_state_index].sub_account_State.filter((each_sub_state) => {
-      return (mainEntriesState[main_state_index].sub_account_State.indexOf(each_sub_state) !== sub_account_index);
-    });
-
-    const main_state_arr = mainEntriesState;
-    main_state_arr[main_state_index] = {
-      ...mainEntriesState[main_state_index],
-      sub_account_State: arr_data
-    }
-    setmainEntriesState(main_state_arr)
-    setReRendered(!reRendered)
-    update_total_balance()
   }
 
   const update_naration = (main_state_index, e) => {
@@ -395,7 +383,7 @@ const BankPaymentVoucher = () => {
     const balance_obj = {
       total_credit, total_debit
     }
-    setBalanceEntries(balance_obj)
+    setBalanceEntries(balance_obj) 
   }
   const post_multiple_voucher = () => {
     // check validation 
@@ -432,15 +420,20 @@ const BankPaymentVoucher = () => {
       if (balanceEntries.total_debit - balanceEntries.total_credit !== 0) {
         toast.error("Current Balance Is Not Satisfy")
       } else {
-
+console.log(mainEntriesState , "----");
         const reFactoredState = mainEntriesState.map((each_main_entry) => {
           const sub_account_entries = each_main_entry?.sub_account_State?.map((each_sub_account) => {
+            console.log(each_sub_account.selected_sub_account , "qwerty");
             return {
-              "sub_ladger_account_id": each_sub_account.selected_sub_account.value,
               "debit": Number(each_sub_account.debit),
-              "credit": Number(each_sub_account.credit)
+              "credit": Number(each_sub_account.credit),
+              "sub_ladger_account_id": each_sub_account.selected_sub_account[0]===undefined? each_sub_account.selected_sub_account.value:each_sub_account.selected_sub_account[0].value,
             }
           })
+
+// in above state value of selected sub account was receiviing as object in post method but in
+// put method value erceived was in List(Array) from backend that was solved through front end with validation 
+
           const state_to_return = {
             "account_id": each_main_entry.selectedOptionValue.value,
             "naration": each_main_entry.naration,
@@ -469,11 +462,10 @@ const BankPaymentVoucher = () => {
           "attachments": fileEntity.join(",").toString(),
           "branch_id": 1,
           "account_entries": reFactoredState
-        });
-
+        }); 
         var config = {
-          method: 'post',
-          url: `${endPoint}api/MultipleVoucher/PostDataL`,
+          method:state===null? 'post':'put',
+          url:state===null? `${endPoint}api/MultipleVoucher/PostDataL`:`${endPoint}api/MultipleVoucher/PutDataL?voucher_id=${state.data}`,
           headers: {
             'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
             'Content-Type': 'application/json'
@@ -486,38 +478,50 @@ const BankPaymentVoucher = () => {
             // console.log(JSON.stringify(response.data));
             if (response.status === 200) {
 
+              if (state===null) {
+              
+                fetchInitiallAlldata();
+                setFileEntity([])
+                setBalanceEntries({
+                  total_credit: 0,
+                  total_debit: 0
+                })
+                setIsValidateAllStates(true)
+                setSelectedAttachmentFile("")
+                setIsFileUploadingModeOn(false)
+  
+                setmainEntriesState(
+                  [
+                    {
+                      showChild: false,
+                      selectedOptionValue: "",
+                      sub_account_options: "",
+                      sub_account_State: "",
+                      naration: "", debit: "", credit: "",
+                    },
+                    {
+                      showChild: false,
+                      selectedOptionValue: "",
+                      sub_account_options: "",
+                      sub_account_State: "",
+                      naration: "", debit: "", credit: "",
+                    },
+  
+                  ]
+                )
+                setReRendered(!reRendered)
+                toast.success("Vocuher Submit Succesfully")
+                
+                
+              }else{
+                navigate('/VoucherHistoryAccess', {
+                  state: {
+                      data:state.data
+                  }
+              });
+                toast.success("Vocuher Updated Succesfully")
+              }
 
-              fetchInitiallAlldata();
-              setFileEntity([])
-              setBalanceEntries({
-                total_credit: 0,
-                total_debit: 0
-              })
-              setIsValidateAllStates(true)
-              setSelectedAttachmentFile("")
-              setIsFileUploadingModeOn(false)
-
-              setmainEntriesState(
-                [
-                  {
-                    showChild: false,
-                    selectedOptionValue: "",
-                    sub_account_options: "",
-                    sub_account_State: "",
-                    naration: "", debit: "", credit: "",
-                  },
-                  {
-                    showChild: false,
-                    selectedOptionValue: "",
-                    sub_account_options: "",
-                    sub_account_State: "",
-                    naration: "", debit: "", credit: "",
-                  },
-
-                ]
-              )
-              setReRendered(!reRendered)
-              toast.success("Vocuher Submit Succesfully")
             }
           })
           .catch(function (error) {
@@ -797,10 +801,7 @@ const BankPaymentVoucher = () => {
                         return <button className="btn btn-sm  bg-customBlue  text-light">
                           <a href={`${endPoint + each_attachment}`} target="_blank" rel="noopener noreferrer" className='text-light'>
                             {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
-                          {/* <span className='bg-light text-danger px-1  ml-2 ' style={ {borderRadius: '15px'}} >
-                             */}
-
-                          <i class="fa fa-times   text-light ml-1 " aria-hidden="true"
+                          <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
                             onClick={() => {
                               let arr_data = fileEntity.filter((each_image) => {
                                 return (fileEntity.indexOf(each_image) !== index);
@@ -809,8 +810,6 @@ const BankPaymentVoucher = () => {
                               setReRendered(!reRendered)
                             }}
                           ></i>
-
-                          {/* </span> */}
                         </button>
                       })
                     }
@@ -871,7 +870,6 @@ const BankPaymentVoucher = () => {
                                     <td className=" " width="32%">
                                       <input
                                         type="text"
-                                        // disabled={mainEntriesState[index].numberOfChild > 0}
                                         className="form-control"
                                         data-validate-length-range={6}
                                         data-validate-words={2}
@@ -916,7 +914,7 @@ const BankPaymentVoucher = () => {
                                     <td className="" width="2%" >
                                       {
                                         mainEntriesState.length > 2 &&
-                                        <i class="fa fa-times pt-2 text-danger" aria-hidden="true"
+                                        <i className="fa fa-times pt-2 text-danger" aria-hidden="true"
                                           onClick={() => remove_account(index)}
                                         ></i>
                                       }
@@ -942,7 +940,6 @@ const BankPaymentVoucher = () => {
                                             onChange={(e) => update_selcted_sub_account(index, i, e)}
                                           />
                                           {!isValidateAllStates && (mainEntriesState[index].sub_account_State[i]?.selected_sub_account === "" || mainEntriesState[index].sub_account_State[i]?.selected_sub_account === undefined) && <span className="text-danger">First Select this </span>}
-
                                         </td>
                                         <td className="border-none ">
                                           <input
@@ -956,7 +953,6 @@ const BankPaymentVoucher = () => {
                                             onChange={(e) => update_sub_account_debit(index, i, e)}
                                           />
                                           {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.debit === "" && <span className="text-danger">First Select this </span>}
-
                                         </td>
                                         <td className="border-none ">
                                           <input
@@ -970,12 +966,16 @@ const BankPaymentVoucher = () => {
                                             onChange={(e) => update_sub_account_credit(index, i, e)}
                                           />
                                           {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.credit === "" && <span className="text-danger">First Select this </span>}
-
                                         </td>
                                         <td className="border-none ">
                                           {
-                                            mainEntriesState[index].sub_account_State.length === 1 ? <></> : <i class="fa fa-times pt-2 text-danger" aria-hidden="true"
-                                              onClick={() => remove_sub_account_entry(index, i)}
+                                            mainEntriesState[index].sub_account_State.length === 1 ? <></> : <i className="fa fa-times pt-2 text-danger" aria-hidden="true"
+                                              onClick={() =>{
+                                                Number(mainEntriesState[index].debit)===0?update_credit(index, {target:{value:mainEntriesState[index].credit-mainEntriesState[index].sub_account_State[i]?.credit}}):update_debit(index, {target:{value:mainEntriesState[index].debit-mainEntriesState[index].sub_account_State[i]?.debit}})
+                                                // the above function reset debit/credit only one thing which one is non zero on remove clicked 
+                                                  remove_sub_account_entry(index, i) 
+                                              
+                                              }}
                                             ></i>
                                           }
                                         </td>
@@ -995,19 +995,12 @@ const BankPaymentVoucher = () => {
                     {
                       draftEntries.map((each_draft, index) => {
                         return <button className="btn btn-sm bg-customBlue text-light mt-1">
-
-                          {/* {((each_draft.split("_"))[0]).slice(15)} {index + 1}  */}
-                          {/* <span className='bg-light text-danger px-1  ml-2 ' style={ {borderRadius: '15px'}} >
-                             */}
                           <span onClick={() => { refactor_draft_data(each_draft) }}>
                             {each_draft.draft_name}
                           </span>
-
-                          <i class="fa fa-times   text-light ml-1 " aria-hidden="true"
+                          <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
                             onClick={() => { delete_draft(each_draft.draft_id) }}
                           ></i>
-
-                          {/* </span> */}
                         </button>
                       })
                     }
@@ -1016,8 +1009,6 @@ const BankPaymentVoucher = () => {
               </div>
             </div>
             <div className="col-md-12 d-flex justify-content-between x_footer mt-0">
-
-
               <button className="btn btn-primary" type="submit" onClick={() => {
                 setmainEntriesState([...mainEntriesState, {
                   naration: "", debit: "", credit: "",
@@ -1025,19 +1016,17 @@ const BankPaymentVoucher = () => {
               }}>
                 Add Line
               </button>
-              <button className="btn btn-primary" type="submit" onClick={() => post_as_draft()}>
-                Save Draft
-              </button>
+              {state === null && <button className="btn btn-primary" type="submit" onClick={() => post_as_draft()}>
+                Save As Draft
+              </button>}
 
               <button className="btn btn-primary" type="submit" onClick={() => post_multiple_voucher()}>
-                Submit
+              {state === null? "Submit":"Update"} 
               </button>
 
             </div>
           </div>
         }
-
-
       </div>
     </>
   )
