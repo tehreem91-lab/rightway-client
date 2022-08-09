@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 
-import { useSelector } from "react-redux"; 
+import { useSelector } from "react-redux";
 import { endPoint } from '../../../../config/Config.js';
 import { customStyles } from '../../../../Components/reactCustomSelectStyle.jsx';
 import dateToday from '../../../../config/todayDate.js';
@@ -17,8 +17,8 @@ const VoucherHistory = () => {
     const componentRef = useRef();
 
     const navigate = useNavigate();
-    
-  const { state } = useLocation();
+
+    const { state } = useLocation();
     const [isValidateOK, setIsValidateOK] = useState(true)
     const [voucherTypeOption, setvoucherTypeOption] = useState([])
     const [voucherTypeValue, setvoucherTypeValue] = useState("")
@@ -124,7 +124,7 @@ const VoucherHistory = () => {
     }
     useEffect(() => {
         fetchInitialData()
-state!==null && fetch_selected_voucher_detail(state.data)
+        state !== null && fetch_selected_voucher_detail(state.data)
 
     }, [])
 
@@ -245,7 +245,7 @@ state!==null && fetch_selected_voucher_detail(state.data)
                                                         </td>
                                                     </tr>
                                                 }
-                                                {voucherHistoryRecord.map((each_voucher_record , index) => {
+                                                {voucherHistoryRecord.map((each_voucher_record, index) => {
                                                     return <tr className="even pointer" style={{ cursor: "pointer" }} key={index}>
 
                                                         <td className='text-left pb-0 pt-1' onClick={() => fetch_selected_voucher_detail(each_voucher_record.finance_main_id)} >
