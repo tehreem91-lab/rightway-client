@@ -43,6 +43,7 @@ import CashPaymentVoucher from "./Pages/Finance/MultipleVouchers/CashPaymentVouc
 import CashReceiveVoucher from "./Pages/Finance/MultipleVouchers/CashReceiveVoucher/CashReceiveVoucher";
 import JournalVoucher from "./Pages/Finance/MultipleVouchers/JournalVoucher/JournalVoucher";
 import JournalVoucherSingle from "./Pages/Finance/SingleMultipleVoucher/JournalVoucherSingle";
+import PayableReceivableReport from "./Pages/Finance/Reports/PayableReceivableReport/PayableReceivableReport";
 function App() {
   const [isLogin, setisLogin] = useState(null);
   const [showMainLoader, setShowMainLoader] = useState(true);
@@ -331,6 +332,26 @@ function App() {
                           <JournalVoucherSingle
                             pagePermission={allPagesData.find(
                               (o) => o.pageURL === "JournalVoucherSingleAccess"
+                            )}
+                          />
+                        </PrivateRoute>
+                      }
+                    />
+
+
+
+
+                    <Route
+                      path="PayableReceivableReportAccess"
+                      element={
+                        <PrivateRoute
+                          pagePermission={allPagesData.find(
+                            (o) => o.pageURL === "PayableReceivableReportAccess"
+                          )}
+                        >
+                          <PayableReceivableReport
+                            pagePermission={allPagesData.find(
+                              (o) => o.pageURL === "PayableReceivableReportAccess"
                             )}
                           />
                         </PrivateRoute>
