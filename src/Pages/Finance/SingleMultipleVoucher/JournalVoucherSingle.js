@@ -83,7 +83,25 @@ const JournalVoucherSingle = () => {
             });
 
     }
-    // fetch initial data for form includes selectors nd other detail
+    const UploadFile = async (e) => {
+        setIsFileUploadingModeOn(true)
+        const options = {
+            onUploadProgerss: (progressEvent) => {
+                const { loaded, total } = progressEvent;
+                let percentage = Math.floor((loaded * 100) / total)
+                console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+            }
+        }
+        let data = new FormData();
+        data.append("UploadedImage", selectedAttachmentFile);
+        await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedAttachmentName}`, data, options).then(res => {
+            setFileEntity([...fileEntity, res.data])
+            if (res.status === 200) {
+                setIsFileUploadingModeOn(false)
+                reset()
+            }
+        })
+    }// fetch initial data for form includes selectors nd other detail
     // but also fetch specially data if its in edit/update mode 
     const fetchInitiallAlldata = () => {
         let voucher_detail_temprary; // a state to manage voucher detail while updating
@@ -198,6 +216,163 @@ const JournalVoucherSingle = () => {
         }
 
     }
+
+
+    // input handler for first Account 
+    const handleAccountSelector1 = (e, index) => {
+        let sub_account_options_arr = [];
+        e.children.map((eachChild) => {
+            sub_account_options_arr.push({ label: eachChild?.account_name, value: eachChild?.chart_id })
+        })
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[index] = {
+            naration: "", debit: "", credit: "",
+            selectedOptionValue: e, showChild: true,
+            numberOfChild: e.children.length,
+            sub_account_options: e.children.length > 0 ? sub_account_options_arr : null,
+            sub_account_State: e.children.length > 0 ? [{
+                //first sub_ladger 
+                selected_sub_account: "",
+                chart_id: "", account_name: "", account_code: "",
+                credit: "", debit: ""
+            }] : null
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+    }
+    const add_new_sub_account1 = (main_state_index1, sub_state_index) => {
+
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[main_state_index1] = {
+            ...mainEntriesState1[main_state_index1],
+            sub_account_State: [
+                ...main_state_arr1[main_state_index1].sub_account_State,
+                {
+                    selected_sub_account: "",
+                    chart_id: "", account_name: "", account_code: "",
+                    credit: "", debit: ""
+                }]
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+    }
+
+    const remove_sub_account_entry1 = (main_state_index1, sub_account_index) => {
+        let arr_data1 = mainEntriesState1[main_state_index1].sub_account_State.filter((each_sub_state) => {
+            return (mainEntriesState1[main_state_index1].sub_account_State.indexOf(each_sub_state) !== sub_account_index);
+        });
+
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[main_state_index1] = {
+            ...mainEntriesState1[main_state_index1],
+            sub_account_State: arr_data1
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+        update_total_balance()
+
+    }
+    const update_naration1 = (main_state_index1, e) => {
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[main_state_index1] = {
+            ...mainEntriesState1[main_state_index1],
+            naration: e.target.value
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+    }
+    const update_debit1 = (main_state_index1, e) => {
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[main_state_index1] = {
+            ...mainEntriesState1[main_state_index1],
+            debit: e.target.value, credit: "0"
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+
+        update_total_balance()
+    }
+    const update_credit1 = (main_state_index1, e) => {
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[main_state_index1] = {
+            ...mainEntriesState1[main_state_index1],
+            credit: e.target.value, debit: "0"
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+
+        update_total_balance()
+    }
+    const update_selcted_sub_account1 = (main_state_index1, sub_account_index, e) => {
+        var arrMain1 = mainEntriesState1;
+        var sub_account_array1 = arrMain1[main_state_index1].sub_account_State;
+        sub_account_array1[sub_account_index] = { ...arrMain1[main_state_index1].sub_account_State[sub_account_index], selected_sub_account: e }
+        arrMain1[main_state_index1] = {
+            ...arrMain1[main_state_index1],
+            sub_account_State: sub_account_array1
+        }
+        setmainEntriesState1(arrMain1)
+        setReRendered(!reRendered)
+    }
+    const update_sub_account_credit1 = (main_state_index1, sub_account_index, e) => {
+
+        var arrMain1 = mainEntriesState1;
+        var sub_account_array1 = arrMain1[main_state_index1].sub_account_State;
+        sub_account_array1.map((Each_sub_acc, index) => {
+            sub_account_array1[index] = { ...arrMain1[main_state_index1].sub_account_State1[index], debit: "0" }
+        })
+        sub_account_array1[sub_account_index] = { ...arrMain1[main_state_index1].sub_account_State1[sub_account_index], credit: e.target.value, debit: "0" }
+        arrMain1[main_state_index1] = {
+            ...arrMain1[main_state_index1],
+            sub_account_State: sub_account_array1
+        }
+        setmainEntriesState1(arrMain1)
+        setReRendered(!reRendered)
+        let debit = 0;
+        let credit = 0;
+        sub_account_array1.map((each_sub_account) => {
+            debit = debit + Number(each_sub_account.debit)
+            credit = credit + Number(each_sub_account.credit)
+            // }
+        })
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[main_state_index1] = {
+            ...mainEntriesState1[main_state_index1],
+            debit: debit, credit: credit
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+        update_total_balance()
+    }
+    const update_sub_account_debit1 = (main_state_index1, sub_account_index, e) => {
+        var arrMain1 = mainEntriesState1;
+        var sub_account_array1 = arrMain1[main_state_index1].sub_account_State;
+        sub_account_array1.map((Each_sub_acc, index) => {
+            sub_account_array1[index] = { ...arrMain1[main_state_index1].sub_account_State[index], credit: "0" }
+        })
+        sub_account_array1[sub_account_index] = { ...arrMain1[main_state_index1].sub_account_State[sub_account_index], debit: e.target.value, credit: "0" }
+        arrMain1[main_state_index1] = {
+            ...arrMain1[main_state_index1],
+            sub_account_State: sub_account_array1
+        }
+        setmainEntriesState1(arrMain1)
+        setReRendered(!reRendered)
+        let debit = 0;
+        let credit = 0;
+        sub_account_array1.map((each_sub_account) => {
+            debit = debit + Number(each_sub_account.debit)
+            credit = credit + Number(each_sub_account.credit)
+        })
+        const main_state_arr1 = mainEntriesState1;
+        main_state_arr1[main_state_index1] = {
+            ...mainEntriesState1[main_state_index1],
+            debit: debit, credit: credit
+        }
+        setmainEntriesState1(main_state_arr1)
+        setReRendered(!reRendered)
+        update_total_balance()
+    }
+    // input handler for Multiple Account 
     const handleAccountSelector = (e, index) => {
         let sub_account_options_arr = [];
         e.children.map((eachChild) => {
@@ -259,27 +434,6 @@ const JournalVoucherSingle = () => {
         update_total_balance()
 
     }
-
-    const UploadFile = async (e) => {
-        setIsFileUploadingModeOn(true)
-        const options = {
-            onUploadProgerss: (progressEvent) => {
-                const { loaded, total } = progressEvent;
-                let percentage = Math.floor((loaded * 100) / total)
-                console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
-            }
-        }
-        let data = new FormData();
-        data.append("UploadedImage", selectedAttachmentFile);
-        await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedAttachmentName}`, data, options).then(res => {
-            setFileEntity([...fileEntity, res.data])
-            if (res.status === 200) {
-                setIsFileUploadingModeOn(false)
-                reset()
-            }
-        })
-    }
-
     const update_naration = (main_state_index, e) => {
         const main_state_arr = mainEntriesState;
         main_state_arr[main_state_index] = {
@@ -380,6 +534,9 @@ const JournalVoucherSingle = () => {
         setReRendered(!reRendered)
         update_total_balance()
     }
+
+
+
     const update_total_balance = () => {
         let total_credit = 0;
         let total_debit = 0;
@@ -392,6 +549,8 @@ const JournalVoucherSingle = () => {
         }
         setBalanceEntries(balance_obj)
     }
+
+
     const post_multiple_voucher = () => {
         // check validation 
         // setIsValidateAllStates
@@ -744,35 +903,7 @@ const JournalVoucherSingle = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="field item form-group col-md-6 col-sm-6">
-                                    <label className="col-form-label col-md-3 col-sm-3 px-0 label-align">Is Post Dated Check</label>
-                                    <div className="col-md-8 col-sm-8 pt-2">
-                                        <input
-                                            type="checkbox"
-                                            className="flat"
-                                            checked={isPostDatedCheck}
-                                            onChange={() => setisPostDatedCheck(!isPostDatedCheck)}
-                                        />
-                                    </div>
-                                </div>
-                                {
-                                    isPostDatedCheck &&
-                                    <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0  ">Post Check Date <span className="required">*</span></label>
-                                        <div className="col-md-8 col-sm-8">
-                                            <input
-                                                type="date"
-                                                className="form-control"
-                                                data-validate-length-range={6}
-                                                data-validate-words={2}
-                                                onChange={(e) => setPostDatedCheckDate(e.target.value)}
-                                                name="name"
-                                                value={postDatedCheckDate}
-                                            />
-                                        </div>
-                                    </div>}
-                            </div>
+
                             <div className="row">
                                 <div className="field item form-group col-md-6 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align px-0">Select Attachment</label>
@@ -825,87 +956,123 @@ const JournalVoucherSingle = () => {
                                     </div>
                                 </div>}
                             </div>
-
+                            <div className="row">
+                                <div className="field item form-group col-md-6 col-sm-6">
+                                    <label className="col-form-label col-md-3 col-sm-3 px-0 label-align">Is Post Dated Check</label>
+                                    <div className="col-md-8 col-sm-8 pt-2">
+                                        <input
+                                            type="checkbox"
+                                            className="flat"
+                                            checked={isPostDatedCheck}
+                                            onChange={() => setisPostDatedCheck(!isPostDatedCheck)}
+                                        />
+                                    </div>
+                                </div>
+                                {
+                                    isPostDatedCheck &&
+                                    <div className="field item form-group col-md-6 col-sm-6">
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0  ">Post Check Date <span className="required">*</span></label>
+                                        <div className="col-md-8 col-sm-8">
+                                            <input
+                                                type="date"
+                                                className="form-control"
+                                                data-validate-length-range={6}
+                                                data-validate-words={2}
+                                                onChange={(e) => setPostDatedCheckDate(e.target.value)}
+                                                name="name"
+                                                value={postDatedCheckDate}
+                                            />
+                                        </div>
+                                    </div>}
+                            </div>
                             <>
 
                                 {
                                     mainEntriesState1.map((eachEntry, index) => {
 
-                                        return <> <tr className="even pointer"   >
-                                            <td className="py-0 " colSpan={6}>
-                                                <table className="table table-striped jambo_table bulk_action border-none-only mb-0">
+                                        return <>
 
-                                                    <tbody>
-                                                        <tr className="even pointer"   >
-                                                            <td className=" " width="20%">
-                                                                <div className="row">
-                                                                    <div className="col-md-11">
-                                                                        <Select
-                                                                            value={mainEntriesState1[index].selectedOptionValue}
-                                                                            isSearchable={true}
-                                                                            styles={customStyles}
-                                                                            options={accountOptions}
-                                                                            onChange={(e) => {
-                                                                                handleAccountSelector(e, index)
-                                                                                Number(mainEntriesState1[index].debit) === 0 ? update_credit(index, { target: { value: 0 } }) : update_debit(index, { target: { value: 0 } })
+                                            <div className="row mt-3">
+                                                <div className="field item form-group col-md-6 col-sm-6">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align"> First Account<span className="required">*</span></label>
+                                                    <div className="col-md-8 col-sm-8">
+                                                        <Select
+                                                            value={mainEntriesState1[index].selectedOptionValue}
+                                                            isSearchable={true}
+                                                            styles={customStyles}
+                                                            options={accountOptions}
+                                                            onChange={(e) => {
+                                                                handleAccountSelector1(e, index)
+                                                                Number(mainEntriesState1[index].debit) === 0 ? update_credit1(index, { target: { value: 0 } }) : update_debit1(index, { target: { value: 0 } })
 
 
-                                                                            }}
-                                                                        />
-                                                                        {!isValidateAllStates && (mainEntriesState1[index].selectedOptionValue === "" || mainEntriesState1[index].selectedOptionValue === undefined) && <span className="text-danger">First Select this </span>}
+                                                            }}
+                                                        />
+                                                        {!isValidateAllStates && (mainEntriesState1[index].selectedOptionValue === "" || mainEntriesState1[index].selectedOptionValue === undefined) && <span className="text-danger">First Select this </span>}
 
-                                                                    </div>
-                                                                    <div className="col-md-1 px-0 ">
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className=" " width="15%">
+                                                    </div>
+                                                </div>
+                                                <div className="field item form-group col-md-6 col-sm-6">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align"> A/C Balance <span className="required">*</span></label>
+                                                    <div className="col-md-8 col-sm-8">
+                                                        <input
+                                                            disabled
+                                                            type="text"
+                                                            className="form-control"
+                                                            data-validate-length-range={6}
+                                                            data-validate-words={2}
+                                                            name="balance"
+                                                            value={mainEntriesState1[index].selectedOptionValue?.wholeData?.balance}
+
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div className="row">
+                                                <div className="field item form-group col-md-6 col-sm-6">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align"> Naration<span className="required">*</span></label>
+                                                    <div className="col-md-8 col-sm-8">
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            data-validate-length-range={6}
+                                                            data-validate-words={2}
+                                                            name="naration"
+                                                            placeholder='Enter Naration/Description here'
+                                                            value={mainEntriesState1[index]?.naration}
+                                                            onChange={(e) => { update_naration1(index, e) }}
+                                                        />
+                                                        {!isValidateAllStates && mainEntriesState1[index]?.naration === "" && <span className="text-danger">First Select this </span>}
+
+                                                    </div>
+                                                </div>
+                                                <div className="field item form-group col-md-6 col-sm-6">
+                                                    <label className="col-form-label col-md-3 col-sm-3 label-align"> Debit/Credit <span className="required">*</span></label>
+                                                    <div className="col-md-8 col-sm-8">
+                                                        <div className="row  ">
+                                                            <div className="col-md-6 "> <input
+                                                                disabled={mainEntriesState1[index].numberOfChild > 0}
+                                                                type="number"
+                                                                onKeyPress={(e) => preventMinus(e)}
+                                                                min="0"
+                                                                className="form-control  "
+                                                                data-validate-length-range={6}
+                                                                data-validate-words={2}
+                                                                name="debit"
+
+                                                                placeholder='Enter Debit here'
+                                                                value={mainEntriesState1[index].debit}
+                                                                onChange={(e) => { update_debit1(index, e) }}
+                                                            />
+                                                                {!isValidateAllStates && mainEntriesState1[index].debit === "" && <span className="text-danger">First Select this </span>}
+
+
+                                                            </div>
+                                                            <div className="col-md-6 ">
                                                                 <input
-                                                                    disabled
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    data-validate-length-range={6}
-                                                                    data-validate-words={2}
-                                                                    name="balance"
-                                                                    value={mainEntriesState[index].selectedOptionValue?.wholeData?.balance}
-
-                                                                />
-                                                            </td>
-                                                            <td className=" " width="32%">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    data-validate-length-range={6}
-                                                                    data-validate-words={2}
-                                                                    name="naration"
-                                                                    placeholder='Enter Naration/Description here'
-                                                                    value={mainEntriesState[index]?.naration}
-                                                                    onChange={(e) => { update_naration(index, e) }}
-                                                                />
-                                                                {!isValidateAllStates && mainEntriesState[index]?.naration === "" && <span className="text-danger">First Select this </span>}
-
-                                                            </td>
-                                                            <td className=" " width="13%">
-                                                                <input
-                                                                    disabled={mainEntriesState[index].numberOfChild > 0}
-                                                                    type="number"
-                                                                    onKeyPress={(e) => preventMinus(e)}
-                                                                    min="0"
-                                                                    className="form-control  "
-                                                                    data-validate-length-range={6}
-                                                                    data-validate-words={2}
-                                                                    name="debit"
-
-                                                                    placeholder='Enter Debit here'
-                                                                    value={mainEntriesState[index].debit}
-                                                                    onChange={(e) => { update_debit(index, e) }}
-                                                                />
-                                                                {!isValidateAllStates && mainEntriesState[index].debit === "" && <span className="text-danger">First Select this </span>}
-
-                                                            </td>
-                                                            <td className=" " width="13%">
-                                                                <input
-                                                                    disabled={mainEntriesState[index].numberOfChild > 0}
+                                                                    disabled={mainEntriesState1[index].numberOfChild > 0}
                                                                     type="number"
                                                                     onKeyPress={(e) => preventMinus(e)}
                                                                     min="0"
@@ -914,44 +1081,67 @@ const JournalVoucherSingle = () => {
                                                                     data-validate-words={2}
                                                                     name="credit"
                                                                     placeholder='Enter Credit here'
-                                                                    value={mainEntriesState[index].credit}
-                                                                    onChange={(e) => { update_credit(index, e) }}
+                                                                    value={mainEntriesState1[index].credit}
+                                                                    onChange={(e) => { update_credit1(index, e) }}
                                                                 />
-                                                                {!isValidateAllStates && mainEntriesState[index].credit === "" && <span className="text-danger">First Select this </span>}
+                                                                {!isValidateAllStates && mainEntriesState1[index].credit === "" && <span className="text-danger">First Select this </span>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                            </td>
-                                                            <td className="" width="2%" >
-                                                                {
-                                                                    mainEntriesState.length > 1 &&
-                                                                    <i className="fa fa-times pt-2 text-danger" aria-hidden="true"
-                                                                        onClick={() => remove_account(index)}
-                                                                    ></i>
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                        {
-                                                            mainEntriesState[index].showChild && mainEntriesState[index].sub_account_State?.map((each_sub_entry, i) => {
-                                                                return <tr className="even pointer">
-                                                                    <td className="border-none text-right " colSpan={2} >
-                                                                        {
-                                                                            mainEntriesState[index].sub_account_State.length < mainEntriesState[index].numberOfChild && <span >
-                                                                                <i className="fa fa-plus-circle text-customBlue"
-                                                                                    onClick={() => { add_new_sub_account(index, i) }}
+
+
+                                            {
+                                                mainEntriesState1[index].showChild && mainEntriesState1[index].sub_account_State?.map((each_sub_entry, i) => {
+                                                    return <>
+
+                                                        <div className="row">
+                                                            <div className="field item form-group col-md-6 col-sm-6">
+                                                                <label className="col-form-label col-md-3 col-sm-3 label-align"> Sub Account<span className="required">
+                                                                    {
+                                                                        mainEntriesState1[index].sub_account_State.length < mainEntriesState1[index].numberOfChild && <span >
+                                                                            <i className="fa fa-plus-circle text-customBlue"
+                                                                                onClick={() => { add_new_sub_account1(index, i) }}
+                                                                            ></i>
+                                                                        </span>}
+                                                                </span></label>
+                                                                <div className="col-md-8 col-sm-8">
+                                                                    <div className="row">
+                                                                        <div className={`col-md-${mainEntriesState1[index].sub_account_State.length === 1 ? 12 : 11}`}>
+                                                                            <Select
+                                                                                value={mainEntriesState1[index].sub_account_State[i]?.selected_sub_account}
+                                                                                isSearchable={true}
+                                                                                styles={customStyles}
+                                                                                options={mainEntriesState1[index].sub_account_options}
+                                                                                onChange={(e) => update_selcted_sub_account1(index, i, e)}
+                                                                            />
+                                                                            {!isValidateAllStates && (mainEntriesState1[index].sub_account_State[i]?.selected_sub_account === "" || mainEntriesState1[index].sub_account_State[i]?.selected_sub_account === undefined) && <span className="text-danger">First Select this </span>}
+
+
+                                                                        </div>
+                                                                        <div className="col-md-1 pr-3  o px-0">
+
+                                                                            {
+                                                                                mainEntriesState1[index].sub_account_State.length === 1 ? <></> : <i className="fa fa-times pt-2 text-danger" aria-hidden="true"
+                                                                                    onClick={() => {
+                                                                                        Number(mainEntriesState1[index].debit) === 0 ? update_credit1(index, { target: { value: mainEntriesState1[index].credit - mainEntriesState1[index].sub_account_State[i]?.credit } }) : update_debit1(index, { target: { value: mainEntriesState1[index].debit - mainEntriesState1[index].sub_account_State[i]?.debit } })
+                                                                                        // the above function reset debit/credit only one thing which one is non zero on remove clicked 
+                                                                                        remove_sub_account_entry1(index, i)
+
+                                                                                    }}
                                                                                 ></i>
-                                                                            </span>}
-                                                                    </td>
-                                                                    <td className="border-none ">
-                                                                        <Select
-                                                                            value={mainEntriesState[index].sub_account_State[i]?.selected_sub_account}
-                                                                            isSearchable={true}
-                                                                            styles={customStyles}
-                                                                            options={mainEntriesState[index].sub_account_options}
-                                                                            onChange={(e) => update_selcted_sub_account(index, i, e)}
-                                                                        />
-                                                                        {!isValidateAllStates && (mainEntriesState[index].sub_account_State[i]?.selected_sub_account === "" || mainEntriesState[index].sub_account_State[i]?.selected_sub_account === undefined) && <span className="text-danger">First Select this </span>}
-                                                                    </td>
-                                                                    <td className="border-none ">
-                                                                        <input
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field item form-group col-md-6 col-sm-6">
+                                                                <label className="col-form-label col-md-3 col-sm-3 label-align"> Credit/Debit <span className="required">*</span></label>
+                                                                <div className="col-md-8 col-sm-8">
+                                                                    <div className="row">
+                                                                        <div className="col-md-6">      <input
                                                                             placeholder='Enter Debit '
                                                                             type="number"
                                                                             onKeyPress={(e) => preventMinus(e)}
@@ -960,13 +1150,12 @@ const JournalVoucherSingle = () => {
                                                                             data-validate-length-range={6}
                                                                             data-validate-words={2}
                                                                             name="sub_debit"
-                                                                            value={mainEntriesState[index].sub_account_State[i]?.debit}
-                                                                            onChange={(e) => update_sub_account_debit(index, i, e)}
+                                                                            value={mainEntriesState1[index].sub_account_State[i]?.debit}
+                                                                            onChange={(e) => update_sub_account_debit1(index, i, e)}
                                                                         />
-                                                                        {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.debit === "" && <span className="text-danger">First Select this </span>}
-                                                                    </td>
-                                                                    <td className="border-none ">
-                                                                        <input
+                                                                            {!isValidateAllStates && mainEntriesState1[index].sub_account_State[i]?.debit === "" && <span className="text-danger">First Select this </span>}
+                                                                        </div>
+                                                                        <div className="col-md-6"> <input
                                                                             type="number"
                                                                             onKeyPress={(e) => preventMinus(e)}
                                                                             min="0"
@@ -975,30 +1164,17 @@ const JournalVoucherSingle = () => {
                                                                             data-validate-words={2}
                                                                             name="sub_credit"
                                                                             placeholder='Enter Credit '
-                                                                            value={mainEntriesState[index].sub_account_State[i]?.credit}
-                                                                            onChange={(e) => update_sub_account_credit(index, i, e)}
+                                                                            value={mainEntriesState1[index].sub_account_State[i]?.credit}
+                                                                            onChange={(e) => update_sub_account_credit1(index, i, e)}
                                                                         />
-                                                                        {!isValidateAllStates && mainEntriesState[index].sub_account_State[i]?.credit === "" && <span className="text-danger">First Select this </span>}
-                                                                    </td>
-                                                                    <td className="border-none ">
-                                                                        {
-                                                                            mainEntriesState[index].sub_account_State.length === 1 ? <></> : <i className="fa fa-times pt-2 text-danger" aria-hidden="true"
-                                                                                onClick={() => {
-                                                                                    Number(mainEntriesState[index].debit) === 0 ? update_credit(index, { target: { value: mainEntriesState[index].credit - mainEntriesState[index].sub_account_State[i]?.credit } }) : update_debit(index, { target: { value: mainEntriesState[index].debit - mainEntriesState[index].sub_account_State[i]?.debit } })
-                                                                                    // the above function reset debit/credit only one thing which one is non zero on remove clicked 
-                                                                                    remove_sub_account_entry(index, i)
-
-                                                                                }}
-                                                                            ></i>
-                                                                        }
-                                                                    </td>
-                                                                </tr>
-                                                            })
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr></>
+                                                                            {!isValidateAllStates && mainEntriesState1[index].sub_account_State[i]?.credit === "" && <span className="text-danger">First Select this </span>}
+                                                                        </div>
+                                                                    </div>                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                })}
+                                        </>
                                     })
                                 }
 
