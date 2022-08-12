@@ -27,6 +27,9 @@ import JournalVoucher from ".././Pages/Finance/MultipleVouchers/JournalVoucher/J
 import JournalVoucherSingle from ".././Pages/Finance/SingleMultipleVoucher/JournalVoucherSingle";
 import PayableReceivableReport from ".././Pages/Finance/Reports/PayableReceivableReport/PayableReceivableReport";
 import GeneralLadger from ".././Pages/Finance/Ladger/GeneralLadger/GeneralLadger";
+import BankBookLadger from ".././Pages/Finance/Ladger/BankBook/BankBookLadger";
+import CashBookLadger from ".././Pages/Finance/Ladger/CashBook/CashBookLadger";
+
 
 
 
@@ -58,6 +61,8 @@ const ROUTES = {
     CityNames: { id: '26', element: CityNames, path: "CityNames" },
     StockUnits: { id: '27', element: StockUnits, path: "StockUnits" },
     Categories: { id: '28', element: Categories, path: "Categories" },
+    BankBookLadger: { id: '29', element: BankBookLadger, path: "BankBookAccess" },
+    CashBookLadger: { id: '30', element: CashBookLadger, path: "CashBookAccess" },
 };
 
 export default ROUTES;

@@ -5,6 +5,17 @@ import { endPoint } from "../../../config/Config";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
+
+
+
+console.log("test 1");
+console.log("test 6");
+console.log("test 1");
+console.log("test 5");
+console.log("test 3");
+console.log("test 2");
+
+
   const showNavMenu = useSelector((state) => state.NavState);
   return (
     <>

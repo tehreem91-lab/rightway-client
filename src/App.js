@@ -86,18 +86,10 @@ function App() {  const [isLogin, setisLogin] = useState(null);
                           key={key}
                           element={
                             <PrivateRoute
-                              pagePermission={allPagesData.find(
-                                (o) => o.pageURL === `${value.path}`
-                              )}
-                            >
-                              <TopLevelComponent pagePermission={allPagesData.find(
-                                (o) => o.pageURL === `${value.path}`
-                              )} />
+                              pagePermission={allPagesData.find((o) => o.pageURL === `${value.path}`)}>
+                              <TopLevelComponent pagePermission={allPagesData.find((o)=>o.pageURL===`${value.path}`)} />
                             </PrivateRoute>
-                          }
-                        />)
-                      })
-                    }
+                          }   />)       })}
                   </Routes>
                   <Footer />
                 </div>

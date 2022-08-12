@@ -138,12 +138,15 @@ const JournalVoucherSingle = () => {
             .then(function (res) {
                 if (res.status === 200) {
                     let accOptions = [];
+                    console.log(res.data);
                     res.data.map((eachAccount) => {
                         accOptions.push({
                             value: eachAccount.chart_id,
                             label: `${eachAccount.account_name} (${eachAccount.account_code})`,
-                            children: eachAccount?.sub_account, wholeData: eachAccount
+                            disabled: eachAccount.sub_account.length === 0 ? false : true,
+                            children: eachAccount?.sub_account, wholeData: eachAccount,
                         })
+                        //  return null // just added to remove warning eg. Array.prototype.map() expects a return value from arrow function
                     })
                     setAccountOptions(accOptions)
 
@@ -566,7 +569,7 @@ const JournalVoucherSingle = () => {
                 isValidationOk = false
             }
             if (each_entry.sub_account_State !== null) {
-                if (each_entry.sub_account_State.selected_sub_account === "") {
+                if (each_entry.sub_account_State.selected_sub_account === "" || each_entry.sub_account_State.selected_sub_account === undefined || each_entry.sub_account_State.selected_sub_account === null) {
                     isValidationOk = false
                 }
 
@@ -582,14 +585,14 @@ const JournalVoucherSingle = () => {
             }
             setIsValidateAllStates(isValidationOk)
         })
+
         if (isValidationOk === true) {
-            if (balanceEntries.total_debit - balanceEntries.total_credit !== 0) {
+            if ((mainEntriesState1[0].debit - mainEntriesState1[0].credit) + (balanceEntries.total_debit - balanceEntries.total_credit) !== 0) {
                 toast.error("Current Balance Is Not Satisfy")
             } else {
                 console.log(mainEntriesState, "----");
                 const reFactoredState = mainEntriesState.map((each_main_entry) => {
                     const sub_account_entries = each_main_entry?.sub_account_State?.map((each_sub_account) => {
-                        console.log(each_sub_account.selected_sub_account, "qwerty");
                         return {
                             "debit": Number(each_sub_account.debit),
                             "credit": Number(each_sub_account.credit),
@@ -631,7 +634,7 @@ const JournalVoucherSingle = () => {
                 });
                 var config = {
                     method: state === null ? 'post' : 'put',
-                    url: state === null ? `${endPoint}api/MultipleVoucher/PostDataL` : `${endPoint}api/MultipleVoucher/PutDataL?voucher_id=${state.data}`,
+                    url: state === null ? `${endPoint}api/MultVoucher/PostDataL` : `${endPoint}api/MultipleVoucher/PutDataL?voucher_id=${state.data}`,
                     headers: {
                         'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
                         'Content-Type': 'application/json'
@@ -989,14 +992,13 @@ const JournalVoucherSingle = () => {
 
                                 {
                                     mainEntriesState1.map((eachEntry, index) => {
-
                                         return <>
-
                                             <div className="row mt-3">
                                                 <div className="field item form-group col-md-6 col-sm-6">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align"> First Account<span className="required">*</span></label>
                                                     <div className="col-md-8 col-sm-8">
                                                         <Select
+                                                            isOptionDisabled={(option) => option.disabled}
                                                             value={mainEntriesState1[index].selectedOptionValue}
                                                             isSearchable={true}
                                                             styles={customStyles}
@@ -1004,12 +1006,9 @@ const JournalVoucherSingle = () => {
                                                             onChange={(e) => {
                                                                 handleAccountSelector1(e, index)
                                                                 Number(mainEntriesState1[index].debit) === 0 ? update_credit1(index, { target: { value: 0 } }) : update_debit1(index, { target: { value: 0 } })
-
-
                                                             }}
                                                         />
-                                                        {!isValidateAllStates && (mainEntriesState1[index].selectedOptionValue === "" || mainEntriesState1[index].selectedOptionValue === undefined) && <span className="text-danger">First Select this </span>}
-
+                                                        {!isValidateAllStates && (mainEntriesState1[index].selectedOptionValue === "" || mainEntriesState1[index].selectedOptionValue === undefined || mainEntriesState1[index].selectedOptionValue === null) && <span className="text-danger">First Select this </span>}
                                                     </div>
                                                 </div>
                                                 <div className="field item form-group col-md-6 col-sm-6">
@@ -1023,13 +1022,10 @@ const JournalVoucherSingle = () => {
                                                             data-validate-words={2}
                                                             name="balance"
                                                             value={mainEntriesState1[index].selectedOptionValue?.wholeData?.balance}
-
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                             <div className="row">
                                                 <div className="field item form-group col-md-6 col-sm-6">
                                                     <label className="col-form-label col-md-3 col-sm-3 label-align"> Naration<span className="required">*</span></label>
@@ -1368,7 +1364,7 @@ const JournalVoucherSingle = () => {
                                             }
                                         </tbody>
                                     </table>
-                                    <strong>     Current Balance: {balanceEntries.total_debit - balanceEntries.total_credit} </strong>
+                                    <strong>     Current Balance: {(mainEntriesState1[0].debit - mainEntriesState1[0].credit) + (balanceEntries.total_debit - balanceEntries.total_credit)} --- { }.</strong>
                                     <div>    <strong>   Drafts: &nbsp;   </strong>
                                         {
                                             draftEntries.map((each_draft, index) => {

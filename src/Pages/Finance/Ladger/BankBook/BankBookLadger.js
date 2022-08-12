@@ -1,15 +1,15 @@
 import React from 'react'
 import LadgerGlobalComponent from '../LadgerGlobalComponent'
 
-const GeneralLadger = () => {
+const BankBookLadger = () => {
     return (
         <div>
 
             <LadgerGlobalComponent
-                account_type="all" page_name="Ladger Report" />
+                account_type="bank" page_name="Bank Book Report" />
 
         </div>
     )
 }
 
-export default GeneralLadger
+export default BankBookLadger
