@@ -568,8 +568,8 @@ const JournalVoucherSingle = () => {
             if (each_entry.credit === "" && each_entry.debit === "") {
                 isValidationOk = false
             }
-            if (each_entry.sub_account_State !== null) {
-                if (each_entry.sub_account_State.selected_sub_account === "" || each_entry.sub_account_State.selected_sub_account === undefined || each_entry.sub_account_State.selected_sub_account === null) {
+            if (each_entry.hasOwnProperty("sub_account_State") && each_entry.sub_accounts_State !== null) {
+                if (each_entry.sub_account_State.selected_sub_account === "") {
                     isValidationOk = false
                 }
 
@@ -585,7 +585,6 @@ const JournalVoucherSingle = () => {
             }
             setIsValidateAllStates(isValidationOk)
         })
-
         if (isValidationOk === true) {
             if ((mainEntriesState1[0].debit - mainEntriesState1[0].credit) + (balanceEntries.total_debit - balanceEntries.total_credit) !== 0) {
                 toast.error("Current Balance Is Not Satisfy")
@@ -593,6 +592,7 @@ const JournalVoucherSingle = () => {
                 console.log(mainEntriesState, "----");
                 const reFactoredState = mainEntriesState.map((each_main_entry) => {
                     const sub_account_entries = each_main_entry?.sub_account_State?.map((each_sub_account) => {
+                        console.log(each_sub_account.selected_sub_account, "qwerty");
                         return {
                             "debit": Number(each_sub_account.debit),
                             "credit": Number(each_sub_account.credit),

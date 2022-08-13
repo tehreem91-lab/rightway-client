@@ -403,8 +403,8 @@ const MultiVoucherGlobalTemplate = ({
             if (each_entry.credit === "" && each_entry.debit === "") {
                 isValidationOk = false
             }
-            if (each_entry.sub_account_State !== null) {
-                if (each_entry.sub_account_State.selected_sub_account === "") {
+            if (each_entry.hasOwnProperty("sub_account_State") && each_entry.sub_account_State !== null ) {
+                if (each_entry.sub_account_State===null ||  each_entry.sub_account_State.selected_sub_account === "") {
                     isValidationOk = false
                 }
 
