@@ -34,7 +34,7 @@ body {
 } */
 
 .bg-customBlue {
-  background-color: #34495e !important;
+  background-color: #003a4d !important;
 }
 .text-customBlue {
   color: #34495e !important;
@@ -49,12 +49,13 @@ body {
   text-shadow: none !important;
 }
 
+
 .h-100 {
   height: 100% !important;
 }
 
 .sm-logo-in-Login {
-  background-color: #003a4d;
+  background-color:#003a4d ;
   display: inline !important;
   width: 35px;
   border-radius: 50%;
@@ -462,7 +463,7 @@ color: white !important;
 } */
 
 .text-customOrange {
-  color: #f79c74;
+  color: #fd8b5a; 
 }
 .text-customBlue {
   color: #003a4d;

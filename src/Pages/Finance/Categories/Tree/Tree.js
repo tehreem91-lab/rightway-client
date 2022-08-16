@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { functionAltea } from '../Categories';
+import React, { useState } from 'react' 
 import { useDispatch } from 'react-redux';
 import { fetchTreeNodeData, updateTreeNodeData } from '../../../../store/actions/TreeStates';
 
@@ -35,8 +34,7 @@ const TreeNode = ({ node }) => {
                 )}
                 <div className="col d-tree-head">
                     <i className={`mr-1 ${node.level <= 4 ? childVisible ? "fa fa-folder-open" : "fa fa-folder" : childVisible ? "fa fa-file" : "fa fa-file"}  icon-color-${node.level}`}> </i>
-                  <span onClick={()=> {
-                    
+                  <span onClick={()=> { 
                     dispatch(updateTreeNodeData(node));
                     dispatch(fetchTreeNodeData());
                      }}>  {node.name}</span> {node.code ===""? '':<span className='text-danger'> {`(${node.code})`}</span>}

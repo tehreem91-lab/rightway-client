@@ -2,13 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 import ReactToPrint from "react-to-print";
-import LadgerGlobalComponentReciept from "./LadgerGlobalComponentReciept.js";
-import { customStyles } from "../../../Components/reactCustomSelectStyle";
+import { customStyles } from "../../../../Components/reactCustomSelectStyle";
 import axios from 'axios'
-import { endPoint } from "../../../config/Config.js";
-import { preventLowerDate } from "../../../config/preventMinus.js";
-import CustomInnerHeader from '../../../Components/CustomInnerHeader'
-const LadgerGlobalComponent = ({ account_type, page_name }) => {
+import { endPoint } from "../../../../config/Config.js";
+import { preventLowerDate } from "../../../../config/preventMinus.js";
+import CustomInnerHeader from '../../../../Components/CustomInnerHeader'
+import TrialSheetReciept from "./TrialSheetReciept.js";
+const TrialSheet = () => {
 
     const componentRef = useRef();
     const showNavMenu = useSelector((state) => state.NavState);
@@ -19,16 +19,13 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
     const [dateFrom, setdateFrom] = useState(dateToday);
     const [dateTo, setdateTo] = useState(dateToday);
     const [isLoading, setIsLoading] = useState(true)
-    const [LadgerData, setLadgerData] = useState({})
-    const [accountOptions, setaccountOptions] = useState([])
-    const [accountValue, setAccountValue] = useState("")
-    const [balanceState, setBalanceState] = useState(0)
     const [validationState, setValidationState] = useState(true)
+    const [reportData, setReportData] = useState([])
 
-    const fetch_selelctor_options = () => {
+    const fetchTrialBalanceReport = () => {
         var config = {
             method: 'get',
-            url: `${endPoint}api/AccountOptions/GetData?category_name=${account_type}`,
+            url: `${endPoint}api/trialBalace/GetData?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
             headers: {
                 'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
             }
@@ -36,54 +33,20 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
 
         axios(config)
             .then(function (response) {
-                setaccountOptions(response.data.map((each_acc) => {
-                    return {
-                        value: each_acc.chart_id,
-                        label: `${each_acc.account_name} (${each_acc.account_code})`,
-                        account_name: each_acc.account_name,
-                        account_code: each_acc.account_code,
-
-                    }
-                }))
+                console.log(response.data);
+                if (response.status === 200) {
+                    setIsLoading(false)
+                    setReportData(response.data)
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
-    };
-    const fetchLadger = () => {
-
-        if (accountValue === "" || dateFrom === "" || dateTo === "") {
-            setValidationState(false)
-        } else {
 
 
-            var config = {
-                method: 'get',
-                url: `${endPoint}api/LadgerReport/GetReport?chart_id=${accountValue.value}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
-                headers: {
-                    'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
-                }
-            };
 
-            axios(config)
-                .then(function (response) {
-                    if (response.status === 200) {
-                        setLadgerData(response.data)
-                        setBalanceState(response.data.opening_balance.opening_balance1)
-                        setIsLoading(false)
-                    }
+    }
 
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    setIsLoading(true)
-                    setLadgerData({})
-                });
-        }
-    };
-    useEffect(() => {
-        fetch_selelctor_options();
-    }, []);
 
     return (
         <>
@@ -91,7 +54,7 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <CustomInnerHeader moduleName={page_name} isShowSelector={true} />
+                <CustomInnerHeader moduleName="Trial Balance" isShowSelector={true} />
 
             </div>
             <div
@@ -142,29 +105,12 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Account <span className="required">*</span></label>
-                                        <div className="col-md-8 col-sm-8">
-                                            <Select
-                                                isSearchable={true}
-                                                styles={customStyles}
-                                                options={accountOptions}
-                                                value={accountValue}
-                                                onChange={(e) => {
-                                                    setAccountValue(e)
-                                                }}
-                                            />
-                                            {validationState === false && accountValue === "" && <span className="text-danger">First Select this </span>}
-                                        </div>
-                                    </div>
 
-                                </div>
                             </div>
 
                             <div className="col-md-12 text-right x_footer">
 
-                                <button className="btn btn-primary" type="submit" onClick={() => { fetchLadger() }} >
+                                <button className="btn btn-primary" type="submit" onClick={() => { fetchTrialBalanceReport() }} >
                                     Show Report
                                 </button>
 
@@ -221,10 +167,9 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
 
                                     </div>
                                     <div className="clearfix" />
-                                    <LadgerGlobalComponentReciept ref={componentRef} LadgerData={LadgerData}
-                                        balanceState={balanceState}
-                                        grandTotal={234}
-                                        dateFrom={dateFrom} dateTo={dateTo} employeeNameForPrint={"lorem"}
+                                    <TrialSheetReciept ref={componentRef}
+                                        dateFrom={dateFrom} dateTo={dateTo}
+                                        reportData={reportData}
                                     />
 
                                 </div>     </>
@@ -243,4 +188,4 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
     );
 };
 
-export default LadgerGlobalComponent;
+export default TrialSheet;

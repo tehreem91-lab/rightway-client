@@ -29,6 +29,10 @@ import PayableReceivableReport from ".././Pages/Finance/Reports/PayableReceivabl
 import GeneralLadger from ".././Pages/Finance/Ladger/GeneralLadger/GeneralLadger";
 import BankBookLadger from ".././Pages/Finance/Ladger/BankBook/BankBookLadger";
 import CashBookLadger from ".././Pages/Finance/Ladger/CashBook/CashBookLadger";
+import BalanceSheet from "../Pages/Finance/Reports/BalanceSheet/BalanceSheet";
+import PLStatement from "../Pages/Finance/Reports/PLStatement/PLStatement";
+import TrialSheet from "../Pages/Finance/Reports/TrialBalance/TrialSheet";
+import TransactionReport from "../Pages/Finance/Reports/TransactionReport/TransactionReport";
 
 
 
@@ -63,6 +67,10 @@ const ROUTES = {
     Categories: { id: '28', element: Categories, path: "Categories" },
     BankBookLadger: { id: '29', element: BankBookLadger, path: "BankBookAccess" },
     CashBookLadger: { id: '30', element: CashBookLadger, path: "CashBookAccess" },
+    TrialSheet: { id: '31', element: TrialSheet, path: "TrialBalanceAccess" },
+    PLStatement: { id: '32', element: PLStatement, path: "PLStatementAccess" },
+    BalanceSheet: { id: '33', element: BalanceSheet, path: "BalanceSheetAccess" },
+    TransactionReport: { id: '34', element: TransactionReport, path: "TransactionReportAccess" },
 };
 
 export default ROUTES;
