@@ -55,7 +55,7 @@ const TrialSheetReciept = React.forwardRef(
                             return <>
                                 <div className="row mx-3   bottom-border-1   text-dark" style={{ backgroundColor: "#fd8b5a" }} >
                                     <div className="  col-md-4   col-4    font-size-12 pl-1   text-left  my-1">
-                                        {each_level_1.name}
+                                        {each_level_1.category_name}
                                     </div>
                                     <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                         <div className="row">
@@ -82,7 +82,7 @@ const TrialSheetReciept = React.forwardRef(
                                         return <>
                                             <div className="row mx-3   bottom-border-1  text-dark" style={{ backgroundColor: "#f7ab8b" }}>
                                                 <div className="  col-md-4   col-4    font-size-12  pl-2   text-left  my-1">
-                                                    {each_level_2.name}
+                                                    {each_level_2.category_name}
                                                 </div>
                                                 <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                                     <div className="row">
@@ -106,7 +106,7 @@ const TrialSheetReciept = React.forwardRef(
                                                     return <>
                                                         <div className="row mx-3   bottom-border-1  text-dark" style={{ backgroundColor: "#ffbca0" }}>
                                                             <div className="  col-md-4   col-4    font-size-12   pl-3  text-left  my-1">
-                                                                {each_level_3.name}
+                                                                {each_level_3.category_name}
                                                             </div>
                                                             <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                                                 <div className="row">
@@ -130,7 +130,7 @@ const TrialSheetReciept = React.forwardRef(
                                                                 return <>
                                                                     <div className="row mx-3   bottom-border-1  text-dark" style={{ backgroundColor: "#ffcbb5" }}>
                                                                         <div className="  col-md-4   col-4    font-size-12   pl-4  text-left  my-1">
-                                                                            {each_level_4.name}
+                                                                            {each_level_4.category_name}
                                                                         </div>
                                                                         <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                                                             <div className="row">
@@ -154,21 +154,21 @@ const TrialSheetReciept = React.forwardRef(
                                                                             return <>
                                                                                 <div className="row mx-3   bottom-border-1  text-dark" style={{ backgroundColor: "#ffe4d9" }}>
                                                                                     <div className="  col-md-4   col-4   pl-5  font-size-12    text-left  my-1">
-                                                                                        {each_level_5.name}
+                                                                                        {each_level_5.account_name}
                                                                                     </div>
                                                                                     <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                                                                         <div className="row">
                                                                                             <div className="col-md-4">
-                                                                                                <div className="col-md-6 px-0 text-left">  {each_level_5.opening_balance.opening_balance1}</div>
-                                                                                                <div className="col-md-6  text-right">  {each_level_5.opening_balance.opening_balance1}</div>
+                                                                                                <div className="col-md-6 px-0 text-left">  {Number(each_level_5?.opening_balance)}</div>
+                                                                                                <div className="col-md-6  text-right">  {Number(each_level_5?.opening_balance)}</div>
                                                                                             </div>
                                                                                             <div className="col-md-4">
-                                                                                                <div className="col-md-6  text-right">{each_level_5.current_balance.total_debit}</div>
-                                                                                                <div className="col-md-6 px-0 text-left">{each_level_5.current_balance.total_credit}</div>
+                                                                                                <div className="col-md-6  text-right">{Number(each_level_5?.current_debit)}</div>
+                                                                                                <div className="col-md-6 px-0 text-left">{Number(each_level_5?.current_credit)}</div>
                                                                                             </div>
                                                                                             <div className="col-md-4">
-                                                                                                <div className="col-md-6  text-right"> {each_level_5.closing_balance.total_debit}</div>
-                                                                                                <div className="col-md-6 px-0 text-left"> {each_level_5.closing_balance.total_credit}</div>
+                                                                                                {/* <div className="col-md-6  text-right"> {each_level_5.closing_balance.total_debit}</div>
+                                                                                                <div className="col-md-6 px-0 text-left"> {each_level_5.closing_balance.total_credit}</div> */}
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -196,7 +196,7 @@ const TrialSheetReciept = React.forwardRef(
 
                             </>
                         })
-                    } 
+                    }
                 </div>
 
             </div>

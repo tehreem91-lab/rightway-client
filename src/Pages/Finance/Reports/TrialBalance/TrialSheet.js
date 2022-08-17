@@ -32,14 +32,14 @@ const TrialSheet = () => {
         };
 
         axios(config)
-            .then(function (response) {
-                console.log(response.data);
+            .then(function (response) { 
                 if (response.status === 200) {
                     setIsLoading(true)
                     const categories_all_data = response.data.categories_all;
                     const categories_all_data_copy = [];
                     let refactored_data = []
 
+                    const account_all_data = response.data.account_all
                     // const filtralized_data = categories_all_data.filter((each_item1) => {
                     //     return each_item1.parent_id === 0;
 
@@ -88,7 +88,6 @@ const TrialSheet = () => {
 
                         let top_level_1 = ""
                         if (categories_all_data[index].level === 1 && categories_all_data[index].parent_id === 0) {
-
                             // child_2 = categories_all_data.filter((each_item2) => {
                             //     let top_level_2 = ""
                             //     let child_3;
@@ -115,44 +114,48 @@ const TrialSheet = () => {
                             //     }
 
                             // })
-
                             let filtralized_data_2 = [];
                             for (let index2 = 0; index2 < categories_all_data.length; index2++) {
                                 if (categories_all_data[index2].level === 2 && categories_all_data[index2].parent_id === categories_all_data[index].category_id) {
-
                                     let filtralized_data_3 = [];
                                     let top_level_2;
                                     for (let index3 = 0; index3 < categories_all_data.length; index3++) {
                                         let filtralized_data_4 = [];
                                         if (categories_all_data[index3].level === 3 && categories_all_data[index3].parent_id === categories_all_data[index2].category_id) {
-
                                             let filtralized_data_5 = [];
                                             let top_level_3;
                                             for (let index4 = 0; index4 < categories_all_data.length; index4++) {
                                                 if (categories_all_data[index4].level === 4 && categories_all_data[index4].parent_id === categories_all_data[index3].category_id) {
-                                                    top_level_3 = { ...categories_all_data[index4] }
+                                                    let filtralized_data_6 = [];
+                                                    let top_level_4;
+                                                    for (let index5 = 0; index5 < account_all_data.length; index5++) {
+                                                        if (account_all_data[index5].parent_id === categories_all_data[index4].category_id) {
+                                                            top_level_4 = { ...account_all_data[index5] }
+                                                            filtralized_data_6.push(top_level_4)
+                                                        }
+                                                    }
+                                                    top_level_3 = { ...categories_all_data[index4], children: filtralized_data_6 }
                                                     filtralized_data_5.push(top_level_3)
                                                 }
                                             }
                                             top_level_1 = filtralized_data_5  //this was returning a array wich make array in array so i useed its first index bcz that only have value
                                             filtralized_data_4.push(top_level_1)
-                                            top_level_2 = { category_nestedll: filtralized_data_4[0], ...categories_all_data[index3] }
+                                            top_level_2 = { children: filtralized_data_4[0], ...categories_all_data[index3] }
                                             filtralized_data_3.push(top_level_2)
-                                            // --------
                                         }
                                     }
-
-
-                                    top_level_1 = { category_nested: filtralized_data_3, ...categories_all_data[index2] }
+                                    top_level_1 = { children: filtralized_data_3, ...categories_all_data[index2] }
                                     filtralized_data_2.push(top_level_1)
                                 }
                             }
-                            top_level_1 = { category_nested: filtralized_data_2, ...categories_all_data[index] }
+                            top_level_1 = { children: filtralized_data_2, ...categories_all_data[index] }
                             filtralized_data.push(top_level_1)
 
                         }
                     }
-                    console.log(filtralized_data, "------nested child")
+                    setReportData(filtralized_data)
+                    console.log(filtralized_data);
+                setIsLoading(false)
                 }
             })
             .catch(function (error) {
