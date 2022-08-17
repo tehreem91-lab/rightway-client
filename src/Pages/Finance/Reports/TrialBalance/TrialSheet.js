@@ -35,8 +35,124 @@ const TrialSheet = () => {
             .then(function (response) {
                 console.log(response.data);
                 if (response.status === 200) {
-                    setIsLoading(false)
-                    setReportData(response.data)
+                    setIsLoading(true)
+                    const categories_all_data = response.data.categories_all;
+                    const categories_all_data_copy = [];
+                    let refactored_data = []
+
+                    // const filtralized_data = categories_all_data.filter((each_item1) => {
+                    //     return each_item1.parent_id === 0;
+
+
+                    // })
+                    // filtralized_data.map((e, index) => {
+                    //     // console.log(e);
+                    //     // console.log(e.category_id);
+                    //     const catagory1 = categories_all_data.filter((each_item1) => {
+                    //         return each_item1.parent_id == e.category_id;
+
+
+                    //     })
+                    //     catagory1.map((e, i) => {
+                    //         //     // console.log(e);
+                    //         //     // console.log(e.category_id);
+                    //         const catagory2 = categories_all_data.filter((each_item1) => {
+                    //             return each_item1.parent_id == e.category_id;
+
+                    //         })
+                    //     })
+                    //     //     categories_all_data_copy[i]["list_of_catagories"]=catagory2;
+
+
+                    //     // // console.log("Catagories  2------");
+
+                    //     // // console.log(catagory2, "------");
+
+                    //     // })
+                    //     e["list_of_catagories"] = catagory1;
+                    //     categories_all_data_copy.push(e);
+
+
+                    //     // console.log("Catagories------");
+
+                    //     // console.log(catagory1, "------");
+
+                    // })
+                    // categories_all_data_copy[index]["list_of_catagories"]=catagory1;
+
+                    // const filtralized_data = categories_all_data.map((each_item1) => {
+                    let filtralized_data = [];
+                    for (let index = 0; index < categories_all_data.length; index++) {
+
+
+
+                        let top_level_1 = ""
+                        if (categories_all_data[index].level === 1 && categories_all_data[index].parent_id === 0) {
+
+                            // child_2 = categories_all_data.filter((each_item2) => {
+                            //     let top_level_2 = ""
+                            //     let child_3;
+                            //     if (each_item2.level === 2 && each_item2.parent_id === each_item1.category_id) {
+                            //         top_level_2 = each_item2;
+                            //         child_3 = categories_all_data.filter((each_item3) => {
+                            //             let top_level_3 = ""
+                            //             let child_4
+                            //             if (each_item3.level === 3 && each_item3.parent_id === each_item2.category_id) {
+                            //                 top_level_3 = each_item3;
+                            //                 child_4 = categories_all_data.filter((each_item4) => {
+
+                            //                     let top_level_4 = ""
+                            //                     if (each_item4.level === 4 && each_item4.parent_id === each_item3.category_id) {
+                            //                         top_level_4 = each_item4;
+                            //                         return { category_nested: top_level_4 }
+                            //                     }
+                            //                 })
+                            //                 return { category_nested: child_4, ...top_level_3, }
+                            //             }
+                            //         })
+
+                            //         return { category_nested: child_3, ...top_level_2 }
+                            //     }
+
+                            // })
+
+                            let filtralized_data_2 = [];
+                            for (let index2 = 0; index2 < categories_all_data.length; index2++) {
+                                if (categories_all_data[index2].level === 2 && categories_all_data[index2].parent_id === categories_all_data[index].category_id) {
+
+                                    let filtralized_data_3 = [];
+                                    let top_level_2;
+                                    for (let index3 = 0; index3 < categories_all_data.length; index3++) {
+                                        let filtralized_data_4 = [];
+                                        if (categories_all_data[index3].level === 3 && categories_all_data[index3].parent_id === categories_all_data[index2].category_id) {
+
+                                            let filtralized_data_5 = [];
+                                            let top_level_3;
+                                            for (let index4 = 0; index4 < categories_all_data.length; index4++) {
+                                                if (categories_all_data[index4].level === 4 && categories_all_data[index4].parent_id === categories_all_data[index3].category_id) {
+                                                    top_level_3 = { ...categories_all_data[index4] }
+                                                    filtralized_data_5.push(top_level_3)
+                                                }
+                                            }
+                                            top_level_1 = filtralized_data_5  //this was returning a array wich make array in array so i useed its first index bcz that only have value
+                                            filtralized_data_4.push(top_level_1)
+                                            top_level_2 = { category_nestedll: filtralized_data_4[0], ...categories_all_data[index3] }
+                                            filtralized_data_3.push(top_level_2)
+                                            // --------
+                                        }
+                                    }
+
+
+                                    top_level_1 = { category_nested: filtralized_data_3, ...categories_all_data[index2] }
+                                    filtralized_data_2.push(top_level_1)
+                                }
+                            }
+                            top_level_1 = { category_nested: filtralized_data_2, ...categories_all_data[index] }
+                            filtralized_data.push(top_level_1)
+
+                        }
+                    }
+                    console.log(filtralized_data, "------nested child")
                 }
             })
             .catch(function (error) {
