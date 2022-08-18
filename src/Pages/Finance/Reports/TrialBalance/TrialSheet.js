@@ -22,7 +22,13 @@ const TrialSheet = () => {
     const [validationState, setValidationState] = useState(true)
     const [reportData, setReportData] = useState([])
 
+    const level_options = [{ label: "Level 1", value: 1 }, { label: "Level 2", value: 2 }, { label: "Level 3", value: 3 }, { label: "Level 4", value: 4 }, { label: "Level 5", value: 5 }]
+    const [levelValue, setLevelValue] = useState({ label: "Level 5", value: 5 })
+
     const fetchTrialBalanceReport = () => {
+        console.log(dateFrom, dateTo, "---Guru----");
+
+
         var config = {
             method: 'get',
             url: `${endPoint}api/trialBalace/GetData?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
@@ -32,88 +38,15 @@ const TrialSheet = () => {
         };
 
         axios(config)
-            .then(function (response) { 
+            .then(function (response) {
                 if (response.status === 200) {
                     setIsLoading(true)
                     const categories_all_data = response.data.categories_all;
-                    const categories_all_data_copy = [];
-                    let refactored_data = []
-
                     const account_all_data = response.data.account_all
-                    // const filtralized_data = categories_all_data.filter((each_item1) => {
-                    //     return each_item1.parent_id === 0;
-
-
-                    // })
-                    // filtralized_data.map((e, index) => {
-                    //     // console.log(e);
-                    //     // console.log(e.category_id);
-                    //     const catagory1 = categories_all_data.filter((each_item1) => {
-                    //         return each_item1.parent_id == e.category_id;
-
-
-                    //     })
-                    //     catagory1.map((e, i) => {
-                    //         //     // console.log(e);
-                    //         //     // console.log(e.category_id);
-                    //         const catagory2 = categories_all_data.filter((each_item1) => {
-                    //             return each_item1.parent_id == e.category_id;
-
-                    //         })
-                    //     })
-                    //     //     categories_all_data_copy[i]["list_of_catagories"]=catagory2;
-
-
-                    //     // // console.log("Catagories  2------");
-
-                    //     // // console.log(catagory2, "------");
-
-                    //     // })
-                    //     e["list_of_catagories"] = catagory1;
-                    //     categories_all_data_copy.push(e);
-
-
-                    //     // console.log("Catagories------");
-
-                    //     // console.log(catagory1, "------");
-
-                    // })
-                    // categories_all_data_copy[index]["list_of_catagories"]=catagory1;
-
-                    // const filtralized_data = categories_all_data.map((each_item1) => {
                     let filtralized_data = [];
                     for (let index = 0; index < categories_all_data.length; index++) {
-
-
-
                         let top_level_1 = ""
                         if (categories_all_data[index].level === 1 && categories_all_data[index].parent_id === 0) {
-                            // child_2 = categories_all_data.filter((each_item2) => {
-                            //     let top_level_2 = ""
-                            //     let child_3;
-                            //     if (each_item2.level === 2 && each_item2.parent_id === each_item1.category_id) {
-                            //         top_level_2 = each_item2;
-                            //         child_3 = categories_all_data.filter((each_item3) => {
-                            //             let top_level_3 = ""
-                            //             let child_4
-                            //             if (each_item3.level === 3 && each_item3.parent_id === each_item2.category_id) {
-                            //                 top_level_3 = each_item3;
-                            //                 child_4 = categories_all_data.filter((each_item4) => {
-
-                            //                     let top_level_4 = ""
-                            //                     if (each_item4.level === 4 && each_item4.parent_id === each_item3.category_id) {
-                            //                         top_level_4 = each_item4;
-                            //                         return { category_nested: top_level_4 }
-                            //                     }
-                            //                 })
-                            //                 return { category_nested: child_4, ...top_level_3, }
-                            //             }
-                            //         })
-
-                            //         return { category_nested: child_3, ...top_level_2 }
-                            //     }
-
-                            // })
                             let filtralized_data_2 = [];
                             for (let index2 = 0; index2 < categories_all_data.length; index2++) {
                                 if (categories_all_data[index2].level === 2 && categories_all_data[index2].parent_id === categories_all_data[index].category_id) {
@@ -155,7 +88,7 @@ const TrialSheet = () => {
                     }
                     setReportData(filtralized_data)
                     console.log(filtralized_data);
-                setIsLoading(false)
+                    setIsLoading(false)
                 }
             })
             .catch(function (error) {
@@ -203,9 +136,6 @@ const TrialSheet = () => {
                                                 }}
                                             />
 
-                                            {validationState === false && dateFrom === "" && <span className="text-danger">First Select this </span>}
-
-                                            {/* // its show fiscal year initial value */}
                                         </div>
                                     </div>
                                     <div className="field item form-group col-md-6 col-sm-6">
@@ -219,7 +149,40 @@ const TrialSheet = () => {
                                                     setdateTo(e.target.value);
                                                 }}
                                             />
-                                            {validationState === false && dateTo === "" && <span className="text-danger">First Select this </span>}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="field item form-group col-md-6 col-sm-6">
+                                        <label className="col-form-label col-md-3 col-sm-36 label-align"> Select Level <span className="required">*</span></label>
+                                        <div className="col-md-8 col-sm-8  ">
+                                            <div className="form-group form-check">
+                                                <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                                            </div>
+
+                                            <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                defaultValue={"Active"}
+                                                isSearchable={true}
+                                                name="color"
+                                                styles={customStyles}
+                                                options={level_options}
+                                                value={levelValue}
+                                                onChange={(e) => setLevelValue(e)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="field item form-group col-md-6 col-sm-6">
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align"> Show Zero <span className="required">*</span></label>
+
+                                        <div className="col-md-8 col-sm-8 pt-1 pl-3">
+                                            <div className="form-group form-check">
+                                                <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                                            </div>
+
+
 
                                         </div>
                                     </div>
@@ -289,6 +252,7 @@ const TrialSheet = () => {
                                     <TrialSheetReciept ref={componentRef}
                                         dateFrom={dateFrom} dateTo={dateTo}
                                         reportData={reportData}
+                                        levelValue={levelValue}
                                     />
 
                                 </div>     </>
