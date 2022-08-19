@@ -192,15 +192,13 @@ const RolePermission = () => {
                       RoleToBeSearch === null ||
                       RoleToBeSearch === undefined ? (
                       <></>
-                    ) : (
-                      <button
-                        className="btn btn-info btn-sm mb-0 px-3 "
-                        onClick={() => {
+                    ) : ( 
+                        <button className="btn btn-primary"  onClick={() => {
                           updatePermissions();
-                        }}
-                      >
+                        }}>
                         Update
-                      </button>
+                    </button>
+
                     )}
                   </div>
 

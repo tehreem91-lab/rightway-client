@@ -7,9 +7,9 @@ const TrialSheetReciept = React.forwardRef(
 
             <div>
                 <div className="x_content px-0  mb-3" ref={ref}>
-                    <div className="displayPropertyForPrint d-none">
+                    <div className="displayPropertyForPrint">
 
-                        <h2 className="text-dark text-center font-weight-bold  ">Ladger Report</h2>
+                        <h2 className="text-dark text-center font-weight-bold  ">Trial Sheet Report</h2>
                         <div className="row pb-2">
                             <div className="col-md-4 col-4 text-dark text-center ">  Date From: <strong className="text-dark  font-weight-bold ">  {dateFrom}</strong> </div>
                             <div className="col-md-4 col-4 text-dark  text-center">  Date To :  <strong className="text-dark  font-weight-bold "> {dateTo}</strong> </div>
@@ -60,16 +60,16 @@ const TrialSheetReciept = React.forwardRef(
                                     <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <div className="col-md-6 px-0 text-right">{each_level_1.calculated_opening_debit * -1}<i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                <div className="col-md-6 px-0 text-right">{each_level_1.calculated_opening_debit}<i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                                 <div className="col-md-6  text-right">{each_level_1.calculated_opening_credit} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                             </div>
                                             <div className="col-md-4">
-                                                <div className="col-md-6  text-right"> {each_level_1.calculated_debit * -1} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                <div className="col-md-6  text-right"> {each_level_1.calculated_debit} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                 <div className="col-md-6 px-0 text-right">{each_level_1.calculated_credit} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                             </div>
                                             <div className="col-md-4">
-                                                <div className="col-md-6 px-0 text-right">0.00  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
-                                                <div className="col-md-6  text-right">0.00 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                <div className="col-md-6 px-0 text-right">{each_level_1.calculated_closing_balance}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                <div className="col-md-6  text-right">{each_level_1.calculated_closing_balance} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                             </div>
                                         </div>
                                     </div>
@@ -87,16 +87,16 @@ const TrialSheetReciept = React.forwardRef(
                                                 <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                                     <div className="row">
                                                         <div className="col-md-4">
-                                                            <div className="col-md-6 px-0 text-right">{each_level_2.calculated_opening_debit * -1} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                            <div className="col-md-6 px-0 text-right">{each_level_2.calculated_opening_debit} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                                             <div className="col-md-6  text-right">{each_level_2.calculated_opening_credit} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                         </div>
                                                         <div className="col-md-4">
-                                                            <div className="col-md-6  text-right"> {each_level_2.calculated_debit * -1}<i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                            <div className="col-md-6  text-right"> {each_level_2.calculated_debit}<i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                             <div className="col-md-6 px-0 text-right">{each_level_2.calculated_credit}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                                         </div>
                                                         <div className="col-md-4">
-                                                            <div className="col-md-6 px-0 text-right">0.00  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
-                                                            <div className="col-md-6  text-right">0.00 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                            <div className="col-md-6 px-0 text-right">{each_level_2.calculated_closing_balance}   <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                            <div className="col-md-6  text-right">{each_level_2.calculated_closing_balance}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,18 +112,18 @@ const TrialSheetReciept = React.forwardRef(
                                                             <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                                                 <div className="row">
                                                                     <div className="col-md-4">
-                                                                        <div className="col-md-6 px-0 text-right">{each_level_3.calculated_opening_debit * -1}<i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                                        <div className="col-md-6 px-0 text-right">{each_level_3.calculated_opening_debit}<i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                                                         <div className="col-md-6  text-right">{each_level_3.calculated_opening_credit}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                     </div>
                                                                     <div className="col-md-4">
-                                                                        <div className="col-md-6  text-right">{each_level_3.calculated_debit * -1}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                                        <div className="col-md-6  text-right">{each_level_3.calculated_debit}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                         <div className="col-md-6  text-right">{each_level_3.calculated_credit}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                         {/* <div className="col-md-6 px-0 text-right"> {((each_level_3.children.map((l) => { return (l.children.map((e) => { return e.current_debit }).reduce((a, b) => a + b, 0)) })).reduce((m, n) => m + n, 0)).toFixed(2)}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                                                         <div className="col-md-6  text-right"> {((each_level_3.children.map((l) => { return (l.children.map((e) => { return e.current_credit }).reduce((a, b) => a + b, 0)) })).reduce((m, n) => m + n, 0)).toFixed(2)}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div> */}
                                                                     </div>
                                                                     <div className="col-md-4">
-                                                                        <div className="col-md-6 px-0 text-right">0.00  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
-                                                                        <div className="col-md-6  text-right">0.00 <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                                        <div className="col-md-6 px-0 text-right">{each_level_3.calculated_closing_balance}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                                        <div className="col-md-6  text-right">{each_level_3.calculated_closing_balance} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -138,18 +138,18 @@ const TrialSheetReciept = React.forwardRef(
                                                                         <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                                                                             <div className="row">
                                                                                 <div className="col-md-4">
-                                                                                    <div className="col-md-6 px-0 text-right">{each_level_4.calculated_opening_debit * -1} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                                                    <div className="col-md-6 px-0 text-right">{each_level_4.calculated_opening_debit} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                                                                     <div className="col-md-6  text-right">{each_level_4.calculated_opening_credit}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                                 </div>
                                                                                 <div className="col-md-4">
-                                                                                    <div className="col-md-6  text-right">{each_level_4.calculated_debit * -1}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                                                    <div className="col-md-6  text-right">{each_level_4.calculated_debit}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                                     <div className="col-md-6  text-right">{each_level_4.calculated_credit}  <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                                     {/* <div className="col-md-6 px-0 text-right">{(each_level_4.children.map((e) => { return e.current_debit }).reduce((a, b) => a + b, 0)).toFixed(2)}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div> */}
                                                                                     {/* <div className="col-md-6  text-right">{(each_level_4.children.map((e) => { return e.current_credit }).reduce((a, b) => a + b, 0)).toFixed(2)} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div> */}
                                                                                 </div>
                                                                                 <div className="col-md-4">
-                                                                                    <div className="col-md-6 px-0 text-right">{0.00}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
-                                                                                    <div className="col-md-6  text-right">{0.00}<i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                                                    <div className="col-md-6 px-0 text-right">{each_level_4.calculated_closing_balance}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                                                    <div className="col-md-6  text-right">{each_level_4.calculated_closing_balance} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -170,12 +170,12 @@ const TrialSheetReciept = React.forwardRef(
                                                                                                 <div className="col-md-6  text-right"> {Number(each_level_5?.opening_balance) < 0 ? "0.00" : (Number(each_level_5?.opening_balance).toFixed(2))} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                                             </div>
                                                                                             <div className="col-md-4">
-                                                                                                <div className="col-md-6 px-0 text-right">{(Number(each_level_5.current_debit * -1)).toFixed(2)} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                                                                <div className="col-md-6 px-0 text-right">{(Number(each_level_5.current_debit)).toFixed(2)} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                                                                                 <div className="col-md-6  text-right">{(Number(each_level_5.current_credit)).toFixed(2)}<i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                                             </div>
                                                                                             <div className="col-md-4">
-                                                                                                <div className="col-md-6 px-0 text-right">{Number(each_level_5.opening_balance) + Number(each_level_5.current_debit) - Number(each_level_5.current_credit) < 0 ? Math.abs(Number(each_level_5.opening_balance) + Number(each_level_5.current_debit) - Number(each_level_5.current_credit)) : "0.00"} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
-                                                                                                <div className="col-md-6  text-right">{Number(each_level_5.opening_balance) + Number(each_level_5.current_debit) - Number(each_level_5.current_credit) < 0 ? "0.00" : Math.abs(Number(each_level_5.opening_balance) + Number(each_level_5.current_debit) - Number(each_level_5.current_credit))} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                                                                                <div className="col-md-6 px-0 text-right">{each_level_5.calculated_closing_balance}  <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
+                                                                                                <div className="col-md-6  text-right">{each_level_5.calculated_closing_balance} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -213,7 +213,7 @@ const TrialSheetReciept = React.forwardRef(
                         <div className="  col-md-8  col-8    font-size-12     text-center  my-1">
                             <div className="row">
                                 <div className="col-md-4">
-                                    <div className="col-md-6  text-right">{grandsTotals.total_opening_debit * -1} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
+                                    <div className="col-md-6  text-right">{grandsTotals.total_opening_debit} <i className="fa fa-arrow-up text-success" aria-hidden="true"></i></div>
                                     <div className="col-md-6 px-0 text-right">{(grandsTotals.total_opening_credit)} <i className="fa fa-arrow-down text-danger" aria-hidden="true"></i></div>
                                 </div>
                                 <div className="col-md-4">
