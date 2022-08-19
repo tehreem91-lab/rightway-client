@@ -1,12 +1,12 @@
 .nav-justified{
-    background-color: silver !important;
+    background-color: rgb(238, 238, 238);  
     padding-bottom: 1px; 
     border-radius: 20px ;
 }
 #justify-tab-example-tab-profile {
   width: 100% !important;
   margin: 0px !important; 
-  background-color: silver;
+  background-color: rgb(238, 238, 238);  
   border-radius: 0px ;
   
   border-top-left-radius: 20px;
@@ -15,16 +15,17 @@
 #justify-tab-example-tab-home {
     width: 100% !important; 
     margin: 0px !important; 
-    background-color: silver;   
+    background-color: rgb(238, 238, 238);   
     border-radius: 0px ;
     border-top-right-radius: 20px;
     border-bottom-right-radius:  20px;
     
   }
 .nav-tabs .nav-link.active { 
+    color: white !important;
     border-radius: 20px !important; 
   background-color: #f79c74 !important;
-  /* transition: background-color 400ms ease-in-out; */
+  transition: background-color 200ms ease-in-out; 
 }
  
 .nav-justified {

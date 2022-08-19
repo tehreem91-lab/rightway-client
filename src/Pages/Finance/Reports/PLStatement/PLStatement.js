@@ -63,9 +63,11 @@ const PLStatement = () => {
                           let top_level_4;
                           for (let index5 = 0; index5 < account_all_data.length; index5++) {
                             if (account_all_data[index5].parent_id === categories_all_data[index4].category_id) {
-                              top_level_4 = { ...account_all_data[index5] }
+                              top_level_4 = { ...account_all_data[index5] } 
                               filtralized_data_6.push(top_level_4)
+
                             }
+
                           }
                           top_level_3 = { ...categories_all_data[index4], children: filtralized_data_6 }
                           filtralized_data_5.push(top_level_3)
@@ -176,7 +178,7 @@ const PLStatement = () => {
                     </div>
                   </div>
                   <div className="field item form-group col-md-6 col-sm-6">
-                    <label className="col-form-label col-md-3 col-sm-3 label-align"> Show Zero <span className="required">*</span></label>
+                    <label className="col-form-label col-md-3 col-sm-3 label-align">Filter Zero Balance</label>
 
                     <div className="col-md-8 col-sm-8 pt-1 pl-3">
                       <div className="form-group form-check">
@@ -257,16 +259,16 @@ const PLStatement = () => {
                   </div>
                   <div className="clearfix" />
 
-     
-                      <PLStatementReciept ref={componentRef}
-                        dateFrom={dateFrom} dateTo={dateTo}
-                        reportDataExpense={reportDataExpense}
-                        reportDataIncome={reportDataIncome}
 
-                        levelValue={levelValue}
-                      /> 
-                
-                   
+                  <PLStatementReciept ref={componentRef}
+                    dateFrom={dateFrom} dateTo={dateTo}
+                    reportDataExpense={reportDataExpense}
+                    reportDataIncome={reportDataIncome}
+
+                    levelValue={levelValue}
+                  />
+
+
 
 
                 </div>
