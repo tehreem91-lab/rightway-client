@@ -44,7 +44,7 @@ const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable }, ref)
                                             {index + 1}  </div>
                                         <div className="col-md-6   col-6   bottom-border-2   right-border-2  text-left    ">
                                             {each_acc.account_name} </div>
-                                        <div className="col-md-3   col-3   bottom-border-2   right-border-2  text-left    ">
+                                        <div className="col-md-3   col-3   bottom-border-2   right-border-2  text-center    ">
                                             {each_acc.account_code} </div>
                                         <div className="col-md-2   col-2   bottom-border-2   right-border-2  text-right    ">
                                             {(each_acc.balance * -1).toFixed(2)}  </div>
@@ -64,7 +64,7 @@ const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable }, ref)
                                             {index + 1}  </div>
                                         <div className="col-md-6   col-6   bottom-border-2   right-border-2  text-left    ">
                                             {each_acc.account_name} </div>
-                                        <div className="col-md-3   col-3   bottom-border-2   right-border-2  text-left    ">
+                                        <div className="col-md-3   col-3   bottom-border-2   right-border-2  2  text-center       ">
                                             {each_acc.account_code} </div>
                                         <div className="col-md-2   col-2   bottom-border-2   right-border-2  text-right    ">
                                             {(each_acc.balance).toFixed(2)}  </div>
@@ -97,7 +97,7 @@ const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable }, ref)
                                         {index + 1}  </div>
                                     <div className="col-md-6   col-3   bottom-border-2   right-border-2  text-left    ">
                                         {each_acc.account_name} </div>
-                                    <div className="col-md-3   col-3   bottom-border-2   right-border-2  text-left    ">
+                                    <div className="col-md-3   col-3   bottom-border-2   right-border-2 2  text-center       ">
                                         {each_acc.account_code} </div>
                                     <div className="col-md-2   col-3   bottom-border-2   right-border-2  text-right    ">
                                         {(each_acc.balance).toFixed(2)}  </div>

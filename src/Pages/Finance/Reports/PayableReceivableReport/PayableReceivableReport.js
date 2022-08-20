@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import ReactToPrint from 'react-to-print';
 import { endPoint } from '../../../../config/Config.js';
 import PayableReceivableReciept from './PayableReceivableReciept.js'
-
+import CustomInnerHeader from '../../../../Components/CustomInnerHeader'
+import Loader from '../../../../Layout/Loader/Loader'
 const PayableReceivableReport = () => {
     const [isLoading, setIsLoading] = useState(true)
 
@@ -52,14 +53,21 @@ const PayableReceivableReport = () => {
 
 
             {isLoading ? (
-                <>loading</>
+             <Loader/>
             ) : (
                 <>
+                    <div
+                        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+                            }   `}
+                    >
+                        <CustomInnerHeader moduleName="Payable Receivable Report" isShowSelector={false} />
+                    </div>
                     <div
                         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
                             } `}
                         role="main"
                     >
+
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="x_panel px-0">

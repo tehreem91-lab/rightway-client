@@ -45,7 +45,8 @@ const TrialSheet = () => {
                     let calculated_current_debit_4 = [];
                     let calculated_opening_debit_4 = [];
                     let calculated_opening_credit_4 = [];
-                    let calculated_closing_balance_4 = [];
+                    let calculated_closing_debit_4 = [];
+                    let calculated_closing_credit_4 = [];
                     // this for loop is used to make table into tree structure ___
                     for (let index = 0; index < categories_all_data.length; index++) {
                         let top_level_1 = ""
@@ -55,7 +56,8 @@ const TrialSheet = () => {
                             let calculated_current_debit_3 = [];
                             let calculated_opening_debit_3 = [];
                             let calculated_opening_credit_3 = [];
-                            let calculated_closing_balance_3 = [];
+                            let calculated_closing_debit_3 = [];
+                            let calculated_closing_credit_3 = [];
                             for (let index2 = 0; index2 < categories_all_data.length; index2++) {
                                 if (categories_all_data[index2].level === 2 && categories_all_data[index2].parent_id === categories_all_data[index].category_id) {
                                     let filtralized_data_3 = [];
@@ -64,7 +66,8 @@ const TrialSheet = () => {
                                     let calculated_current_debit_2 = [];
                                     let calculated_opening_debit_2 = [];
                                     let calculated_opening_credit_2 = [];
-                                    let calculated_closing_balance_2 = [];
+                                    let calculated_closing_debit_2 = [];
+                                    let calculated_closing_credit_2 = [];
                                     for (let index3 = 0; index3 < categories_all_data.length; index3++) {
                                         let filtralized_data_4 = [];
                                         if (categories_all_data[index3].level === 3 && categories_all_data[index3].parent_id === categories_all_data[index2].category_id) {
@@ -74,7 +77,9 @@ const TrialSheet = () => {
                                             let calculated_current_debit_1 = [];
                                             let calculated_opening_debit_1 = [];
                                             let calculated_opening_credit_1 = [];
-                                            let calculated_closing_balance_1 = [];
+                                            let calculated_closing_debit_1 = [];
+                                            let calculated_closing_credit_1 = [];
+
                                             for (let index4 = 0; index4 < categories_all_data.length; index4++) {
                                                 if (categories_all_data[index4].level === 4 && categories_all_data[index4].parent_id === categories_all_data[index3].category_id) {
                                                     let filtralized_data_6 = [];
@@ -83,15 +88,14 @@ const TrialSheet = () => {
                                                     let calculated_current_debit = [];
                                                     let calculated_opening_debit = [];
                                                     let calculated_opening_credit = [];
-                                                    let calculated_closing_balance = [];
+                                                    let calculated_closing_debit = [];
+                                                    let calculated_closing_credit = [];
                                                     for (let index5 = 0; index5 < account_all_data.length; index5++) {
                                                         if (account_all_data[index5].parent_id === categories_all_data[index4].category_id) {
-                                                            top_level_4 = { ...account_all_data[index5], calculated_closing_balance: account_all_data[index5].opening_balance + account_all_data[index5].current_debit + account_all_data[index5].current_credit }
+                                                            top_level_4 = { ...account_all_data[index5], calculated_closing_balance: account_all_data[index5].opening_balance + account_all_data[index5].current_debit - account_all_data[index5].current_credit }
                                                             calculated_current_debit.push(top_level_4.current_debit)
                                                             calculated_current_credit.push(top_level_4.current_credit)
-
-                                                            console.log("most inner ", account_all_data[index5]);
-
+ 
                                                             if (top_level_4.opening_balance < 0) {
                                                                 calculated_opening_debit.push(top_level_4.opening_balance)
                                                                 calculated_opening_credit.push(0)
@@ -102,8 +106,18 @@ const TrialSheet = () => {
                                                                 calculated_opening_credit.push(0)
                                                                 calculated_opening_debit.push(0)
                                                             }
+                                                            let closing_balance = top_level_4.opening_balance + top_level_4.current_debit - top_level_4.current_credit;
 
-                                                            calculated_closing_balance.push(top_level_4.opening_balance + top_level_4.current_debit + top_level_4.current_credit)
+                                                            if (closing_balance < 0) {
+                                                                calculated_closing_debit.push(closing_balance)
+                                                                calculated_closing_credit.push(0)
+                                                            } else if (closing_balance > 0) {
+                                                                calculated_closing_credit.push(closing_balance)
+                                                                calculated_closing_debit.push(0)
+                                                            } else {
+                                                                calculated_closing_credit.push(0)
+                                                                calculated_closing_debit.push(0)
+                                                            }
                                                             //here its seperating +ve nd -ve mean debit nd credit opening 
                                                             filtralized_data_6.push(top_level_4)
                                                         }
@@ -112,15 +126,18 @@ const TrialSheet = () => {
                                                         ...categories_all_data[index4],
                                                         calculated_opening_debit: calculated_opening_debit.reduce((a, b) => a + b, 0),
                                                         calculated_opening_credit: calculated_opening_credit.reduce((a, b) => a + b, 0),
-                                                        calculated_closing_balance: calculated_closing_balance.reduce((a, b) => a + b, 0),
-                                                        calculated_credit: calculated_current_credit.reduce((a, b) => a + b, 0), calculated_debit: calculated_current_debit.reduce((a, b) => a + b, 0),
+                                                        calculated_closing_debit: calculated_closing_debit.reduce((a, b) => a + b, 0),
+                                                        calculated_closing_credit: calculated_closing_credit.reduce((a, b) => a + b, 0),
+                                                        calculated_credit: calculated_current_credit.reduce((a, b) => a + b, 0),
+                                                        calculated_debit: calculated_current_debit.reduce((a, b) => a + b, 0),
                                                         children: filtralized_data_6
                                                     }
                                                     calculated_current_credit_1.push(top_level_3.calculated_credit)
                                                     calculated_current_debit_1.push(top_level_3.calculated_debit)
                                                     calculated_opening_debit_1.push(top_level_3.calculated_opening_debit)
                                                     calculated_opening_credit_1.push(top_level_3.calculated_opening_credit)
-                                                    calculated_closing_balance_1.push(top_level_3.calculated_closing_balance)
+                                                    calculated_closing_debit_1.push(top_level_3.calculated_closing_debit)
+                                                    calculated_closing_credit_1.push(top_level_3.calculated_closing_credit)
                                                     filtralized_data_5.push(top_level_3)
                                                 }
                                             }
@@ -130,8 +147,9 @@ const TrialSheet = () => {
                                                 children: filtralized_data_4[0],
                                                 calculated_opening_debit: calculated_opening_debit_1.reduce((a, b) => a + b, 0),
                                                 calculated_opening_credit: calculated_opening_credit_1.reduce((a, b) => a + b, 0),
+                                                calculated_closing_debit: calculated_closing_debit_1.reduce((a, b) => a + b, 0),
+                                                calculated_closing_credit: calculated_closing_credit_1.reduce((a, b) => a + b, 0),
                                                 calculated_credit: calculated_current_credit_1.reduce((a, b) => a + b, 0),
-                                                calculated_closing_balance: calculated_closing_balance_1.reduce((a, b) => a + b, 0),
                                                 calculated_debit: calculated_current_debit_1.reduce((a, b) => a + b, 0), ...categories_all_data[index3]
                                             }
                                             filtralized_data_3.push(top_level_2)
@@ -139,7 +157,8 @@ const TrialSheet = () => {
                                             calculated_current_debit_2.push(top_level_2.calculated_debit)
                                             calculated_opening_credit_2.push(top_level_2.calculated_opening_credit)
                                             calculated_opening_debit_2.push(top_level_2.calculated_opening_debit)
-                                            calculated_closing_balance_2.push(top_level_2.calculated_closing_balance)
+                                            calculated_closing_credit_2.push(top_level_2.calculated_closing_credit)
+                                            calculated_closing_debit_2.push(top_level_2.calculated_closing_debit)
 
                                         }
                                     }
@@ -147,9 +166,10 @@ const TrialSheet = () => {
                                         children: filtralized_data_3,
                                         calculated_opening_debit: calculated_opening_debit_2.reduce((a, b) => a + b, 0),
                                         calculated_opening_credit: calculated_opening_credit_2.reduce((a, b) => a + b, 0),
+                                        calculated_closing_debit: calculated_closing_debit_2.reduce((a, b) => a + b, 0),
+                                        calculated_closing_credit: calculated_closing_credit_2.reduce((a, b) => a + b, 0),
                                         calculated_credit: calculated_current_credit_2.reduce((a, b) => a + b, 0),
                                         calculated_debit: calculated_current_debit_2.reduce((a, b) => a + b, 0),
-                                        calculated_closing_balance: calculated_closing_balance_2.reduce((a, b) => a + b, 0),
                                         ...categories_all_data[index2]
                                     }
                                     filtralized_data_2.push(top_level_1)
@@ -157,7 +177,8 @@ const TrialSheet = () => {
                                     calculated_current_debit_3.push(top_level_1.calculated_debit)
                                     calculated_opening_credit_3.push(top_level_1.calculated_opening_credit)
                                     calculated_opening_debit_3.push(top_level_1.calculated_opening_debit)
-                                    calculated_closing_balance_3.push(top_level_1.calculated_closing_balance)
+                                    calculated_closing_credit_3.push(top_level_1.calculated_closing_credit)
+                                    calculated_closing_debit_3.push(top_level_1.calculated_closing_debit)
 
                                 }
                             }
@@ -165,9 +186,10 @@ const TrialSheet = () => {
                                 children: filtralized_data_2,
                                 calculated_opening_debit: calculated_opening_debit_3.reduce((a, b) => a + b, 0),
                                 calculated_opening_credit: calculated_opening_credit_3.reduce((a, b) => a + b, 0),
+                                calculated_closing_debit: calculated_closing_debit_3.reduce((a, b) => a + b, 0),
+                                calculated_closing_credit: calculated_closing_credit_3.reduce((a, b) => a + b, 0),
                                 calculated_credit: calculated_current_credit_3.reduce((a, b) => a + b, 0),
                                 calculated_debit: calculated_current_debit_3.reduce((a, b) => a + b, 0),
-                                calculated_closing_balance: calculated_closing_balance_3.reduce((a, b) => a + b, 0),
                                 ...categories_all_data[index]
                             }
                             filtralized_data.push(top_level_1)
@@ -176,16 +198,18 @@ const TrialSheet = () => {
                             calculated_current_debit_4.push(top_level_1.calculated_debit)
                             calculated_opening_credit_4.push(top_level_1.calculated_opening_credit)
                             calculated_opening_debit_4.push(top_level_1.calculated_opening_debit)
-                            calculated_closing_balance_4.push(top_level_1.calculated_closing_balance)
+                            calculated_closing_credit_4.push(top_level_1.calculated_closing_credit)
+                            calculated_closing_debit_4.push(top_level_1.calculated_closing_debit)
 
                         }
                     }
-                    setReportData(filtralized_data)
-                    console.log(filtralized_data);
+                    setReportData(filtralized_data) 
                     // calculating grands total values by pushing nested {array of number} from for loop same things hapend for nested calculation 
                     setGrandsTotals({
                         total_opening_credit: calculated_opening_credit_4.reduce((a, b) => a + b, 0),
                         total_opening_debit: calculated_opening_debit_4.reduce((a, b) => a + b, 0),
+                        total_closing_credit: calculated_closing_credit_4.reduce((a, b) => a + b, 0),
+                        total_closing_debit: calculated_closing_debit_4.reduce((a, b) => a + b, 0),
                         total_credit_level_1: calculated_current_credit_4.reduce((a, b) => a + b, 0),
                         total_debit_level_1: calculated_current_debit_4.reduce((a, b) => a + b, 0),
                     })
