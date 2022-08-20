@@ -1,87 +1,126 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux';
+import ReactToPrint from 'react-to-print';
+import { endPoint } from '../../../../config/Config.js';
+import PayableReceivableReciept from './PayableReceivableReciept.js'
 
 const PayableReceivableReport = () => {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     const showNavMenu = useSelector((state) => state.NavState);
+
+    const componentRef = useRef();
+    const [getPayable, setGetPayable] = useState([])
+    const [getReceivable, setGetReceivable] = useState([])
+
+    const fetchData = () => {
+        var axios = require('axios');
+
+        var config = {
+            method: 'get',
+            url: `${endPoint}api/RecPayReport/GetReport`,
+            headers: {
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+            }
+        };
+
+        axios(config)
+            .then(function (response) {
+                if (response.status === 200) {
+                    setGetPayable(response.data.payable_amount)
+                    setGetReceivable(response.data.receiveable_amount)
+                    setIsLoading(false)
+
+                }
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+    useEffect(() => {
+        fetchData()
+
+    }, [])
+
+
+
     return (
         <>
 
-            <>
-                <div
-                    className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
-                        }   `}
-                >
-                    <span>&nbsp; Branches Management</span>
-                </div>
-                {isLoading ? (
-                    <>loading</>
-                ) : (
-                    <>
-                        {" "}
-                        <div
-                            role="main"
-                            className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
-                                } `}
-                        >
 
 
-                            <div className="x_panel  ">
-                                <div className="x_content">
-                                    <span className="section pl-3">
-                                        <div className="row   pt-3">
-                                            <div className="col-3">
-                                                <i className="fa fa-list"></i>&nbsp;Listing
+            {isLoading ? (
+                <>loading</>
+            ) : (
+                <>
+                    <div
+                        className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
+                            } `}
+                        role="main"
+                    >
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="x_panel px-0">
+                                    <div className="x_content ">
+                                        <span className="section mb-0 pb-1">
+                                            <div className="row pl-2 ">
+                                                <div className="col-5 ">
+                                                    <i className='fa fa-list'></i>&nbsp;Report Data
+                                                </div>
+                                                <div className="col-7 text-right px-0 ">
+                                                    <div className="col-md-5"> </div>
+                                                    <div className="col-md-4  text-left "> </div>
+                                                    <div className="col-md-3 pr-4">
+                                                        <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                                                            <li>
+                                                                <ReactToPrint
+                                                                    trigger={() => {
+                                                                        return (
+                                                                            <button className="btn btn-sm btn-success borderRadiusRound">
+                                                                                <i className="fa fa-print"></i>
+                                                                            </button>
+                                                                        );
+                                                                    }}
+                                                                    content={() => componentRef.current}
+                                                                    documentTitle="new docs"
+                                                                    pageStyle="print"
+                                                                />
+                                                            </li>
+                                                            <li>
+                                                                <button
+                                                                    className="btn btn-sm btn-primary borderRadiusRound"
+                                                                    onClick={() => console.log("print")}
+                                                                >
+                                                                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                            <div className="col-9 text-right "></div>
-                                        </div>
-                                    </span>
+                                        </span>
 
-                                    <div className="table-responsive px-3 pb-2">
-                                        <table className="table table-striped jambo_table bulk_action">
-                                            <thead>
-                                                <tr className="headings">
-                                                    <th
-                                                        className="column-title  right-border-1 text-center"
-                                                        width="10%"
-                                                    >
-                                                        Sr.
-                                                    </th>
-                                                    <th className="column-title  right-border-1 text-center">
-                                                        User
-                                                    </th>
-                                                    <th className="column-title  right-border-1 text-center">
-                                                        Assign Branches
-                                                    </th>
-                                                    <th className="column-title text-center" width="10%">
-                                                        Action
-                                                    </th>
-                                                </tr>
-                                            </thead>
 
-                                            <tbody>
-
-                                                <tr className="even pointer" >
-                                                    <td className=" ">1</td>
-                                                    <td className=" ">asd</td>
-                                                    <td className=" ">
-                                                        we
-                                                    </td>
-                                                    <td className="a-right a-right     text-center">
-                                                        asd
-                                                    </td>
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
                                     </div>
+                                    <div className="clearfix" />
+                                    <PayableReceivableReciept ref={componentRef} getPayable={getPayable} getReceivable={getReceivable} />
+
                                 </div>
+
+
+
+
+                            </div>
+                            <div className="col-md-8 px-0">
+
                             </div>
                         </div>
-                    </>
-                )}
-            </>
+                    </div>
+                </>
+            )}
 
         </>
     )
