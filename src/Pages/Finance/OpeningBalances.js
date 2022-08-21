@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../Layout/Loader/Loader.js";
 import { endPoint } from "../../config/Config.js";
-import { toast } from "react-toastify";
 import axios from "axios";
 import Select from "react-select";
-import { preventMinus } from "../../config/oreventMinus";
+import { preventMinus } from "../../config/preventMinus";
 const customStyles = {
   control: (provided, state, base) => ({
     ...provided,
@@ -46,6 +45,7 @@ const OpeningBalances = () => {
   const showNavMenu = useSelector((state) => state.NavState);
   const [isLoading, setisLoading] = useState(false);
   const [accountList, setAccountList] = useState([{}]);
+  const [accountListCSV, setAccountListCSV] = useState([{}]);
   const [reRender, setreRender] = useState(false);
 
   const [visableDiv, setVisableDiv] = useState("true");
@@ -102,11 +102,45 @@ const OpeningBalances = () => {
     await axios(config)
       .then(function (response) {
         setAccountList(response.data);
+        let core_data = response.data.map((item) => {
+          return {
+            account_code: item.account_code,
+            account_name: item.account_name,
+            debit: Number(item.debit),
+            credit: Number(item.credit),
+          };
+        });
+        setAccountListCSV([
+          ...core_data,
+          {
+            account_code: "",
+            account_name: "Total",
+            debit: response.data.map((e) => e.debit).reduce((a, b) => a + b, 0),
+            credit: response.data
+              .map((e) => e.credit)
+              .reduce((a, b) => a + b, 0),
+          },
+        ]);
         setisLoading(false);
       })
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  ////////////////////////////For Downloading CSV Files////////////////////////////
+
+  const headers = [
+    { label: "Code", key: "account_code" },
+    { label: "Account Name", key: "account_name" },
+    { label: "Debit", key: "debit" },
+    { label: "Credit", key: "credit" },
+  ];
+
+  const csvReport = {
+    filename: "OpeningBalance.csv",
+    headers: headers,
+    data: accountListCSV,
   };
 
   const editBalance = () => {
@@ -135,44 +169,10 @@ const OpeningBalances = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
         console.log(error);
       });
-
-    // var data = JSON.stringify({
-    //   account_entries: [
-    //     {
-    //       finance_entries_id: 115,
-    //       debit: 888,
-    //       credit: 0,
-    //     },
-    //   ],
-    // });
-    // var config = {
-    //   method: "put",
-    //   url: `${endPoint}api/OpeningBalane/UpdateData`,
-    //   headers: {
-    //     Authorization: `Bearer ${
-    //       JSON.parse(localStorage.getItem("access_token")).access_token
-    //     }`,
-    //   },
-    //   data: data,
-    // };
-
-    // axios(config)
-    //   .then(function (response) {
-    //     if (response.status === 200) {
-    //       toast.success("Updated Sucessfully ");
-    //       fetchAllData();
-    //     } else if (response.status === 400) {
-    //       //toast.error("Already Exist");
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     //toast.error("Already Exist");
-    //   });
   };
 
   useEffect(() => {
@@ -231,33 +231,33 @@ const OpeningBalances = () => {
                         />
                       </div>
                     </div>
+                    <div className="col-md-7 col-sm-7" align="right">
+                      {visableDiv === "true" && (
+                        <button
+                          className="btn btn-dark fa fa-edit pl-3"
+                          type="button"
+                          onClick={(e) => {
+                            setDivToVisable("false");
+                            <input disabled="false" />;
+                          }}
+                        >
+                          Edit
+                        </button>
+                      )}
 
-                    {visableDiv === "true" && (
-                      <button
-                        className="btn btn-dark fa fa-edit pl-3"
-                        type="button"
-                        onClick={(e) => {
-                          setDivToVisable("false");
-                          <input disabled="false" />;
-                          //console.log("clicked edit");
-                        }}
-                      >
-                        Edit
-                      </button>
-                    )}
-
-                    {visableDiv === "false" && (
-                      <button
-                        className="btn btn-primary fa fa-save pl-3"
-                        type="submit"
-                        onClick={() => {
-                          editBalance();
-                          setDivToVisable("true");
-                        }}
-                      >
-                        Save
-                      </button>
-                    )}
+                      {visableDiv === "false" && (
+                        <button
+                          className="btn btn-primary fa fa-save pl-3"
+                          type="submit"
+                          onClick={() => {
+                            editBalance();
+                            setDivToVisable("true");
+                          }}
+                        >
+                          Save
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -273,7 +273,7 @@ const OpeningBalances = () => {
                           Code{" "}
                         </th>
                         <th className="column-title  right-border-1 text-center">
-                          Party
+                          Account Name
                         </th>
                         <th
                           className="column-title right-border-1 text-center"
@@ -287,79 +287,126 @@ const OpeningBalances = () => {
                       </tr>
                     </thead>
 
-                    <tbody>
-                      {accountList.map((item, index) => {
-                        return (
-                          <tr className="even pointer" key={index}>
-                            <td className=" "> {item.account_code}</td>
-                            <td className=" "> {item.account_name} </td>
-                            <td className=" ">
-                              {" "}
-                              <input
-                                type="number"
-                                value={item?.debit}
-                                //value={editOpeningBalance.debit}
-                                className="form-control border-none"
-                                disabled={visableDiv == "true" ? true : false}
-                                min="0"
-                                onKeyPress={(e) => preventMinus(e)}
-                                onChange={(e) => {
-                                  let arr = accountList;
-                                  let selected_index = arr.findIndex(
-                                    (obj) =>
-                                      obj.finance_entries_id ==
-                                      item.finance_entries_id
-                                  ); //it tells us about index of selected account in array of accountList
+                      {/* //////////////////////////Form Entries///////////////////////////////// */}
+                      <tbody>
+                        {accountList.map((item, index) => {
+                          return (
+                            <tr className="even pointer" key={index}>
+                              <td className=" "> {item.account_code}</td>
+                              <td className=" "> {item.account_name} </td>
+                              <td className="">
+                                {" "}
+                                <input
+                                  type="number"
+                                  value={item?.debit}
+                                  className="form-control border-none"
+                                  disabled={visableDiv == "true" ? true : false}
+                                  min="0"
+                                  onKeyPress={(e) => preventMinus(e)}
+                                  onChange={(e) => {
+                                    let arr = accountList;
+                                    let selected_index = arr.findIndex(
+                                      (obj) =>
+                                        obj.finance_entries_id ==
+                                        item.finance_entries_id
+                                    ); //it tells us about index of selected account in array of accountList
 
-                                  arr[selected_index] = {
-                                    ...arr[selected_index],
-                                    debit: e.target.value,
-                                    credit: "0",
-                                  };
+                                    arr[selected_index] = {
+                                      ...arr[selected_index],
+                                      debit: e.target.value,
+                                      credit: "0",
+                                    };
 
-                                  // console.log(arr[selected_index]);
-                                  // console.table(arr);
-                                  setAccountList(arr);
-                                  setreRender(!reRender);
-                                }}
-                              />
-                            </td>
+                                    setAccountList(arr);
+                                    setreRender(!reRender);
+                                  }}
+                                />
+                              </td>
 
-                            <td className=" ">
-                              {" "}
-                              <input
-                                type="number"
-                                value={item?.credit}
-                                className="form-control border-none"
-                                disabled={visableDiv == "true" ? true : false}
-                                min="0"
-                                onKeyPress={(e) => preventMinus(e)}
-                                onChange={(e) => {
-                                  let arr = accountList;
-                                  let selected_index = arr.findIndex(
-                                    (obj) =>
-                                      obj.finance_entries_id ==
-                                      item.finance_entries_id
-                                  ); //it tells us about index of selected account in array of accountList
-                                  arr[selected_index] = {
-                                    ...arr[selected_index],
-                                    debit: "0",
-                                    credit: e.target.value,
-                                  };
+                              <td className=" ">
+                                {" "}
+                                <input
+                                  type="number"
+                                  value={item?.credit}
+                                  className="form-control border-none"
+                                  disabled={visableDiv == "true" ? true : false}
+                                  min="0"
+                                  onKeyPress={(e) => preventMinus(e)}
+                                  onChange={(e) => {
+                                    let arr = accountList;
+                                    let selected_index = arr.findIndex(
+                                      (obj) =>
+                                        obj.finance_entries_id ==
+                                        item.finance_entries_id
+                                    );
+                                    arr[selected_index] = {
+                                      ...arr[selected_index],
+                                      debit: "0",
+                                      credit: e.target.value,
+                                    };
 
-                                  // console.log(arr[selected_index]);
-                                  // console.table(arr);
-                                  setAccountList(arr);
-                                  setreRender(!reRender);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                                    setAccountList(arr);
+                                    setreRender(!reRender);
+                                  }}
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot>
+                        <tr className="font-weight-bold">
+                          <td></td>
+                          <td className="col-md-12 col-sm-12" align="right">
+                            Total:
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.debit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.credit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
+              </div>
+
+              <div className="col-md-12 col-sm-12" align="right">
+                {visableDiv === "true" && (
+                  <button
+                    className="btn btn-dark fa fa-edit pl-3"
+                    type="button"
+                    onClick={(e) => {
+                      setDivToVisable("false");
+                      <input disabled="false" />;
+                    }}
+                  >
+                    Edit
+                  </button>
+                )}
+
+                {visableDiv === "false" && (
+                  <button
+                    className="btn btn-primary fa fa-save pl-3"
+                    type="submit"
+                    onClick={() => {
+                      editBalance();
+                      setDivToVisable("true");
+                    }}
+                  >
+                    Save
+                  </button>
+                )}
               </div>
             </div>
           </div>
