@@ -723,3 +723,47 @@ height: 2px !important;
 .bold-9{
   font-weight: 900;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.displayPropertyForPrint {
+  display: none;
+}
+.removeInPrintMedia{
+  display: block;
+}
+@media print {
+  /* *,
+  :after,
+  :before {
+    color: #000 !important;
+    text-shadow: none !important;
+    background: 0 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    
+  } */
+
+  /* .backGroundColorForTableHeaderPrint {
+    background-color: red !important;
+    color: blue !important;
+    -webkit-print-color-adjust: exact !important;
+  } */
+  .displayPropertyForPrint {
+    display: block;
+  }
+  .removeInPrintMedia{
+    display: none;
+  }
+}
