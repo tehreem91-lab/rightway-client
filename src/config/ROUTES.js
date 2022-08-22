@@ -72,7 +72,7 @@ const ROUTES = {
     PLStatement: { id: '32', element: PLStatement, path: "PLStatementAccess" },
     BalanceSheet: { id: '33', element: BalanceSheet, path: "BalanceSheetAccess" },
     TransactionReport: { id: '34', element: TransactionReport, path: "TransactionReportAccess" },
-    OpeningBalances: { id: '31', element: OpeningBalances, path: "OpeningBalances" },
+    OpeningBalances: { id: '35', element: OpeningBalances, path: "OpeningBalancesAccess" },
 };
 
 export default ROUTES;

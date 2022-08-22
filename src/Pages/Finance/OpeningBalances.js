@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../Layout/Loader/Loader.js";
 import { endPoint } from "../../config/Config.js";
-import { toast } from "react-toastify";
 import axios from "axios";
 import Select from "react-select";
 import { preventMinus } from "../../config/preventMinus";
+import { CSVLink } from "react-csv";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 const customStyles = {
   control: (provided, state, base) => ({
     ...provided,
@@ -46,6 +49,7 @@ const OpeningBalances = () => {
   const showNavMenu = useSelector((state) => state.NavState);
   const [isLoading, setisLoading] = useState(false);
   const [accountList, setAccountList] = useState([{}]);
+  const [accountListCSV, setAccountListCSV] = useState([{}]);
   const [reRender, setreRender] = useState(false);
 
   const [visableDiv, setVisableDiv] = useState("true");
@@ -103,11 +107,45 @@ const OpeningBalances = () => {
     await axios(config)
       .then(function (response) {
         setAccountList(response.data);
+        let core_data = response.data.map((item) => {
+          return {
+            account_code: item.account_code,
+            account_name: item.account_name,
+            debit: Number(item.debit),
+            credit: Number(item.credit),
+          };
+        });
+        setAccountListCSV([
+          ...core_data,
+          {
+            account_code: "",
+            account_name: "Total",
+            debit: response.data.map((e) => e.debit).reduce((a, b) => a + b, 0),
+            credit: response.data
+              .map((e) => e.credit)
+              .reduce((a, b) => a + b, 0),
+          },
+        ]);
         setisLoading(false);
       })
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  ////////////////////////////For Downloading CSV Files////////////////////////////
+
+  const headers = [
+    { label: "Code", key: "account_code" },
+    { label: "Account Name", key: "account_name" },
+    { label: "Debit", key: "debit" },
+    { label: "Credit", key: "credit" },
+  ];
+
+  const csvReport = {
+    filename: "OpeningBalance.csv",
+    headers: headers,
+    data: accountListCSV,
   };
 
   const editBalance = () => {
@@ -135,11 +173,48 @@ const OpeningBalances = () => {
     };
 
     axios(config)
-      .then(function (response) {
-      })
+      .then(function (response) {})
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  ////////////////////////////For Downloading PDF Files////////////////////////////
+  const downloadPdf = async () => {
+    var data = document.getElementById("report");
+    //$("pdfOpenHide").attr("hidden", true);
+    // To disable the scroll
+    document.getElementById("report").style.overflow = "inherit";
+    document.getElementById("report").style.maxHeight = "inherit";
+
+    await html2canvas(data).then((canvas) => {
+      const contentDataURL = canvas.toDataURL("image/png", 1.0);
+      // enabling the scroll
+      //document.getElementById("report").style.overflow = "scroll";
+      //document.getElementById("report").style.maxHeight = "150px";
+
+      let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+
+      let imgWidth = 300;
+      let pageHeight = pdf.internal.pageSize.height;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      window.open(
+        pdf.output("bloburl", { filename: "new-file.pdf" }),
+        "_blank"
+      );
+    });
   };
 
   useEffect(() => {
@@ -219,126 +294,172 @@ const OpeningBalances = () => {
                             setDivToVisable("true");
                           }}
                         >
-                          Save
+                          Update
                         </button>
                       )}
                     </div>
                   </div>
                 </div>
 
-                <div className="table-responsive px-3 pb-2">
-                  <table className="table table-striped jambo_table bulk_action">
-                    <thead>
-                      <tr className="headings">
-                        <th
-                          className="column-title  right-border-1 text-center"
-                          width="10%"
-                        >
-                          {" "}
-                          Code{" "}
-                        </th>
-                        <th className="column-title  right-border-1 text-center">
-                          Account Name
-                        </th>
-                        <th
-                          className="column-title right-border-1 text-center"
-                          width="10%"
-                        >
-                          Debit
-                        </th>
-                        <th className="column-title text-center" width="10%">
-                          Credit
-                        </th>
-                      </tr>
-                    </thead>
+                {/* ///////////////////////For Downloadling Data/////////////////////////// */}
+                <div className="col-md-12 col-sm-12 pr-4" align="right">
+                  <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                    <div className="form-group col-md-3">
+                      {/* <ReactToPrint
+                        trigger={() => {
+                          return ( */}
+                      <button className="btn btn-sm btn-primary borderRadiusRound">
+                        <i className="fa fa-print"></i>
+                      </button>
+                      {/* );
+                        }}
+                        content={() => componentRef.current}
+                        documentTitle="new docs"
+                        pageStyle="print"
+                      /> */}
+                    </div>
 
-                    <tbody>
-                      {accountList.map((item, index) => {
-                        return (
-                          <tr className="even pointer" key={index}>
-                            <td className=" "> {item.account_code}</td>
-                            <td className=" "> {item.account_name} </td>
-                            <td className="">
-                              {" "}
-                              <input
-                                type="number"
-                                value={item?.debit}
-                                className="form-control border-none"
-                                disabled={visableDiv == "true" ? true : false}
-                                min="0"
-                                onKeyPress={(e) => preventMinus(e)}
-                                onChange={(e) => {
-                                  let arr = accountList;
-                                  let selected_index = arr.findIndex(
-                                    (obj) =>
-                                      obj.finance_entries_id ==
-                                      item.finance_entries_id
-                                  ); //it tells us about index of selected account in array of accountList
+                    <div className="form-group col-md-3">
+                      <button
+                        className="btn btn-sm btn-warning borderRadiusRound"
+                        onClick={downloadPdf}
+                        type="button"
+                      >
+                        <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <div className="form-group col-md-3">
+                      <CSVLink {...csvReport}>
+                        <button className="btn btn-sm btn-success borderRadiusRound">
+                          <i
+                            className="fa fa-file-pdf-o"
+                            aria-hidden="true"
+                          ></i>
+                        </button>
+                      </CSVLink>
+                    </div>
+                  </ul>
+                </div>
 
-                                  arr[selected_index] = {
-                                    ...arr[selected_index],
-                                    debit: e.target.value,
-                                    credit: "0",
-                                  };
+                {/* //////////////////////////Form Structure///////////////////////////////// */}
+                <div id="report">
+                  <div className="table-responsive px-3 pb-2 ">
+                    <table className="table table-striped jambo_table bulk_action ">
+                      <thead>
+                        <tr className="headings reportTableHead">
+                          <th
+                            className="column-title col-md-3 col-3 right-border-1 text-center "
+                            width="10%"
+                          >
+                            {" "}
+                            Code{" "}
+                          </th>
+                          <th className="column-title  right-border-1 text-center">
+                            Account Name
+                          </th>
+                          <th
+                            className="column-title right-border-1 text-center"
+                            width="10%"
+                          >
+                            Debit
+                          </th>
+                          <th className="column-title text-center" width="10%">
+                            Credit
+                          </th>
+                        </tr>
+                      </thead>
 
-                                  setAccountList(arr);
-                                  setreRender(!reRender);
-                                }}
-                              />
-                            </td>
+                      {/* //////////////////////////Form Entries///////////////////////////////// */}
+                      <tbody>
+                        {accountList.map((item, index) => {
+                          return (
+                            <tr className="even pointer" key={index}>
+                              <td className=" "> {item.account_code}</td>
+                              <td className=" "> {item.account_name} </td>
+                              <td className="">
+                                {" "}
+                                <input
+                                  type="number"
+                                  value={item?.debit}
+                                  className="form-control border-none"
+                                  disabled={visableDiv == "true" ? true : false}
+                                  min="0"
+                                  onKeyPress={(e) => preventMinus(e)}
+                                  onChange={(e) => {
+                                    let arr = accountList;
+                                    let selected_index = arr.findIndex(
+                                      (obj) =>
+                                        obj.finance_entries_id ==
+                                        item.finance_entries_id
+                                    ); //it tells us about index of selected account in array of accountList
 
-                            <td className=" ">
-                              {" "}
-                              <input
-                                type="number"
-                                value={item?.credit}
-                                className="form-control border-none"
-                                disabled={visableDiv == "true" ? true : false}
-                                min="0"
-                                onKeyPress={(e) => preventMinus(e)}
-                                onChange={(e) => {
-                                  let arr = accountList;
-                                  let selected_index = arr.findIndex(
-                                    (obj) =>
-                                      obj.finance_entries_id ==
-                                      item.finance_entries_id
-                                  );
-                                  arr[selected_index] = {
-                                    ...arr[selected_index],
-                                    debit: "0",
-                                    credit: e.target.value,
-                                  };
+                                    arr[selected_index] = {
+                                      ...arr[selected_index],
+                                      debit: e.target.value,
+                                      credit: "0",
+                                    };
 
-                                  setAccountList(arr);
-                                  setreRender(!reRender);
-                                }}
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td>Total</td>
-                        <td></td>
-                        <td>
-                          {accountList
-                            .map((values) => {
-                              return Number(values.debit);
-                            })
-                            .reduce((a, b) => a + b, 0)}
-                        </td>
-                        <td>
-                          {accountList
-                            .map((values) => {
-                              return Number(values.credit);
-                            })
-                            .reduce((a, b) => a + b, 0)}
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
+                                    setAccountList(arr);
+                                    setreRender(!reRender);
+                                  }}
+                                />
+                              </td>
+
+                              <td className=" ">
+                                {" "}
+                                <input
+                                  type="number"
+                                  value={item?.credit}
+                                  className="form-control border-none"
+                                  disabled={visableDiv == "true" ? true : false}
+                                  min="0"
+                                  onKeyPress={(e) => preventMinus(e)}
+                                  onChange={(e) => {
+                                    let arr = accountList;
+                                    let selected_index = arr.findIndex(
+                                      (obj) =>
+                                        obj.finance_entries_id ==
+                                        item.finance_entries_id
+                                    );
+                                    arr[selected_index] = {
+                                      ...arr[selected_index],
+                                      debit: "0",
+                                      credit: e.target.value,
+                                    };
+
+                                    setAccountList(arr);
+                                    setreRender(!reRender);
+                                  }}
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot>
+                        <tr className="font-weight-bold">
+                          <td></td>
+                          <td className="col-md-12 col-sm-12" align="right">
+                            Total:
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.debit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.credit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
               </div>
 
@@ -365,7 +486,7 @@ const OpeningBalances = () => {
                       setDivToVisable("true");
                     }}
                   >
-                    Save
+                    Update
                   </button>
                 )}
               </div>

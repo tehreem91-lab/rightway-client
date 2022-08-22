@@ -1,11 +1,15 @@
 import React from 'react'
+import TransReportGlobalComp from '../TransReportGlobalComp'
 
 const TransactionReport = () => {
-  return (
-    <div>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima voluptatem nihil error quam, optio, expedita harum, ullam magnam excepturi molestias amet libero porro quod doloribus hic! Ullam illo dolorem, libero vel deleniti consequuntur assumenda beatae eligendi! Distinctio cupiditate perferendis facilis ad obcaecati harum eius provident doloremque fuga, sunt vero in laudantium rerum! Est excepturi ab dolor, cupiditate corrupti saepe quod corporis quibusdam vel sapiente officia, quis temporibus veniam, quasi in velit ex atque animi deleniti voluptates distinctio laborum! Magnam suscipit facere dolor vero. In saepe nihil quaerat fugiat, sunt et eligendi minus sit dolore. Provident eveniet deserunt asperiores ab aut a quos illum voluptates quod consequatur ad architecto aliquam laudantium, aspernatur obcaecati facilis neque ullam quas? Aliquam ipsam unde dolore architecto, laudantium nostrum quo itaque esse, eveniet consequatur perspiciatis libero maxime tempore ipsa fugiat voluptatem sequi? Magnam optio itaque repellendus error ab vel natus ratione, sed repellat, molestias reiciendis non officia inventore debitis doloribus fugit? Ex provident sit totam numquam. Libero magni delectus ipsam quas veniam adipisci aliquid vero eum fugiat maxime voluptate enim officiis dolor non aspernatur impedit repellat, reprehenderit sit temporibus fugit doloremque cupiditate nihil! Ipsa illo consequuntur vitae totam? Aut, quibusdam dolore. Non recusandae consectetur ad consequuntur ipsa unde cupiditate doloremque corrupti nostrum cumque temporibus dolor assumenda blanditiis, dolorum voluptates pariatur maiores? Esse ducimus eveniet similique explicabo assumenda, voluptatum beatae nesciunt nostrum consectetur ullam cumque pariatur soluta sint tempore nemo, tempora illum commodi nihil. Aliquid amet, minus, quis nulla unde dolorem rerum eius quam architecto labore et laborum? Labore incidunt vitae a, consequatur amet atque quia ab blanditiis, recusandae cumque, facilis minima necessitatibus! Laboriosam accusantium mollitia quisquam totam architecto, sapiente corrupti, hic qui porro ducimus repudiandae vero harum explicabo? Magni assumenda corrupti laborum vero illo labore minus maiores eius fuga unde numquam est voluptatum corporis, tempora necessitatibus consequuntur obcaecati! At distinctio numquam beatae odit dolor minima cupiditate delectus ipsam architecto quae quo, voluptate culpa veniam dolore error voluptatum voluptatem dolorum facilis quidem in consequuntur soluta assumenda? Rem temporibus placeat, non aut, consectetur repellat expedita provident fuga quo praesentium perspiciatis labore dolorum ea?
-    </div>
-  )
+    return (
+        <div>
+
+            <TransReportGlobalComp
+                account_type="all" page_name="Transaction Report" />
+
+        </div>
+    )
 }
 
 export default TransactionReport
