@@ -680,7 +680,7 @@ const JournalVoucherSingle = () => {
                 });
                 var config = {
                     method: state === null ? 'post' : 'put',
-                    url: state === null ? `${endPoint}/api/SingleMultipleVoucher/PostDataL` : `${endPoint}/api/SingleMultipleVoucher/UpdateDataL?voucher_id=${state.data_2}`,
+                    url: state === null ? `${endPoint}/api/SingleMultipleVoucher/PostDataL` : `${endPoint}/api/SingleMultipleVoucher/UpdateDataL?voucher_id=${state.data}`,
                     headers: {
                         'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
                         'Content-Type': 'application/json'
