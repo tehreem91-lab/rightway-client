@@ -20,7 +20,7 @@ const BalanceSheetReciept = React.forwardRef(
                         {" "}
                         <Tab eventKey="profile" title="Assets" disabled>
                             <div className="row" ref={ref}>
-                                <div className="col-md-6 px-0">
+                                <div className="col-md-6 col-6 px-0">
                                     <div className="div_to_print_income">
                                         <div className="displayPropertyForPrint d-none">
                                             <h2 className="text-dark text-center font-weight-bold  ">
@@ -46,13 +46,13 @@ const BalanceSheetReciept = React.forwardRef(
                                             </div>
                                         </div>
 
-                                        <div className="row mx-3   bottom-border-1 bg-customBlue text-light">
-                                            <div className="  col-md-6   col-4    font-size-12    text-left  my-1">
-                                                <b> Account Title</b>
+                                        <div className="row mx-3   bottom-border-1 bg-customBlue  text-light">
+                                            <div className="  col-md-6   col-6    font-size-12    text-left  my-1">
+                                                <b> Account Title </b>
                                             </div>
-                                            <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
+                                            <div className="  col-md-6  col-6    font-size-12     text-center  my-1">
                                                 <div className="row">
-                                                    <div className="col-md-4"></div>
+                                                    <div className="col-md-4 col-4"></div>
                                                     <div className="col-md-4"></div>
                                                     <div className="col-md-4">
                                                         <div className="col-md-12  text-right">Amount</div>
@@ -224,7 +224,7 @@ const BalanceSheetReciept = React.forwardRef(
 
                                     </div>
                                 </div>
-                                <div className="col-md-6 px-0">
+                                <div className="col-md-6 col-6 px-0">
                                     <div className="div_to_print_income">
                                         <div className="displayPropertyForPrint d-none">
                                             <h2 className="text-dark text-center font-weight-bold  ">

@@ -273,7 +273,7 @@ const Balance = () => {
                                   className="btn btn-sm btn-primary borderRadiusRound"
                                   onClick={() => console.log("print")}
                                 >
-                                  <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                <i className="fa fa-file-excel-o"></i>
                                 </button>
                               </li>
                             </ul>
