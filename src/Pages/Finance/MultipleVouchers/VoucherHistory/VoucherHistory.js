@@ -38,7 +38,7 @@ const VoucherHistory = () => {
 
         var config = {
             method: 'get',
-            url: `http://localhost:63145/api/MultiVoucher/History?dateFrom=${dateFrom}T00:00:00.928Z&dateTo=${dateTo}T00:00:00.928Z&voucher_types=${voucherTypeValue.value}`,
+            url: `${endPoint}api/MultiVoucher/History?dateFrom=${dateFrom}T00:00:00.928Z&dateTo=${dateTo}T00:00:00.928Z&voucher_types=${voucherTypeValue.value}`,
             headers: {
                 'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
             }
@@ -47,6 +47,7 @@ const VoucherHistory = () => {
         axios(config)
             .then(function (response) {
                 setVoucherHistoryRecord(response.data)
+                console.log(response.data);
                 setVoucherHistoryRecordConst(response.data)
             })
             .catch(function (error) {
@@ -264,14 +265,29 @@ const VoucherHistory = () => {
                                                             <div className='py-0'>
                                                                 <span className='text-customOrange'>
                                                                     <u onClick={() => {
-                                                                        navigate(`/${voucherTypes.find(
-                                                                            (o) => o.voucher_id === each_voucher_record.voucher_type_id
-                                                                        ).multiple_router_path}`, {
-                                                                            state: {
-                                                                                data: each_voucher_record.finance_main_id
-                                                                            }
-                                                                            // here im using Dynamic rout path check nd blnce that on whicj route we have to go
-                                                                        });
+                                                                        if (each_voucher_record.is_multiple_voucher === 0) {
+                                                                            // its mean its single  
+                                                                            navigate(`/${voucherTypes.find(
+                                                                                (o) => o.voucher_id === each_voucher_record.voucher_type_id
+                                                                            ).single_router_path}`, {
+                                                                                state: {
+                                                                                    data: each_voucher_record.finance_main_id
+                                                                                }
+                                                                                // here im using Dynamic rout path check nd blnce that on whicj route we have to go
+                                                                            });
+                                                                        } else {
+                                                                            navigate(`/${voucherTypes.find(
+                                                                                (o) => o.voucher_id === each_voucher_record.voucher_type_id
+                                                                            ).multiple_router_path}`, {
+                                                                                state: {
+                                                                                    data: each_voucher_record.finance_main_id
+                                                                                }
+                                                                                // here im using Dynamic rout path check nd blnce that on whicj route we have to go
+                                                                            });
+                                                                        }
+
+
+
                                                                     }}> Edit</u>
                                                                 </span>
                                                             </div>
@@ -326,7 +342,7 @@ const VoucherHistory = () => {
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
                                                             onClick={() => {
-                                                                navigate('/BankPaymentAccess', {
+                                                                navigate('/JournalVoucherAccess', {
                                                                     state: null
                                                                 });
 

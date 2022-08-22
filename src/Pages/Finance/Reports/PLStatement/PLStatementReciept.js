@@ -65,9 +65,8 @@ const PLStatementReciept = React.forwardRef(
                         return (
                           <>
                             <div
-                              className={`row mx-3 ${
-                                levelValue.value >= 1 ? "" : "d-none"
-                              }  bottom-border-1  text-dark  `}
+                              className={`row mx-3 ${levelValue.value >= 1 ? "" : "d-none"
+                                }  bottom-border-1  text-dark  `}
                               style={{ backgroundColor: "#fd8b5a" }}
                             >
                               <div className="  col-md-6   col-4    font-size-12 pl-1   text-left  ">
@@ -75,11 +74,11 @@ const PLStatementReciept = React.forwardRef(
                               </div>
                               <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                 <div className="row">
-                                  <div className="col-md-4"></div>
-                                  <div className="col-md-4"></div>
-                                  <div className="col-md-4">
+                                  <div className="col-md-6"></div>
+
+                                  <div className="col-md-6">
                                     <div className="col-md-12  text-right">
-                                      0.00{" "}
+                                      {(Number(each_level_1.calculated_credit)).toFixed(2)}
                                     </div>
                                   </div>
                                 </div>
@@ -90,9 +89,8 @@ const PLStatementReciept = React.forwardRef(
                               return (
                                 <>
                                   <div
-                                    className={`row mx-3 ${
-                                      levelValue.value >= 2 ? "" : "d-none"
-                                    }  bottom-border-1  text-dark`}
+                                    className={`row mx-3 ${levelValue.value >= 2 ? "" : "d-none"
+                                      }  bottom-border-1  text-dark`}
                                     style={{ backgroundColor: "#f7ab8b" }}
                                   >
                                     <div className="  col-md-6   col-4    font-size-12  pl-2   text-left  my-1">
@@ -100,11 +98,10 @@ const PLStatementReciept = React.forwardRef(
                                     </div>
                                     <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                       <div className="row">
-                                        <div className="col-md-4"></div>
-                                        <div className="col-md-4"></div>
-                                        <div className="col-md-4">
+                                        <div className="col-md-6"></div>
+                                        <div className="col-md-6">
                                           <div className="col-md-12  text-right">
-                                            0.00{" "}
+                                            {(Number(each_level_2.calculated_credit)).toFixed(2)}
                                           </div>
                                         </div>
                                       </div>
@@ -114,11 +111,10 @@ const PLStatementReciept = React.forwardRef(
                                     return (
                                       <>
                                         <div
-                                          className={`row mx-3 ${
-                                            levelValue.value >= 3
-                                              ? ""
-                                              : "d-none"
-                                          }  bottom-border-1  text-dark`}
+                                          className={`row mx-3 ${levelValue.value >= 3
+                                            ? ""
+                                            : "d-none"
+                                            }  bottom-border-1  text-dark`}
                                           style={{ backgroundColor: "#ffbca0" }}
                                         >
                                           <div className="  col-md-6   col-4    font-size-12   pl-3  text-left  my-1">
@@ -126,11 +122,10 @@ const PLStatementReciept = React.forwardRef(
                                           </div>
                                           <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                             <div className="row">
-                                              <div className="col-md-4"></div>
-                                              <div className="col-md-4"></div>
-                                              <div className="col-md-4">
+                                              <div className="col-md-6"></div>
+                                              <div className="col-md-6">
                                                 <div className="col-md-12  text-right">
-                                                  0.00{" "}
+                                                  {(Number(each_level_3.calculated_credit)).toFixed(2)}
                                                 </div>
                                               </div>
                                             </div>
@@ -141,11 +136,10 @@ const PLStatementReciept = React.forwardRef(
                                             return (
                                               <>
                                                 <div
-                                                  className={`row mx-3 ${
-                                                    levelValue.value >= 4
-                                                      ? ""
-                                                      : "d-none"
-                                                  }  bottom-border-1  text-dark`}
+                                                  className={`row mx-3 ${levelValue.value >= 4
+                                                    ? ""
+                                                    : "d-none"
+                                                    }  bottom-border-1  text-dark`}
                                                   style={{
                                                     backgroundColor: "#ffcbb5",
                                                   }}
@@ -155,11 +149,10 @@ const PLStatementReciept = React.forwardRef(
                                                   </div>
                                                   <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                                     <div className="row">
-                                                      <div className="col-md-4"></div>
-                                                      <div className="col-md-4"></div>
-                                                      <div className="col-md-4">
+                                                      <div className="col-md-6"></div>
+                                                      <div className="col-md-6">
                                                         <div className="col-md-12  text-right">
-                                                          {0.0}
+                                                          {(Number(each_level_4.calculated_credit)).toFixed(2)}
                                                         </div>
                                                       </div>
                                                     </div>
@@ -170,13 +163,12 @@ const PLStatementReciept = React.forwardRef(
                                                     return (
                                                       <>
                                                         <div
-                                                          className={`row mx-3 ${
-                                                            levelValue.value ===
+                                                          className={`row mx-3 ${levelValue.value ===
                                                             5
-                                                              ? ""
-                                                              : "d-none"
-                                                          }  bottom-border-1  text-dark`}
-                                                          style={{     backgroundColor:  "#ffe4d9", }}
+                                                            ? ""
+                                                            : "d-none"
+                                                            }  bottom-border-1  text-dark`}
+                                                          style={{ backgroundColor: "#ffe4d9", }}
                                                         >
                                                           <div className="  col-md-6   col-4   pl-5  font-size-12    text-left  my-1">
                                                             {
@@ -189,10 +181,9 @@ const PLStatementReciept = React.forwardRef(
                                                               <div className="col-md-4"></div>
                                                               <div className="col-md-4">
                                                                 <div className="col-md-12  text-right">
-                                                                  {Number( each_level_5.current_debit  ) - Number( each_level_5.current_credit )}
-                                                                </div>
+                                                                  {(Number(each_level_5.current_credit)).toFixed(2)}   </div>
                                                               </div>
-                                                            </div> 
+                                                            </div>
                                                           </div>
                                                         </div>
                                                       </>
@@ -206,28 +197,31 @@ const PLStatementReciept = React.forwardRef(
                                       </>
                                     );
                                   })}
+
                                 </>
                               );
                             })}
+                            <div className="row mx-3   bottom-border-1 bg-customBlue text-light">
+                              <div className="  col-md-6   col-4    font-size-12    text-left  my-1">
+                                <b> Total</b>
+                              </div>
+                              <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
+                                <div className="row">
+                                  <div className="col-md-4"></div>
+                                  <div className="col-md-4"></div>
+                                  <div className="col-md-4">
+                                    <div className="col-md-12  text-right">  {(Number(each_level_1.calculated_credit)).toFixed(2)}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </>
                         );
                       })}
                     </div>
 
-                    <div className="row mx-3   bottom-border-1 bg-customBlue text-light">
-                      <div className="  col-md-6   col-4    font-size-12    text-left  my-1">
-                        <b> Total</b>
-                      </div>
-                      <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
-                        <div className="row">
-                          <div className="col-md-4"></div>
-                          <div className="col-md-4"></div>
-                          <div className="col-md-4">
-                            <div className="col-md-12  text-right">2344.56</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                   </div>
                 </div>
                 <div className="col-md-6 px-0">
@@ -274,9 +268,8 @@ const PLStatementReciept = React.forwardRef(
                       return (
                         <>
                           <div
-                            className={`row mx-3 ${
-                              levelValue.value >= 1 ? "" : "d-none"
-                            }  bottom-border-1  text-dark`}
+                            className={`row mx-3 ${levelValue.value >= 1 ? "" : "d-none"
+                              }  bottom-border-1  text-dark`}
                             style={{ backgroundColor: "#fd8b5a" }}
                           >
                             <div className="  col-md-6   col-4    font-size-12 pl-1   text-left  my-1">
@@ -284,11 +277,10 @@ const PLStatementReciept = React.forwardRef(
                             </div>
                             <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                               <div className="row">
-                                <div className="col-md-4"></div>
-                                <div className="col-md-4"></div>
-                                <div className="col-md-4">
+                                <div className="col-md-6"></div>
+                                <div className="col-md-6">
                                   <div className="col-md-12  text-right">
-                                    0.00{" "}
+                                    {(Number(each_level_1.calculated_debit)).toFixed(2)}
                                   </div>
                                 </div>
                               </div>
@@ -299,9 +291,8 @@ const PLStatementReciept = React.forwardRef(
                             return (
                               <>
                                 <div
-                                  className={`row mx-3 ${
-                                    levelValue.value >= 2 ? "" : "d-none"
-                                  }  bottom-border-1  text-dark`}
+                                  className={`row mx-3 ${levelValue.value >= 2 ? "" : "d-none"
+                                    }  bottom-border-1  text-dark`}
                                   style={{ backgroundColor: "#f7ab8b" }}
                                 >
                                   <div className="  col-md-6   col-4    font-size-12  pl-2   text-left  my-1">
@@ -309,11 +300,10 @@ const PLStatementReciept = React.forwardRef(
                                   </div>
                                   <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                     <div className="row">
-                                      <div className="col-md-4"></div>
-                                      <div className="col-md-4"></div>
-                                      <div className="col-md-4">
+                                      <div className="col-md-6"></div>
+                                      <div className="col-md-6">
                                         <div className="col-md-12  text-right">
-                                          0.00{" "}
+                                          {(Number(each_level_2.calculated_debit)).toFixed(2)}
                                         </div>
                                       </div>
                                     </div>
@@ -323,9 +313,8 @@ const PLStatementReciept = React.forwardRef(
                                   return (
                                     <>
                                       <div
-                                        className={`row mx-3 ${
-                                          levelValue.value >= 3 ? "" : "d-none"
-                                        }  bottom-border-1  text-dark`}
+                                        className={`row mx-3 ${levelValue.value >= 3 ? "" : "d-none"
+                                          }  bottom-border-1  text-dark`}
                                         style={{ backgroundColor: "#ffbca0" }}
                                       >
                                         <div className="  col-md-6   col-4    font-size-12   pl-3  text-left  my-1">
@@ -333,11 +322,10 @@ const PLStatementReciept = React.forwardRef(
                                         </div>
                                         <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                           <div className="row">
-                                            <div className="col-md-4"></div>
-                                            <div className="col-md-4"></div>
-                                            <div className="col-md-4">
+                                            <div className="col-md-6"></div>
+                                            <div className="col-md-6">
                                               <div className="col-md-12  text-right">
-                                                0.00{" "}
+                                                {(Number(each_level_3.calculated_debit)).toFixed(2)}
                                               </div>
                                             </div>
                                           </div>
@@ -348,11 +336,10 @@ const PLStatementReciept = React.forwardRef(
                                           return (
                                             <>
                                               <div
-                                                className={`row mx-3 ${
-                                                  levelValue.value >= 4
-                                                    ? ""
-                                                    : "d-none"
-                                                }  bottom-border-1  text-dark`}
+                                                className={`row mx-3 ${levelValue.value >= 4
+                                                  ? ""
+                                                  : "d-none"
+                                                  }  bottom-border-1  text-dark`}
                                                 style={{
                                                   backgroundColor: "#ffcbb5",
                                                 }}
@@ -362,11 +349,10 @@ const PLStatementReciept = React.forwardRef(
                                                 </div>
                                                 <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                                   <div className="row">
-                                                    <div className="col-md-4"></div>
-                                                    <div className="col-md-4"></div>
-                                                    <div className="col-md-4">
+                                                    <div className="col-md-6"></div>
+                                                    <div className="col-md-6">
                                                       <div className="col-md-12  text-right">
-                                                        {0.0}
+                                                        {(Number(each_level_4.calculated_debit)).toFixed(2)}
                                                       </div>
                                                     </div>
                                                   </div>
@@ -377,11 +363,10 @@ const PLStatementReciept = React.forwardRef(
                                                   return (
                                                     <>
                                                       <div
-                                                        className={`row mx-3 ${
-                                                          levelValue.value === 5
-                                                            ? ""
-                                                            : "d-none"
-                                                        }  bottom-border-1  text-dark`}
+                                                        className={`row mx-3 ${levelValue.value === 5
+                                                          ? ""
+                                                          : "d-none"
+                                                          }  bottom-border-1  text-dark`}
                                                         style={{
                                                           backgroundColor:
                                                             "#ffe4d9",
@@ -394,32 +379,10 @@ const PLStatementReciept = React.forwardRef(
                                                         </div>
                                                         <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
                                                           <div className="row">
-                                                            <div className="col-md-4"></div>
-                                                            <div className="col-md-4"></div>
-                                                            <div className="col-md-4">
+                                                            <div className="col-md-6"></div>
+                                                            <div className="col-md-6">
                                                               <div className="col-md-12  text-right">
-                                                                {Number(
-                                                                  each_level_5.opening_balance
-                                                                ) +
-                                                                  Number(
-                                                                    each_level_5.current_debit
-                                                                  ) -
-                                                                  Number(
-                                                                    each_level_5.current_credit
-                                                                  ) <
-                                                                0
-                                                                  ? "0.00"
-                                                                  : Math.abs(
-                                                                      Number(
-                                                                        each_level_5.opening_balance
-                                                                      ) +
-                                                                        Number(
-                                                                          each_level_5.current_debit
-                                                                        ) -
-                                                                        Number(
-                                                                          each_level_5.current_credit
-                                                                        )
-                                                                    )}{" "}
+                                                                {(Number(each_level_5.current_debit)).toFixed(2)}
                                                               </div>
                                                             </div>
                                                           </div>
@@ -450,24 +413,29 @@ const PLStatementReciept = React.forwardRef(
                               </>
                             );
                           })}
+
+
+
+                          <div className="row mx-3   bottom-border-1 bg-customBlue text-light">
+                            <div className="  col-md-6   col-4    font-size-12    text-left  my-1">
+                              <b> Total</b>
+                            </div>
+                            <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
+                              <div className="row">
+                                <div className="col-md-4"></div>
+                                <div className="col-md-4"></div>
+                                <div className="col-md-4">
+                                  <div className="col-md-12  text-right">{(Number(each_level_1.calculated_debit)).toFixed(2)}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </>
                       );
                     })}
 
-                    <div className="row mx-3   bottom-border-1 bg-customBlue text-light">
-                      <div className="  col-md-6   col-4    font-size-12    text-left  my-1">
-                        <b> Total</b>
-                      </div>
-                      <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
-                        <div className="row">
-                          <div className="col-md-4"></div>
-                          <div className="col-md-4"></div>
-                          <div className="col-md-4">
-                            <div className="col-md-12  text-right">2344.56</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                   </div>
                 </div>
               </div>

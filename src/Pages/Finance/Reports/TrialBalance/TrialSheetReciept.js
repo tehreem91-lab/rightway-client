@@ -201,17 +201,17 @@ const TrialSheetReciept = React.forwardRef(
                         <div className="  col-md-9  col-9    font-size-12     text-center  my-1">
                             <div className="row">
                                 <div className="col-md-4">
-                                    <div className="col-md-6  text-right">{(Number(grandsTotals.total_opening_debit*-1)).toFixed(2)} <i className="fa fa-arrow-up text-danger" aria-hidden="true"></i></div>
+                                    <div className="col-md-6 px-0  text-right">{(Number(grandsTotals.total_opening_debit*-1)).toFixed(2)} <i className="fa fa-arrow-up text-danger" aria-hidden="true"></i></div>
                                     <div className="col-md-6 px-0 text-right">{(Number(grandsTotals.total_opening_credit)).toFixed(2)} <i className="fa fa-arrow-down text-success" aria-hidden="true"></i></div>
                                 </div>
                                 <div className="col-md-4">
                                     {/* here something went wrong while total debit level_1 as its show show in negaatie but its dont */}
-                                    <div className="col-md-6  text-right">{(Number(grandsTotals.total_debit_level_1)).toFixed(2)}  <i className="fa fa-arrow-up text-danger" aria-hidden="true"></i></div>
+                                    <div className="col-md-6 px-0  text-right">{(Number(grandsTotals.total_debit_level_1)).toFixed(2)}  <i className="fa fa-arrow-up text-danger" aria-hidden="true"></i></div>
                                     <div className="col-md-6 px-0 text-right">{(Number(grandsTotals.total_credit_level_1)).toFixed(2)} <i className="fa fa-arrow-down text-success" aria-hidden="true"></i></div>
                                 </div>
                                 <div className="col-md-4">
                                     <div className="col-md-6 px-0 text-right">{(Number(grandsTotals.total_closing_debit*-1)).toFixed(2)}  <i className="fa fa-arrow-up text-danger" aria-hidden="true"></i></div>
-                                    <div className="col-md-6  text-right">{(Number(grandsTotals.total_closing_credit)).toFixed(2)} <i className="fa fa-arrow-down text-success" aria-hidden="true"></i></div>
+                                    <div className="col-md-6 px-0  text-right">{(Number(grandsTotals.total_closing_credit)).toFixed(2)} <i className="fa fa-arrow-down text-success" aria-hidden="true"></i></div>
                                 </div>
                             </div>
                         </div>

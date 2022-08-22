@@ -27,7 +27,8 @@ const voucherTypes =
         voucher_id: 10,
         type_name: "JOURNAL VOUCHER",
         abbreviation: "JV",
-        multiple_router_path: "JournalVoucherAccess"
+        multiple_router_path: "JournalVoucherAccess",
+        single_router_path: "JournalVoucherSingleAccess"
     }
     ]
 export default voucherTypes;

@@ -161,7 +161,7 @@ const JournalVoucherSingle = () => {
 
             var config2 = {
                 method: 'get',
-                url: `${endPoint}api/MultipleVoucher/GetReportForUpdate?voucher_id=${state.data}`,
+                url: `${endPoint}/api/SingleVoucher/GetReportForUpdate?voucher_id=${state.data}`,
                 headers: {
                     'Authorization': "Bearer " +
                         JSON.parse(localStorage.getItem("access_token")).access_token
@@ -203,7 +203,20 @@ const JournalVoucherSingle = () => {
                     })
 
                     setmainEntriesState(formal_state_to_rearrange_entries)
-
+                    setmainEntriesState1(
+                        [
+                            {
+                                showChild: false,
+                                selectedOptionValue: {
+                                    value: response.data.entries_1[0].selectedOptionValue.value,
+                                    label: response.data.entries_1[0].selectedOptionValue.label,
+                                    wholeData: response.data.entries_1[0].selectedOptionValue.wholeData,
+                                },
+                                naration: response.data.entries_1[0].naration, debit: response.data.entries_1[0].debit, credit: response.data.entries_1[0].credit,
+                            }
+                        ]
+                    )
+                    console.log(response.data.entries_1[0].selectedOptionValue.wholeData, "whole data ");
                     if (response.status === 200) {
                         setisLoading(false)
                     }
@@ -568,8 +581,8 @@ const JournalVoucherSingle = () => {
             if (each_entry.credit === "" && each_entry.debit === "") {
                 isValidationOk = false
             }
-            if (each_entry.hasOwnProperty("sub_account_State") && each_entry.sub_accounts_State !== null) {
-                if (each_entry.sub_account_State.selected_sub_account === "") {
+            if (each_entry.hasOwnProperty("sub_account_State") && each_entry.sub_account_State !== null) {
+                if (each_entry.sub_account_State === null || each_entry.sub_account_State.selected_sub_account === "") {
                     isValidationOk = false
                 }
 
@@ -592,7 +605,6 @@ const JournalVoucherSingle = () => {
                 console.log(mainEntriesState, "----");
                 const reFactoredState = mainEntriesState.map((each_main_entry) => {
                     const sub_account_entries = each_main_entry?.sub_account_State?.map((each_sub_account) => {
-                        console.log(each_sub_account.selected_sub_account, "qwerty");
                         return {
                             "debit": Number(each_sub_account.debit),
                             "credit": Number(each_sub_account.credit),
@@ -615,31 +627,65 @@ const JournalVoucherSingle = () => {
 
 
 
-                var data = JSON.stringify({
+
+
+                let data_2 = JSON.stringify({
+
                     "fiscal_year": 1,
                     "voucher_inv": voucherDetail?.next_voucher_inv,
                     "voucher_date": `${voucherDate}T00:00:00.077Z`,
                     "voucher_type_id": voucher_type_id,
-                    "naration": "Naration for Finance main_hard_code_front_end",
-
-                    "is_multiple_vouchers": Number(true),
+                    "is_multiple_vouchers": Number(false),
                     "is_post_dated": Number(isPostDatedCheck),
-                    "post_dated_status": 0,//hardcoded as its not used here ... but question is how can we uopdated post_dated check if its paid
+                    "post_dated_status": 0,
                     "post_dated_date": `${postDatedCheckDate}T00:00:00.077Z`,
-
+                    "naration": "Naration for Finance main_hard_code_front_end",
                     "reference": "no reference",
                     "attachments": fileEntity.join(",").toString(),
                     "branch_id": 1,
-                    "account_entries": reFactoredState
+
+                    // "account_entries_1": [
+                    //     {
+                    //         "account_id": mainEntriesState1[0].selectedOptionValue.value,
+                    //         "naration": mainEntriesState1[0].naration,
+                    //         "debit": 0,
+                    //         "credit": 0, // its debit/credit doesnot effect anything except front end handling so i dont think we need to send this info in backend
+                    //         "sub_account_entries": [
+                    //             {
+                    //                 "sub_ladger_account_id": 0,
+                    //                 "debit": 0,
+                    //                 "credit": 0
+                    //             }
+                    //         ]
+                    //     }
+                    // ],
+
+                    "account_entries_1": [
+                        {
+                            "account_id": mainEntriesState1[0].selectedOptionValue.value,
+                            "naration": mainEntriesState1[0].naration,
+                            "debit": 0,
+                            "credit": 0,
+                            "sub_account_entries": [
+                                {
+                                    "sub_ladger_account_id": 0,
+                                    "debit": 0,
+                                    "credit": 0
+                                }
+                            ]
+                        }
+                    ],
+                    "account_entries": reFactoredState,
+
                 });
                 var config = {
                     method: state === null ? 'post' : 'put',
-                    url: state === null ? `${endPoint}api/MultVoucher/PostDataL` : `${endPoint}api/MultipleVoucher/PutDataL?voucher_id=${state.data}`,
+                    url: state === null ? `${endPoint}/api/SingleMultipleVoucher/PostDataL` : `${endPoint}api/MultipleVoucher/PutDataL?voucher_id=${state.data_2}`,
                     headers: {
                         'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
                         'Content-Type': 'application/json'
                     },
-                    data: data
+                    data: data_2
                 };
 
                 axios(config)
@@ -659,6 +705,19 @@ const JournalVoucherSingle = () => {
                                 setSelectedAttachmentFile("")
                                 setIsFileUploadingModeOn(false)
 
+
+
+                                setmainEntriesState1(
+                                    [
+                                        {
+                                            showChild: false,
+                                            selectedOptionValue: "",
+                                            sub_account_options: "",
+                                            sub_account_State: "",
+                                            naration: "", debit: "", credit: "",
+                                        }
+                                    ]
+                                )
                                 setmainEntriesState(
                                     [
                                         {
@@ -667,17 +726,20 @@ const JournalVoucherSingle = () => {
                                             sub_account_options: "",
                                             sub_account_State: "",
                                             naration: "", debit: "", credit: "",
-                                        },
-                                        {
-                                            showChild: false,
-                                            selectedOptionValue: "",
-                                            sub_account_options: "",
-                                            sub_account_State: "",
-                                            naration: "", debit: "", credit: "",
-                                        },
-
+                                        }
                                     ]
                                 )
+
+
+
+
+
+
+
+
+
+
+
                                 setReRendered(!reRendered)
                                 toast.success("Vocuher Submit Succesfully")
 
@@ -743,6 +805,25 @@ const JournalVoucherSingle = () => {
                     setSelectedAttachmentFile("")
                     setIsFileUploadingModeOn(false)
 
+
+
+
+
+
+
+
+
+                    setmainEntriesState1(
+                        [
+                            {
+                                showChild: false,
+                                selectedOptionValue: "",
+                                sub_account_options: "",
+                                sub_account_State: "",
+                                naration: "", debit: "", credit: "",
+                            }
+                        ]
+                    )
                     setmainEntriesState(
                         [
                             {
@@ -751,17 +832,24 @@ const JournalVoucherSingle = () => {
                                 sub_account_options: "",
                                 sub_account_State: "",
                                 naration: "", debit: "", credit: "",
-                            },
-                            {
-                                showChild: false,
-                                selectedOptionValue: "",
-                                sub_account_options: "",
-                                sub_account_State: "",
-                                naration: "", debit: "", credit: "",
-                            },
-
+                            }
                         ]
                     )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     setReRendered(!reRendered)
                     toast.success("Draft Added Succesfully")
                 }

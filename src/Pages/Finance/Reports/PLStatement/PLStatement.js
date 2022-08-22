@@ -44,53 +44,97 @@ const PLStatement = () => {
           const categories_all_data = response.data.categories_all;
           const account_all_data = response.data.account_all
           let filtralized_data = [];
+          let calculated_current_credit_4 = [];
+          let calculated_current_debit_4 = [];
+          // this for loop is used to make table into tree structure ___
           for (let index = 0; index < categories_all_data.length; index++) {
             let top_level_1 = ""
             if (categories_all_data[index].level === 1 && categories_all_data[index].parent_id === 0) {
               let filtralized_data_2 = [];
+              let calculated_current_credit_3 = [];
+              let calculated_current_debit_3 = [];
               for (let index2 = 0; index2 < categories_all_data.length; index2++) {
                 if (categories_all_data[index2].level === 2 && categories_all_data[index2].parent_id === categories_all_data[index].category_id) {
                   let filtralized_data_3 = [];
                   let top_level_2;
+                  let calculated_current_credit_2 = [];
+                  let calculated_current_debit_2 = [];
                   for (let index3 = 0; index3 < categories_all_data.length; index3++) {
                     let filtralized_data_4 = [];
                     if (categories_all_data[index3].level === 3 && categories_all_data[index3].parent_id === categories_all_data[index2].category_id) {
                       let filtralized_data_5 = [];
                       let top_level_3;
+                      let calculated_current_credit_1 = [];
+                      let calculated_current_debit_1 = [];
+
                       for (let index4 = 0; index4 < categories_all_data.length; index4++) {
                         if (categories_all_data[index4].level === 4 && categories_all_data[index4].parent_id === categories_all_data[index3].category_id) {
                           let filtralized_data_6 = [];
                           let top_level_4;
+                          let calculated_current_credit = [];
+                          let calculated_current_debit = [];
                           for (let index5 = 0; index5 < account_all_data.length; index5++) {
                             if (account_all_data[index5].parent_id === categories_all_data[index4].category_id) {
-                              top_level_4 = { ...account_all_data[index5] } 
+                              top_level_4 = { ...account_all_data[index5], }
+                              calculated_current_debit.push(top_level_4.current_debit)
+                              calculated_current_credit.push(top_level_4.current_credit)
+
+                              //here its seperating +ve nd -ve mean debit nd credit opening 
                               filtralized_data_6.push(top_level_4)
-
                             }
-
                           }
-                          top_level_3 = { ...categories_all_data[index4], children: filtralized_data_6 }
+                          top_level_3 = {
+                            ...categories_all_data[index4],
+                            calculated_credit: calculated_current_credit.reduce((a, b) => a + b, 0),
+                            calculated_debit: calculated_current_debit.reduce((a, b) => a + b, 0),
+                            children: filtralized_data_6
+                          }
+                          calculated_current_credit_1.push(top_level_3.calculated_credit)
+                          calculated_current_debit_1.push(top_level_3.calculated_debit)
                           filtralized_data_5.push(top_level_3)
                         }
                       }
-                      top_level_1 = filtralized_data_5  //this was returning a array wich make array in array so i useed its first index bcz that only have value
+                      top_level_1 = filtralized_data_5  //this was returning a array(array-within-arr) wich make array in array so i useed its first index bcz that only have value
                       filtralized_data_4.push(top_level_1)
-                      top_level_2 = { children: filtralized_data_4[0], ...categories_all_data[index3] }
+                      top_level_2 = {
+                        children: filtralized_data_4[0],
+                        calculated_credit: calculated_current_credit_1.reduce((a, b) => a + b, 0),
+                        calculated_debit: calculated_current_debit_1.reduce((a, b) => a + b, 0), ...categories_all_data[index3]
+                      }
                       filtralized_data_3.push(top_level_2)
+                      calculated_current_credit_2.push(top_level_2.calculated_credit)
+                      calculated_current_debit_2.push(top_level_2.calculated_debit)
+
                     }
                   }
-                  top_level_1 = { children: filtralized_data_3, ...categories_all_data[index2] }
+                  top_level_1 = {
+                    children: filtralized_data_3,
+                    calculated_credit: calculated_current_credit_2.reduce((a, b) => a + b, 0),
+                    calculated_debit: calculated_current_debit_2.reduce((a, b) => a + b, 0),
+                    ...categories_all_data[index2]
+                  }
                   filtralized_data_2.push(top_level_1)
+                  calculated_current_credit_3.push(top_level_1.calculated_credit)
+                  calculated_current_debit_3.push(top_level_1.calculated_debit)
+
                 }
               }
-              top_level_1 = { children: filtralized_data_2, ...categories_all_data[index] }
+              top_level_1 = {
+                children: filtralized_data_2,
+                calculated_credit: calculated_current_credit_3.reduce((a, b) => a + b, 0),
+                calculated_debit: calculated_current_debit_3.reduce((a, b) => a + b, 0),
+                ...categories_all_data[index]
+              }
               filtralized_data.push(top_level_1)
+
+              calculated_current_credit_4.push(top_level_1.calculated_credit)
+              calculated_current_debit_4.push(top_level_1.calculated_debit)
 
             }
           }
           setReportDataIncome([filtralized_data[1]])
           setReportDataExpense([filtralized_data[0]])
-          console.log(filtralized_data);
+
           setIsLoading(false)
         }
       })
