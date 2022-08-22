@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useField } from "formik";
 import { toast } from "react-toastify";
 import { customStyles } from "./reactCustomSelectStyle";
- 
+import { endPoint } from "../config/Config";
 
 export const MyTextInput = ({ label, ...props }) => {
   var required = props.required;
@@ -166,7 +166,12 @@ export const MyFileUpload = ({ label, ...props }) => {
       redirect: "follow",
     };
     //   ///api/Employees/attach-files
-    fetch(URL + "api/FileUpload", requestOptions)
+    fetch(
+      `${endPoint}api/FileUpload?file_name=${Math.random()
+        .toString(36)
+        .substring(2, 12 + 2)}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((result) => {
         setFieldValue(props.name, result, false);

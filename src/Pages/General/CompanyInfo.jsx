@@ -8,7 +8,7 @@ function CompanyInfo({ pagePermission }) {
     Add: pagePermission.AddPermission,
     Delete: pagePermission.DelPermission,
     Edit: pagePermission.EditPermission,
-  }
+  };
   const URL = localStorage.getItem("authUser");
   const [isLoading, setIsLoading] = useState(true);
   const [updateMode, setUpdateMode] = useState(false);
@@ -335,12 +335,14 @@ function CompanyInfo({ pagePermission }) {
           },
         ]);
 
-        setListingData([{
-          title: "Listing",
-          icon: "fa fa-list",
-          theadData,
-          tbodyData,
-        }]);
+        setListingData([
+          {
+            title: "Listing",
+            icon: "fa fa-list",
+            theadData,
+            tbodyData,
+          },
+        ]);
 
         setIsLoading(false);
       });

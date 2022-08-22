@@ -190,7 +190,7 @@ function CityNames({ pagePermission }) {
             confirmButtonText: 'Yes, Do it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(URL + "api/CityNames/DeleteData?id=" + city_id + "page_name=" + page_name, {
+                fetch(URL + "api/CityNames/DeleteData?id=" + city_id, {
                     method: "DELETE",
                     headers: {
                         Authorization: "Bearer " + JSON.parse(localStorage.getItem("access_token")).access_token,

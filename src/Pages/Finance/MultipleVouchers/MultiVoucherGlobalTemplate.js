@@ -19,7 +19,7 @@ const MultiVoucherGlobalTemplate = ({
 }) => {
 
     const user_id = localStorage.getItem("user_id");
-    const ref = useRef();
+    const ref = useRef(); 
     const navigate = useNavigate();
     const { state } = useLocation();
 
@@ -403,8 +403,8 @@ const MultiVoucherGlobalTemplate = ({
             if (each_entry.credit === "" && each_entry.debit === "") {
                 isValidationOk = false
             }
-            if (each_entry.hasOwnProperty("sub_account_State") && each_entry.sub_account_State !== null ) {
-                if (each_entry.sub_account_State===null ||  each_entry.sub_account_State.selected_sub_account === "") {
+            if (each_entry.hasOwnProperty("sub_account_State") && each_entry.sub_account_State !== null) {
+                if (each_entry.sub_account_State === null || each_entry.sub_account_State.selected_sub_account === "") {
                     isValidationOk = false
                 }
 
@@ -498,14 +498,23 @@ const MultiVoucherGlobalTemplate = ({
                                     [
                                         {
                                             showChild: false,
-                                            selectedOptionValue: "",
+                                            selectedOptionValue: {
+
+                                                wholeData: {
+                                                    balance: "",
+                                                }
+                                            },
                                             sub_account_options: "",
                                             sub_account_State: "",
                                             naration: "", debit: "", credit: "",
                                         },
                                         {
                                             showChild: false,
-                                            selectedOptionValue: "",
+                                            selectedOptionValue: {
+                                                wholeData: {
+                                                    balance: "",
+                                                }
+                                            },
                                             sub_account_options: "",
                                             sub_account_State: "",
                                             naration: "", debit: "", credit: "",
@@ -513,6 +522,7 @@ const MultiVoucherGlobalTemplate = ({
 
                                     ]
                                 )
+                                document.querySelector('input').defaultValue = '';
                                 setReRendered(!reRendered)
                                 toast.success("Vocuher Submit Succesfully")
 
@@ -827,11 +837,11 @@ const MultiVoucherGlobalTemplate = ({
                                     <table className="table table-striped jambo_table bulk_action">
                                         <thead >
                                             <tr className="headings">
-                                                <th className="column-title   text-center" width="20%">ACCOUNT</th>
+                                                <th className="column-title   text-center" width="20%">ACCOUNT <span className="required">*</span></th>
                                                 <th className="column-title   text-center" width="15%">A/C BALANCE</th>
-                                                <th className="column-title   text-center" width="32%">NARATION</th>
-                                                <th className="column-title   text-center" width="13%">DEBIT(RS)</th>
-                                                <th className="column-title   text-center" width="13%">CREDIT(RS)</th>
+                                                <th className="column-title   text-center" width="32%">NARATION <span className="required">*</span></th>
+                                                <th className="column-title   text-center" width="13%">DEBIT(RS) <span className="required">*</span></th>
+                                                <th className="column-title   text-center" width="13%">CREDIT(RS) <span className="required">*</span></th>
                                                 <th className="column-title   text-center" width="2%">&nbsp;</th>
                                             </tr>
                                         </thead>
@@ -870,11 +880,12 @@ const MultiVoucherGlobalTemplate = ({
                                                                             <input
                                                                                 disabled
                                                                                 type="text"
-                                                                                className="form-control"
+                                                                                className="form-control blnc-control-to-reset"
                                                                                 data-validate-length-range={6}
                                                                                 data-validate-words={2}
                                                                                 name="balance"
                                                                                 value={mainEntriesState[index].selectedOptionValue?.wholeData?.balance}
+
 
                                                                             />
                                                                         </td>
