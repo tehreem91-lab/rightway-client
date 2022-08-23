@@ -72,5 +72,5 @@ const ROUTES = {
   OpeningBalances: { id: '35', element: OpeningBalances, path: "OpeningBalancesAccess" },
   AddBenefits: { id: "36", element: AddBenefits, path: "BenefitsAccess" },
 };
-
 export default ROUTES;
+

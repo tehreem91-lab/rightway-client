@@ -49,13 +49,12 @@ body {
   text-shadow: none !important;
 }
 
-
 .h-100 {
   height: 100% !important;
 }
 
 .sm-logo-in-Login {
-  background-color:#003a4d ;
+  background-color: #003a4d;
   display: inline !important;
   width: 35px;
   border-radius: 50%;
@@ -463,11 +462,10 @@ color: white !important;
 } */
 
 .text-customOrange {
-  color: #fd8b5a; 
+  color: #fd8b5a;
 }
 .text-customBlue {
   color: #003a4d;
-  
 }
 
 .heightForJV {
@@ -680,24 +678,22 @@ td {
   color: #888;
 }
 
-
-.customStyleForInput{
-  padding-top:1.5px !important ;
+.customStyleForInput {
+  padding-top: 1.5px !important ;
 }
 
-#file-upload-button{
-height: 2px !important;
+#file-upload-button {
+  height: 2px !important;
 }
 
-.border-none{
+.border-none {
   border: 0px !important;
   padding-top: 0px !important;
   padding-bottom: 4px !important;
 }
-.border-none-only{
-  border: 0px !important; 
+.border-none-only {
+  border: 0px !important;
 }
-
 
 .tableforHistryinProductionReport {
   min-height: 452px !important;
@@ -705,65 +701,44 @@ height: 2px !important;
   overflow-x: scroll; /* Hide horizontal scrollbar */
 }
 
-.bold-4{
+.bold-4 {
   font-weight: 400;
 }
-.bold-5{
+.bold-5 {
   font-weight: 500;
 }
-.bold-6{
+.bold-6 {
   font-weight: 600;
 }
-.bold-7{
+.bold-7 {
   font-weight: 700;
 }
-.bold-8{
+.bold-8 {
   font-weight: 800;
 }
-.bold-9{
+.bold-9 {
   font-weight: 900;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .displayPropertyForPrint {
   display: none;
 }
-.removeInPrintMedia{
+.removeInPrintMedia {
   display: block;
 }
 @media print {
-  /* *,
-  :after,
-  :before {
-    color: #000 !important;
-    text-shadow: none !important;
-    background: 0 0 !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    
-  } */
+  a[href]:after {
+    content: none !important;
+  }
 
-  /* .backGroundColorForTableHeaderPrint {
-    background-color: red !important;
-    color: blue !important;
-    -webkit-print-color-adjust: exact !important;
-  } */
+  @page :footer {
+    display: none;
+  }
+
   .displayPropertyForPrint {
     display: block;
   }
-  .removeInPrintMedia{
+  .removeInPrintMedia {
     display: none;
   }
 }
