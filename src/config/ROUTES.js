@@ -34,6 +34,8 @@ import PLStatement from "../Pages/Finance/Reports/PLStatement/PLStatement";
 import TrialSheet from "../Pages/Finance/Reports/TrialBalance/TrialSheet";
 import TransactionReport from "../Pages/Finance/Reports/TransactionReport/TransactionReport";
 import OpeningBalances from "../Pages/Finance/OpeningBalances";
+import AddBenefits from "../Pages/HRM/AddBenefits";
+import Department from "../Layout/CrudTemplate/Department";
 
 
 
@@ -73,6 +75,8 @@ const ROUTES = {
     BalanceSheet: { id: '33', element: BalanceSheet, path: "BalanceSheetAccess" },
     TransactionReport: { id: '34', element: TransactionReport, path: "TransactionReportAccess" },
     OpeningBalances: { id: '35', element: OpeningBalances, path: "OpeningBalancesAccess" },
+    AddBenefits: { id: '36', element: AddBenefits, path: "BenefitsAccess" },
+    Department: { id: '37', element: Department, path: "DepartmentAccess" },
 };
 export default ROUTES;
 
