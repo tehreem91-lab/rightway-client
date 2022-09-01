@@ -34,6 +34,8 @@ import TrialSheet from "../Pages/Finance/Reports/TrialBalance/TrialSheet";
 import TransactionReport from "../Pages/Finance/Reports/TransactionReport/TransactionReport";
 import OpeningBalances from "../Pages/Finance/OpeningBalances";
 import AddBenefits from "../Pages/HRM/AddBenefits";
+import Attendance from "../Pages/HRM/Attendance";
+import AddEmployee from "../Pages/HRM/AddEmployee";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
   VoucherHistory: { id: '2', element: VoucherHistory, path: "VoucherHistoryAccess" },
@@ -70,6 +72,8 @@ const ROUTES = {
   TransactionReport: { id: '34', element: TransactionReport, path: "TransactionReportAccess" },
   OpeningBalances: { id: '35', element: OpeningBalances, path: "OpeningBalancesAccess" },
   AddBenefits: { id: "36", element: AddBenefits, path: "BenefitsAccess" },
+  Attendance: { id: "36", element: Attendance, path: "AttendanceAccess" },
+  AddEmployee: { id: "37", element: AddEmployee, path: "EmployeeAccess" },
 };
 export default ROUTES;
 
