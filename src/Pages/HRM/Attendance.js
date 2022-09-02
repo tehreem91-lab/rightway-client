@@ -355,23 +355,23 @@ const Attendance = () => {
                                                         width="10%"
                                                     >
                                                         {" "}
-                                                        Code{" "}
+                                                        Employee Code{" "}
                                                     </th>
-                                                    <th className="column-title  right-border-1">
+                                                    <th className="column-title  right-border-1 text-center">
                                                         Employee Name
                                                     </th>
                                                     <th
                                                         className="column-title right-border-1 text-center"
                                                         width="10%"
                                                     >
-                                                        Date In
+                                                        Date / Time In
                                                     </th>
                                                     <th className="column-title text-center right-border-1" width="10%">
-                                                        Date Out
+                                                        Date / Time Out
                                                     </th>
 
                                                     <th className="column-title text-center" width="10%">
-                                                        Total Time
+                                                        Total Time Spent
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -381,9 +381,9 @@ const Attendance = () => {
                                                 {accountList.map((item, index) => {
                                                     return (
                                                         <tr className="even pointer" key={index}>
-                                                            <td className=" "> {item.employee_code}</td>
-                                                            <td className=" "> {item.employee_name} </td>
-                                                            <td className="">
+                                                            <td className=" text-center"> {item.employee_code}</td>
+                                                            <td className=" text-center"> {item.employee_name} </td>
+                                                            <td className=" text-center">
                                                                 {" "}
                                                                 <input
                                                                     type="datetime-local"

@@ -259,7 +259,12 @@ function AddEmployee() {
             "holiday_assigned": employeeToUpdate.holiday_assigned,
             "shift_id": employeeToUpdate.shift?.shift_id,
             "status": employeeToUpdate.status,
-            "benefits": ben
+            "benefits": [
+                {
+                    "benefit_id": 1,
+                    "amount": 20
+                }
+            ]
         });
 
         console.log(raw, "benfits");
@@ -586,7 +591,7 @@ function AddEmployee() {
                                                         {/* <td className="text-left  ">{item.cnic_image}</td>
                                                         <td className=" text-left ">{item.profile_image}</td>
                                                         <td className="text-left "> {item.address}</td> */}
-                                                        <td className=" text-right">"{item.department?.department_name}"</td>
+                                                        <td className=" text-right">{item.department?.department_name}</td>
                                                         {/* <td className="text-left  ">{item.reference_name}</td>
                                                         <td className=" text-left ">{item.reference_cell}</td>
                                                         <td className="text-left "> {item.reference_cnic}</td>
