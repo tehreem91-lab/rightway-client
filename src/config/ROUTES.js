@@ -36,6 +36,11 @@ import OpeningBalances from "../Pages/Finance/OpeningBalances";
 import AddBenefits from "../Pages/HRM/AddBenefits";
 import Attendance from "../Pages/HRM/Attendance";
 import AddEmployee from "../Pages/HRM/AddEmployee";
+import AdvanceVoucher from "../Pages/HRM/AdvanceManagement/AdvanceVoucher/AdvanceVoucher";
+import AdvanceHistory from "../Pages/HRM/AdvanceManagement/AdvanceReports/AdvanceHistory";
+import LoanVoucher from "../Pages/HRM/LoanManagement/LoanVoucher/LoanVoucher";
+import LoanHistory from "../Pages/HRM/LoanManagement/LoanHistory";
+import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
   VoucherHistory: { id: '2', element: VoucherHistory, path: "VoucherHistoryAccess" },
@@ -74,6 +79,11 @@ const ROUTES = {
   AddBenefits: { id: "36", element: AddBenefits, path: "BenefitsAccess" },
   Attendance: { id: "36", element: Attendance, path: "AttendanceAccess" },
   AddEmployee: { id: "37", element: AddEmployee, path: "EmployeeAccess" },
+  AdvanceVoucher: { id: "38", element: AdvanceVoucher, path: "AdvanceVoucherAccess" },
+  AdvanceHistory: { id: "39", element: AdvanceHistory, path: "AdvanceHistoryAccess" },
+  LoanVoucher: { id: "40", element: LoanVoucher, path: "LoanVoucherAccess" },
+  LoanHistory: { id: "41", element: LoanHistory, path: "LoanHistoryAccess" },
+  LoanApprovalForm: { id: "42", element: LoanApprovalForm, path: "LoanApprovalFormAccess" },
 };
 export default ROUTES;
 

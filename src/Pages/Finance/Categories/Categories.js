@@ -158,7 +158,7 @@ const Categories = ({ pagePermission }) => {
 
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error, "erooor while cretiomg");
             });
 
     }
