@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select'
 import EmployeeForm from './EmployeeForm';
 import { useSelector } from "react-redux";
@@ -41,6 +41,15 @@ function AddEmployee() {
 
     const [selectedValue, setSelectedValue] = useState("");
     const [inputOptions, setInputOptions] = useState("");
+
+    const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
+    const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
+    const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
+    const [fileEntity, setFileEntity] = useState([]);
+    const ref = useRef();
+    const reset = () => {
+        ref.current.value = "";
+    };
 
     const URL = localStorage.getItem("authUser");
 
@@ -111,10 +120,54 @@ function AddEmployee() {
             .then((result) => {
 
                 setdisableSubmitForUpdatePhoto(false);
-                setEmployeeToUpdate({ ...employeeToUpdate, cnic_image: result });
+                setEmployeeToUpdate({ ...employeeToUpdate, cnic_front: result });
             })
             .catch((error) => console.log("error", error));
     };
+
+    const fileHandle3ForUpdate = (e) => {
+        setdisableSubmitForUpdatePhoto(true);
+        var myHeaders = new Headers();
+        myHeaders.append("contentType", "false");
+        myHeaders.append("processData", "false");
+        var formdata = new FormData();
+        formdata.append("UploadedImage", e.target.files[0]);
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow",
+        };
+        //   ///api/Employees/attach-files
+        fetch(URL + "api/FileUpload?file_name=" + e.target.files[0].name, requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+
+                setdisableSubmitForUpdatePhoto(false);
+                setEmployeeToUpdate({ ...employeeToUpdate, cnic_back: result });
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const UploadFile = async (e) => {
+        setIsFileUploadingModeOn(true)
+        const options = {
+            onUploadProgerss: (progressEvent) => {
+                const { loaded, total } = progressEvent;
+                let percentage = Math.floor((loaded * 100) / total)
+                console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+            }
+        }
+        let data = new FormData();
+        data.append("UploadedImage", selectedAttachmentFile);
+        await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedAttachmentName}`, data, options).then(res => {
+            setFileEntity([...fileEntity, res.data])
+            if (res.status === 200) {
+                setIsFileUploadingModeOn(false)
+                reset()
+            }
+        })
+    }
 
     const fetchAllData = () => {
         var myHeaders = new Headers();
@@ -243,7 +296,9 @@ function AddEmployee() {
             "cell": employeeToUpdate.cell,
             "cnic": employeeToUpdate.cnic,
             "profile_image": employeeToUpdate.profile_image,
-            "cnic_image": employeeToUpdate.cnic_image,
+            "cnic_front": employeeToUpdate.cnic_front,
+            "cnic_back": employeeToUpdate.cnic_back,
+            "attachments": employeeToUpdate.attachments,
             "address": employeeToUpdate.address,
             "department_id": employeeToUpdate.department?.department_id,
             "reference_name": employeeToUpdate.reference_name,
@@ -261,10 +316,19 @@ function AddEmployee() {
             "status": employeeToUpdate.status,
             "benefits": [
                 {
-                    "benefit_id": 1,
-                    "amount": 20
+                    "benefit_id": employeeToUpdate.benefits?.benefit_id,
+                    "benefit_title": employeeToUpdate.benefits?.benefit_title,
+                    "benefit_amount": employeeToUpdate.benefits?.benefit_amount
                 }
             ]
+            // "benefits": employeeToUpdate.map((eachBenefit) => {
+            //     return {
+            //         "benefit_id": eachBenefit.value,
+            //         "benefit_title": eachBenefit.label,
+            //         "benefit_amount": eachBenefit.amount
+            //     }
+            // }),
+
         });
 
         console.log(raw, "benfits");
@@ -292,7 +356,9 @@ function AddEmployee() {
                         "cell": employeeToUpdate.cell,
                         "cnic": employeeToUpdate.cnic,
                         "profile_image": employeeToUpdate.profile_image,
-                        "cnic_image": employeeToUpdate.cnic_image,
+                        "cnic_front": employeeToUpdate.cnic_front,
+                        "cnic_back": employeeToUpdate.cnic_back,
+                        "attachments": employeeToUpdate.attachments,
                         "address": employeeToUpdate.address,
                         "department_id": employeeToUpdate.departmentUpdate.value,
                         "reference_name": employeeToUpdate.reference_name,
@@ -432,6 +498,15 @@ function AddEmployee() {
 
                                     fileHandle1ForUpdate={fileHandle1ForUpdate}
                                     fileHandle2ForUpdate={fileHandle2ForUpdate}
+                                    fileHandle3ForUpdate={fileHandle3ForUpdate}
+                                    UploadFile={UploadFile}
+                                    ref={ref}
+                                    setSelectedAttachmentFile={setSelectedAttachmentFile}
+                                    setSelectedAttachmentName={setSelectedAttachmentName}
+                                    isFileUploadingModeOn={isFileUploadingModeOn}
+                                    setFileEntity={setFileEntity}
+                                    fileEntity={fileEntity}
+                                    endPoint={endPoint}
                                 />
                             </Modal.Body>
                             {/* <Modal.Footer>
@@ -495,6 +570,15 @@ function AddEmployee() {
 
                                     fileHandle1ForUpdate={fileHandle1ForUpdate}
                                     fileHandle2ForUpdate={fileHandle2ForUpdate}
+                                    fileHandle3ForUpdate={fileHandle3ForUpdate}
+                                    UploadFile={UploadFile}
+                                    ref={ref}
+                                    setSelectedAttachmentFile={setSelectedAttachmentFile}
+                                    setSelectedAttachmentName={setSelectedAttachmentName}
+                                    isFileUploadingModeOn={isFileUploadingModeOn}
+                                    setFileEntity={setFileEntity}
+                                    fileEntity={fileEntity}
+                                    endPoint={endPoint}
                                 />
                             </Modal.Body>
                         </Modal>
