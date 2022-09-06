@@ -56,7 +56,7 @@ export const CustomAccountFormOne = ({
                 <div className="col-md-4 text-right pt-1">Categories name</div>
                 <div className="col-md-8 px-2">
                     <input type="text" className='form-control form-control-sm ' placeholder='Enter Entity Name'
-                        onInput={(er) => er.target.value = er.target.value.toUpperCase()}
+                        // onInput={(er) => er.target.value = er.target.value.toUpperCase()}
                         value={textFieldInput}
                         onChange={(e) => setTextFieldInput(e.target.value)}
                     />
@@ -83,7 +83,7 @@ export const CustomAccountFormOne = ({
 }
 
 export const CustomAccountFormTwo = ({
-     dropDownActions,
+    dropDownActions,
     fetchOptionsLevelWise,
     validationStateForOne,
     setValidationStateForOne,
@@ -153,7 +153,7 @@ export const CustomAccountFormTwo = ({
             <div className="col-md-4 text-right pt-1">Categories name</div>
             <div className="col-md-8 px-2">
                 <input type="text" className='form-control form-control-sm ' placeholder='Enter Entity Name'
-                    onInput={(er) => er.target.value = er.target.value.toUpperCase()}
+                    // onInput={(er) => er.target.value = er.target.value.toUpperCase()}
                     value={textFieldInput}
                     onChange={(e) => setTextFieldInput(e.target.value)}
                 />
@@ -271,7 +271,7 @@ export const CustomAccountFormThree = ({
             <div className="col-md-4 text-right pt-1">Account_Name</div>
             <div className="col-md-8 px-2">
                 <input type="text" className='form-control form-control-sm ' placeholder='Enter Entity Name'
-                    onInput={(er) => er.target.value = er.target.value.toUpperCase()}
+                    // onInput={(er) => er.target.value = er.target.value.toUpperCase()}
                     value={textFieldInput}
                     onChange={(e) => setTextFieldInput(e.target.value)}
                 />
@@ -411,7 +411,7 @@ export const CustomAccountFormFour = ({
             <div className="col-md-8 px-2">
                 <input type="text" className='form-control form-control-sm ' placeholder='Enter Entity Name'
                     value={textFieldInput}
-                    onInput={(er) => er.target.value = er.target.value.toUpperCase()}
+                    // onInput={(er) => er.target.value = er.target.value.toUpperCase()}
                     onChange={(e) => setTextFieldInput(e.target.value)}
 
                 />

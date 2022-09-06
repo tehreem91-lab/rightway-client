@@ -372,7 +372,7 @@ const Categories = ({ pagePermission }) => {
                                                         <div className="col-md-4 text-right pt-1">Categories name</div>
                                                         <div className="col-md-8 px-2">
                                                             <input type="text" className='form-control form-control-sm ' placeholder='Enter Entity Name'
-                                                                onInput={(er) => er.target.value = er.target.value.toUpperCase()}
+                                                                // onInput={(er) => er.target.value = er.target.value.toUpperCase()}
                                                                 value={textFieldInputForUpdate}
                                                                 onChange={(e) => setTextFieldInputForUpdate(e.target.value)}
                                                             />

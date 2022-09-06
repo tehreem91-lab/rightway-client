@@ -29,6 +29,28 @@ const voucherTypes =
         abbreviation: "JV",
         multiple_router_path: "JournalVoucherAccess",
         single_router_path: "JournalVoucherSingleAccess"
-    }
+    },
+    {
+        voucher_id: 11,
+        type_name: "ADVANCE PAYMENT VOUCHER",
+        abbreviation: "APV",
+        multiple_router_path: "JournalVoucherAccess",
+        single_router_path: "JournalVoucherSingleAccess"
+    },
+    {
+        voucher_id: 12,
+        type_name: "LOAN PAYMENT VOUCHER ",
+        abbreviation: "LPV",
+        multiple_router_path: "LoanPayementVoucherAccess",
+        single_router_path: "LoanPayementVoucherAccess"
+    },
+
+    {
+        voucher_id: 13,
+        type_name: "LOAN SATELMENT VOUCHER",
+        abbreviation: "LSV",
+        multiple_router_path: "LoanSettlementVoucherAccess",
+        single_router_path: "LoanSettlementVoucherAccess"
+    },
     ]
 export default voucherTypes;

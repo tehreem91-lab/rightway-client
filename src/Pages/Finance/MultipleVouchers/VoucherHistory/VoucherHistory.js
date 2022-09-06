@@ -103,6 +103,7 @@ const VoucherHistory = () => {
     };
 
     const fetch_selected_voucher_detail = (e) => {
+        console.log(e , "eeee");
         var config = {
             method: 'get',
             url: `${endPoint}api/MultipleVoucher/GetReport?voucher_id=${e}`,

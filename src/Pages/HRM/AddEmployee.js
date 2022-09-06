@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select'
 import EmployeeForm from './EmployeeForm';
 import { useSelector } from "react-redux";
@@ -37,10 +37,23 @@ function AddEmployee() {
     const [department, setDepartment] = useState([]);
     const [shift, setShift] = useState([]);
     const [benefit, setBenefit] = useState([]);
-
+    const [benefitsRecordsValue, setBenefitsRecordsValue] = useState([{
+        label: "",
+        value: "",
+        amount: ""
+    }])
 
     const [selectedValue, setSelectedValue] = useState("");
     const [inputOptions, setInputOptions] = useState("");
+
+    const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
+    const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
+    const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
+    const [fileEntity, setFileEntity] = useState([]);
+    const ref = useRef();
+    const reset = () => {
+        ref.current.value = "";
+    };
 
     const URL = localStorage.getItem("authUser");
 
@@ -111,10 +124,54 @@ function AddEmployee() {
             .then((result) => {
 
                 setdisableSubmitForUpdatePhoto(false);
-                setEmployeeToUpdate({ ...employeeToUpdate, cnic_image: result });
+                setEmployeeToUpdate({ ...employeeToUpdate, cnic_front: result });
             })
             .catch((error) => console.log("error", error));
     };
+
+    const fileHandle3ForUpdate = (e) => {
+        setdisableSubmitForUpdatePhoto(true);
+        var myHeaders = new Headers();
+        myHeaders.append("contentType", "false");
+        myHeaders.append("processData", "false");
+        var formdata = new FormData();
+        formdata.append("UploadedImage", e.target.files[0]);
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow",
+        };
+        //   ///api/Employees/attach-files
+        fetch(URL + "api/FileUpload?file_name=" + e.target.files[0].name, requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+
+                setdisableSubmitForUpdatePhoto(false);
+                setEmployeeToUpdate({ ...employeeToUpdate, cnic_back: result });
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const UploadFile = async (e) => {
+        setIsFileUploadingModeOn(true)
+        const options = {
+            onUploadProgerss: (progressEvent) => {
+                const { loaded, total } = progressEvent;
+                let percentage = Math.floor((loaded * 100) / total)
+                console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+            }
+        }
+        let data = new FormData();
+        data.append("UploadedImage", selectedAttachmentFile);
+        await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedAttachmentName}`, data, options).then(res => {
+            setFileEntity([...fileEntity, res.data])
+            if (res.status === 200) {
+                setIsFileUploadingModeOn(false)
+                reset()
+            }
+        })
+    }
 
     const fetchAllData = () => {
         var myHeaders = new Headers();
@@ -243,7 +300,9 @@ function AddEmployee() {
             "cell": employeeToUpdate.cell,
             "cnic": employeeToUpdate.cnic,
             "profile_image": employeeToUpdate.profile_image,
-            "cnic_image": employeeToUpdate.cnic_image,
+            "cnic_front": employeeToUpdate.cnic_front,
+            "cnic_back": employeeToUpdate.cnic_back,
+            "attachments": fileEntity.join(",").toString(),
             "address": employeeToUpdate.address,
             "department_id": employeeToUpdate.department?.department_id,
             "reference_name": employeeToUpdate.reference_name,
@@ -259,7 +318,22 @@ function AddEmployee() {
             "holiday_assigned": employeeToUpdate.holiday_assigned,
             "shift_id": employeeToUpdate.shift?.shift_id,
             "status": employeeToUpdate.status,
-            "benefits": ben
+            "benefits": benefitsRecordsValue.length === 0 ? [] : benefitsRecordsValue.map((EachBenRec) => {
+                return {
+
+                    benefit_id: EachBenRec.value,
+                    amount: EachBenRec.amount
+                }
+
+            })
+            // "benefits": employeeToUpdate.map((eachBenefit) => {
+            //     return {
+            //         "benefit_id": eachBenefit.value,
+            //         "benefit_title": eachBenefit.label,
+            //         "benefit_amount": eachBenefit.amount
+            //     }
+            // }),
+
         });
 
         console.log(raw, "benfits");
@@ -287,7 +361,9 @@ function AddEmployee() {
                         "cell": employeeToUpdate.cell,
                         "cnic": employeeToUpdate.cnic,
                         "profile_image": employeeToUpdate.profile_image,
-                        "cnic_image": employeeToUpdate.cnic_image,
+                        "cnic_front": employeeToUpdate.cnic_front,
+                        "cnic_back": employeeToUpdate.cnic_back,
+                        "attachments": employeeToUpdate.attachments,
                         "address": employeeToUpdate.address,
                         "department_id": employeeToUpdate.departmentUpdate.value,
                         "reference_name": employeeToUpdate.reference_name,
@@ -326,10 +402,24 @@ function AddEmployee() {
                     setListOfEmployee(sortedEmpConst)
                     setEmployeeStatusState(sortedEmpConst)
                     setAllEmpListConst(sortedEmpConst)
+
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
+
                     //setStatusFilterValue(statusFilterOptions[0])
                     toast.success(
                         "Employee updated successfully")
                 } else {
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
                     toast.error(
                         "Something went wrong")
                 }
@@ -347,6 +437,12 @@ function AddEmployee() {
                 console.log("error", error)
             });
         setIsEmplEditModeOn(false)
+
+        // setBenefitsRecordsValue([{
+        //     label: "",
+        //     value: "",
+        //     amount: ""
+        // }])
     };
 
     const handleChange = (value) => {
@@ -400,6 +496,11 @@ function AddEmployee() {
                                     onHide={() => {
                                         setIsEmplEditModeOn(false)
                                         setShow(false)
+                                        setBenefitsRecordsValue([{
+                                            label: "",
+                                            value: "",
+                                            amount: ""
+                                        }])
                                     }}
 
                                     isEmplEditModeOn={isEmplEditModeOn}
@@ -425,8 +526,22 @@ function AddEmployee() {
                                     benefit={benefit}
                                     fileHandle1={fileHandle1}
 
+
+                                    benefitsRecordsValue={benefitsRecordsValue}
+                                    setBenefitsRecordsValue={setBenefitsRecordsValue}
+
+
                                     fileHandle1ForUpdate={fileHandle1ForUpdate}
                                     fileHandle2ForUpdate={fileHandle2ForUpdate}
+                                    fileHandle3ForUpdate={fileHandle3ForUpdate}
+                                    UploadFile={UploadFile}
+                                    ref={ref}
+                                    setSelectedAttachmentFile={setSelectedAttachmentFile}
+                                    setSelectedAttachmentName={setSelectedAttachmentName}
+                                    isFileUploadingModeOn={isFileUploadingModeOn}
+                                    setFileEntity={setFileEntity}
+                                    fileEntity={fileEntity}
+                                    endPoint={endPoint}
                                 />
                             </Modal.Body>
                             {/* <Modal.Footer>
@@ -490,6 +605,15 @@ function AddEmployee() {
 
                                     fileHandle1ForUpdate={fileHandle1ForUpdate}
                                     fileHandle2ForUpdate={fileHandle2ForUpdate}
+                                    fileHandle3ForUpdate={fileHandle3ForUpdate}
+                                    UploadFile={UploadFile}
+                                    ref={ref}
+                                    setSelectedAttachmentFile={setSelectedAttachmentFile}
+                                    setSelectedAttachmentName={setSelectedAttachmentName}
+                                    isFileUploadingModeOn={isFileUploadingModeOn}
+                                    setFileEntity={setFileEntity}
+                                    fileEntity={fileEntity}
+                                    endPoint={endPoint}
                                 />
                             </Modal.Body>
                         </Modal>
@@ -586,7 +710,7 @@ function AddEmployee() {
                                                         {/* <td className="text-left  ">{item.cnic_image}</td>
                                                         <td className=" text-left ">{item.profile_image}</td>
                                                         <td className="text-left "> {item.address}</td> */}
-                                                        <td className=" text-right">"{item.department?.department_name}"</td>
+                                                        <td className=" text-right">{item.department?.department_name}</td>
                                                         {/* <td className="text-left  ">{item.reference_name}</td>
                                                         <td className=" text-left ">{item.reference_cell}</td>
                                                         <td className="text-left "> {item.reference_cnic}</td>
