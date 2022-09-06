@@ -37,7 +37,11 @@ function AddEmployee() {
     const [department, setDepartment] = useState([]);
     const [shift, setShift] = useState([]);
     const [benefit, setBenefit] = useState([]);
-
+    const [benefitsRecordsValue, setBenefitsRecordsValue] = useState([{
+        label: "",
+        value: "",
+        amount: ""
+    }])
 
     const [selectedValue, setSelectedValue] = useState("");
     const [inputOptions, setInputOptions] = useState("");
@@ -298,7 +302,7 @@ function AddEmployee() {
             "profile_image": employeeToUpdate.profile_image,
             "cnic_front": employeeToUpdate.cnic_front,
             "cnic_back": employeeToUpdate.cnic_back,
-            "attachments": employeeToUpdate.attachments,
+            "attachments": fileEntity.join(",").toString(),
             "address": employeeToUpdate.address,
             "department_id": employeeToUpdate.department?.department_id,
             "reference_name": employeeToUpdate.reference_name,
@@ -314,13 +318,14 @@ function AddEmployee() {
             "holiday_assigned": employeeToUpdate.holiday_assigned,
             "shift_id": employeeToUpdate.shift?.shift_id,
             "status": employeeToUpdate.status,
-            "benefits": [
-                {
-                    "benefit_id": employeeToUpdate.benefits?.benefit_id,
-                    "benefit_title": employeeToUpdate.benefits?.benefit_title,
-                    "benefit_amount": employeeToUpdate.benefits?.benefit_amount
+            "benefits": benefitsRecordsValue.length === 0 ? [] : benefitsRecordsValue.map((EachBenRec) => {
+                return {
+
+                    benefit_id: EachBenRec.value,
+                    amount: EachBenRec.amount
                 }
-            ]
+
+            })
             // "benefits": employeeToUpdate.map((eachBenefit) => {
             //     return {
             //         "benefit_id": eachBenefit.value,
@@ -397,10 +402,24 @@ function AddEmployee() {
                     setListOfEmployee(sortedEmpConst)
                     setEmployeeStatusState(sortedEmpConst)
                     setAllEmpListConst(sortedEmpConst)
+
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
+
                     //setStatusFilterValue(statusFilterOptions[0])
                     toast.success(
                         "Employee updated successfully")
                 } else {
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
                     toast.error(
                         "Something went wrong")
                 }
@@ -418,6 +437,12 @@ function AddEmployee() {
                 console.log("error", error)
             });
         setIsEmplEditModeOn(false)
+
+        // setBenefitsRecordsValue([{
+        //     label: "",
+        //     value: "",
+        //     amount: ""
+        // }])
     };
 
     const handleChange = (value) => {
@@ -471,6 +496,11 @@ function AddEmployee() {
                                     onHide={() => {
                                         setIsEmplEditModeOn(false)
                                         setShow(false)
+                                        setBenefitsRecordsValue([{
+                                            label: "",
+                                            value: "",
+                                            amount: ""
+                                        }])
                                     }}
 
                                     isEmplEditModeOn={isEmplEditModeOn}
@@ -495,6 +525,11 @@ function AddEmployee() {
                                     shift={shift}
                                     benefit={benefit}
                                     fileHandle1={fileHandle1}
+
+
+                                    benefitsRecordsValue={benefitsRecordsValue}
+                                    setBenefitsRecordsValue={setBenefitsRecordsValue}
+
 
                                     fileHandle1ForUpdate={fileHandle1ForUpdate}
                                     fileHandle2ForUpdate={fileHandle2ForUpdate}

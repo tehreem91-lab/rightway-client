@@ -247,6 +247,7 @@ const Attendance = () => {
                                         <div className="col-md-3 col-sm-3">
                                             <div>
                                                 <Select
+                                                    placeholder={"All"}
                                                     getOptionLabel={(e) => e.department_name}
                                                     getOptionValue={(e) => e.department_id}
                                                     value={selectedValue}
@@ -269,6 +270,7 @@ const Attendance = () => {
                                                     //     value={selectedValue}
                                                     //     options={inputOptions}
                                                     //     onChange={handleChange}
+                                                    placeholder="All Dates"
                                                     styles={customStyles}
                                                     className="form-control"
                                                     type="date"
@@ -355,7 +357,7 @@ const Attendance = () => {
                                                         width="10%"
                                                     >
                                                         {" "}
-                                                        Code{" "}
+                                                        Employee Code{" "}
                                                     </th>
                                                     <th className="column-title  right-border-1">
                                                         Employee Name
@@ -364,10 +366,10 @@ const Attendance = () => {
                                                         className="column-title right-border-1 text-center"
                                                         width="10%"
                                                     >
-                                                        Date In
+                                                        Date/Time In
                                                     </th>
                                                     <th className="column-title text-center right-border-1" width="10%">
-                                                        Date Out
+                                                        Date/Time Out
                                                     </th>
 
                                                     <th className="column-title text-center" width="10%">

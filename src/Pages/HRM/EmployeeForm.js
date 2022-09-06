@@ -9,7 +9,9 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const EmployeeForm = (props) => {
-    console.log(props.selectEmployee, "______");
+
+
+
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(false);
 
@@ -152,6 +154,15 @@ const EmployeeForm = (props) => {
         setbenefitInputs([...benefitInputs, { value: "", label: "", amount: "" }]);
     };
 
+    useEffect(() => {
+        props.setBenefitsRecordsValue(props.selectEmployee.benefits.map((eachBen) => {
+            return {
+                label: eachBen.benefit_title,
+                value: eachBen.benefit_id,
+                amount: eachBen.benefit_amount,
+            }
+        }))
+    }, [])
 
 
     return (
@@ -404,31 +415,44 @@ const EmployeeForm = (props) => {
                                             <div className="field item form-group col-md-6 col-sm-6">
                                                 <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit<span className="required">*</span></label>
                                                 <div className="col-md-8 col-sm-8">
-                                                    <Select
-                                                        value={benefitInputs[index]}
-                                                        isSearchable={true}
-                                                        onChange={(e) => {
-                                                            const objectData = benefitInputs;
-                                                            objectData[index] = {
-                                                                ...e,
-                                                                benefit_amount: objectData[index].benefit_amount
-                                                            }
-                                                            setbenefitInputs(objectData)
-                                                            setReRender(!reRender)
 
-                                                        }}
-                                                        styles={customStyles}
-                                                        options={props.benefit}
 
-                                                    />
+
+                                                    {props.benefitsRecordsValue.map(((eachBenValue, index) => {
+                                                        return <Select key={index}
+                                                            value={props.benefitsRecordsValue[index]}
+                                                            isSearchable={true}
+                                                            onChange={(e) => {
+                                                                const objectData = props.benefitsRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...e,
+                                                                    amount: objectData[index].amount
+
+
+                                                                }
+                                                                props.setBenefitsRecordsValue(objectData)
+                                                                setReRender(!reRender)
+
+                                                            }}
+                                                            styles={customStyles}
+                                                            options={props.benefit}
+
+                                                        />
+                                                    }))
+
+
+
+                                                    }
+
+
+
                                                 </div>
-                                                {props.benefit?.length > benefitInputs?.length && <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
+                                                {props.benefit?.length > props.benefitsRecordsValue?.length && <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
                                                     <i className="fa fa-plus-circle text-customBlue"
                                                         onClick={() => {
-
-                                                            setbenefitInputs([...benefitInputs, {
-                                                                value: "",
+                                                            props.setBenefitsRecordsValue([...props.benefitsRecordsValue, {
                                                                 label: "",
+                                                                value: "",
                                                                 amount: ""
                                                             }])
 
@@ -438,38 +462,40 @@ const EmployeeForm = (props) => {
 
 
                                             </div>
+
+
+                                            {/* // setBenefitsRecordsValue,benefitsRecordsValue */}
                                             <div className="field item form-group col-md-6 col-sm-6">
                                                 <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit Amount <span className="required">*</span></label>
                                                 <div className="col-md-8 col-sm-8">
-                                                    <input
 
-                                                        className="form-control"
-                                                        name="Benefit amount"
-                                                        placeholder=""
-                                                        type="number"
-                                                        onChange={(e) => {
+                                                    {props.benefitsRecordsValue.map(((eachBenValue, index) => {
+                                                        return <input
+                                                            className="form-control"
+                                                            name="Benefit amount"
+                                                            placeholder=""
+                                                            value={props.benefitsRecordsValue[index].amount}
+                                                            type="number"
+                                                            key={index}
+                                                            onChange={(e) => {
+                                                                const objectData = props.benefitsRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...objectData[index],
+                                                                    amount: e.target.value
+                                                                }
+                                                                props.setBenefitsRecordsValue(objectData)
+                                                                setReRender(!reRender)
 
-                                                            const objectData = benefitInputs;
-                                                            objectData[index] = {
-                                                                ...objectData[index],
-                                                                benefit_amount: e.target.value
-                                                            }
+
+                                                            }}
+                                                        />
+
+                                                    }))
 
 
 
+                                                    }
 
-                                                            setbenefitInputs(objectData)
-                                                            setReRender(!reRender)
-                                                            //setloanMainState({ ...loanMainState, loanTotalAmount: totalLoanAmountCal })
-                                                            props.setEmployeeToUpdate({
-                                                                ...props.selectEmployee,
-                                                                benefits: {
-                                                                    benefit_amount: e.target.value
-                                                                },
-                                                            });
-
-                                                        }}
-                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -616,9 +642,10 @@ const EmployeeForm = (props) => {
                                 <div className="row">
                                     <div className="field item form-group col-md-6 col-sm-6">
                                         <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Is overtime allowed</label>
-                                        <div className="custom-control custom-checkbox">
+                                        <div className="custom-control custom-checkbox  ml-3">
                                             <input required type="checkbox" className="custom-control-input" id="customCheck1"
-                                                value={props.selectEmployee.is_overtime_allow}
+
+                                                defaultChecked={props.selectEmployee.is_overtime_allow === 0 ? false : true}
                                                 disabled={!props.isEmplEditModeOn}
                                                 onChange={(e) => {
                                                     props.setEmployeeToUpdate({
@@ -938,18 +965,10 @@ const EmployeeForm = (props) => {
                                                         <></>
                                                     )}{" "}
                                                 </div>
-                                                <div className="col-md-10 px-0">
+                                                <div className="col-md-11 px-0">
                                                     {props.isEmplEditModeOn ? (
                                                         <>
-                                                            {/* <input required
-                                                                className={`${props.isEmplEditModeOn ? (emplEditValidator.cnic_back ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                                                                // className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
-                                                                id="formFileSm"
-                                                                type="file"
-                                                                style={{ height: "33px" }}
-                                                                disabled={props.disableSubmitForUpdatePhoto ? true : false}
-                                                                onChange={props.fileHandle3ForUpdate}
-                                                            />{" "} */}
+
 
                                                             <div className="col-md-10 ">
                                                                 <input
@@ -985,7 +1004,7 @@ const EmployeeForm = (props) => {
 
                                 <div className="row ">
                                     <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align px-0">Select Attachment</label>
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align px-0">Select Attachment</label> <span className="required">*</span>
                                         <div className="col-md-8 col-sm-8  ">
                                             <div className="row">
                                                 <div className="col-md-10 ">
