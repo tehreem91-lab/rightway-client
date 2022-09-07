@@ -726,7 +726,11 @@ function AddEmployee() {
                                                         <td className="text-left "> {item.allowed_holidays}</td>
                                                         <td className="text-left "> {item.holiday_assigned}</td>
                                                         <td className="text-left "> {item.shift?.shift_name}</td> */}
-                                                        <td className="text-left "> {item.status}</td>
+                                                        <td className="text-left ">  {
+                                                            item.status == 0
+                                                                ? 'Active'
+                                                                : 'Left'
+                                                        }</td>
                                                         {/* <td className="text-left "> {item.benefits.benefit_title}</td> */}
                                                         <td className=" text-center   ">
                                                             <i className="fa fa-edit mr-2" onClick={() => {

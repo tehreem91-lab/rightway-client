@@ -284,7 +284,7 @@ const EmployeeFormView = (props) => {
                                 <>{benefitInputs.map((eachAcc, index) => {
                                     return <div className="row" key={index}>
                                         <div className="field item form-group col-md-6 col-sm-6">
-                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit<span className="required">*</span></label>
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit</label>
                                             <div className="col-md-8 col-sm-8">
 
 

@@ -413,7 +413,7 @@ const EmployeeForm = (props) => {
                                     <>{benefitInputs.map((eachAcc, index) => {
                                         return <div className="row" key={index}>
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit<span className="required">*</span></label>
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit</label>
                                                 <div className="col-md-8 col-sm-8">
 
 
@@ -466,7 +466,7 @@ const EmployeeForm = (props) => {
 
                                             {/* // setBenefitsRecordsValue,benefitsRecordsValue */}
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit Amount <span className="required">*</span></label>
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit Amount </label>
                                                 <div className="col-md-8 col-sm-8">
 
                                                     {props.benefitsRecordsValue.map(((eachBenValue, index) => {
@@ -516,7 +516,7 @@ const EmployeeForm = (props) => {
                                 <div class="font-weight-bold blockquote-footer col-form-label w-50 p-3">Referral Information</div>
                                 <div className="row">
                                     <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Reference Name <span className="required">*</span></label>
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Reference Name </label>
                                         <div className="col-md-8 col-sm-8">
                                             <input required
                                                 name="name"
@@ -536,7 +536,7 @@ const EmployeeForm = (props) => {
                                         </div>
                                     </div>
                                     <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Reference Phone <span className="required">*</span></label>
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Reference Phone </label>
                                         <div className="col-md-8 col-sm-8">
                                             <input required
                                                 name="name"
@@ -563,7 +563,7 @@ const EmployeeForm = (props) => {
 
                                 <div className="row">
                                     <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Reference CNIC <span className="required">*</span></label>
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Reference CNIC </label>
                                         <div className="col-md-8 col-sm-8">
 
                                             <input required
@@ -659,7 +659,7 @@ const EmployeeForm = (props) => {
 
 
                                     <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Overtime<span className="required">*</span></label>
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Overtime</label>
                                         <div className="col-md-8 col-sm-8">
                                             <input required
                                                 name="name"
@@ -685,7 +685,7 @@ const EmployeeForm = (props) => {
                                 <div className="row">
 
                                     <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Advance Percentage</label>
+                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Advance %</label>
                                         <div className="col-md-8 col-sm-8">
                                             <input required
                                                 name="name"
