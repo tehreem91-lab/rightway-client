@@ -46,10 +46,18 @@ const Attendance = () => {
     };
 
 
-    function difference(a, b) {
+    // function difference() {
 
-        return (Math.abs(a - b) / 36e5);
-    }
+    //     {attendenceData.map((item, index) => {
+
+
+    //         return (
+
+
+    //             (item?.in_date ? ' ' : 'bg-danger text-white')}
+    //         );
+    //     })}
+    // }
     const fetchData = async () => {
         var config = {
             method: "get",
@@ -325,9 +333,9 @@ const Attendance = () => {
                                 {/* ///////////////////////For Downloadling Data/////////////////////////// */}
                                 <div className="col-md-12 col-sm-12 pr-4" >
 
-                                    <button type="button" class="btn btn-outline-success" align="left">Present</button>
-                                    <button type="button" class="btn btn-outline-danger" align="left">Absent</button>
-                                    <button type="button" class="btn btn-outline-warning" align="left">Incomplete</button>
+                                    {/* <button type="button" className="btn btn-outline-success" align="left">Present</button> */}
+                                    <button type="button" className="btn btn-danger" align="left">Absent</button>
+                                    <button type="button" className="btn btn-warning" align="left">Incomplete</button>
 
                                     <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                         <div className="form-group col-md-3">
@@ -361,7 +369,7 @@ const Attendance = () => {
                                 {/* //////////////////////////Form Structure///////////////////////////////// */}
                                 <div id="report">
                                     <div className="table-responsive px-3 pb-2 ">
-                                        <table className="table table-striped jambo_table bulk_action ">
+                                        <table className="table ">
                                             <thead>
                                                 <tr className="headings reportTableHead">
                                                     <th
@@ -413,15 +421,19 @@ const Attendance = () => {
                                             <tbody>
                                                 {attendenceData.map((item, index) => {
                                                     return (
+
+
+
+
                                                         <tr className="even pointer" key={index}>
-                                                            <td className=" "> {item.employee_code}</td>
-                                                            <td className=" "> {item.employee_name} </td>
-                                                            <td className=" "> {item.department_title}</td>
-                                                            <td className=" "> {item.designation_title}</td>
-                                                            <td className=" "> {item.shift_title}</td>
-                                                            <td className=" "> {item.shift_start_time}</td>
-                                                            <td className=" "> {item.shift_end_time}</td>
-                                                            <td className="">
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_code}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_name} </td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.department_title}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.designation_title}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_start_time}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_end_time}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
                                                                 {" "}
                                                                 <input
                                                                     type="datetime-local"
@@ -453,7 +465,7 @@ const Attendance = () => {
                                                                 />
                                                             </td>
 
-                                                            <td className=" ">
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
                                                                 {" "}
                                                                 <input
                                                                     type="datetime-local"
@@ -484,8 +496,8 @@ const Attendance = () => {
 
                                                                 />
                                                             </td>
-                                                            <td className=" "> {item.total_hour}</td>
-                                                            <td className=" "> {item.extra_hour}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
                                                         </tr>
                                                     );
                                                 })}
