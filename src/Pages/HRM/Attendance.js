@@ -14,8 +14,8 @@ const Attendance = () => {
 
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(false);
-    const [accountList, setAccountList] = useState([{}]);
-    const [accountListCSV, setAccountListCSV] = useState([{}]);
+    const [attendenceData, setAttendenceData] = useState([{}]);
+    const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
@@ -85,19 +85,26 @@ const Attendance = () => {
 
         await axios(config)
             .then(function (response) {
-                setAccountList(response.data);
+                setAttendenceData(response.data);
                 let core_data = response.data.map((item) => {
                     return {
                         employee_id: item.employee_id,
                         employee_code: item.employee_code,
                         employee_name: item.employee_name,
+                        department_title: item.department_title,
+                        designation_title: item.designation_title,
+                        shift_title: item.shift_title,
+                        shift_start_time: item.shift_start_time,
+                        shift_end_time: item.shift_end_time,
                         in_date: item.in_date,
                         out_date: item.out_date,
+                        total_hour: item.total_hour,
+                        extra_hour: item.extra_hour,
                         entry_MachineInfo1_id: item.entry_MachineInfo1_id,
                         last_MachineInfo1_id: item.last_MachineInfo1_id,
                     };
                 });
-                setAccountListCSV([
+                setAttendenceDataCSV([
                     ...core_data,
                     {
                         employee_code: "",
@@ -118,7 +125,7 @@ const Attendance = () => {
 
 
     const editBalance = () => {
-        const updatedCode = accountList.map((item) => {
+        const updatedCode = attendenceData.map((item) => {
             return {
                 "employee_id": item.employee_id,
                 "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
@@ -160,9 +167,9 @@ const Attendance = () => {
     ];
 
     const csvReport = {
-        filename: "OpeningBalance.csv",
+        filename: "Attendance.csv",
         headers: headers,
-        data: accountListCSV,
+        data: attendenceDataCSV,
     };
 
     ////////////////////////////For Downloading PDF Files////////////////////////////
@@ -316,7 +323,12 @@ const Attendance = () => {
                                 </div>
 
                                 {/* ///////////////////////For Downloadling Data/////////////////////////// */}
-                                <div className="col-md-12 col-sm-12 pr-4" align="right">
+                                <div className="col-md-12 col-sm-12 pr-4" >
+
+                                    <button type="button" class="btn btn-outline-success" align="left">Present</button>
+                                    <button type="button" class="btn btn-outline-danger" align="left">Absent</button>
+                                    <button type="button" class="btn btn-outline-warning" align="left">Incomplete</button>
+
                                     <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                         <div className="form-group col-md-3">
                                             <button className="btn btn-sm btn-primary borderRadiusRound">
@@ -356,7 +368,7 @@ const Attendance = () => {
                                                         className="column-title right-border-1 text-center " width="10%" >
                                                         Employee Code
                                                     </th>
-                                                    <th className="column-title  right-border-1">
+                                                    <th className="column-title  right-border-1" width="10%" >
                                                         Employee Name
                                                     </th>
                                                     <th
@@ -373,7 +385,11 @@ const Attendance = () => {
                                                     </th>
                                                     <th
                                                         className="column-title right-border-1 text-center " width="10%" >
-                                                        Shift Time
+                                                        Shift Start Time
+                                                    </th>
+                                                    <th
+                                                        className="column-title right-border-1 text-center " width="10%" >
+                                                        Shift End Time
                                                     </th>
                                                     <th
                                                         className="column-title right-border-1 text-center" width="10%">
@@ -382,24 +398,29 @@ const Attendance = () => {
                                                     <th className="column-title text-center right-border-1" width="10%">
                                                         Date/Time Out
                                                     </th>
+                                                    <th
+                                                        className="column-title right-border-1 text-center " width="10%" >
+                                                        Duty Time
+                                                    </th>
 
                                                     <th className="column-title text-center" width="10%">
-                                                        Total Time
+                                                        Over Time
                                                     </th>
                                                 </tr>
                                             </thead>
 
                                             {/* //////////////////////////Form Entries///////////////////////////////// */}
                                             <tbody>
-                                                {accountList.map((item, index) => {
+                                                {attendenceData.map((item, index) => {
                                                     return (
                                                         <tr className="even pointer" key={index}>
                                                             <td className=" "> {item.employee_code}</td>
                                                             <td className=" "> {item.employee_name} </td>
-                                                            <td className=" "> </td>
-                                                            <td className=" "> </td>
-                                                            <td className=" "> </td>
-                                                            <td className=" "> </td>
+                                                            <td className=" "> {item.department_title}</td>
+                                                            <td className=" "> {item.designation_title}</td>
+                                                            <td className=" "> {item.shift_title}</td>
+                                                            <td className=" "> {item.shift_start_time}</td>
+                                                            <td className=" "> {item.shift_end_time}</td>
                                                             <td className="">
                                                                 {" "}
                                                                 <input
@@ -410,12 +431,12 @@ const Attendance = () => {
                                                                     min="0"
                                                                     onKeyPress={(e) => preventMinus(e)}
                                                                     onChange={(e) => {
-                                                                        let arr = accountList;
+                                                                        let arr = attendenceData;
                                                                         let selected_index = arr.findIndex(
                                                                             (obj) =>
                                                                                 obj.employee_id ==
                                                                                 item.employee_id
-                                                                        ); //it tells us about index of selected account in array of accountList
+                                                                        ); //it tells us about index of selected account in array of attendenceData
 
                                                                         arr[selected_index] = {
                                                                             ...arr[selected_index],
@@ -423,7 +444,7 @@ const Attendance = () => {
                                                                             //out_date: e.target.value,
                                                                         };
 
-                                                                        setAccountList(arr);
+                                                                        setAttendenceData(arr);
                                                                         setreRender(!reRender);
                                                                         setindate(e.target.value);
                                                                     }}
@@ -442,7 +463,7 @@ const Attendance = () => {
                                                                     min="0"
                                                                     onKeyPress={(e) => preventMinus(e)}
                                                                     onChange={(e) => {
-                                                                        let arr = accountList;
+                                                                        let arr = attendenceData;
                                                                         let selected_index = arr.findIndex(
                                                                             (obj) =>
                                                                                 obj.employee_id ==
@@ -455,7 +476,7 @@ const Attendance = () => {
 
                                                                         };
 
-                                                                        setAccountList(arr);
+                                                                        setAttendenceData(arr);
                                                                         setreRender(!reRender);
                                                                         setoutdate(e.target.value);
                                                                     }}
@@ -463,13 +484,8 @@ const Attendance = () => {
 
                                                                 />
                                                             </td>
-                                                            <td className=" ">
-
-                                                                {/* { Math.abs({item?.out_date} - {item?.in_date}) / 36e5} 
-                                                                {difference({ item.out_date }, { item.in_date })}  */}
-                                                                difference({item?.out_date},{item?.in_date})
-
-                                                            </td>
+                                                            <td className=" "> {item.total_hour}</td>
+                                                            <td className=" "> {item.extra_hour}</td>
                                                         </tr>
                                                     );
                                                 })}
@@ -481,14 +497,14 @@ const Attendance = () => {
                                                         Total:
                                                     </td>
                                                     <td>
-                                                        {accountList
+                                                        {attendenceData
                                                             .map((values) => {
                                                                 return Number(values.in_date);
                                                             })
                                                             .reduce((a, b) => a + b, 0)}
                                                     </td>
                                                     <td>
-                                                        {accountList
+                                                        {attendenceData
                                                             .map((values) => {
                                                                 return Number(values.out_date);
                                                             })
