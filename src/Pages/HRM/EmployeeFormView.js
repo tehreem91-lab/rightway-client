@@ -12,8 +12,9 @@ const EmployeeFormView = (props) => {
     console.log(props.selectEmployee, "______");
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(false);
-
+    //const [reRender, setReRender] = useState(false)
     const URL = localStorage.getItem("authUser");
+
     const optionsST = [
         { value: 'Salary', label: 'Salary' },
         { value: 'Wages', label: 'Wages' }
@@ -64,43 +65,43 @@ const EmployeeFormView = (props) => {
 
 
 
-    const [roomInputs, setRoomInputs] = useState([
-        { boardBasic: "", roomType: "" }
-    ]);
+    const [benefitInputs, setbenefitInputs] = useState([{
+        value: "",
+        label: "",
+        amount: ""
+    }]);
 
     // room handle input change
     const handleRoomChange = (option, index, name) => {
         const value = option.value;
         console.log(value);
         //alert(`handleRoomChange: [${index}][${name}] ${value}`);
-        const list = [...roomInputs];
+        const list = [...benefitInputs];
         list[index][name] = value;
-        setRoomInputs(list);
+        setbenefitInputs(list);
     };
 
     //room handle click event of the Remove button
     const handleRemoveClickRoom = (index) => {
-        const list = [...roomInputs];
+        const list = [...benefitInputs];
         list.splice(index, 1);
-        setRoomInputs(list);
+        setbenefitInputs(list);
     };
 
     //room handle click event of the Add button
     const handleAddClickRoom = () => {
-        setRoomInputs([...roomInputs, { boardBasic: "", roomType: "" }]);
+        setbenefitInputs([...benefitInputs, { value: "", label: "", amount: "" }]);
     };
 
-    const onsubmit = (event) => {
-        event.preventDefault();
-        let disp = '';
-        for (let di = 0; di < roomInputs.length; di++) {
-            disp += ` {${roomInputs[di].boardBasic} - ${roomInputs[di].roomType}}`;
-        }
-
-        alert('room inputs: ' + disp);
-        console.log(roomInputs);
-    };
-
+    useEffect(() => {
+        props.setBenefitsRecordsValue(props.selectEmployee.benefits.map((eachBen) => {
+            return {
+                label: eachBen.benefit_title,
+                value: eachBen.benefit_id,
+                amount: eachBen.benefit_amount,
+            }
+        }))
+    }, [])
 
     return (
 
@@ -279,81 +280,106 @@ const EmployeeFormView = (props) => {
 
 
 
-                            {roomInputs.map((x, i) => (
-
-                                <div className="row">
-                                    <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit  </label>
-                                        <div className="col-md-8 col-sm-8">
-                                            <Creatable
-                                                isClearable={false}
-
-                                                options={props.benefit}
-                                                //value={props.selectEmployee.benefits?.benefit_title}
-                                                value={{ label: props.selectEmployee.benefits?.benefit_title, value: props.selectEmployee.benefits?.benefit_id }}
-                                                styles={customStyles}
-                                                onChange={(value) => {
+                            {
+                                <>{benefitInputs.map((eachAcc, index) => {
+                                    return <div className="row" key={index}>
+                                        <div className="field item form-group col-md-6 col-sm-6">
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit<span className="required">*</span></label>
+                                            <div className="col-md-8 col-sm-8">
 
 
-                                                    props.setBenefitValue(value.value)
-                                                    props.setEmployeeToUpdate({
-                                                        ...props.selectEmployee,
-                                                        benefits: {
-                                                            benefit_id: value.value,
-                                                            benefit_title: value.label
-                                                        },
-                                                    });
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="field item form-group col-md-6 col-sm-6">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Benefit Amount  </label>
-                                        <div className="col-md-8 col-sm-8">
-                                            <input
-                                                name="name"
-                                                className='form-control'
-                                                type="number"
-                                                placeholder="Enter Benefit Amount"
-                                                styles={customStyles}
-                                                //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                                                value={props.selectEmployee.benefits}
-                                                disabled={!props.isEmplEditModeOn}
-                                                onChange={(e) => {
-                                                    //setEmplEditValidator(emplEditValidatorInitialState)
-                                                    props.setEmployeeToUpdate({
-                                                        ...props.selectEmployee.benefits,
-                                                        amount: e.target.value,
-                                                    });
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
 
-                                    {/* <div className="field item form-group col-md-1 col-sm-1">
+                                                {props.benefitsRecordsValue.map(((eachBenValue, index) => {
+                                                    return <Select
+                                                        isSearchable={true}
+                                                        name="Benefit amount"
+                                                        placeholder=""
+                                                        value={props.benefitsRecordsValue[index]}
+                                                        disabled
+                                                        key={index}
+                                                        // onChange={(e) => {
+                                                        //     const objectData = props.benefitsRecordsValue;
+                                                        //     objectData[index] = {
+                                                        //         ...e,
+                                                        //         amount: objectData[index].amount
 
-                                        <div className="col-md-8 col-sm-8">
-                                            {roomInputs.length !== 1 && (
-                                                <DeleteIcon
-                                                    onClick={() => handleRemoveClickRoom(i)}
-                                                    style={{
-                                                        marginRight: "10px",
-                                                        marginTop: "4px",
-                                                        cursor: "pointer"
+
+                                                        //     }
+                                                        //     props.setBenefitsRecordsValue(objectData)
+                                                        //     //setReRender(!reRender)
+
+                                                        // }}
+                                                        styles={customStyles}
+                                                        options={props.benefit}
+
+                                                    />
+                                                }))
+
+
+
+                                                }
+
+
+
+                                            </div>
+
+                                            {/* {props.benefit?.length > props.benefitsRecordsValue?.length && 
+                                            <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
+                                                <i className="fa fa-plus-circle text-customBlue"
+                                                    onClick={() => {
+                                                        props.setBenefitsRecordsValue([...props.benefitsRecordsValue, {
+                                                            label: "",
+                                                            value: "",
+                                                            amount: ""
+                                                        }])
+
                                                     }}
-                                                />
-                                            )}
-                                            {roomInputs.length - 1 === i && (
-                                                <AddCircleOutlineIcon
-                                                    onClick={handleAddClickRoom}
-                                                    style={{ marginTop: "4px", cursor: "pointer" }}
-                                                />
-                                            )}
-                                        </div>
-                                    </div> */}
-                                </div>
+                                                ></i>
+                                            </div>} */}
 
-                            ))}
+
+                                        </div>
+
+
+                                        {/* // setBenefitsRecordsValue,benefitsRecordsValue */}
+                                        <div className="field item form-group col-md-6 col-sm-6">
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit Amount</label>
+                                            <div className="col-md-8 col-sm-8">
+
+                                                {props.benefitsRecordsValue.map(((eachBenValue, index) => {
+                                                    return <input
+                                                        className="form-control"
+                                                        name="Benefit amount"
+                                                        placeholder=""
+                                                        value={props.benefitsRecordsValue[index].amount}
+                                                        type="number"
+                                                        key={index}
+                                                        disabled
+                                                    // onChange={(e) => {
+                                                    //     const objectData = props.benefitsRecordsValue;
+                                                    //     objectData[index] = {
+                                                    //         ...objectData[index],
+                                                    //         amount: e.target.value
+                                                    //     }
+                                                    //     props.setBenefitsRecordsValue(objectData)
+                                                    //     //setReRender(!reRender)
+
+
+                                                    // }}
+                                                    />
+
+                                                }))
+
+
+
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                })
+                                }</>
+                            }
 
 
 
@@ -466,9 +492,10 @@ const EmployeeFormView = (props) => {
                             <div className="row">
                                 <div className="field item form-group col-md-6 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Is overtime allowed</label>
-                                    <div className="custom-control custom-checkbox">
-                                        <input type="checkbox" className="custom-control-input" id="customCheck1"
-                                            value={props.selectEmployee.is_overtime_allow}
+                                    <div className="custom-control custom-checkbox  ml-3">
+                                        <input required type="checkbox" className="custom-control-input" id="customCheck1"
+
+                                            defaultChecked={props.selectEmployee.is_overtime_allow === 0 ? false : true}
                                             disabled />
                                         <label className="custom-control-label" htmlFor="customCheck1"></label>
                                     </div>

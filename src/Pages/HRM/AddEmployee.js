@@ -603,6 +603,9 @@ function AddEmployee() {
                                     benefit={benefit}
                                     fileHandle1={fileHandle1}
 
+                                    benefitsRecordsValue={benefitsRecordsValue}
+                                    setBenefitsRecordsValue={setBenefitsRecordsValue}
+
                                     fileHandle1ForUpdate={fileHandle1ForUpdate}
                                     fileHandle2ForUpdate={fileHandle2ForUpdate}
                                     fileHandle3ForUpdate={fileHandle3ForUpdate}
@@ -738,6 +741,13 @@ function AddEmployee() {
 
                                                             }}></i>
                                                             <i className="fa fa-eye mr-2" onClick={() => {
+                                                                setEmployeeToUpdate({
+                                                                    ...item,
+                                                                    designationUpdate: { value: item.designation_id, label: item.designationName },
+                                                                    departmentUpdate: { value: item.department_id, label: item.department_name },
+                                                                    shiftUpdate: { value: item.shift_id, label: item.shift_name }
+                                                                });
+                                                                setIsEmplEditModeOn(true)
                                                                 setLgShow(true)
                                                             }}></i>
                                                         </td>

@@ -353,19 +353,30 @@ const Attendance = () => {
                                             <thead>
                                                 <tr className="headings reportTableHead">
                                                     <th
-                                                        className="column-title right-border-1 text-center "
-                                                        width="10%"
-                                                    >
-                                                        {" "}
-                                                        Employee Code{" "}
+                                                        className="column-title right-border-1 text-center " width="10%" >
+                                                        Employee Code
                                                     </th>
                                                     <th className="column-title  right-border-1">
                                                         Employee Name
                                                     </th>
                                                     <th
-                                                        className="column-title right-border-1 text-center"
-                                                        width="10%"
-                                                    >
+                                                        className="column-title right-border-1 text-center " width="10%" >
+                                                        Department
+                                                    </th>
+                                                    <th
+                                                        className="column-title right-border-1 text-center " width="10%" >
+                                                        Designation
+                                                    </th>
+                                                    <th
+                                                        className="column-title right-border-1 text-center " width="10%" >
+                                                        Shift Name
+                                                    </th>
+                                                    <th
+                                                        className="column-title right-border-1 text-center " width="10%" >
+                                                        Shift Time
+                                                    </th>
+                                                    <th
+                                                        className="column-title right-border-1 text-center" width="10%">
                                                         Date/Time In
                                                     </th>
                                                     <th className="column-title text-center right-border-1" width="10%">
@@ -385,6 +396,10 @@ const Attendance = () => {
                                                         <tr className="even pointer" key={index}>
                                                             <td className=" "> {item.employee_code}</td>
                                                             <td className=" "> {item.employee_name} </td>
+                                                            <td className=" "> </td>
+                                                            <td className=" "> </td>
+                                                            <td className=" "> </td>
+                                                            <td className=" "> </td>
                                                             <td className="">
                                                                 {" "}
                                                                 <input

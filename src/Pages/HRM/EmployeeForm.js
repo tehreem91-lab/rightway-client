@@ -644,8 +644,8 @@ const EmployeeForm = (props) => {
                                         <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Is overtime allowed</label>
                                         <div className="custom-control custom-checkbox  ml-3">
                                             <input required type="checkbox" className="custom-control-input" id="customCheck1"
-                                   
-                                                defaultChecked={props.selectEmployee.is_overtime_allow===0?false:true}
+
+                                                defaultChecked={props.selectEmployee.is_overtime_allow === 0 ? false : true}
                                                 disabled={!props.isEmplEditModeOn}
                                                 onChange={(e) => {
                                                     props.setEmployeeToUpdate({
@@ -968,7 +968,7 @@ const EmployeeForm = (props) => {
                                                 <div className="col-md-11 px-0">
                                                     {props.isEmplEditModeOn ? (
                                                         <>
-                                                            
+
 
                                                             <div className="col-md-10 ">
                                                                 <input
