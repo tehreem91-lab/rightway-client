@@ -22,7 +22,8 @@ const Attendance = () => {
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
     const dateToday = `${year}-${month}-${day}`;
-    const [date, setdate] = useState("2020-09-01T00:00:00");
+    // const [date, setdate] = useState("2020-09-01T00:00:00");
+    const [date, setdate] = useState("2020-09-01");
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
 
@@ -45,7 +46,10 @@ const Attendance = () => {
         fetchAllData(value);
     };
 
-
+    const handleChangeDate = (value) => {
+        setdate(value);
+        fetchAllData(value);
+    };
     // function difference() {
 
     //     {attendenceData.map((item, index) => {
@@ -56,7 +60,7 @@ const Attendance = () => {
 
     //             (item?.in_date ? ' ' : 'bg-danger text-white')}
     //         );
-    //     })}
+    //     })} 
     // }
     const fetchData = async () => {
         var config = {
@@ -132,8 +136,27 @@ const Attendance = () => {
 
 
 
+
+
     const editBalance = () => {
-        const updatedCode = attendenceData.map((item) => {
+
+        const updatedCode4post = attendenceData.filter((item) => {
+            // if ((item.in_date != null && item.out_date != null) || (item.in_date != null && item.out_date == null) || (item.in_date == null && item.out_date != null))
+            if (item.in_date != null && item.out_date != null)
+                return {
+                    "employee_id": item.employee_id,
+                    "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
+                    "last_MachineInfo1_id": item.last_MachineInfo1_id,
+                    "in_time": item.in_date,
+                    "out_time": item.out_date,
+                }
+            else {
+                console.log("Errorlalala")
+            }
+
+        });
+
+        const updatedCode = updatedCode4post.map((item) => {
             return {
                 "employee_id": item.employee_id,
                 "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
@@ -284,17 +307,17 @@ const Attendance = () => {
                                                     //     //getOptionValue={(e) => e.department_id}
                                                     //     value={selectedValue}
                                                     //     options={inputOptions}
-                                                    //     onChange={handleChange}
+                                                    onChange={handleChangeDate}
                                                     placeholder="All Dates"
                                                     styles={customStyles}
                                                     className="form-control"
                                                     type="date"
                                                     value={date}
-                                                    //min="2022-09-09"
-                                                    onChange={(e) => {
-                                                        setdate(e.target.value);
-                                                        fetchAllData();
-                                                    }}
+                                                //min="2022-09-09"
+                                                // onChange={(e) => {
+                                                //     setdate(e.target.value);
+                                                //     fetchAllData();
+                                                // }}
                                                 />
                                             </div>
                                         </div>
@@ -416,6 +439,8 @@ const Attendance = () => {
                                                     </th>
                                                 </tr>
                                             </thead>
+
+
 
                                             {/* //////////////////////////Form Entries///////////////////////////////// */}
                                             <tbody>
