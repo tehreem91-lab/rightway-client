@@ -366,6 +366,7 @@ const EmployeeForm = (props) => {
 
                                 <div className="card" style={{ marginTop: "25px " }}> <h5 className="card-header"> Salary Information</h5>
                                     <div className="row" style={{ marginTop: "6px " }}>
+
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align">Salary Type <span className="required">*</span></label>
                                             <div className="col-md-8 col-sm-8">
@@ -382,6 +383,86 @@ const EmployeeForm = (props) => {
                                                 />
                                             </div>
                                         </div>
+
+                                        <div className="field item form-group col-md-6 col-sm-6">
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Salary Dept<span className="required">*</span></label>
+                                            <div className="col-md-8 col-sm-8">
+                                                <Creatable
+
+                                                    isClearable={false}
+                                                    options={props.salaryDep}
+                                                    value={{ label: props.selectEmployee.salary_department?.label, value: props.selectEmployee.salary_department?.value }}
+                                                    styles={customStyles}
+                                                    onChange={(value) => {
+
+
+                                                        props.setSalaryDepValue(value.value)
+                                                        props.setEmployeeToUpdate({
+                                                            ...props.selectEmployee,
+                                                            salary_department: {
+                                                                value: value.value,
+                                                                label: value.label
+                                                            },
+                                                        });
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+
+                                        <div className="field item form-group col-md-6 col-sm-6">
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Advance %</label>
+                                            <div className="col-md-8 col-sm-8">
+                                                <input required
+                                                    name="name"
+                                                    className='form-control'
+                                                    type="number"
+                                                    placeholder=""
+                                                    //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+                                                    value={props.selectEmployee.advance_percentage}
+                                                    disabled={!props.isEmplEditModeOn}
+                                                    onChange={(e) => {
+                                                        //setEmplEditValidator(emplEditValidatorInitialState)
+                                                        props.setEmployeeToUpdate({
+                                                            ...props.selectEmployee,
+                                                            advance_percentage: e.target.value,
+                                                        });
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <div className="field item form-group col-md-6 col-sm-6">
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Advance Dept<span className="required">*</span></label>
+                                            <div className="col-md-8 col-sm-8">
+                                                <Creatable
+
+                                                    isClearable={false}
+                                                    options={props.advanceDep}
+                                                    value={{ label: props.selectEmployee.advance_department?.label, value: props.selectEmployee.advance_department?.value }}
+                                                    styles={customStyles}
+                                                    onChange={(value) => {
+
+
+                                                        props.setAdvanceDepValue(value.value)
+                                                        props.setEmployeeToUpdate({
+                                                            ...props.selectEmployee,
+                                                            advance_department: {
+                                                                value: value.value,
+                                                                label: value.label
+                                                            },
+                                                        });
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+
+
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Salary Amount <span className="required">*</span></label>
                                             <div className="col-md-8 col-sm-8">
@@ -504,6 +585,11 @@ const EmployeeForm = (props) => {
                                         })
                                         }</>
                                     }
+
+
+
+
+
                                 </div>
 
 
@@ -620,7 +706,7 @@ const EmployeeForm = (props) => {
                                         </div>
 
                                         <div className="field item form-group col-md-6 col-sm-6">
-                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Assigned Holidays<span className="required">*</span></label>
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Assign Holidays<span className="required">*</span></label>
                                             <div className="col-md-8 col-sm-8">
                                                 <Select
                                                     options={optionsAH}
@@ -641,73 +727,7 @@ const EmployeeForm = (props) => {
 
 
 
-
                                     <div className="row">
-                                        <div className="field item form-group col-md-6 col-sm-6">
-                                            <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Is overtime allowed</label>
-                                            <div className="custom-control custom-checkbox  ml-3">
-                                                <input required type="checkbox" className="custom-control-input" id="customCheck1"
-
-                                                    defaultChecked={props.selectEmployee.is_overtime_allow === 0 ? false : true}
-                                                    disabled={!props.isEmplEditModeOn}
-                                                    onChange={(e) => {
-                                                        props.setEmployeeToUpdate({
-                                                            ...props.selectEmployee,
-                                                            is_overtime_allow: e.target.value,
-                                                        });
-                                                    }} />
-                                                <label className="custom-control-label" htmlFor="customCheck1"></label>
-                                            </div>
-                                        </div>
-
-
-                                        <div className="field item form-group col-md-6 col-sm-6">
-                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Overtime</label>
-                                            <div className="col-md-8 col-sm-8">
-                                                <input required
-                                                    name="name"
-                                                    className='form-control'
-                                                    placeholder=""
-                                                    //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                                                    value={props.selectEmployee.over_time}
-                                                    disabled={!props.isEmplEditModeOn}
-                                                    onChange={(e) => {
-                                                        //setEmplEditValidator(emplEditValidatorInitialState)
-                                                        props.setEmployeeToUpdate({
-                                                            ...props.selectEmployee,
-                                                            over_time: e.target.value,
-                                                        });
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div className="row">
-
-                                        <div className="field item form-group col-md-6 col-sm-6">
-                                            <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Advance %</label>
-                                            <div className="col-md-8 col-sm-8">
-                                                <input required
-                                                    name="name"
-                                                    className='form-control'
-                                                    type="number"
-                                                    placeholder=""
-                                                    //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                                                    value={props.selectEmployee.advance_percentage}
-                                                    disabled={!props.isEmplEditModeOn}
-                                                    onChange={(e) => {
-                                                        //setEmplEditValidator(emplEditValidatorInitialState)
-                                                        props.setEmployeeToUpdate({
-                                                            ...props.selectEmployee,
-                                                            advance_percentage: e.target.value,
-                                                        });
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
 
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align">Designation <span className="required">*</span></label>
@@ -733,15 +753,6 @@ const EmployeeForm = (props) => {
                                                 />
                                             </div>
                                         </div>
-                                    </div>
-
-
-
-
-
-
-
-                                    <div className="row">
 
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Status <span className="required">*</span></label>
@@ -759,6 +770,17 @@ const EmployeeForm = (props) => {
                                                 />
                                             </div>
                                         </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <div className="row">
+
+
 
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align">Shift<span className="required">*</span></label>
@@ -784,6 +806,53 @@ const EmployeeForm = (props) => {
                                                 />
                                             </div>
                                         </div>
+                                    </div>
+
+
+
+
+
+                                    <div className="row">
+                                        <div className="field item form-group col-md-6 col-sm-6">
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Is overtime allowed</label>
+                                            <div className="custom-control custom-checkbox  ml-3">
+                                                <input required type="checkbox" className="custom-control-input" id="customCheck1"
+
+                                                    defaultChecked={props.selectEmployee.is_overtime_allow === 0 ? false : true}
+                                                    disabled={!props.isEmplEditModeOn}
+                                                    onChange={(e) => {
+                                                        props.setEmployeeToUpdate({
+                                                            ...props.selectEmployee,
+                                                            is_overtime_allow: e.target.value,
+                                                        });
+                                                    }} />
+                                                <label className="custom-control-label" htmlFor="customCheck1"></label>
+                                            </div>
+                                        </div>
+
+
+                                        {/* <div className="field item form-group col-md-6 col-sm-6">
+                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Overtime</label>
+                                            <div className="col-md-8 col-sm-8">
+                                                <input required
+                                                    name="name"
+                                                    className='form-control'
+                                                    placeholder=""
+                                                    //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+                                                    value={props.selectEmployee.over_time}
+                                                    disabled={!props.isEmplEditModeOn}
+                                                    onChange={(e) => {
+                                                        //setEmplEditValidator(emplEditValidatorInitialState)
+                                                        props.setEmployeeToUpdate({
+                                                            ...props.selectEmployee,
+                                                            over_time: e.target.value,
+                                                        });
+                                                    }}
+                                                />
+                                            </div>
+                                        </div> */}
+
+
                                     </div>
                                 </div>
 
@@ -1110,7 +1179,7 @@ const EmployeeForm = (props) => {
                                 Submit Form
                             </button> */}
                         </form>
-                    </div>
+                    </div >
                 </>
             )}
 

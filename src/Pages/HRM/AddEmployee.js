@@ -33,10 +33,14 @@ function AddEmployee() {
     const [departmentValue, setDepartmentValue] = useState("CODER");
     const [shiftValue, setShiftValue] = useState("");
     const [benefitValue, setBenefitValue] = useState("CODER");
+    const [advanceDepValue, setAdvanceDepValue] = useState("");
+    const [salaryDepValue, setSalaryDepValue] = useState("");
     const [designation, setDesignation] = useState([]);
     const [department, setDepartment] = useState([]);
     const [shift, setShift] = useState([]);
     const [benefit, setBenefit] = useState([]);
+    const [advanceDep, setAdvanceDep] = useState([]);
+    const [salaryDep, setSalaryDep] = useState([]);
     const [benefitsRecordsValue, setBenefitsRecordsValue] = useState([{
         label: "",
         value: "",
@@ -274,6 +278,52 @@ function AddEmployee() {
                         });
                     // ----- Setting Benefit List ------
 
+                    // ----- Setting Advance Department List ------
+                    fetch(URL + "api/ChartOfAccounts/GetAdvanceDepartments", {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                        },
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            var arr = [];
+                            data.map((item) => {
+                                arr.push({
+                                    label: item.label,
+                                    value: item.value,
+                                });
+                            });
+
+                            setAdvanceDep(arr);
+                        });
+                    // ----- Setting Advance Department List ------
+
+
+                    // ----- Setting Salary Department List ------
+                    fetch(URL + "api/ChartOfAccounts/GetSalaryDepartments", {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                        },
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            var arr = [];
+                            data.map((item) => {
+                                arr.push({
+                                    label: item.label,
+                                    value: item.value,
+                                });
+                            });
+
+                            setSalaryDep(arr);
+                        });
+                    // ----- Setting Salary Department List ------
+
+
+
+
                     setisLoading(false);
                 });
             })
@@ -284,13 +334,7 @@ function AddEmployee() {
 
         console.log(employeeToUpdate, "ooooooooooooo");
 
-        var ben = JSON.stringify({
 
-            "benefit_id": employeeToUpdate.benefits?.benefit_id,
-            "amount": employeeToUpdate.benefits?.amount
-
-
-        });
 
         var raw
 
@@ -318,6 +362,8 @@ function AddEmployee() {
             "holiday_assigned": employeeToUpdate.holiday_assigned,
             "shift_id": employeeToUpdate.shift?.shift_id,
             "status": employeeToUpdate.status,
+            "salary_department_id": employeeToUpdate.salary_department?.value,
+            "advance_department_id": employeeToUpdate.advance_department?.value,
             "benefits": benefitsRecordsValue.length === 0 ? [] : benefitsRecordsValue.map((EachBenRec) => {
                 return {
 
@@ -378,6 +424,8 @@ function AddEmployee() {
                         "allowed_holidays": employeeToUpdate.allowed_holidays,
                         "holiday_assigned": employeeToUpdate.holiday_assigned,
                         "shift_id": employeeToUpdate.shiftUpdate.value,
+                        "salary_department_id": employeeToUpdate.salaryDepUpdate.value,
+                        "advance_department_id": employeeToUpdate.advanceDepUpdate.value,
                         "status": employeeToUpdate.status,
                         "benefits": [
                             {
@@ -450,6 +498,8 @@ function AddEmployee() {
         setDepartmentValue(value.value);
         setShiftValue(value.value);
         setBenefitValue(value.value);
+        setSalaryDepValue(value.value);
+        setAdvanceDepValue(value.value);
     };
 
     useEffect(() => {
@@ -516,14 +566,20 @@ function AddEmployee() {
                                     setDepartmentValue={setDepartmentValue}
                                     setShiftValue={setShiftValue}
                                     setBenefitValue={setBenefitValue}
+                                    setAdvanceDepValue={setAdvanceDepValue}
+                                    setSalaryDepValue={setSalaryDepValue}
                                     designationValue={designationValue}
                                     departmentValue={departmentValue}
                                     shiftValue={shiftValue}
                                     benefitValue={benefitValue}
+                                    advanceDepValue={advanceDepValue}
+                                    salaryDepValue={salaryDepValue}
                                     designation={designation}
                                     department={department}
                                     shift={shift}
                                     benefit={benefit}
+                                    advanceDep={advanceDep}
+                                    salaryDep={salaryDep}
                                     fileHandle1={fileHandle1}
 
 
@@ -593,15 +649,22 @@ function AddEmployee() {
                                     setDepartmentValue={setDepartmentValue}
                                     setShiftValue={setShiftValue}
                                     setBenefitValue={setBenefitValue}
+                                    setAdvanceDepValue={setAdvanceDepValue}
+                                    setSalaryDepValue={setSalaryDepValue}
                                     designationValue={designationValue}
                                     departmentValue={departmentValue}
                                     shiftValue={shiftValue}
                                     benefitValue={benefitValue}
+                                    advanceDepValue={advanceDepValue}
+                                    salaryDepValue={salaryDepValue}
                                     designation={designation}
                                     department={department}
                                     shift={shift}
                                     benefit={benefit}
+                                    advanceDep={advanceDep}
+                                    salaryDep={salaryDep}
                                     fileHandle1={fileHandle1}
+
 
                                     benefitsRecordsValue={benefitsRecordsValue}
                                     setBenefitsRecordsValue={setBenefitsRecordsValue}
@@ -738,7 +801,10 @@ function AddEmployee() {
                                                                     ...item,
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
                                                                     departmentUpdate: { value: item.department_id, label: item.department_name },
-                                                                    shiftUpdate: { value: item.shift_id, label: item.shift_name }
+                                                                    shiftUpdate: { value: item.shift_id, label: item.shift_name },
+                                                                    advanceDepUpdate: { value: item.value, label: item.label },
+                                                                    salaryDepUpdate: { value: item.value, label: item.label }
+
                                                                 });
                                                                 setIsEmplEditModeOn(true)
                                                                 setShow(true)
@@ -749,7 +815,9 @@ function AddEmployee() {
                                                                     ...item,
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
                                                                     departmentUpdate: { value: item.department_id, label: item.department_name },
-                                                                    shiftUpdate: { value: item.shift_id, label: item.shift_name }
+                                                                    shiftUpdate: { value: item.shift_id, label: item.shift_name },
+                                                                    advanceDepUpdate: { value: item.value, label: item.label },
+                                                                    salaryDepUpdate: { value: item.value, label: item.label }
                                                                 });
                                                                 setIsEmplEditModeOn(true)
                                                                 setLgShow(true)
