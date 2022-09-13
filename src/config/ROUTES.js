@@ -40,6 +40,8 @@ import AdvancePayementVoucher from "../Pages/HRM/AdvanceManagement/AdvanceVouche
 import LoanPayementVoucher from "../Pages/HRM/LoanManagement/LoanVoucher/LoanPayementVoucher";
 import LoanSettlementVoucher from "../Pages/HRM/LoanManagement/LoanVoucher/LoanSettlementVoucher";
 import LoanHistory from "../Pages/HRM/LoanManagement/LoanHistory";
+import EmployeeProfile from "../Pages/HRM/EmployeeProfile";
+import EmployeeWiseAttendance from "../Pages/HRM/EmployeeWisrAttendance";
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
@@ -83,6 +85,8 @@ const ROUTES = {
   LoanPayementVoucher: { id: "40", element: LoanPayementVoucher, path: "LoanPayementVoucherAccess" },
   LoanHistory: { id: "41", element: LoanHistory, path: "LoanHistoryAccess" },
   LoanSettlementVoucher: { id: "43", element: LoanSettlementVoucher, path: "LoanSettlementVoucherAccess" },
+  EmployeeProfile: { id: "44", element: EmployeeProfile, path: "EmployeeProfileAccess" },
+  EmployeeWiseAttendance: { id: "45", element: EmployeeWiseAttendance, path: "EmployeeWiseAttendanceAccess" },
 };
 export default ROUTES;
 
