@@ -50,22 +50,10 @@ const EmployeeWiseAttendance = () => {
         setdate(value);
         fetchAllData(value);
     };
-    // function difference() {
-
-    //     {attendenceData.map((item, index) => {
-
-
-    //         return (
-
-
-    //             (item?.in_date ? ' ' : 'bg-danger text-white')}
-    //         );
-    //     })} 
-    // }
     const fetchData = async () => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Departments`,
+            url: `${endPoint}api/EmployeeDetails/GetActiveEmployee`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
                     }`,
@@ -74,7 +62,7 @@ const EmployeeWiseAttendance = () => {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { department_name: "All", department_id: 0 },
+                    { label: "All", value: 0 },
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -87,7 +75,7 @@ const EmployeeWiseAttendance = () => {
     const fetchAllData = async (e) => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${date}`,
+            url: `${endPoint}api/Attendence/GetEmployeeAttendenceReport?employee_id=${e.value}&date=${date}`,
             //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${e.date}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
@@ -100,11 +88,6 @@ const EmployeeWiseAttendance = () => {
                 setAttendenceData(response.data);
                 let core_data = response.data.map((item) => {
                     return {
-                        employee_id: item.employee_id,
-                        employee_code: item.employee_code,
-                        employee_name: item.employee_name,
-                        department_title: item.department_title,
-                        designation_title: item.designation_title,
                         shift_title: item.shift_title,
                         shift_start_time: item.shift_start_time,
                         shift_end_time: item.shift_end_time,
@@ -114,6 +97,7 @@ const EmployeeWiseAttendance = () => {
                         extra_hour: item.extra_hour,
                         entry_MachineInfo1_id: item.entry_MachineInfo1_id,
                         last_MachineInfo1_id: item.last_MachineInfo1_id,
+                        Date: item.Date
                     };
                 });
                 setAttendenceDataCSV([
@@ -192,10 +176,14 @@ const EmployeeWiseAttendance = () => {
     ////////////////////////////For Downloading CSV Files////////////////////////////
 
     const headers = [
-        { label: "Code", key: "employee_code" },
-        { label: "Employee Name", key: "employee_name" },
-        { label: "in_date", key: "in_date" },
-        { label: "out_date", key: "out_date" },
+        { label: "Date", key: "Date" },
+        { label: "Shift Name", key: "shift_title" },
+        { label: "Shift Start Time", key: "shift_start_time" },
+        { label: "Shift End Time", key: "shift_end_time" },
+        { label: "Date/Time In", key: "in_date" },
+        { label: "Date/Time Out", key: "out_date" },
+        { label: "Duty Time", key: "total_hour" },
+        { label: "Over Time", key: "extra_hour" }, ,
     ];
 
     const csvReport = {
@@ -281,14 +269,14 @@ const EmployeeWiseAttendance = () => {
                                 <div className="row">
                                     <div className="field item form-group col-md-12 col-sm-12">
                                         <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                            Select Department <span className="required">*</span>
+                                            Select Employee <span className="required">*</span>
                                         </label>
                                         <div className="col-md-3 col-sm-3">
                                             <div>
                                                 <Select
                                                     placeholder={"All"}
-                                                    getOptionLabel={(e) => e.department_name}
-                                                    getOptionValue={(e) => e.department_id}
+                                                    getOptionLabel={(e) => e.label}
+                                                    getOptionValue={(e) => e.value}
                                                     value={selectedValue}
                                                     options={inputOptions}
                                                     onChange={handleChange}
@@ -396,20 +384,10 @@ const EmployeeWiseAttendance = () => {
                                         <table className="table ">
                                             <thead>
                                                 <tr className="headings reportTableHead">
+
                                                     <th
                                                         className="column-title right-border-1 text-center " width="10%" >
-                                                        Employee Code
-                                                    </th>
-                                                    <th className="column-title  right-border-1" width="10%" >
-                                                        Employee Name
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
-                                                        Department
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
-                                                        Designation
+                                                        Date
                                                     </th>
                                                     <th
                                                         className="column-title right-border-1 text-center " width="10%" >
@@ -452,10 +430,7 @@ const EmployeeWiseAttendance = () => {
 
 
                                                         <tr className="even pointer" key={index}>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_code}</td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_name} </td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.department_title}</td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.designation_title}</td>
+                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.Date?.slice(0, 10)}</td>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
