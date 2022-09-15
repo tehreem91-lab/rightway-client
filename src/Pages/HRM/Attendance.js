@@ -280,7 +280,7 @@ const Attendance = () => {
 
                                 <div className="row">
                                     <div className="field item form-group col-md-12 col-sm-12">
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                        {/* <label className="col-form-label col-md-2 col-sm-2 label-align">
                                             Select Department <span className="required">*</span>
                                         </label>
                                         <div className="col-md-3 col-sm-3">
@@ -295,9 +295,9 @@ const Attendance = () => {
                                                     styles={customStyles}
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
 
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                        <label className="col-form-label col-md-1 col-sm-1 label-align">
                                             Select Date <span className="required">*</span>
                                         </label>
                                         <div className="col-md-3 col-sm-3">
@@ -324,7 +324,7 @@ const Attendance = () => {
                                         </div>
 
 
-                                        <div className="col-md-2 col-sm-2" align="right">
+                                        <div className="col-md-8 col-sm-8" align="right">
                                             {visableDiv === "true" && (
                                                 <button
                                                     className="btn btn-dark fa fa-edit pl-3"
