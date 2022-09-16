@@ -50,22 +50,11 @@ const DeptWiseAtten = () => {
         setdate(value);
         fetchAllData(value);
     };
-    // function difference() {
 
-    //     {attendenceData.map((item, index) => {
-
-
-    //         return (
-
-
-    //             (item?.in_date ? ' ' : 'bg-danger text-white')}
-    //         );
-    //     })} 
-    // }
     const fetchData = async () => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Departments`,
+            url: `${endPoint}api/ChartOfAccounts/GetSalaryDepartments`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
                     }`,
@@ -74,7 +63,7 @@ const DeptWiseAtten = () => {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { department_name: "All", department_id: 0 },
+                    { label: "All", value: 0 },
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -287,8 +276,8 @@ const DeptWiseAtten = () => {
                                             <div>
                                                 <Select
                                                     placeholder={"All"}
-                                                    getOptionLabel={(e) => e.department_name}
-                                                    getOptionValue={(e) => e.department_id}
+                                                    getOptionLabel={(e) => e.label}
+                                                    getOptionValue={(e) => e.value}
                                                     value={selectedValue}
                                                     options={inputOptions}
                                                     onChange={handleChange}
@@ -405,10 +394,6 @@ const DeptWiseAtten = () => {
                                                     </th>
                                                     <th
                                                         className="column-title right-border-1 text-center " width="10%" >
-                                                        Department
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
                                                         Designation
                                                     </th>
                                                     <th
@@ -454,7 +439,6 @@ const DeptWiseAtten = () => {
                                                         <tr className="even pointer" key={index}>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_code}</td>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_name} </td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.department_title}</td>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.designation_title}</td>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
                                                             <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>

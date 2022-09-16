@@ -35,12 +35,17 @@ function AddEmployee() {
     const [benefitValue, setBenefitValue] = useState("CODER");
     const [advanceDepValue, setAdvanceDepValue] = useState("");
     const [salaryDepValue, setSalaryDepValue] = useState("");
+    const [expenseDepValue, setExpenseDepValue] = useState("");
+
     const [designation, setDesignation] = useState([]);
     const [department, setDepartment] = useState([]);
     const [shift, setShift] = useState([]);
     const [benefit, setBenefit] = useState([]);
     const [advanceDep, setAdvanceDep] = useState([]);
     const [salaryDep, setSalaryDep] = useState([]);
+    const [expenseDep, setExpenseDep] = useState([]);
+    const [empCode, setEmpCode] = useState([]);
+
     const [benefitsRecordsValue, setBenefitsRecordsValue] = useState([{
         label: "",
         value: "",
@@ -53,7 +58,7 @@ function AddEmployee() {
     const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
-    const [fileEntity, setFileEntity] = useState([]);
+    const [fileEntity, setFileEntity] = useState(["ccfh", "fgfgdfg"]);
     const ref = useRef();
     const reset = () => {
         ref.current.value = "";
@@ -193,6 +198,33 @@ function AddEmployee() {
                     setAllEmpListConst(data);
                     setEmployeeStatusState(data)
 
+
+                    // ----- Setting Empoyee Code ------
+                    fetch("http://rightway-api.genial365.com/api/EmployeeDetails/GetEmployeeCode", requestOptions)
+                        .then(response => response.text())
+                        .then(result => setEmpCode(result))
+                        .catch(error => console.log('error', error));
+
+                    // fetch(URL + "api/EmployeeDetails/GetEmployeeCode", {
+                    //     method: "GET",
+                    //     headers: {
+                    //         Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                    //     },
+                    // })
+                    //     .then((response) => response.json())
+                    //     .then((data) => {
+                    //         var arr = [];
+                    //         data.map((item) => {
+                    //             arr.push({
+                    //                 label: item.label,
+                    //                 value: item.value,
+                    //             });
+                    //         });
+
+                    //         setEmpCode(arr);
+                    //     });
+                    // ----- Setting Empoyee Code ------
+
                     // ----- Setting Designation List ------
                     fetch(URL + "api/EmployeeDesignations/GetData", {
                         method: "GET",
@@ -322,6 +354,28 @@ function AddEmployee() {
                     // ----- Setting Salary Department List ------
 
 
+                    // ----- Setting Expense Department List ------
+                    fetch(URL + "api/ChartOfAccounts/GetExpenseDepartments", {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                        },
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            var arr = [];
+                            data.map((item) => {
+                                arr.push({
+                                    label: item.label,
+                                    value: item.value,
+                                });
+                            });
+
+                            setExpenseDep(arr);
+                        });
+                    // ----- Setting Expense Department List ------
+
+
 
 
                     setisLoading(false);
@@ -339,6 +393,7 @@ function AddEmployee() {
         var raw
 
         raw = JSON.stringify({
+            "employee_id": employeeToUpdate.empCode,
             "employee_name": employeeToUpdate.employee_name,
             "sur_name": employeeToUpdate.sur_name,
             "cell": employeeToUpdate.cell,
@@ -364,6 +419,7 @@ function AddEmployee() {
             "status": employeeToUpdate.status,
             "salary_department_id": employeeToUpdate.salary_department?.value,
             "advance_department_id": employeeToUpdate.advance_department?.value,
+            "expense_department_id": employeeToUpdate.expense_department_id?.value,
             "benefits": benefitsRecordsValue.length === 0 ? [] : benefitsRecordsValue.map((EachBenRec) => {
                 return {
 
@@ -426,6 +482,8 @@ function AddEmployee() {
                         "shift_id": employeeToUpdate.shiftUpdate.value,
                         "salary_department_id": employeeToUpdate.salaryDepUpdate.value,
                         "advance_department_id": employeeToUpdate.advanceDepUpdate.value,
+                        "expense_department_id": employeeToUpdate.expenseDepUpdate.value,
+
                         "status": employeeToUpdate.status,
                         "benefits": [
                             {
@@ -500,6 +558,8 @@ function AddEmployee() {
         setBenefitValue(value.value);
         setSalaryDepValue(value.value);
         setAdvanceDepValue(value.value);
+        setExpenseDepValue(value.value);
+
     };
 
     useEffect(() => {
@@ -568,18 +628,21 @@ function AddEmployee() {
                                     setBenefitValue={setBenefitValue}
                                     setAdvanceDepValue={setAdvanceDepValue}
                                     setSalaryDepValue={setSalaryDepValue}
+                                    setExpenseDepValue={setExpenseDepValue}
                                     designationValue={designationValue}
                                     departmentValue={departmentValue}
                                     shiftValue={shiftValue}
                                     benefitValue={benefitValue}
                                     advanceDepValue={advanceDepValue}
                                     salaryDepValue={salaryDepValue}
+                                    expenseDepValue={expenseDepValue}
                                     designation={designation}
                                     department={department}
                                     shift={shift}
                                     benefit={benefit}
                                     advanceDep={advanceDep}
                                     salaryDep={salaryDep}
+                                    expenseDep={expenseDep}
                                     fileHandle1={fileHandle1}
 
 
@@ -651,18 +714,24 @@ function AddEmployee() {
                                     setBenefitValue={setBenefitValue}
                                     setAdvanceDepValue={setAdvanceDepValue}
                                     setSalaryDepValue={setSalaryDepValue}
+                                    setExpenseDepValue={setExpenseDepValue}
+
                                     designationValue={designationValue}
                                     departmentValue={departmentValue}
                                     shiftValue={shiftValue}
                                     benefitValue={benefitValue}
                                     advanceDepValue={advanceDepValue}
                                     salaryDepValue={salaryDepValue}
+                                    expenseDepValue={expenseDepValue}
+
                                     designation={designation}
                                     department={department}
                                     shift={shift}
                                     benefit={benefit}
                                     advanceDep={advanceDep}
                                     salaryDep={salaryDep}
+                                    expenseDep={expenseDep}
+
                                     fileHandle1={fileHandle1}
 
 
@@ -745,7 +814,7 @@ function AddEmployee() {
                                                 {/* <th className="column-title fontWeight300   right-border-1 text-center" width="12%">CNIC img</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Profile Img</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Address</th> */}
-                                                <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Department</th>
+                                                {/* <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Department</th> */}
                                                 {/* <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Ref Name</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Ref Cell</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Ref CNIC</th>
@@ -767,7 +836,7 @@ function AddEmployee() {
                                         <tbody>
                                             {ListOfEmployee.map((item, index) => {
                                                 return (
-                                                    <tr className="even pointer" key={item.employee_code}>
+                                                    <tr className="even pointer" key={item.empCode}>
                                                         <td className=" ">{item.employee_code}</td>
                                                         <td className=" ">{item.employee_name}</td>
                                                         <td className=" ">{item.sur_name}</td>
@@ -776,7 +845,7 @@ function AddEmployee() {
                                                         {/* <td className="text-left  ">{item.cnic_image}</td>
                                                         <td className=" text-left ">{item.profile_image}</td>
                                                         <td className="text-left "> {item.address}</td> */}
-                                                        <td className=" text-right">{item.department?.department_name}</td>
+                                                        {/* <td className=" text-right">{item.department?.department_name}</td> */}
                                                         {/* <td className="text-left  ">{item.reference_name}</td>
                                                         <td className=" text-left ">{item.reference_cell}</td>
                                                         <td className="text-left "> {item.reference_cnic}</td>
@@ -803,7 +872,8 @@ function AddEmployee() {
                                                                     departmentUpdate: { value: item.department_id, label: item.department_name },
                                                                     shiftUpdate: { value: item.shift_id, label: item.shift_name },
                                                                     advanceDepUpdate: { value: item.value, label: item.label },
-                                                                    salaryDepUpdate: { value: item.value, label: item.label }
+                                                                    salaryDepUpdate: { value: item.value, label: item.label },
+                                                                    expenseDepUpdate: { value: item.value, label: item.label }
 
                                                                 });
                                                                 setIsEmplEditModeOn(true)
@@ -817,7 +887,8 @@ function AddEmployee() {
                                                                     departmentUpdate: { value: item.department_id, label: item.department_name },
                                                                     shiftUpdate: { value: item.shift_id, label: item.shift_name },
                                                                     advanceDepUpdate: { value: item.value, label: item.label },
-                                                                    salaryDepUpdate: { value: item.value, label: item.label }
+                                                                    salaryDepUpdate: { value: item.value, label: item.label },
+                                                                    expenseDepUpdate: { value: item.value, label: item.label }
                                                                 });
                                                                 setIsEmplEditModeOn(true)
                                                                 setLgShow(true)

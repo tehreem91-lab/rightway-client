@@ -85,7 +85,7 @@ const SalaryGeneration = () => {
     const fetchData = async () => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Departments`,
+            url: `${endPoint}api/ChartOfAccounts/GetSalaryDepartments`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
                     }`,
@@ -94,7 +94,7 @@ const SalaryGeneration = () => {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { department_name: "All", department_id: 0 },
+                    { label: "All", value: 0 },
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -308,8 +308,8 @@ const SalaryGeneration = () => {
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
                                                         placeholder={"All"}
-                                                        getOptionLabel={(e) => e.department_name}
-                                                        getOptionValue={(e) => e.department_id}
+                                                        getOptionLabel={(e) => e.label}
+                                                        getOptionValue={(e) => e.value}
                                                         value={selectedValue}
                                                         options={inputOptions}
                                                         onChange={handleChange}
@@ -326,7 +326,7 @@ const SalaryGeneration = () => {
                                             <div className="field item form-group col-md-6 col-sm-6">
                                                 <label className="col-form-label col-md-3 col-sm-3 label-align">
                                                     {" "}
-                                                    Select Date <span className="required">*</span>
+                                                    Select Month/Year <span className="required">*</span>
                                                 </label>
                                                 <div className="col-md-8 col-sm-8">
                                                     <input
@@ -334,7 +334,7 @@ const SalaryGeneration = () => {
                                                         placeholder="All Dates"
                                                         styles={customStyles}
                                                         className="form-control"
-                                                        type="date"
+                                                        type="month"
                                                         value={date}
                                                     />
                                                     {/* {validationState === false && dateTo === "" && (

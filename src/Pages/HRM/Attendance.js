@@ -87,7 +87,7 @@ const Attendance = () => {
     const fetchAllData = async (e) => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${date}`,
+            url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=0&date=${date}`,
             //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${e.date}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
