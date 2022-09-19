@@ -9,7 +9,7 @@ import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
-
+import { toast } from "react-toastify";
 const EmployeeWiseAttendance = () => {
 
     const showNavMenu = useSelector((state) => state.NavState);
@@ -23,7 +23,7 @@ const EmployeeWiseAttendance = () => {
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
     const dateToday = `${year}-${month}-${day}`;
     // const [date, setdate] = useState("2020-09-01T00:00:00");
-    const [date, setdate] = useState("2020-09-01");
+    const [selectedDate, setSelectedDate] = useState("2020-09-01");
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
 
@@ -47,7 +47,7 @@ const EmployeeWiseAttendance = () => {
     };
 
     const handleChangeDate = (value) => {
-        setdate(value);
+        setSelectedDate(value);
         fetchAllData(value);
     };
     const fetchData = async () => {
@@ -75,7 +75,7 @@ const EmployeeWiseAttendance = () => {
     const fetchAllData = async (e) => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Attendence/GetEmployeeAttendenceReport?employee_id=${e.value}&date=${date}`,
+            url: `${endPoint}api/Attendence/GetEmployeeAttendenceReport?employee_id=${e.value}&date=${selectedDate}`,
             //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${e.date}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
@@ -136,7 +136,7 @@ const EmployeeWiseAttendance = () => {
                 }
 
             else {
-                console.log("Errorlalala")
+                console.log("Error Ageya!")
             }
 
         });
@@ -158,7 +158,7 @@ const EmployeeWiseAttendance = () => {
 
         var config = {
             method: "put",
-            url: `${endPoint}api/Attendence/UpdateShiftWiseAttendenceReport?date=${date}`,
+            url: `${endPoint}api/Attendence/UpdateShiftWiseAttendenceReport?date=${selectedDate}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
                     }`,
@@ -166,8 +166,12 @@ const EmployeeWiseAttendance = () => {
             data: data,
         };
 
+
         axios(config)
-            .then(function (response) { })
+            .then(function (response) {
+                toast.success(
+                    "Employee updated successfully")
+            })
             .catch(function (error) {
                 console.log(error);
             });
@@ -351,11 +355,11 @@ const EmployeeWiseAttendance = () => {
                                                     //     value={selectedValue}
                                                     //     options={inputOptions}
                                                     onChange={handleChangeDate}
-                                                    placeholder="All Dates"
+                                                    //placeholder="All Dates"
                                                     styles={customStyles}
                                                     className="form-control"
-                                                    type="date"
-                                                    value={date}
+                                                    type="month"
+                                                //value={selectedDate}
                                                 //min="2022-09-09"
                                                 // onChange={(e) => {
                                                 //     setdate(e.target.value);
