@@ -61,7 +61,9 @@ function AddEmployee() {
     const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
-    const [fileEntity, setFileEntity] = useState(["ccfh", "fgfgdfg"]);
+    const [fileEntity, setFileEntity] = useState([]);
+    // const [fileEntity, setFileEntity] = useState(["ccfh", "fgfgdfg"]);
+
     const ref = useRef();
     const reset = () => {
         ref.current.value = "";
@@ -414,7 +416,10 @@ function AddEmployee() {
         console.log(employeeToUpdate, "ooooooooooooo");
 
 
-
+        // "salary_department_id": 146,
+        // "advance_department_id": 140,
+        // "expense_department_id": 1139,
+        // "loan_department_id": 143,
         var raw
 
         raw = JSON.stringify({
@@ -442,9 +447,10 @@ function AddEmployee() {
             "holiday_assigned": employeeToUpdate.holiday_assigned,
             "shift_id": employeeToUpdate.shift?.shift_id,
             "status": employeeToUpdate.status,
-            "salary_department_id": employeeToUpdate.salary_department?.value,
-            "advance_department_id": employeeToUpdate.advance_department?.value,
-            "expense_department_id": employeeToUpdate.expense_department_id?.value,
+            "salary_department_id": employeeToUpdate.salary_department?.salary_value,
+            "advance_department_id": employeeToUpdate.advance_department?.advance_value,
+            "expense_department_id": employeeToUpdate.expense_department?.expense_value,
+            "loan_department_id": employeeToUpdate.loan_department?.loan_value,
             "benefits": benefitsRecordsValue.length === 0 ? [] : benefitsRecordsValue.map((EachBenRec) => {
                 return {
 
@@ -555,7 +561,7 @@ function AddEmployee() {
                     //     amount: ""
                     // }])
                     toast.error(
-                        "Something went wrong")
+                        "Please fill all the required fields")
                 }
 
 

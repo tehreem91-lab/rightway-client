@@ -674,7 +674,7 @@ const EmployeeFormView = (props) => {
                             </div>
 
 
-                            <div className="field item form-group col-md-6 col-sm-6">
+                            {/* <div className="field item form-group col-md-6 col-sm-6">
                                 <label className="col-form-label col-md-3 col-sm-3 label-align">Overtime </label>
                                 <div className="col-md-8 col-sm-8">
                                     <input
@@ -686,7 +686,7 @@ const EmployeeFormView = (props) => {
                                         disabled
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

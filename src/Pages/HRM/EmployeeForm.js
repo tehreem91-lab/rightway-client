@@ -5,8 +5,6 @@ import Loader from "../../Layout/Loader/Loader.js";
 import { customStyles } from '../../Components/reactCustomSelectStyle';
 import Creatable from "react-select/creatable";
 
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 const EmployeeForm = (props) => {
 
@@ -288,13 +286,14 @@ const EmployeeForm = (props) => {
                                     <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Phone <span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
-                                            name="name"
+                                            name="name" min="0"
                                             //className='form-control'
                                             type="number"
                                             placeholder=""
                                             className={(emplEditValidator.cell ? "form-control" : "form-control requiredValidateInput")}
                                             value={props.selectEmployee.cell}
                                             disabled={!props.isEmplEditModeOn}
+                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 11))}
                                             onChange={(e) => {
                                                 setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setEmployeeToUpdate({
@@ -313,7 +312,7 @@ const EmployeeForm = (props) => {
                                     </label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
-                                            name="name"
+                                            name="name" min="0"
                                             //className='form-control'
                                             type="number"
                                             placeholder="without Dashes Ex, 3310567889234"
@@ -449,10 +448,11 @@ const EmployeeForm = (props) => {
                                     <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Advance %</label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
-                                            name="name"
+                                            name="name" min="0"
                                             className='form-control'
                                             type="number"
                                             placeholder=""
+                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 2))}
                                             //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
                                             value={props.selectEmployee.advance_percentage}
                                             disabled={!props.isEmplEditModeOn}
@@ -504,10 +504,11 @@ const EmployeeForm = (props) => {
                                     <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Salary Amount <span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
-                                            name="name"
+                                            name="name" min="0"
                                             className='form-control'
                                             type="number"
                                             placeholder=""
+                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 7))}
                                             //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
                                             value={props.selectEmployee.salary}
                                             disabled={!props.isEmplEditModeOn}
@@ -649,11 +650,12 @@ const EmployeeForm = (props) => {
                                                 {props.benefitsRecordsValue.map(((eachBenValue, index) => {
                                                     return <input
                                                         className="form-control"
-                                                        name="Benefit amount"
+                                                        name="Benefit amount" min="0"
                                                         placeholder=""
                                                         value={props.benefitsRecordsValue[index].amount}
                                                         type="number"
                                                         key={index}
+                                                        onInput={(er) => (er.target.value = er.target.value.slice(0, 6))}
                                                         onChange={(e) => {
                                                             const objectData = props.benefitsRecordsValue;
                                                             objectData[index] = {
@@ -721,10 +723,12 @@ const EmployeeForm = (props) => {
                                     <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Reference Phone </label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
-                                            name="name"
+                                            name="name" min="0"
                                             className='form-control'
                                             type="number"
                                             placeholder=""
+                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 11))}
+
                                             //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
                                             value={props.selectEmployee.reference_cell}
                                             disabled={!props.isEmplEditModeOn}
@@ -749,7 +753,7 @@ const EmployeeForm = (props) => {
                                     <div className="col-md-8 col-sm-8">
 
                                         <input required
-                                            name="name"
+                                            name="name" min="0"
                                             className='form-control'
                                             type="number"
                                             placeholder="without Dashes Ex, 3310567889234"
@@ -785,6 +789,10 @@ const EmployeeForm = (props) => {
                                             className='form-control'
                                             type="number"
                                             placeholder=""
+                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 3))}
+                                            min="0"
+
+
                                             //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
                                             value={props.selectEmployee.allowed_holidays}
                                             disabled={!props.isEmplEditModeOn}
@@ -959,8 +967,14 @@ const EmployeeForm = (props) => {
 
                         <div className="card" style={{ marginTop: "25px " }}> <h5 className="card-header"> Upload Files</h5>
                             <div className="row" style={{ marginTop: "6px " }}>
+
+
+
+                            </div>
+
+                            <div className="row">
                                 <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
-                                    <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align">Upload Profile Pic</label>
+                                    <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align">Profile Pic<span className="required">*</span></label>
 
 
                                     <div>
@@ -980,19 +994,12 @@ const EmployeeForm = (props) => {
                                             </>
                                         )}
                                         <div className="row my-1">
-                                            <div className="col-md-1 px-0">
-                                                {" "}
-                                                {props.isEmplEditModeOn ? (
-                                                    <span className="required">*</span>
-                                                ) : (
-                                                    <></>
-                                                )}{" "}
-                                            </div>
 
-                                            <div className="col-md-10 px-0">
+
+                                            <div className=" ">
 
                                                 <>
-                                                    <div className="col-md-10 ">
+                                                    <div className="col-md-12 ">
                                                         <input
                                                             //ref={props.ref}
                                                             type="file"
@@ -1019,14 +1026,11 @@ const EmployeeForm = (props) => {
 
 
                                 </div>
-
-
                             </div>
 
                             <div className="row">
-
-                                <div className="field item form-group col-md-6 col-sm-6 ">
-                                    <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align">Upload CNIC Front</label>
+                                <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
+                                    <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align">CNIC Front<span className="required">*</span></label>
 
 
                                     <div>
@@ -1046,31 +1050,20 @@ const EmployeeForm = (props) => {
                                             </>
                                         )}
                                         <div className="row my-1">
-                                            <div className="col-md-1 px-0">
-                                                {" "}
-                                                {props.isEmplEditModeOn ? (
-                                                    <span className="required">*</span>
-                                                ) : (
-                                                    <></>
-                                                )}{" "}
-                                            </div>
-                                            <div className="col-md-10 px-0">
-                                                {props.isEmplEditModeOn ? (
-                                                    <>
+                                            <div className=" ">
 
-
-                                                        <div className="col-md-10 ">
-                                                            <input
-                                                                //ref={props.ref}
-                                                                type="file"
-                                                                className="form-control form-control-sm customStyleForInput"
-                                                                data-validate-length-range={6}
-                                                                data-validate-words={2}
-                                                                name="name"
-                                                                onChange={props.fileHandle2ForUpdate}
-                                                            />
-                                                        </div>
-                                                        {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                                <>  <div className="col-md-12 ">
+                                                    <input
+                                                        //ref={props.ref}
+                                                        type="file"
+                                                        className="form-control form-control-sm customStyleForInput"
+                                                        data-validate-length-range={6}
+                                                        data-validate-words={2}
+                                                        name="name"
+                                                        onChange={props.fileHandle2ForUpdate}
+                                                    />
+                                                </div>
+                                                    {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                             {
                                                                 props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
                                                                     <span className="sr-only">Loading...</span>
@@ -1079,21 +1072,19 @@ const EmployeeForm = (props) => {
                                                                     className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle2ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
                                                             }
                                                         </div> */}
-                                                    </>
-                                                ) : (
-                                                    <></>
-                                                )}
+                                                </>
+
                                             </div>
                                         </div>
                                     </div>
 
 
                                 </div>
+                            </div>
 
-
-
-                                <div className="field item form-group col-md-6 col-sm-6">
-                                    <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align">Upload CNIC Back</label>
+                            <div className="row">
+                                <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
+                                    <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align">CNIC Back <span className="required">*</span></label>
 
 
                                     <div >
@@ -1113,31 +1104,20 @@ const EmployeeForm = (props) => {
                                             </>
                                         )}
                                         <div className="row my-1">
-                                            <div className="col-md-1 px-0">
-                                                {" "}
-                                                {props.isEmplEditModeOn ? (
-                                                    <span className="required">*</span>
-                                                ) : (
-                                                    <></>
-                                                )}{" "}
-                                            </div>
-                                            <div className="col-md-11 px-0">
-                                                {props.isEmplEditModeOn ? (
-                                                    <>
 
-
-                                                        <div className="col-md-10 ">
-                                                            <input
-                                                                //ref={props.ref}
-                                                                type="file"
-                                                                className="form-control form-control-sm customStyleForInput"
-                                                                data-validate-length-range={6}
-                                                                data-validate-words={2}
-                                                                name="name"
-                                                                onChange={props.fileHandle3ForUpdate}
-                                                            />
-                                                        </div>
-                                                        {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                            <div className="">
+                                                <div className="col-md-12 ">
+                                                    <input
+                                                        //ref={props.ref}
+                                                        type="file"
+                                                        className="form-control form-control-sm customStyleForInput"
+                                                        data-validate-length-range={6}
+                                                        data-validate-words={2}
+                                                        name="name"
+                                                        onChange={props.fileHandle3ForUpdate}
+                                                    />
+                                                </div>
+                                                {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                             {
                                                                 props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
                                                                     <span className="sr-only">Loading...</span>
@@ -1146,10 +1126,8 @@ const EmployeeForm = (props) => {
                                                                     className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle3ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
                                                             }
                                                         </div> */}
-                                                    </>
-                                                ) : (
-                                                    <></>
-                                                )}
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -1158,10 +1136,11 @@ const EmployeeForm = (props) => {
                                 </div>
                             </div>
 
+
                             <div className="row ">
                                 <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
-                                    <label className="col-form-label col-md-3 col-sm-3 label-align px-0">Select Attachment</label>
-                                    <div className="col-md-8 col-sm-8  ">
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Select Attachment</label>
+                                    <div className=" ">
                                         <div className="row">
                                             <div className="col-md-10 ">
                                                 <input
