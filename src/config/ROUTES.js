@@ -44,6 +44,7 @@ import EmployeeProfile from "../Pages/HRM/EmployeeProfile";
 import EmployeeWiseAttendance from "../Pages/HRM/EmployeeWisrAttendance";
 import SalaryGeneration from "../Pages/HRM/SalaryGeneration";
 import DeptWiseAtten from "../Pages/HRM/DeptWiseAtten";
+import SalaryReport from "../Pages/HRM/SalaryReport";
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
@@ -91,6 +92,8 @@ const ROUTES = {
   EmployeeWiseAttendance: { id: "45", element: EmployeeWiseAttendance, path: "EmployeeWiseAttendanceAccess" },
   SalaryGeneration: { id: "46", element: SalaryGeneration, path: "SalaryGenerationAccess" },
   DeptWiseAtten: { id: "47", element: DeptWiseAtten, path: "DepartmentWiseAttendanceAccess" },
+  SalaryReport: { id: "48", element: SalaryReport, path: "SalaryReportAccess" },
+
 
 };
 export default ROUTES;

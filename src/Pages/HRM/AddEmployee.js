@@ -36,6 +36,8 @@ function AddEmployee() {
     const [advanceDepValue, setAdvanceDepValue] = useState("");
     const [salaryDepValue, setSalaryDepValue] = useState("");
     const [expenseDepValue, setExpenseDepValue] = useState("");
+    const [loanDepValue, setLoanDepValue] = useState("");
+
 
     const [designation, setDesignation] = useState([]);
     const [department, setDepartment] = useState([]);
@@ -44,6 +46,7 @@ function AddEmployee() {
     const [advanceDep, setAdvanceDep] = useState([]);
     const [salaryDep, setSalaryDep] = useState([]);
     const [expenseDep, setExpenseDep] = useState([]);
+    const [loanDep, setLoanDep] = useState([]);
     const [empCode, setEmpCode] = useState([]);
 
     const [benefitsRecordsValue, setBenefitsRecordsValue] = useState([{
@@ -322,8 +325,8 @@ function AddEmployee() {
                             var arr = [];
                             data.map((item) => {
                                 arr.push({
-                                    label: item.label,
-                                    value: item.value,
+                                    label: item.advance_label,
+                                    value: item.advance_value,
                                 });
                             });
 
@@ -344,8 +347,8 @@ function AddEmployee() {
                             var arr = [];
                             data.map((item) => {
                                 arr.push({
-                                    label: item.label,
-                                    value: item.value,
+                                    label: item.salary_label,
+                                    value: item.salary_value,
                                 });
                             });
 
@@ -366,14 +369,36 @@ function AddEmployee() {
                             var arr = [];
                             data.map((item) => {
                                 arr.push({
-                                    label: item.label,
-                                    value: item.value,
+                                    label: item.expense_label,
+                                    value: item.expense_value,
                                 });
                             });
 
                             setExpenseDep(arr);
                         });
                     // ----- Setting Expense Department List ------
+
+
+                    // ----- Setting Loan Department List ------
+                    fetch(URL + "api/ChartOfAccounts/GetLoanDepartments", {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                        },
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            var arr = [];
+                            data.map((item) => {
+                                arr.push({
+                                    label: item.loan_label,
+                                    value: item.loan_value,
+                                });
+                            });
+
+                            setLoanDep(arr);
+                        });
+                    // ----- Setting Loan Department List ------
 
 
 
@@ -458,6 +483,7 @@ function AddEmployee() {
                         return emp.employee_id !== employeeToUpdate.employee_id;
                     });
                     const unSorted = [...filterdEmp, {
+                        "employee_code": employeeToUpdate.empCodeUpdate.employee_code,
                         "employee_name": employeeToUpdate.employee_name,
                         "sur_name": employeeToUpdate.sur_name,
                         "cell": employeeToUpdate.cell,
@@ -480,9 +506,11 @@ function AddEmployee() {
                         "allowed_holidays": employeeToUpdate.allowed_holidays,
                         "holiday_assigned": employeeToUpdate.holiday_assigned,
                         "shift_id": employeeToUpdate.shiftUpdate.value,
-                        "salary_department_id": employeeToUpdate.salaryDepUpdate.value,
-                        "advance_department_id": employeeToUpdate.advanceDepUpdate.value,
-                        "expense_department_id": employeeToUpdate.expenseDepUpdate.value,
+                        "salary_department_id": employeeToUpdate.salaryDepUpdate.salary_value,
+                        "advance_department_id": employeeToUpdate.advanceDepUpdate.advance_value,
+                        "expense_department_id": employeeToUpdate.expenseDepUpdate.expense_value,
+                        "loan_department_id": employeeToUpdate.loanDepUpdate.loan_value,
+
 
                         "status": employeeToUpdate.status,
                         "benefits": [
@@ -556,9 +584,12 @@ function AddEmployee() {
         setDepartmentValue(value.value);
         setShiftValue(value.value);
         setBenefitValue(value.value);
-        setSalaryDepValue(value.value);
-        setAdvanceDepValue(value.value);
-        setExpenseDepValue(value.value);
+        setSalaryDepValue(value.salary_value);
+        setAdvanceDepValue(value.advance_value);
+        setExpenseDepValue(value.expense_value);
+        setLoanDepValue(value.loan_value);
+        setEmpCode(value)
+
 
     };
 
@@ -629,6 +660,7 @@ function AddEmployee() {
                                     setAdvanceDepValue={setAdvanceDepValue}
                                     setSalaryDepValue={setSalaryDepValue}
                                     setExpenseDepValue={setExpenseDepValue}
+                                    setLoanDepValue={setLoanDepValue}
                                     designationValue={designationValue}
                                     departmentValue={departmentValue}
                                     shiftValue={shiftValue}
@@ -636,6 +668,7 @@ function AddEmployee() {
                                     advanceDepValue={advanceDepValue}
                                     salaryDepValue={salaryDepValue}
                                     expenseDepValue={expenseDepValue}
+                                    loanDepValue={loanDepValue}
                                     designation={designation}
                                     department={department}
                                     shift={shift}
@@ -643,7 +676,9 @@ function AddEmployee() {
                                     advanceDep={advanceDep}
                                     salaryDep={salaryDep}
                                     expenseDep={expenseDep}
+                                    loanDep={loanDep}
                                     fileHandle1={fileHandle1}
+                                    empCode={empCode}
 
 
                                     benefitsRecordsValue={benefitsRecordsValue}
@@ -715,7 +750,7 @@ function AddEmployee() {
                                     setAdvanceDepValue={setAdvanceDepValue}
                                     setSalaryDepValue={setSalaryDepValue}
                                     setExpenseDepValue={setExpenseDepValue}
-
+                                    setLoanDepValue={setLoanDepValue}
                                     designationValue={designationValue}
                                     departmentValue={departmentValue}
                                     shiftValue={shiftValue}
@@ -723,7 +758,7 @@ function AddEmployee() {
                                     advanceDepValue={advanceDepValue}
                                     salaryDepValue={salaryDepValue}
                                     expenseDepValue={expenseDepValue}
-
+                                    loanDepValue={loanDepValue}
                                     designation={designation}
                                     department={department}
                                     shift={shift}
@@ -731,8 +766,9 @@ function AddEmployee() {
                                     advanceDep={advanceDep}
                                     salaryDep={salaryDep}
                                     expenseDep={expenseDep}
-
+                                    loanDep={loanDep}
                                     fileHandle1={fileHandle1}
+                                    empCode={empCode}
 
 
                                     benefitsRecordsValue={benefitsRecordsValue}
@@ -871,9 +907,12 @@ function AddEmployee() {
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
                                                                     departmentUpdate: { value: item.department_id, label: item.department_name },
                                                                     shiftUpdate: { value: item.shift_id, label: item.shift_name },
-                                                                    advanceDepUpdate: { value: item.value, label: item.label },
-                                                                    salaryDepUpdate: { value: item.value, label: item.label },
-                                                                    expenseDepUpdate: { value: item.value, label: item.label }
+                                                                    advanceDepUpdate: { value: item.advance_value, label: item.advance_label },
+                                                                    salaryDepUpdate: { value: item.salary_value, label: item.salary_label },
+                                                                    expenseDepUpdate: { value: item.expense_value, label: item.expense_label },
+                                                                    loanDepUpdate: { value: item.loan_value, label: item.loan_label },
+                                                                    empCodeUpdate: { value: item }
+
 
                                                                 });
                                                                 setIsEmplEditModeOn(true)
@@ -886,9 +925,13 @@ function AddEmployee() {
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
                                                                     departmentUpdate: { value: item.department_id, label: item.department_name },
                                                                     shiftUpdate: { value: item.shift_id, label: item.shift_name },
-                                                                    advanceDepUpdate: { value: item.value, label: item.label },
-                                                                    salaryDepUpdate: { value: item.value, label: item.label },
-                                                                    expenseDepUpdate: { value: item.value, label: item.label }
+                                                                    advanceDepUpdate: { value: item.advance_value, label: item.advance_label },
+                                                                    salaryDepUpdate: { value: item.salary_value, label: item.salary_label },
+                                                                    expenseDepUpdate: { value: item.expense_value, label: item.expense_label },
+                                                                    loanDepUpdate: { value: item.loan_value, label: item.loan_label },
+                                                                    empCodeUpdate: { value: item }
+
+
                                                                 });
                                                                 setIsEmplEditModeOn(true)
                                                                 setLgShow(true)

@@ -66,9 +66,16 @@ const EmployeeForm = (props) => {
         benefits: true
     }
     const [emplEditValidator, setEmplEditValidator] = useState(emplEditValidatorInitialState)
+    const [isFilled, setIsFilled] = useState(true)
+    const [isValidateValue, setIsValidateValue] = useState(true)
+
+
     const updateFunct = (e) => {
 
-        e.preventDefault(); props.updateEmployeeClouds();
+        e.preventDefault();
+        //  props.updateEmployeeClouds();
+
+        { (isFilled === true ? props.updateEmployeeClouds() : <span className="text-danger">*Required Field</span >) }
 
         if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null ||
             props.selectEmployee.employee_name === " " || props.selectEmployee.employee_name == "" || props.selectEmployee.employee_name == " ") {
@@ -208,6 +215,24 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+
+                                        {/* <input
+
+                                            isClearable={false}
+                                            name="name"
+                                            className='form-control'
+                                            value={props.selectEmployee.employee_code}
+                                            styles={customStyles}
+                                            disabled
+                                            onChange={(e) => {
+                                                //setEmplEditValidator(emplEditValidatorInitialState)
+                                                props.setEmployeeToUpdate({
+                                                    ...props.selectEmployee,
+                                                    employee_code: e.target.value,
+                                                });
+                                            }}
+                                        /> */}
+
                                     </div>
                                 </div>
                             </div>
@@ -226,10 +251,12 @@ const EmployeeForm = (props) => {
                                                 setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
-                                                    employee_name: e.target.value,
+                                                    employee_name: e.target.value
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">
@@ -250,6 +277,7 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.sur_name === "" || props.selectEmployee.sur_name === undefined) ? <span className="text-danger">*Required Field</span > : "")}
                                     </div>
                                 </div>
                             </div>
@@ -275,16 +303,13 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.cell === "" || props.selectEmployee.cell === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">
-                                    <label className="col-form-label col-md-3 col-sm-3 label-align">CNIC{props.isEmplEditModeOn ? (
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align">CNIC
                                         <span className="required">*</span>
-                                    ) : (
-                                        <>
-                                            <strong>:</strong>
-                                        </>
-                                    )}
                                     </label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
@@ -306,6 +331,8 @@ const EmployeeForm = (props) => {
                                             }}
                                             disabled={!props.isEmplEditModeOn}
                                         />
+                                        {(isFilled && (props.selectEmployee.cnic === "" || props.selectEmployee.cnic === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                             </div>
@@ -329,6 +356,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.address === "" || props.selectEmployee.address === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                                 {/* <div className="field item form-group col-md-6 col-sm-6">
@@ -381,6 +410,10 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {/* {isValidateValue === false && props.selectEmployee.salary_type === 0 && <span className="text-danger">First Select this </span>} */}
+
+
                                     </div>
                                 </div>
 
@@ -391,21 +424,23 @@ const EmployeeForm = (props) => {
 
                                             isClearable={false}
                                             options={props.salaryDep}
-                                            value={{ label: props.selectEmployee.salary_department?.label, value: props.selectEmployee.salary_department?.value }}
+                                            value={{ label: props.selectEmployee.salary_department?.salary_label, value: props.selectEmployee.salary_department?.salary_value }}
                                             styles={customStyles}
                                             onChange={(value) => {
 
 
-                                                props.setSalaryDepValue(value.value)
+                                                props.setSalaryDepValue(value.salary_value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     salary_department: {
-                                                        value: value.value,
-                                                        label: value.label
+                                                        salary_value: value.value,
+                                                        salary_label: value.label
                                                     },
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.salary_department === "" || props.selectEmployee.salary_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
 
@@ -443,21 +478,23 @@ const EmployeeForm = (props) => {
 
                                             isClearable={false}
                                             options={props.advanceDep}
-                                            value={{ label: props.selectEmployee.advance_department?.label, value: props.selectEmployee.advance_department?.value }}
+                                            value={{ label: props.selectEmployee.advance_department?.advance_label, value: props.selectEmployee.advance_department?.advance_value }}
                                             styles={customStyles}
                                             onChange={(value) => {
 
 
-                                                props.setAdvanceDepValue(value.value)
+                                                props.setAdvanceDepValue(value.advance_value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     advance_department: {
-                                                        value: value.value,
-                                                        label: value.label
+                                                        advance_value: value.value,
+                                                        advance_label: value.label
                                                     },
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.advance_department === "" || props.selectEmployee.advance_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
 
@@ -482,6 +519,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.salary === "" || props.selectEmployee.salary === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">
@@ -491,21 +530,50 @@ const EmployeeForm = (props) => {
 
                                             isClearable={false}
                                             options={props.expenseDep}
-                                            value={{ label: props.selectEmployee.expense_department?.label, value: props.selectEmployee.expense_department?.value }}
+                                            value={{ label: props.selectEmployee.expense_department?.expense_label, value: props.selectEmployee.expense_department?.expense_value }}
                                             styles={customStyles}
                                             onChange={(value) => {
 
 
-                                                props.setExpenseDepValue(value.value)
+                                                props.setExpenseDepValue(value.expense_value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     expense_department: {
-                                                        value: value.value,
-                                                        label: value.label
+                                                        expense_value: value.value,
+                                                        expense_label: value.label
                                                     },
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.expense_department === "" || props.selectEmployee.expense_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
+                                    </div>
+                                </div>
+
+                                <div className="field item form-group col-md-6 col-sm-6">
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Dept<span className="required">*</span></label>
+                                    <div className="col-md-8 col-sm-8">
+                                        <Creatable
+
+                                            isClearable={false}
+                                            options={props.loanDep}
+                                            value={{ label: props.selectEmployee.loan_department?.loan_label, value: props.selectEmployee.loan_department?.loan_value }}
+                                            styles={customStyles}
+                                            onChange={(value) => {
+
+
+                                                props.setLoanDepValue(value.loan_value)
+                                                props.setEmployeeToUpdate({
+                                                    ...props.selectEmployee,
+                                                    loan_department: {
+                                                        loan_value: value.value,
+                                                        loan_label: value.label
+                                                    },
+                                                });
+                                            }}
+                                        />
+                                        {(isFilled && (props.selectEmployee.loan_department === "" || props.selectEmployee.loan_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                             </div>
@@ -710,7 +778,7 @@ const EmployeeForm = (props) => {
                         <div className="card" style={{ marginTop: "25px " }}> <h5 className="card-header"> Other Information</h5>
                             <div className="row" style={{ marginTop: "6px " }}>
                                 <div className="field item form-group col-md-6 col-sm-6">
-                                    <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Allowed Holidays <span className="required">*</span></label>
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Allowed Holidays</label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
                                             name="name"
@@ -732,7 +800,7 @@ const EmployeeForm = (props) => {
                                 </div>
 
                                 <div className="field item form-group col-md-6 col-sm-6">
-                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Assign Holidays<span className="required">*</span></label>
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Assign Holidays</label>
                                     <div className="col-md-8 col-sm-8">
                                         <Select
                                             options={optionsAH}
@@ -777,6 +845,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.designtion === "" || props.selectEmployee.designtion === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
 
@@ -794,6 +864,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.status === "" || props.selectEmployee.status === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                             </div>
@@ -830,6 +902,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {(isFilled && (props.selectEmployee.shift === "" || props.selectEmployee.shift === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
                                     </div>
                                 </div>
                             </div>
@@ -857,7 +931,7 @@ const EmployeeForm = (props) => {
                                 </div>
 
 
-                                <div className="field item form-group col-md-6 col-sm-6">
+                                {/* <div className="field item form-group col-md-6 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Overtime</label>
                                     <div className="col-md-8 col-sm-8">
                                         <input required
@@ -876,7 +950,7 @@ const EmployeeForm = (props) => {
                                             }}
                                         />
                                     </div>
-                                </div>
+                                </div> */}
 
 
                             </div>
@@ -918,15 +992,6 @@ const EmployeeForm = (props) => {
                                             <div className="col-md-10 px-0">
 
                                                 <>
-                                                    {/* <input required
-                                                            className={`${props.isEmplEditModeOn ? (emplEditValidator.profile_image ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-
-                                                            id="formFileSm"
-                                                            type="file"
-                                                            style={{ height: "33px" }}
-                                                            disabled={props.disableSubmitForUpdatePhoto ? true : false}
-                                                            onChange={props.fileHandle1ForUpdate}
-                                                        />{" "} */}
                                                     <div className="col-md-10 ">
                                                         <input
                                                             //ref={props.ref}
@@ -938,7 +1003,7 @@ const EmployeeForm = (props) => {
                                                             onChange={props.fileHandle1ForUpdate}
                                                         />
                                                     </div>
-                                                    <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                                    {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                         {
                                                             props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
                                                                 <span className="sr-only">Loading...</span>
@@ -946,7 +1011,7 @@ const EmployeeForm = (props) => {
                                                                 disabled={props.ref?.current?.value === "" ? true : false}
                                                                 className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle1ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
                                                         }
-                                                    </div>
+                                                    </div> */}
                                                 </>
                                             </div>
                                         </div>
@@ -992,15 +1057,7 @@ const EmployeeForm = (props) => {
                                             <div className="col-md-10 px-0">
                                                 {props.isEmplEditModeOn ? (
                                                     <>
-                                                        {/* <input required
-                                                                className={`${props.isEmplEditModeOn ? (emplEditValidator.cnic_front ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                                                                // className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
-                                                                id="formFileSm"
-                                                                type="file"
-                                                                style={{ height: "33px" }}
-                                                                disabled={props.disableSubmitForUpdatePhoto ? true : false}
-                                                                onChange={props.fileHandle2ForUpdate}
-                                                            />{" "} */}
+
 
                                                         <div className="col-md-10 ">
                                                             <input
@@ -1013,7 +1070,7 @@ const EmployeeForm = (props) => {
                                                                 onChange={props.fileHandle2ForUpdate}
                                                             />
                                                         </div>
-                                                        <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                                        {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                             {
                                                                 props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
                                                                     <span className="sr-only">Loading...</span>
@@ -1021,7 +1078,7 @@ const EmployeeForm = (props) => {
                                                                     disabled={props.ref?.current?.value === "" ? true : false}
                                                                     className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle2ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
                                                             }
-                                                        </div>
+                                                        </div> */}
                                                     </>
                                                 ) : (
                                                     <></>
@@ -1080,7 +1137,7 @@ const EmployeeForm = (props) => {
                                                                 onChange={props.fileHandle3ForUpdate}
                                                             />
                                                         </div>
-                                                        <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                                        {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                             {
                                                                 props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
                                                                     <span className="sr-only">Loading...</span>
@@ -1088,7 +1145,7 @@ const EmployeeForm = (props) => {
                                                                     disabled={props.ref?.current?.value === "" ? true : false}
                                                                     className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle3ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
                                                             }
-                                                        </div>
+                                                        </div> */}
                                                     </>
                                                 ) : (
                                                     <></>
@@ -1177,6 +1234,8 @@ const EmployeeForm = (props) => {
 
                                                     className="btn btn-primary btn-sm px-4  mt-3"
                                                     onClick={(e) => updateFunct(e)}
+
+
                                                 >
                                                     Submit
                                                 </button>
