@@ -77,51 +77,61 @@ const EmployeeForm = (props) => {
     const updateFunct = (e) => {
 
         e.preventDefault();
-        props.updateEmployeeClouds();
+        // props.updateEmployeeClouds();
 
         // { (isFilled === true ? props.updateEmployeeClouds() : <span className="text-danger">*Required Field</span >) }
 
-        if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null || props.selectEmployee.employee_name === " ") { setEmplEditValidator({ ...emplEditValidator, employee_name: false }) }
-
-        else if (props.selectEmployee.sur_name === "" || props.selectEmployee.sur_name === undefined || props.selectEmployee.sur_name === null || props.selectEmployee.sur_name === " ") { setEmplEditValidator({ ...emplEditValidator, sur_name: false }) }
-
-        else if (props.selectEmployee.cell === "" || props.selectEmployee.cell === undefined || props.selectEmployee.cell === null || props.selectEmployee.cell === " ") { setEmplEditValidator({ ...emplEditValidator, cell: false }) }
-
-        else if (props.selectEmployee.cnic === "" || props.selectEmployee.cnic === undefined || props.selectEmployee.cnic === null || props.selectEmployee.cnic === " ") { setEmplEditValidator({ ...emplEditValidator, cnic: false }) }
-
-        else if (props.selectEmployee.profile_image === "" || props.selectEmployee.profile_image === undefined || props.selectEmployee.profile_image === null || props.selectEmployee.profile_image === " ") { setEmplEditValidator({ ...emplEditValidator, profile_image: false }) }
-
-        else if (props.selectEmployee.cnic_front === "" || props.selectEmployee.cnic_front === undefined || props.selectEmployee.cnic_front === null || props.selectEmployee.cnic_front === " ") { setEmplEditValidator({ ...emplEditValidator, cnic_front: false }) }
-
-        else if (props.selectEmployee.cnic_back === "" || props.selectEmployee.cnic_back === undefined || props.selectEmployee.cnic_back === null || props.selectEmployee.cnic_back === " ") { setEmplEditValidator({ ...emplEditValidator, cnic_back: false }) }
-
-        else if (props.selectEmployee.address === "" || props.selectEmployee.address === undefined || props.selectEmployee.address === null || props.selectEmployee.address === " ") { setEmplEditValidator({ ...emplEditValidator, address: false }) }
-
-        else if (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined || props.selectEmployee.salary_type === null || props.selectEmployee.salary_type === " ") { setEmplEditValidator({ ...emplEditValidator, salary_type: false }) }
-
-        else if (props.selectEmployee.salary === "" || props.selectEmployee.salary === undefined || props.selectEmployee.salary === null || props.selectEmployee.salary === " ") { setEmplEditValidator({ ...emplEditValidator, salary: false }) }
-
-        else if (props.selectEmployee.shift_id === "" || props.selectEmployee.shift_id === undefined || props.selectEmployee.shift_id === null || props.selectEmployee.shift_id === " ") { setEmplEditValidator({ ...emplEditValidator, shift_id: false }) }
-
-        else if (props.selectEmployee.designation_id === "" || props.selectEmployee.designation_id === undefined || props.selectEmployee.designation_id === null || props.selectEmployee.designation_id === " ") { setEmplEditValidator({ ...emplEditValidator, designation_id: false }) }
-
-        else if (props.selectEmployee.status === "" || props.selectEmployee.status === undefined || props.selectEmployee.status === null || props.selectEmployee.status === " ") { setEmplEditValidator({ ...emplEditValidator, status: false }) }
-
-        else if (props.selectEmployee.expense_department_id === "" || props.selectEmployee.expense_department_id === undefined || props.selectEmployee.expense_department_id === null || props.selectEmployee.expense_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, expense_department_id: false }) }
-
-        else if (props.selectEmployee.salary_department_id === "" || props.selectEmployee.salary_department_id === undefined || props.selectEmployee.salary_department_id === null || props.selectEmployee.salary_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, salary_department_id: false }) }
-
-        else if (props.selectEmployee.advance_department_id === "" || props.selectEmployee.advance_department_id === undefined || props.selectEmployee.advance_department_id === null || props.selectEmployee.advance_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, advance_department_id: false }) }
-
-        else if (props.selectEmployee.loan_department_id === "" || props.selectEmployee.loan_department_id === undefined || props.selectEmployee.loan_department_id === null || props.selectEmployee.loan_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, loan_department_id: false }) }
-
-
-        else {
-
-            props.updateEmployeeClouds();
-
-            setEmplEditValidator(emplEditValidatorInitialState);
+        let is_form_validated = true;
+        if (Number(props.selectEmployee.employee_name) === 0 || Number(props.selectEmployee.sur_name) === 0 || Number(props.selectEmployee.cell) === 0 || Number(props.selectEmployee.cnic) === 0 || Number(props.selectEmployee.address) === 0
+            || Number(props.selectEmployee.salary_type) === 0 || Number(props.selectEmployee.salary_department) === 0 || Number(props.selectEmployee.advance_department) === 0 || Number(props.selectEmployee.salary) === 0 || Number(props.selectEmployee.expense_department) === 0
+            || Number(props.selectEmployee.loan_department) === 0 || Number(props.selectEmployee.designtion) === 0 || Number(props.selectEmployee.status) === 0 || Number(props.selectEmployee.shift) === 0 || Number(props.selectEmployee.profile_image) === 0 || Number(props.selectEmployee.cnic_front) === 0 || Number(props.selectEmployee.cnic_back) === 0 || Number(props.selectEmployee.profile_image) === 0) {
+            setIsValidateValue(false);
+            is_form_validated = false;
         }
+
+        if (is_form_validated === true) { props.updateEmployeeClouds(); }
+
+        // if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null || props.selectEmployee.employee_name === " ") { setEmplEditValidator({ ...emplEditValidator, employee_name: false }) }
+
+        // else if (props.selectEmployee.sur_name === "" || props.selectEmployee.sur_name === undefined || props.selectEmployee.sur_name === null || props.selectEmployee.sur_name === " ") { setEmplEditValidator({ ...emplEditValidator, sur_name: false }) }
+
+        // else if (props.selectEmployee.cell === "" || props.selectEmployee.cell === undefined || props.selectEmployee.cell === null || props.selectEmployee.cell === " ") { setEmplEditValidator({ ...emplEditValidator, cell: false }) }
+
+        // else if (props.selectEmployee.cnic === "" || props.selectEmployee.cnic === undefined || props.selectEmployee.cnic === null || props.selectEmployee.cnic === " ") { setEmplEditValidator({ ...emplEditValidator, cnic: false }) }
+
+        // else if (props.selectEmployee.profile_image === "" || props.selectEmployee.profile_image === undefined || props.selectEmployee.profile_image === null || props.selectEmployee.profile_image === " ") { setEmplEditValidator({ ...emplEditValidator, profile_image: false }) }
+
+        // else if (props.selectEmployee.cnic_front === "" || props.selectEmployee.cnic_front === undefined || props.selectEmployee.cnic_front === null || props.selectEmployee.cnic_front === " ") { setEmplEditValidator({ ...emplEditValidator, cnic_front: false }) }
+
+        // else if (props.selectEmployee.cnic_back === "" || props.selectEmployee.cnic_back === undefined || props.selectEmployee.cnic_back === null || props.selectEmployee.cnic_back === " ") { setEmplEditValidator({ ...emplEditValidator, cnic_back: false }) }
+
+        // else if (props.selectEmployee.address === "" || props.selectEmployee.address === undefined || props.selectEmployee.address === null || props.selectEmployee.address === " ") { setEmplEditValidator({ ...emplEditValidator, address: false }) }
+
+        // else if (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined || props.selectEmployee.salary_type === null || props.selectEmployee.salary_type === " ") { setEmplEditValidator({ ...emplEditValidator, salary_type: false }) }
+
+        // else if (props.selectEmployee.salary === "" || props.selectEmployee.salary === undefined || props.selectEmployee.salary === null || props.selectEmployee.salary === " ") { setEmplEditValidator({ ...emplEditValidator, salary: false }) }
+
+        // else if (props.selectEmployee.shift_id === "" || props.selectEmployee.shift_id === undefined || props.selectEmployee.shift_id === null || props.selectEmployee.shift_id === " ") { setEmplEditValidator({ ...emplEditValidator, shift_id: false }) }
+
+        // else if (props.selectEmployee.designation_id === "" || props.selectEmployee.designation_id === undefined || props.selectEmployee.designation_id === null || props.selectEmployee.designation_id === " ") { setEmplEditValidator({ ...emplEditValidator, designation_id: false }) }
+
+        // else if (props.selectEmployee.status === "" || props.selectEmployee.status === undefined || props.selectEmployee.status === null || props.selectEmployee.status === " ") { setEmplEditValidator({ ...emplEditValidator, status: false }) }
+
+        // else if (props.selectEmployee.expense_department_id === "" || props.selectEmployee.expense_department_id === undefined || props.selectEmployee.expense_department_id === null || props.selectEmployee.expense_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, expense_department_id: false }) }
+
+        // else if (props.selectEmployee.salary_department_id === "" || props.selectEmployee.salary_department_id === undefined || props.selectEmployee.salary_department_id === null || props.selectEmployee.salary_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, salary_department_id: false }) }
+
+        // else if (props.selectEmployee.advance_department_id === "" || props.selectEmployee.advance_department_id === undefined || props.selectEmployee.advance_department_id === null || props.selectEmployee.advance_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, advance_department_id: false }) }
+
+        // else if (props.selectEmployee.loan_department_id === "" || props.selectEmployee.loan_department_id === undefined || props.selectEmployee.loan_department_id === null || props.selectEmployee.loan_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, loan_department_id: false }) }
+
+
+        // else {
+
+        //     props.updateEmployeeClouds();
+
+        //     setEmplEditValidator(emplEditValidatorInitialState);
+        // }
 
 
     }
@@ -251,7 +261,9 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {/* {(isFilled && (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(accountOptionValue) === 0 && <span className="text-danger">First Select this </span>} */}
+                                        {isValidateValue === false && Number(props.selectEmployee.employee_name) === 0 && <span className="text-danger">First Select this </span>}
 
                                     </div>
                                 </div>
@@ -273,7 +285,9 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.sur_name === "" || props.selectEmployee.sur_name === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {/* {(isFilled && (props.selectEmployee.sur_name === "" || props.selectEmployee.sur_name === undefined) ? <span className="text-danger">*Required Field</span > : "")} */}
+                                        {isValidateValue === false && Number(props.selectEmployee.sur_name) === 0 && <span className="text-danger">First Select this </span>}
+
                                     </div>
                                 </div>
                             </div>
@@ -300,7 +314,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.cell === "" || props.selectEmployee.cell === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {/* {(isFilled && (props.selectEmployee.cell === "" || props.selectEmployee.cell === undefined) ? <span className="text-danger">*Required Field</span > : "")} */}
+                                        {isValidateValue === false && Number(props.selectEmployee.cell) === 0 && <span className="text-danger">First Select this </span>}
 
                                     </div>
                                 </div>
@@ -328,7 +343,8 @@ const EmployeeForm = (props) => {
                                             }}
                                             disabled={!props.isEmplEditModeOn}
                                         />
-                                        {(isFilled && (props.selectEmployee.cnic === "" || props.selectEmployee.cnic === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {/* {(isFilled && (props.selectEmployee.cnic === "" || props.selectEmployee.cnic === undefined) ? <span className="text-danger">*Required Field</span > : "")} */}
+                                        {isValidateValue === false && Number(props.selectEmployee.cnic) === 0 && <span className="text-danger">First Select this </span>}
 
                                     </div>
                                 </div>
@@ -353,7 +369,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.address === "" || props.selectEmployee.address === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {/* {(isFilled && (props.selectEmployee.address === "" || props.selectEmployee.address === undefined) ? <span className="text-danger">*Required Field</span > : "")} */}
+                                        {isValidateValue === false && Number(props.selectEmployee.address) === 0 && <span className="text-danger">First Select this </span>}
 
 
                                     </div>
@@ -411,7 +428,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {/* {(isFilled && (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined) ? <span className="text-danger">*Required Field</span > : "")} */}
+                                        {isValidateValue === false && Number(props.selectEmployee.salary_type) === 0 && <span className="text-danger">First Select this </span>}
                                         {/* {isValidateValue === false && props.selectEmployee.salary_type === 0 && <span className="text-danger">First Select this </span>} */}
 
 
@@ -440,7 +458,7 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.salary_department === "" || props.selectEmployee.salary_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.salary_department) === 0 && <span className="text-danger">First Select this </span>}
 
                                     </div>
                                 </div>
@@ -495,7 +513,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.advance_department === "" || props.selectEmployee.advance_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.advance_department) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                     </div>
                                 </div>
@@ -523,7 +542,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.salary === "" || props.selectEmployee.salary === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.salary) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                     </div>
                                 </div>
@@ -549,7 +569,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.expense_department === "" || props.selectEmployee.expense_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.expense_department) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                     </div>
                                 </div>
@@ -576,7 +597,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.loan_department === "" || props.selectEmployee.loan_department === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.loan_department) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                     </div>
                                 </div>
@@ -857,7 +879,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.designtion === "" || props.selectEmployee.designtion === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.designtion) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                     </div>
                                 </div>
@@ -877,7 +900,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.status === "" || props.selectEmployee.status === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.status) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                     </div>
                                 </div>
@@ -915,7 +939,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {(isFilled && (props.selectEmployee.shift === "" || props.selectEmployee.shift === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.shift) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                     </div>
                                 </div>
@@ -934,11 +959,13 @@ const EmployeeForm = (props) => {
                                             defaultChecked={props.selectEmployee.is_overtime_allow === 0 ? false : true}
                                             disabled={!props.isEmplEditModeOn}
                                             onChange={(e) => {
+                                                let isChecked = e.target.checked;
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
-                                                    is_overtime_allow: e.target.value,
+                                                    is_overtime_allow: isChecked ? 1 : 0,
                                                 });
-                                            }} />
+                                            }}
+                                        />
                                         <label className="custom-control-label" htmlFor="customCheck1"></label>
                                     </div>
                                 </div>
@@ -1014,6 +1041,8 @@ const EmployeeForm = (props) => {
                                                             name="name"
                                                             onChange={props.fileHandle1ForUpdate}
                                                         />
+                                                        {isValidateValue === false && Number(props.selectEmployee.profile_image) === 0 && <span className="text-danger">First Select this </span>}
+
                                                     </div>
                                                     {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                         {
@@ -1067,6 +1096,8 @@ const EmployeeForm = (props) => {
                                                         name="name"
                                                         onChange={props.fileHandle2ForUpdate}
                                                     />
+                                                    {isValidateValue === false && Number(props.selectEmployee.cnic_front) === 0 && <span className="text-danger">First Select this </span>}
+
                                                 </div>
                                                     {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                             {
@@ -1121,6 +1152,8 @@ const EmployeeForm = (props) => {
                                                         name="name"
                                                         onChange={props.fileHandle3ForUpdate}
                                                     />
+                                                    {isValidateValue === false && Number(props.selectEmployee.cnic_back) === 0 && <span className="text-danger">First Select this </span>}
+
                                                 </div>
                                                 {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                             {
@@ -1190,7 +1223,8 @@ const EmployeeForm = (props) => {
                                                                 return (props.fileEntity.indexOf(each_image) !== index);
                                                             });
                                                             props.setFileEntity(arr_data)
-                                                            setReRender(!reRender)
+                                                            console.log(arr_data, "array ka data");
+                                                            //setReRender(!reRender)
                                                         }}
                                                     ></i>
                                                 </button>
@@ -1218,7 +1252,9 @@ const EmployeeForm = (props) => {
                                                 <>  <button id="button-submit-form" type="submit"
 
                                                     className="btn btn-primary btn-sm px-4  mt-3"
-                                                    onClick={(e) => updateFunct(e)}
+                                                    onClick={(e) => {
+                                                        updateFunct(e)
+                                                    }}
 
 
                                                 >
@@ -1251,7 +1287,8 @@ const EmployeeForm = (props) => {
                     </form>
 
                 </>
-            )}
+            )
+            }
 
         </>
     );

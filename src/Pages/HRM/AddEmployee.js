@@ -6,7 +6,6 @@ import Loader from "../../Layout/Loader/Loader.js";
 import { customStyles } from '../../Components/reactCustomSelectStyle';
 import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
-import closeButton from 'react-bootstrap/closeButton';
 import axios from "axios";
 
 import { Button, Modal } from 'react-bootstrap';
@@ -63,7 +62,7 @@ function AddEmployee() {
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
     //const [fileEntity, setFileEntity] = useState([]);
-    const [fileEntity, setFileEntity] = useState(["ccfh", "fgfgdfg"]);
+    const [fileEntity, setFileEntity] = useState(["a", "b", "c", "d"]);
 
     const ref = useRef();
     const reset = () => {
@@ -203,7 +202,10 @@ function AddEmployee() {
                     setListOfEmployee(data);
                     setAllEmpListConst(data);
                     setEmployeeStatusState(data)
-
+                    //setFileEntity(data.attachments.split(","))
+                    // if (response.data.attachments !== "") {
+                    //     setFileEntity(response.data.attachments.split(","));
+                    // }
 
                     // ----- Setting Empoyee Code ------
                     fetch("http://rightway-api.genial365.com/api/EmployeeDetails/GetEmployeeCode", requestOptions)
@@ -589,8 +591,8 @@ function AddEmployee() {
         setAdvanceDepValue(value.advance_value);
         setExpenseDepValue(value.expense_value);
         setLoanDepValue(value.loan_value);
-        setEmpCode(value)
-        setFileEntity(value)
+        setEmpCode(value.employee_code);
+        //setFileEntity(value.attachments);
 
 
     };
@@ -631,7 +633,7 @@ function AddEmployee() {
                                 <Modal.Title>
                                     <i className="fa fa-edit"></i>&nbsp;Edit Employee
                                 </Modal.Title>
-                                <Button variant="secondary" onClick={handleClose}> x </Button>
+                                <Button variant="secondary" className="btn-close" onClick={handleClose}> x </Button>
                             </Modal.Header>
                             <Modal.Body>
                                 <EmployeeForm
@@ -721,13 +723,18 @@ function AddEmployee() {
                             aria-labelledby="contained-modal-title-vcenter"
                             centered
                             show={lgShow}
-                            onHide={() => setLgShow(false)}
+                            onHide={() => setLgShow(false)
+                                // && { handleClose }
+                            }
+
+
                         >
+
                             <Modal.Header >
                                 <Modal.Title id="example-modal-sizes-title-lg">
                                     View Employee Information
                                 </Modal.Title>
-                                <Button variant="secondary" onClick={handleClose}> x </Button>
+                                {/* <Button variant="secondary" onClick={handleClose}> x </Button> */}
                             </Modal.Header>
                             <Modal.Body>
                                 <EmployeeFormView
