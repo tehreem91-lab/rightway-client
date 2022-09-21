@@ -61,7 +61,13 @@ const EmployeeForm = (props) => {
         holiday_assigned: true,
         shift_id: true,
         status: true,
+        expense_department_id: true,
+        salary_department_id: true,
+        advance_department_id: true,
+        loan_department_id: true,
         benefits: true
+
+
     }
     const [emplEditValidator, setEmplEditValidator] = useState(emplEditValidatorInitialState)
     const [isFilled, setIsFilled] = useState(true)
@@ -71,56 +77,48 @@ const EmployeeForm = (props) => {
     const updateFunct = (e) => {
 
         e.preventDefault();
-        //  props.updateEmployeeClouds();
+        props.updateEmployeeClouds();
 
-        { (isFilled === true ? props.updateEmployeeClouds() : <span className="text-danger">*Required Field</span >) }
+        // { (isFilled === true ? props.updateEmployeeClouds() : <span className="text-danger">*Required Field</span >) }
 
-        if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null ||
-            props.selectEmployee.employee_name === " " || props.selectEmployee.employee_name == "" || props.selectEmployee.employee_name == " ") {
-            setEmplEditValidator({ ...emplEditValidator, employee_name: false })
+        if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null || props.selectEmployee.employee_name === " ") { setEmplEditValidator({ ...emplEditValidator, employee_name: false }) }
 
-        } else if (props.selectEmployee.cnic === "" || props.selectEmployee.cnic === undefined || props.selectEmployee.cnic === null ||
-            props.selectEmployee.cnic === " " || props.selectEmployee.cnic == "" || props.selectEmployee.cnic == " ") {
-            setEmplEditValidator({ ...emplEditValidator, cnic: false })
+        else if (props.selectEmployee.sur_name === "" || props.selectEmployee.sur_name === undefined || props.selectEmployee.sur_name === null || props.selectEmployee.sur_name === " ") { setEmplEditValidator({ ...emplEditValidator, sur_name: false }) }
 
+        else if (props.selectEmployee.cell === "" || props.selectEmployee.cell === undefined || props.selectEmployee.cell === null || props.selectEmployee.cell === " ") { setEmplEditValidator({ ...emplEditValidator, cell: false }) }
 
-        } else if (props.selectEmployee.sur_name === "" || props.selectEmployee.sur_name === undefined || props.selectEmployee.sur_name === null ||
-            props.selectEmployee.sur_name === " " || props.selectEmployee.sur_name == "" || props.selectEmployee.sur_name == " ") {
-            setEmplEditValidator({ ...emplEditValidator, sur_name: false })
+        else if (props.selectEmployee.cnic === "" || props.selectEmployee.cnic === undefined || props.selectEmployee.cnic === null || props.selectEmployee.cnic === " ") { setEmplEditValidator({ ...emplEditValidator, cnic: false }) }
 
+        else if (props.selectEmployee.profile_image === "" || props.selectEmployee.profile_image === undefined || props.selectEmployee.profile_image === null || props.selectEmployee.profile_image === " ") { setEmplEditValidator({ ...emplEditValidator, profile_image: false }) }
 
-        } else if (props.selectEmployee.address === "" || props.selectEmployee.address === undefined || props.selectEmployee.address === null ||
-            props.selectEmployee.address === " " || props.selectEmployee.address == "" || props.selectEmployee.address == " ") {
-            setEmplEditValidator({ ...emplEditValidator, address: false })
+        else if (props.selectEmployee.cnic_front === "" || props.selectEmployee.cnic_front === undefined || props.selectEmployee.cnic_front === null || props.selectEmployee.cnic_front === " ") { setEmplEditValidator({ ...emplEditValidator, cnic_front: false }) }
 
+        else if (props.selectEmployee.cnic_back === "" || props.selectEmployee.cnic_back === undefined || props.selectEmployee.cnic_back === null || props.selectEmployee.cnic_back === " ") { setEmplEditValidator({ ...emplEditValidator, cnic_back: false }) }
 
-        } else if (props.selectEmployee.cell === "" || props.selectEmployee.cell === undefined || props.selectEmployee.cell === null ||
-            props.selectEmployee.cell === " " || props.selectEmployee.cell == "" || props.selectEmployee.cell == " ") {
-            setEmplEditValidator({ ...emplEditValidator, cell: false })
+        else if (props.selectEmployee.address === "" || props.selectEmployee.address === undefined || props.selectEmployee.address === null || props.selectEmployee.address === " ") { setEmplEditValidator({ ...emplEditValidator, address: false }) }
 
-            // } else if (props.selectEmployee.employeeCnicFront === "" || props.selectEmployee.employeeCnicFront === undefined || props.selectEmployee.employeeCnicFront === null ||
-            //   props.selectEmployee.employeeCnicFront === " " || props.selectEmployee.employeeCnicFront == "" || props.selectEmployee.employeeCnicFront == " ") {
-            //   setEmplEditValidator({ ...emplEditValidator, cnicFront: false })
+        else if (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined || props.selectEmployee.salary_type === null || props.selectEmployee.salary_type === " ") { setEmplEditValidator({ ...emplEditValidator, salary_type: false }) }
 
-            // } else if (props.selectEmployee.employeeCnicBsck === "" || props.selectEmployee.employeeCnicBsck === undefined || props.selectEmployee.employeeCnicBsck === null ||
-            //   props.selectEmployee.employeeCnicBsck === " " || props.selectEmployee.employeeCnicBsck == "" || props.selectEmployee.employeeCnicBsck == " ") {
-            //   setEmplEditValidator({ ...emplEditValidator, cnicBack: false })
+        else if (props.selectEmployee.salary === "" || props.selectEmployee.salary === undefined || props.selectEmployee.salary === null || props.selectEmployee.salary === " ") { setEmplEditValidator({ ...emplEditValidator, salary: false }) }
 
-            // } else if (props.selectEmployee.employeePic1 === "" || props.selectEmployee.employeePic1 === undefined || props.selectEmployee.employeePic1 === null ||
-            //   props.selectEmployee.employeePic1 === " " || props.selectEmployee.employeePic1 == "" || props.selectEmployee.employeePic1 == " ") {
-            //   setEmplEditValidator({ ...emplEditValidator, empPic1: false })
+        else if (props.selectEmployee.shift_id === "" || props.selectEmployee.shift_id === undefined || props.selectEmployee.shift_id === null || props.selectEmployee.shift_id === " ") { setEmplEditValidator({ ...emplEditValidator, shift_id: false }) }
 
-            // } else if (props.selectEmployee.employeePic2 === "" || props.selectEmployee.employeePic2 === undefined || props.selectEmployee.employeePic2 === null ||
-            //   props.selectEmployee.employeePic2 === " " || props.selectEmployee.employeePic2 == "" || props.selectEmployee.employeePic2 == " ") {
-            //   setEmplEditValidator({ ...emplEditValidator, empPic2: false })
+        else if (props.selectEmployee.designation_id === "" || props.selectEmployee.designation_id === undefined || props.selectEmployee.designation_id === null || props.selectEmployee.designation_id === " ") { setEmplEditValidator({ ...emplEditValidator, designation_id: false }) }
+
+        else if (props.selectEmployee.status === "" || props.selectEmployee.status === undefined || props.selectEmployee.status === null || props.selectEmployee.status === " ") { setEmplEditValidator({ ...emplEditValidator, status: false }) }
+
+        else if (props.selectEmployee.expense_department_id === "" || props.selectEmployee.expense_department_id === undefined || props.selectEmployee.expense_department_id === null || props.selectEmployee.expense_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, expense_department_id: false }) }
+
+        else if (props.selectEmployee.salary_department_id === "" || props.selectEmployee.salary_department_id === undefined || props.selectEmployee.salary_department_id === null || props.selectEmployee.salary_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, salary_department_id: false }) }
+
+        else if (props.selectEmployee.advance_department_id === "" || props.selectEmployee.advance_department_id === undefined || props.selectEmployee.advance_department_id === null || props.selectEmployee.advance_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, advance_department_id: false }) }
+
+        else if (props.selectEmployee.loan_department_id === "" || props.selectEmployee.loan_department_id === undefined || props.selectEmployee.loan_department_id === null || props.selectEmployee.loan_department_id === " ") { setEmplEditValidator({ ...emplEditValidator, loan_department_id: false }) }
 
 
-        } else {
+        else {
 
-
-
-
-
+            props.updateEmployeeClouds();
 
             setEmplEditValidator(emplEditValidatorInitialState);
         }
@@ -205,13 +203,13 @@ const EmployeeForm = (props) => {
                                             //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
                                             value={props.selectEmployee.employee_code}
                                             disabled
-                                            onChange={(e) => {
-                                                //setEmplEditValidator(emplEditValidatorInitialState)
-                                                props.setEmployeeToUpdate({
-                                                    ...props.selectEmployee,
-                                                    employee_code: e.target.value,
-                                                });
-                                            }}
+                                        // onChange={(e) => {
+                                        //     //setEmplEditValidator(emplEditValidatorInitialState)
+                                        //     props.setEmployeeToUpdate({
+                                        //         ...props.selectEmployee,
+                                        //         employee_code: e.target.value,
+                                        //     });
+                                        // }}
                                         />
 
                                         {/* <input
@@ -344,11 +342,11 @@ const EmployeeForm = (props) => {
                                             name="name"
                                             className='form-control'
                                             placeholder=""
-                                            //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+                                            //className={(emplEditValidator.address ? "form-control" : "form-control requiredValidateInput")}
                                             value={props.selectEmployee.address}
                                             disabled={!props.isEmplEditModeOn}
                                             onChange={(e) => {
-                                                //setEmplEditValidator(emplEditValidatorInitialState)
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     address: e.target.value,
@@ -356,6 +354,7 @@ const EmployeeForm = (props) => {
                                             }}
                                         />
                                         {(isFilled && (props.selectEmployee.address === "" || props.selectEmployee.address === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+
 
                                     </div>
                                 </div>
@@ -401,8 +400,11 @@ const EmployeeForm = (props) => {
                                         <Select
                                             options={optionsST}
                                             value={optionsST.find(e => e.value == props.selectEmployee.salary_type)}
+                                            //className={(emplEditValidator.salary_type ? "form-control" : "form-control requiredValidateInput")}
                                             styles={customStyles}
                                             onChange={(value) => {
+                                                setEmplEditValidator(emplEditValidatorInitialState)
+
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     salary_type: value.value,
@@ -427,7 +429,7 @@ const EmployeeForm = (props) => {
                                             styles={customStyles}
                                             onChange={(value) => {
 
-
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setSalaryDepValue(value.salary_value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
@@ -482,7 +484,7 @@ const EmployeeForm = (props) => {
                                             styles={customStyles}
                                             onChange={(value) => {
 
-
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setAdvanceDepValue(value.advance_value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
@@ -505,15 +507,16 @@ const EmployeeForm = (props) => {
                                     <div className="col-md-8 col-sm-8">
                                         <input required
                                             name="name" min="0"
-                                            className='form-control'
+                                            //className='form-control'
                                             type="number"
                                             placeholder=""
                                             onInput={(er) => (er.target.value = er.target.value.slice(0, 7))}
-                                            //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+                                            className={(emplEditValidator.salary ? "form-control" : "form-control requiredValidateInput")}
+
                                             value={props.selectEmployee.salary}
                                             disabled={!props.isEmplEditModeOn}
                                             onChange={(e) => {
-                                                //setEmplEditValidator(emplEditValidatorInitialState)
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     salary: e.target.value,
@@ -534,7 +537,7 @@ const EmployeeForm = (props) => {
                                             value={{ label: props.selectEmployee.expense_department?.expense_label, value: props.selectEmployee.expense_department?.expense_value }}
                                             styles={customStyles}
                                             onChange={(value) => {
-
+                                                setEmplEditValidator(emplEditValidatorInitialState)
 
                                                 props.setExpenseDepValue(value.expense_value)
                                                 props.setEmployeeToUpdate({
@@ -562,7 +565,7 @@ const EmployeeForm = (props) => {
                                             styles={customStyles}
                                             onChange={(value) => {
 
-
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setLoanDepValue(value.loan_value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
@@ -815,6 +818,7 @@ const EmployeeForm = (props) => {
                                             value={optionsAH.find(e => Number(e.value) == props.selectEmployee.holiday_assigned)}
                                             styles={customStyles}
                                             onChange={(value) => {
+                                                //setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     holiday_assigned: value.value,
@@ -842,7 +846,7 @@ const EmployeeForm = (props) => {
                                             styles={customStyles}
                                             onChange={(value) => {
 
-
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setDesignationValue(value.value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
@@ -866,6 +870,7 @@ const EmployeeForm = (props) => {
                                             value={optionsStatus.find(e => Number(e.value) == props.selectEmployee.status)}
                                             styles={customStyles}
                                             onChange={(value) => {
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
                                                     status: value.value,
@@ -899,7 +904,7 @@ const EmployeeForm = (props) => {
                                             styles={customStyles}
                                             onChange={(value) => {
 
-
+                                                setEmplEditValidator(emplEditValidatorInitialState)
                                                 props.setShiftValue(value.value)
                                                 props.setEmployeeToUpdate({
                                                     ...props.selectEmployee,
@@ -1137,7 +1142,7 @@ const EmployeeForm = (props) => {
                             </div>
 
 
-                            <div className="row ">
+                            <div className="row">
                                 <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Select Attachment</label>
                                     <div className=" ">
@@ -1169,29 +1174,30 @@ const EmployeeForm = (props) => {
                                     </div>
 
 
-                                    {props.fileEntity.length !== 0 && <div className="field item form-group col-md-8 col-sm-8">
-                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
-                                        <div className="col-md-12 col-sm-12 ">
-                                            {
-                                                props.fileEntity.map((each_attachment, index) => {
-                                                    return <button className="btn btn-sm  bg-customBlue  text-light">
-                                                        <a href={`${props.endPoint + each_attachment}`} target="_blank" rel="noopener noreferrer" className='text-light'>
-                                                            {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
-                                                        <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
-                                                            onClick={() => {
-                                                                let arr_data = props.fileEntity.filter((each_image) => {
-                                                                    return (props.fileEntity.indexOf(each_image) !== index);
-                                                                });
-                                                                props.setFileEntity(arr_data)
-                                                                //setReRender(!reRender)
-                                                            }}
-                                                        ></i>
-                                                    </button>
-                                                })
-                                            }
-                                        </div>
-                                    </div>}
+
                                 </div>
+                                {props.fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
+                                    <div className="col-md-12 col-sm-12 ">
+                                        {
+                                            props.fileEntity.map((each_attachment, index) => {
+                                                return <button className="btn btn-sm  bg-customBlue  text-light">
+                                                    <a href={`${props.endPoint + each_attachment}`} target="_blank" rel="noopener noreferrer" className='text-light'>
+                                                        {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
+                                                    <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
+                                                        onClick={() => {
+                                                            let arr_data = props.fileEntity.filter((each_image) => {
+                                                                return (props.fileEntity.indexOf(each_image) !== index);
+                                                            });
+                                                            props.setFileEntity(arr_data)
+                                                            setReRender(!reRender)
+                                                        }}
+                                                    ></i>
+                                                </button>
+                                            })
+                                        }
+                                    </div>
+                                </div>}
                             </div>
                         </div>
 

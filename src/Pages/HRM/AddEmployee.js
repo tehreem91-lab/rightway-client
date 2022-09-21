@@ -6,6 +6,7 @@ import Loader from "../../Layout/Loader/Loader.js";
 import { customStyles } from '../../Components/reactCustomSelectStyle';
 import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
+import closeButton from 'react-bootstrap/closeButton';
 import axios from "axios";
 
 import { Button, Modal } from 'react-bootstrap';
@@ -61,8 +62,8 @@ function AddEmployee() {
     const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
-    const [fileEntity, setFileEntity] = useState([]);
-    // const [fileEntity, setFileEntity] = useState(["ccfh", "fgfgdfg"]);
+    //const [fileEntity, setFileEntity] = useState([]);
+    const [fileEntity, setFileEntity] = useState(["ccfh", "fgfgdfg"]);
 
     const ref = useRef();
     const reset = () => {
@@ -413,13 +414,7 @@ function AddEmployee() {
 
     const updateEmployeeClouds = (e) => {
 
-        console.log(employeeToUpdate, "ooooooooooooo");
-
-
-        // "salary_department_id": 146,
-        // "advance_department_id": 140,
-        // "expense_department_id": 1139,
-        // "loan_department_id": 143,
+        //console.log(employeeToUpdate, "ooooooooooooo");
         var raw
 
         raw = JSON.stringify({
@@ -497,7 +492,7 @@ function AddEmployee() {
                         "profile_image": employeeToUpdate.profile_image,
                         "cnic_front": employeeToUpdate.cnic_front,
                         "cnic_back": employeeToUpdate.cnic_back,
-                        "attachments": employeeToUpdate.attachments,
+                        "attachments": fileEntity.join(",").toString(),
                         "address": employeeToUpdate.address,
                         "department_id": employeeToUpdate.departmentUpdate.value,
                         "reference_name": employeeToUpdate.reference_name,
@@ -595,6 +590,7 @@ function AddEmployee() {
         setExpenseDepValue(value.expense_value);
         setLoanDepValue(value.loan_value);
         setEmpCode(value)
+        setFileEntity(value)
 
 
     };
@@ -631,10 +627,11 @@ function AddEmployee() {
                             centered
                             show={show} onHide={handleClose}>
 
-                            <Modal.Header closeButton>
+                            <Modal.Header >
                                 <Modal.Title>
                                     <i className="fa fa-edit"></i>&nbsp;Edit Employee
                                 </Modal.Title>
+                                <Button variant="secondary" onClick={handleClose}> x </Button>
                             </Modal.Header>
                             <Modal.Body>
                                 <EmployeeForm
@@ -726,10 +723,11 @@ function AddEmployee() {
                             show={lgShow}
                             onHide={() => setLgShow(false)}
                         >
-                            <Modal.Header closeButton>
+                            <Modal.Header >
                                 <Modal.Title id="example-modal-sizes-title-lg">
                                     View Employee Information
                                 </Modal.Title>
+                                <Button variant="secondary" onClick={handleClose}> x </Button>
                             </Modal.Header>
                             <Modal.Body>
                                 <EmployeeFormView
@@ -917,7 +915,7 @@ function AddEmployee() {
                                                                     salaryDepUpdate: { value: item.salary_value, label: item.salary_label },
                                                                     expenseDepUpdate: { value: item.expense_value, label: item.expense_label },
                                                                     loanDepUpdate: { value: item.loan_value, label: item.loan_label },
-                                                                    empCodeUpdate: { value: item }
+                                                                    empCodeUpdate: { value: item.employee_code }
 
 
                                                                 });

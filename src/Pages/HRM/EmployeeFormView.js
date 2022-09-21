@@ -267,23 +267,13 @@ const EmployeeFormView = (props) => {
                                 <label className="col-form-label col-md-3 col-sm-3 label-align">Salary Dept<span className="required">*</span></label>
                                 <div className="col-md-8 col-sm-8">
                                     <Creatable
-
+                                        isDisabled
+                                        className='background-grey'
                                         isClearable={false}
                                         options={props.salaryDep}
-                                        value={{ label: props.selectEmployee.salary_department?.label, value: props.selectEmployee.salary_department?.value }}
+                                        value={{ label: props.selectEmployee.salary_department?.salary_label, value: props.selectEmployee.salary_department?.salary_value }}
                                         styles={customStyles}
-                                        onChange={(value) => {
 
-
-                                            props.setSalaryDepValue(value.value)
-                                            props.setEmployeeToUpdate({
-                                                ...props.selectEmployee,
-                                                salary_department: {
-                                                    value: value.value,
-                                                    label: value.label
-                                                },
-                                            });
-                                        }}
                                     />
                                 </div>
                             </div>
@@ -310,23 +300,11 @@ const EmployeeFormView = (props) => {
                                 <label className="col-form-label col-md-3 col-sm-3 label-align">Advance Dept<span className="required">*</span></label>
                                 <div className="col-md-8 col-sm-8">
                                     <Creatable
-
+                                        isDisabled
                                         isClearable={false}
                                         options={props.advanceDep}
-                                        value={{ label: props.selectEmployee.advance_department?.label, value: props.selectEmployee.advance_department?.value }}
+                                        value={{ label: props.selectEmployee.advance_department?.advance_label, value: props.selectEmployee.advance_department?.advance_value }}
                                         styles={customStyles}
-                                        onChange={(value) => {
-
-
-                                            props.setAdvanceDepValue(value.value)
-                                            props.setEmployeeToUpdate({
-                                                ...props.selectEmployee,
-                                                advance_department: {
-                                                    value: value.value,
-                                                    label: value.label
-                                                },
-                                            });
-                                        }}
                                     />
                                 </div>
                             </div>
@@ -352,24 +330,27 @@ const EmployeeFormView = (props) => {
                                 <label className="col-form-label col-md-3 col-sm-3 label-align">Expense Dept<span className="required">*</span></label>
                                 <div className="col-md-8 col-sm-8">
                                     <Creatable
-
+                                        isDisabled
                                         isClearable={false}
                                         options={props.expenseDep}
-                                        value={{ label: props.selectEmployee.expense_department?.label, value: props.selectEmployee.expense_department?.value }}
+                                        value={{ label: props.selectEmployee.expense_department?.expense_label, value: props.selectEmployee.expense_department?.expense_value }}
                                         styles={customStyles}
-                                        onChange={(value) => {
-
-
-                                            props.setExpenseDepValue(value.value)
-                                            props.setEmployeeToUpdate({
-                                                ...props.selectEmployee,
-                                                expense_department: {
-                                                    value: value.value,
-                                                    label: value.label
-                                                },
-                                            });
-                                        }}
                                     />
+                                </div>
+                            </div>
+
+                            <div className="field item form-group col-md-6 col-sm-6">
+                                <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Dept<span className="required">*</span></label>
+                                <div className="col-md-8 col-sm-8">
+                                    <Creatable
+                                        isDisabled
+                                        isClearable={false}
+                                        options={props.loanDep}
+                                        value={{ label: props.selectEmployee.loan_department?.loan_label, value: props.selectEmployee.loan_department?.loan_value }}
+                                        styles={customStyles}
+
+                                    />
+
                                 </div>
                             </div>
                         </div>
@@ -391,6 +372,7 @@ const EmployeeFormView = (props) => {
 
                                             {props.benefitsRecordsValue.map(((eachBenValue, index) => {
                                                 return <Select
+                                                    isDisabled
                                                     isSearchable={true}
                                                     name="Benefit amount"
                                                     placeholder=""
@@ -575,6 +557,7 @@ const EmployeeFormView = (props) => {
                                 <label className="col-form-label col-md-3 col-sm-3 label-align">Assigned Holidays </label>
                                 <div className="col-md-8 col-sm-8">
                                     <Select
+                                        isDisabled
                                         options={optionsAH}
                                         value={optionsAH.find(e => Number(e.value) == props.selectEmployee.holiday_assigned)}
                                         styles={customStyles}
@@ -645,6 +628,7 @@ const EmployeeFormView = (props) => {
                                 <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Status  </label>
                                 <div className="col-md-8 col-sm-8">
                                     <Select
+                                        isDisabled
                                         options={optionsStatus}
                                         value={optionsStatus.find(e => Number(e.value) == props.selectEmployee.status)}
                                         styles={customStyles}
@@ -785,8 +769,8 @@ const EmployeeFormView = (props) => {
 
                         <div className="row ">
                             <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
-                                <label className="col-form-label col-md-3 col-sm-3 label-align px-0"> Attachment</label>
-                                <div className="col-md-8 col-sm-8 ">
+                                <label className="col-form-label col-md-3 col-sm-3 label-align px-0"> Attachments</label>
+                                {/* <div className="col-md-8 col-sm-8 ">
                                     <div className="row">
                                         <div className="col-md-10 ">
                                             <input
@@ -811,11 +795,11 @@ const EmployeeFormView = (props) => {
                                             }
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
 
                                 {props.fileEntity.length !== 0 && <div className="field item form-group col-md-8 col-sm-8">
-                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
+                                    {/* <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label> */}
                                     <div className="col-md-12 col-sm-12 ">
                                         {
                                             props.fileEntity.map((each_attachment, index) => {
