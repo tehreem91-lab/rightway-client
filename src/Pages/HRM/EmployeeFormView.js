@@ -9,7 +9,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const EmployeeFormView = (props) => {
-    console.log(props.selectEmployee, "______");
+    //console.log(props.selectEmployee, "______");
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(false);
     //const [reRender, setReRender] = useState(false)
@@ -74,7 +74,7 @@ const EmployeeFormView = (props) => {
     // room handle input change
     const handleRoomChange = (option, index, name) => {
         const value = option.value;
-        console.log(value);
+        //console.log(value);
         //alert(`handleRoomChange: [${index}][${name}] ${value}`);
         const list = [...benefitInputs];
         list[index][name] = value;

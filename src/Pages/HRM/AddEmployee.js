@@ -684,6 +684,7 @@ function AddEmployee() {
                                     loanDep={loanDep}
                                     fileHandle1={fileHandle1}
                                     empCode={empCode}
+                                    fetchAllData={fetchAllData}
 
 
                                     benefitsRecordsValue={benefitsRecordsValue}

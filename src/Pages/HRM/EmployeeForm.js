@@ -89,7 +89,10 @@ const EmployeeForm = (props) => {
             is_form_validated = false;
         }
 
-        if (is_form_validated === true) { props.updateEmployeeClouds(); }
+        if (is_form_validated === true) {
+            props.updateEmployeeClouds();
+            props.fetchAllData();
+        }
 
         // if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null || props.selectEmployee.employee_name === " ") { setEmplEditValidator({ ...emplEditValidator, employee_name: false }) }
 
@@ -650,18 +653,27 @@ const EmployeeForm = (props) => {
 
 
                                             </div>
-                                            {props.benefit?.length > props.benefitsRecordsValue?.length && <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
-                                                <i className="fa fa-plus-circle text-customBlue"
-                                                    onClick={() => {
-                                                        props.setBenefitsRecordsValue([...props.benefitsRecordsValue, {
-                                                            label: "",
-                                                            value: "",
-                                                            amount: ""
-                                                        }])
+                                            {props.benefit?.length > props.benefitsRecordsValue?.length &&
+                                                <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
+                                                    <i className="fa fa-plus-circle text-customBlue"
+                                                        onClick={() => {
+                                                            props.setBenefitsRecordsValue([...props.benefitsRecordsValue, {
+                                                                label: "",
+                                                                value: "",
+                                                                amount: ""
+                                                            }])
 
+                                                        }}
+                                                    ></i></div>}
+                                            <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
+                                                <i className="fa fa-trash text-customRed"
+                                                    onClick={(index) => {
+                                                        const list = [...props.benefitsRecordsValue];
+                                                        list.splice(index, 1);
+                                                        props.setBenefitsRecordsValue(list);
                                                     }}
                                                 ></i>
-                                            </div>}
+                                            </div>
 
 
                                         </div>
@@ -1215,7 +1227,7 @@ const EmployeeForm = (props) => {
                                         {
                                             props.fileEntity.map((each_attachment, index) => {
                                                 return <button className="btn btn-sm  bg-customBlue  text-light">
-                                                    <a href={`${props.endPoint + each_attachment}`} target="_blank" rel="noopener noreferrer" className='text-light'>
+                                                    <a href={`${props.endPoint + each_attachment}`} target="_blank" className='text-light'>
                                                         {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
                                                     <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
                                                         onClick={() => {

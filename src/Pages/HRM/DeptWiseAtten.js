@@ -63,7 +63,7 @@ const DeptWiseAtten = () => {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { label: "All", value: 0 },
+                    { salary_label: "All", salary_value: 0 },
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -276,8 +276,8 @@ const DeptWiseAtten = () => {
                                             <div>
                                                 <Select
                                                     placeholder={"All"}
-                                                    getOptionLabel={(e) => e.label}
-                                                    getOptionValue={(e) => e.value}
+                                                    getOptionLabel={(e) => e.salary_label}
+                                                    getOptionValue={(e) => e.salary_value}
                                                     value={selectedValue}
                                                     options={inputOptions}
                                                     onChange={handleChange}
