@@ -620,12 +620,13 @@ const EmployeeForm = (props) => {
                                     return <div className="row" key={index}>
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit</label>
-                                            <div className="col-md-8 col-sm-8">
+                                            <div className="col-md-8 col-sm-8" >
 
 
 
                                                 {props.benefitsRecordsValue.map(((eachBenValue, index) => {
-                                                    return <Select key={index}
+                                                    return <Select
+                                                        key={index}
                                                         value={props.benefitsRecordsValue[index]}
                                                         isSearchable={true}
                                                         onChange={(e) => {
@@ -644,16 +645,12 @@ const EmployeeForm = (props) => {
                                                         options={props.benefit}
 
                                                     />
-                                                }))
-
-
-
-                                                }
+                                                }))}
 
 
 
                                             </div>
-                                            {props.benefit?.length > props.benefitsRecordsValue?.length &&
+                                            {(props.benefit?.length - 1) > (props.benefitsRecordsValue?.length - 1) &&
                                                 <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
                                                     <i className="fa fa-plus-circle text-customBlue"
                                                         onClick={() => {
@@ -674,6 +671,8 @@ const EmployeeForm = (props) => {
                                                     }}
                                                 ></i>
                                             </div>
+
+
 
 
                                         </div>
@@ -1236,7 +1235,7 @@ const EmployeeForm = (props) => {
                                                             });
                                                             props.setFileEntity(arr_data)
                                                             console.log(arr_data, "array ka data");
-                                                            //setReRender(!reRender)
+                                                            setReRender(!reRender)
                                                         }}
                                                     ></i>
                                                 </button>

@@ -686,21 +686,14 @@ const EmployeeFormView = (props) => {
 
 
                                 <div>
-                                    {props.selectEmployee.profile_image === undefined ||
-                                        props.selectEmployee.profile_image === "" ||
-                                        props.selectEmployee.profile_image === null ? (
-                                        <></>
-                                    ) : (
-                                        <>
-                                            <img
-                                                src={`${URL}${props.selectEmployee.profile_image.slice(1, -1)}`}
-                                                alt="not found"
-                                                width="140"
-                                                height="140"
-                                                style={{ borderRadius: "7px" }}
-                                            />
-                                        </>
-                                    )}
+
+                                    <img
+                                        src={`${URL}${props.selectEmployee.profile_image.slice(1, -1)}`}
+                                        alt="not found"
+                                        width="140"
+                                        height="140"
+                                        style={{ borderRadius: "7px" }}
+                                    />
 
                                 </div>
 
@@ -713,113 +706,55 @@ const EmployeeFormView = (props) => {
                         <div className="row">
 
                             <div className="field item form-group col-md-6 col-sm-6 ">
-                                <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align"> CNIC Front</label>
-
-
-                                <div>
-                                    {props.selectEmployee.cnic_front === undefined ||
-                                        props.selectEmployee.cnic_front === "" ||
-                                        props.selectEmployee.cnic_front === null ? (
-                                        <></>
-                                    ) : (
-                                        <>
-                                            <img
-                                                src={`${URL}${props.selectEmployee.cnic_front.slice(1, -1)}`}
-                                                alt="not found"
-                                                width="280"
-                                                height="140"
-                                                style={{ borderRadius: "7px" }}
-                                            />
-                                        </>
-                                    )}
-
+                                <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align"> CNIC Front</label> <div>
+                                    <img
+                                        src={`${URL}${props.selectEmployee.cnic_front.slice(1, -1)}`}
+                                        alt="not found"
+                                        width="280"
+                                        height="140"
+                                        style={{ borderRadius: "7px" }}
+                                    />
                                 </div>
-
-
                             </div>
 
 
 
                             <div className="field item form-group col-md-6 col-sm-6">
                                 <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align"> CNIC Back</label>
-
-
                                 <div >
-                                    {props.selectEmployee.cnic_back === undefined ||
-                                        props.selectEmployee.cnic_back === "" ||
-                                        props.selectEmployee.cnic_back === null ? (
-                                        <></>
-                                    ) : (
-                                        <>
-                                            <img
-                                                src={`${URL}${props.selectEmployee.cnic_back.slice(1, -1)}`}
-                                                alt="not found"
-                                                width="280"
-                                                height="140"
-                                                style={{ borderRadius: "7px" }}
-                                            />
-                                        </>
-                                    )}
 
+                                    <img
+                                        src={`${URL}${props.selectEmployee.cnic_back.slice(1, -1)}`}
+                                        alt="not found"
+                                        width="280"
+                                        height="140"
+                                        style={{ borderRadius: "7px" }}
+                                    />
                                 </div>
-
-
                             </div>
                         </div>
 
-                        <div className="row ">
+                        <div className="row">
                             <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
-                                <label className="col-form-label col-md-3 col-sm-3 label-align px-0"> Attachments</label>
-                                {/* <div className="col-md-8 col-sm-8 ">
-                                    <div className="row">
-                                        <div className="col-md-10 ">
-                                            <input
-                                                ref={props.ref}
-                                                type="file"
-                                                className="form-control form-control-sm customStyleForInput"
-                                                data-validate-length-range={6}
-                                                data-validate-words={2}
-                                                name="name"
-                                                onChange={(e) => {
-                                                    props.setSelectedAttachmentName((e.target.files[0].name.split("."))[0])
-                                                    props.setSelectedAttachmentFile(e.target.files[0])
-                                                }}
-                                            /></div>
-                                        <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
+
+
+
+                                {props.fileEntity.length !== 0 &&
+                                    <div className="field item form-group col-md-8 col-sm-8">
+                                        <div className="col-md-12 col-sm-12 ">
                                             {
-                                                props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
-                                                    <span className="sr-only">Loading...</span>
-                                                </div> : <button
-                                                    disabled={props.ref?.current?.value === "" ? true : false}
-                                                    className="btn btn-sm btn-outline-success" onClick={() => props.UploadFile()} type="button"><i className="fa fa-upload"></i></button>
+                                                props.fileEntity.map((each_attachment, index) => {
+                                                    return <button className="btn btn-sm  bg-customBlue  text-light">
+                                                        <a href={`${props.endPoint + each_attachment}`}
+                                                            src={`${URL}${props.selectEmployee.attachments.slice(1, -1)}`}
+                                                            target="_blank" rel="noopener noreferrer" className='text-light'>
+                                                            {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
+                                                    </button>
+                                                })
                                             }
                                         </div>
-                                    </div>
-                                </div> */}
-
-
-                                {props.fileEntity.length !== 0 && <div className="field item form-group col-md-8 col-sm-8">
-                                    {/* <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label> */}
-                                    <div className="col-md-12 col-sm-12 ">
-                                        {
-                                            props.fileEntity.map((each_attachment, index) => {
-                                                return <button className="btn btn-sm  bg-customBlue  text-light">
-                                                    <a href={`${props.endPoint + each_attachment}`} target="_blank" rel="noopener noreferrer" className='text-light'>
-                                                        {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
-                                                    <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
-                                                        onClick={() => {
-                                                            let arr_data = props.fileEntity.filter((each_image) => {
-                                                                return (props.fileEntity.indexOf(each_image) !== index);
-                                                            });
-                                                            props.setFileEntity(arr_data)
-                                                            //setReRender(!reRender)
-                                                        }}
-                                                    ></i>
-                                                </button>
-                                            })
-                                        }
-                                    </div>
-                                </div>}
+                                    </div>}
                             </div>
                         </div>
 
