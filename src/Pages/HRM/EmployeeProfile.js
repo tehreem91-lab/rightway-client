@@ -41,59 +41,65 @@ const EmployeeProfile = () => {
         };
         await axios(config)
             .then(function (response) {
-                setInputOptions([
-                    { label: "All", value: 0 },
-                    ...response.data,
-                ]);
-                setisLoading(false);
+                if (response.status === 200) {
+                    setInputOptions([
+                        { label: "All", value: 0 },
+                        ...response.data,
+                    ]);
+                    setisLoading(false);
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
 
-    // const fetchAllData = () => {
-    //     var axios = require('axios');
-
-
-    //     var config = {
-    //         method: 'get',
-    //         //url: 'http://rightway-api.genial365.com/api/EmployeeDetails/GetEmployeeProfile?emp_id=2&dep_id=1&month_first_date=09-09-2020',
-    //         url: `${URL}api/EmployeeDetails/GetEmployeeProfile?emp_id=${e.value}&dep_id=1&month_first_date=09-09-2020`,
-    //         headers: {
-    //             Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
-    //         },
-
-    //     };
-
-    //     axios(config)
-    //         .then(function (response) {
-    //             setListOfEmployee((response.data));
-    //             setisLoading(false);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // };
-
     const fetchAllData = async (e) => {
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+        var axios = require('axios');
+        var config = {
+            method: 'get',
+            url: 'http://rightway-api.genial365.com/api/EmployeeDetails/GetEmployeeProfile?emp_id=2&dep_id=1&month_first_date=09-09-2020',
+            //url: `${URL}api/EmployeeDetails/GetEmployeeProfile?emp_id=${e.value}&dep_id=1&month_first_date=09-09-2020`,
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+            },
 
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
         };
 
-        fetch("http://rightway-api.genial365.com/api/EmployeeDetails/GetEmployeeProfile?emp_id=2&dep_id=1&month_first_date=09-09-2020", requestOptions)
-            //fetch(`${URL}api/EmployeeDetails/GetEmployeeProfile?emp_id=${e.value}&dep_id=1&month_first_date=${e.date}`, requestOptions)
-            .then((response) => {
-                response.json()
-                    .then((result) => { setListOfEmployee(result); setisLoading(false); });
+        await axios(config)
+            .then(function (response) {
+                if (response.status === 200) {
+                    setListOfEmployee((response.data));
+                    setisLoading(false);
+                }
+                console.log(e.value, "11aaaaaaaaaa");
+
             })
-            .catch(error => console.log('error', error));
+            .catch(function (error) {
+                console.log(error);
+                console.log(e.value, "22aaaaaaaaaa");
+            });
+
     };
+
+    // const fetchAllData = async (e) => {
+    //     var myHeaders = new Headers();
+    //     myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+
+    //     var requestOptions = {
+    //         method: 'GET',
+    //         headers: myHeaders,
+    //         redirect: 'follow'
+    //     };
+
+    //     fetch("http://rightway-api.genial365.com/api/EmployeeDetails/GetEmployeeProfile?emp_id=2&dep_id=1&month_first_date=09-09-2020", requestOptions)
+    //         //fetch(`${URL}api/EmployeeDetails/GetEmployeeProfile?emp_id=${e.value}&dep_id=1&month_first_date=${e.date}`, requestOptions)
+    //         .then((response) => {
+    //             response.json()
+    //                 .then((result) => { setListOfEmployee(result); setisLoading(false); });
+    //         })
+    //         .catch(error => console.log('error', error));
+    // };
 
     // fetch(URL + "api/EmployeeDetails/GetEmployeeProfile?emp_id=2&dep_id=1&month_first_date=09-09-2020", requestOptions)
     //         .then((response) => {response.json()
@@ -154,7 +160,7 @@ const EmployeeProfile = () => {
                                             </div>
                                         </div>
 
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                        {/* <label className="col-form-label col-md-2 col-sm-2 label-align">
                                             Select Date <span className="required">*</span>
                                         </label>
                                         <div className="col-md-3 col-sm-3">
@@ -173,7 +179,7 @@ const EmployeeProfile = () => {
                                                 // }}
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
 
 
                                         {/* <div className="col-md-2 col-sm-2" align="right">
@@ -319,7 +325,7 @@ const EmployeeProfile = () => {
                                     <Tabs
                                         defaultActiveKey="profile"
                                         id="uncontrolled-tab-example"
-                                        className="mb-3"
+                                        className="nav nav-tabs nav-justified"
                                     >
 
                                         <Tab eventKey="profile" title="Employee Profile">
@@ -494,7 +500,8 @@ const EmployeeProfile = () => {
                         </div>
                     </div>
                 </>
-            )}
+            )
+            }
 
 
         </>
