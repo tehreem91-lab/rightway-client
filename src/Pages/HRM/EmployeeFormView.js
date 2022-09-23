@@ -201,7 +201,7 @@ const EmployeeFormView = (props) => {
                                         type="number"
                                         placeholder="without Dashes Ex, 3310567889234"
                                         onInput={(er) =>
-                                            (er.target.value = er.target.value.slice(0, 13))
+                                            (er.target.value = er.target.value?.slice(0, 13))
                                         }
                                         //className={`${props.isEmplEditModeOn ? (emplEditValidator.cnicNum ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
 
@@ -688,7 +688,7 @@ const EmployeeFormView = (props) => {
                                 <div>
 
                                     <img
-                                        src={`${URL}${props.selectEmployee.profile_image.slice(1, -1)}`}
+                                        src={`${URL}${props.selectEmployee.profile_image?.slice(1, -1)}`}
                                         alt="not found"
                                         width="140"
                                         height="140"
@@ -708,7 +708,7 @@ const EmployeeFormView = (props) => {
                             <div className="field item form-group col-md-6 col-sm-6 ">
                                 <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align"> CNIC Front</label> <div>
                                     <img
-                                        src={`${URL}${props.selectEmployee.cnic_front.slice(1, -1)}`}
+                                        src={`${URL}${props.selectEmployee.cnic_front?.slice(1, -1)}`}
                                         alt="not found"
                                         width="280"
                                         height="140"
@@ -724,7 +724,7 @@ const EmployeeFormView = (props) => {
                                 <div >
 
                                     <img
-                                        src={`${URL}${props.selectEmployee.cnic_back.slice(1, -1)}`}
+                                        src={`${URL}${props.selectEmployee.cnic_back?.slice(1, -1)}`}
                                         alt="not found"
                                         width="280"
                                         height="140"
@@ -747,9 +747,9 @@ const EmployeeFormView = (props) => {
                                                 props.fileEntity.map((each_attachment, index) => {
                                                     return <button className="btn btn-sm  bg-customBlue  text-light">
                                                         <a href={`${props.endPoint + each_attachment}`}
-                                                            src={`${URL}${props.selectEmployee.attachments.slice(1, -1)}`}
+                                                            src={`${URL}${props.selectEmployee.attachments?.slice(1, -1)}`}
                                                             target="_blank" rel="noopener noreferrer" className='text-light'>
-                                                            {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
+                                                            {((each_attachment.split("_"))[0])?.slice(15)} {index + 1}</a>
                                                     </button>
                                                 })
                                             }

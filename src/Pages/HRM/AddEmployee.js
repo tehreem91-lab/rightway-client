@@ -941,7 +941,7 @@ function AddEmployee() {
                                                                     salaryDepUpdate: { value: item.salary_value, label: item.salary_label },
                                                                     expenseDepUpdate: { value: item.expense_value, label: item.expense_label },
                                                                     loanDepUpdate: { value: item.loan_value, label: item.loan_label },
-                                                                    empCodeUpdate: { value: item }
+                                                                    empCodeUpdate: { value: item.employee_code }
 
 
                                                                 });

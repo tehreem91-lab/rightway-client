@@ -84,14 +84,25 @@ const EmployeeForm = (props) => {
         let is_form_validated = true;
         if (Number(props.selectEmployee.employee_name) === 0 || Number(props.selectEmployee.sur_name) === 0 || Number(props.selectEmployee.cell) === 0 || Number(props.selectEmployee.cnic) === 0 || Number(props.selectEmployee.address) === 0
             || Number(props.selectEmployee.salary_type) === 0 || Number(props.selectEmployee.salary_department) === 0 || Number(props.selectEmployee.advance_department) === 0 || Number(props.selectEmployee.salary) === 0 || Number(props.selectEmployee.expense_department) === 0
-            || Number(props.selectEmployee.loan_department) === 0 || Number(props.selectEmployee.designtion) === 0 || Number(props.selectEmployee.status) === 0 || Number(props.selectEmployee.shift) === 0 || Number(props.selectEmployee.profile_image) === 0 || Number(props.selectEmployee.cnic_front) === 0 || Number(props.selectEmployee.cnic_back) === 0 || Number(props.selectEmployee.profile_image) === 0) {
+            || Number(props.selectEmployee.loan_department) === 0 || Number(props.selectEmployee.designtion) === 0 || Number(props.selectEmployee.status) === null || Number(props.selectEmployee.shift) === 0 || Number(props.selectEmployee.profile_image) === 0 || Number(props.selectEmployee.cnic_front) === 0 || Number(props.selectEmployee.cnic_back) === 0 || Number(props.selectEmployee.profile_image) === 0) {
             setIsValidateValue(false);
             is_form_validated = false;
         }
 
+        props.benefit?.length !== 0 && props.benefitsRecordsValue.forEach(element => {
+            if (Number(element.amount) === 0 || Number(element.label) === 0) {
+                setIsValidateValue(false)
+                is_form_validated = false;
+            }
+        });
+
+
         if (is_form_validated === true) {
             props.updateEmployeeClouds();
             props.fetchAllData();
+            // window.location.reload(false);
+
+            // { (props.updateEmployeeClouds() ? window.location.reload(false) : <span className="text-danger">*Required Field</span >) }
         }
 
         // if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null || props.selectEmployee.employee_name === " ") { setEmplEditValidator({ ...emplEditValidator, employee_name: false }) }
@@ -213,8 +224,9 @@ const EmployeeForm = (props) => {
                                         <input required
                                             name="name"
                                             className='form-control'
-                                            //className={`${props.isEmplEditModeOn ? (emplEditValidator.empName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                                            value={props.selectEmployee.employee_code}
+                                            //value={props.selectEmployee.employee_code}
+                                            //value={props.empCode.slice(1, 7)}
+                                            value={(props.selectEmployee.employee_name ? (props.selectEmployee.employee_code) : (props.empCode.slice(1, 7)))}
                                             disabled
                                         // onChange={(e) => {
                                         //     //setEmplEditValidator(emplEditValidatorInitialState)
@@ -646,7 +658,7 @@ const EmployeeForm = (props) => {
 
                                                     />
                                                 }))}
-
+                                                {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">First Select Benefit </span>}
 
 
                                             </div>
@@ -700,17 +712,10 @@ const EmployeeForm = (props) => {
                                                             }
                                                             props.setBenefitsRecordsValue(objectData)
                                                             setReRender(!reRender)
+                                                        }} />
+                                                }))}
 
-
-                                                        }}
-                                                    />
-
-                                                }))
-
-
-
-                                                }
-
+                                                {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">Must enter benefit amount </span>}
                                             </div>
                                         </div>
                                     </div>
@@ -911,7 +916,7 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {isValidateValue === false && Number(props.selectEmployee.status) === 0 && <span className="text-danger">First Select this </span>}
+                                        {isValidateValue === false && Number(props.selectEmployee.status) === null && <span className="text-danger">First Select this </span>}
 
 
                                     </div>
