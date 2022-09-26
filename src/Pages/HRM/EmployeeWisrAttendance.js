@@ -22,7 +22,7 @@ const EmployeeWiseAttendance = () => {
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
     const dateToday = `${year}-${month}-${day}`;
-    // const [date, setdate] = useState("2020-09-01T00:00:00");
+    const [date, setdate] = useState("2020-09-01T00:00:00");
     const [selectedDate, setSelectedDate] = useState("2020-09-01");
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
@@ -75,7 +75,7 @@ const EmployeeWiseAttendance = () => {
     const fetchAllData = async (e) => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Attendence/GetEmployeeAttendenceReport?employee_id=${e.value}&date=${selectedDate}`,
+            url: `${endPoint}api/Attendence/GetEmployeeAttendenceReport?employee_id=${e.value}&date=${selectedDate}-01`,
             //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${e.date}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
@@ -326,22 +326,7 @@ const EmployeeWiseAttendance = () => {
 
                                 <div className="row">
                                     <div className="field item form-group col-md-12 col-sm-12">
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                            Select Employee <span className="required">*</span>
-                                        </label>
-                                        <div className="col-md-3 col-sm-3">
-                                            <div>
-                                                <Select
-                                                    placeholder={"All"}
-                                                    getOptionLabel={(e) => e.label}
-                                                    getOptionValue={(e) => e.value}
-                                                    value={selectedValue}
-                                                    options={inputOptions}
-                                                    onChange={handleChange}
-                                                    styles={customStyles}
-                                                />
-                                            </div>
-                                        </div>
+
 
                                         <label className="col-form-label col-md-2 col-sm-2 label-align">
                                             Select Date <span className="required">*</span>
@@ -349,220 +334,257 @@ const EmployeeWiseAttendance = () => {
                                         <div className="col-md-3 col-sm-3">
                                             <div>
                                                 <input
-                                                    // type="date"
-                                                    //     //getOptionLabel={(e) => e.department_name}
-                                                    //     //getOptionValue={(e) => e.department_id}
-                                                    //     value={selectedValue}
-                                                    //     options={inputOptions}
-                                                    onChange={handleChangeDate}
+
+                                                    //onChange={handleChangeDate}
                                                     //placeholder="All Dates"
                                                     styles={customStyles}
                                                     className="form-control"
                                                     type="month"
-                                                //value={selectedDate}
-                                                //min="2022-09-09"
-                                                // onChange={(e) => {
-                                                //     setdate(e.target.value);
-                                                //     fetchAllData();
-                                                // }}
+                                                    value={selectedDate}
+                                                    //min="2022-09-09"
+                                                    onChange={(e) => {
+                                                        setSelectedDate(e.target.value);
+
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                            Select Employee <span className="required">*</span>
+                                        </label>
+                                        <div className="col-md-3 col-sm-3">
+                                            <div>
+                                                <Select
+                                                    placeholder={"Select Employee"}
+                                                    getOptionLabel={(e) => e.label}
+                                                    getOptionValue={(e) => e.value}
+                                                    value={selectedValue}
+                                                    options={inputOptions}
+                                                    onChange={handleChange}
+                                                    // onChange={(e) => {
+                                                    //     setSelectedValue(e.target.value);
+                                                    // }}
+                                                    styles={customStyles}
                                                 />
                                             </div>
                                         </div>
 
 
-                                        <div className="col-md-2 col-sm-2" align="right">
-                                            {visableDiv === "true" && (
-                                                <button
-                                                    className="btn btn-dark fa fa-edit pl-3"
-                                                    type="button"
-                                                    onClick={(e) => {
-                                                        setDivToVisable("false");
-                                                        <input disabled="false" />;
-                                                    }}
-                                                >
-                                                    Edit
-                                                </button>
-                                            )}
 
-                                            {visableDiv === "false" && (
-                                                <button
-                                                    className="btn btn-primary fa fa-save pl-3"
-                                                    type="submit"
-                                                    onClick={() => {
-                                                        editBalance();
-                                                        setDivToVisable("true");
-                                                    }}
-                                                >
-                                                    Update
-                                                </button>
-                                            )}
-                                        </div>
                                     </div>
                                 </div>
-
-                                {/* ///////////////////////For Downloadling Data/////////////////////////// */}
-                                <div className="col-md-12 col-sm-12 pr-4" >
-
-                                    {/* <button type="button" className="btn btn-outline-success" align="left">Present</button> */}
-                                    <button type="button" className="btn btn-danger" align="left">Absent</button>
-                                    <button type="button" className="btn btn-warning" align="left">Incomplete</button>
-
-                                    <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                                        <div className="form-group col-md-3">
-                                            <button className="btn btn-sm btn-primary borderRadiusRound">
-                                                <i className="fa fa-print"></i>
-                                            </button>
-                                        </div>
-
-                                        <div className="form-group col-md-3">
-                                            <button
-                                                className="btn btn-sm btn-warning borderRadiusRound"
-                                                onClick={downloadPdf}
-                                                type="button"
-                                            >
-                                                <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                        <div className="form-group col-md-3">
-                                            <CSVLink {...csvReport}>
-                                                <button className="btn btn-sm btn-success borderRadiusRound">
-                                                    <i
-                                                        className="fa fa-file-pdf-o"
-                                                        aria-hidden="true"
-                                                    ></i>
-                                                </button>
-                                            </CSVLink>
-                                        </div>
-                                    </ul>
+                                <div className="col-md-12 text-right x_footer">
+                                    <button
+                                        className="btn btn-primary"
+                                        type="submit"
+                                        onClick={() => {
+                                            setSelectedValue(selectedValue);
+                                            setSelectedDate(selectedDate);
+                                            fetchAllData();
+                                        }}
+                                    >
+                                        Show Report
+                                    </button>
                                 </div>
-
-                                {/* //////////////////////////Form Structure///////////////////////////////// */}
-                                <div id="report">
-                                    <div className="table-responsive px-3 pb-2 ">
-                                        <table className="table ">
-                                            <thead>
-                                                <tr className="headings reportTableHead">
-
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
-                                                        Date
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
-                                                        Shift Name
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
-                                                        Shift Start Time
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
-                                                        Shift End Time
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center" width="10%">
-                                                        Date/Time In
-                                                    </th>
-                                                    <th className="column-title text-center right-border-1" width="10%">
-                                                        Date/Time Out
-                                                    </th>
-                                                    <th
-                                                        className="column-title right-border-1 text-center " width="10%" >
-                                                        Duty Time
-                                                    </th>
-
-                                                    <th className="column-title text-center" width="10%">
-                                                        Over Time
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                            </div>
+                        </div>
 
 
 
-                                            {/* //////////////////////////Form Entries///////////////////////////////// */}
-                                            <tbody>
-                                                {attendenceData.map((item, index) => {
-                                                    return (
+                        <div>
+                            <div className="x_panel  ">
+                                <div className="x_content">
+                                    {/* ///////////////////////For Downloadling Data/////////////////////////// */}
+                                    <div className="col-md-11 col-sm-11 pr-4" > Color Indicators:
+                                        {/* <button type="button" className="btn btn-danger" align="left">Absent</button>
+                                    <button type="button" className="btn btn-warning" align="left">Incomplete</button> */}
+                                        <span class=" bg-danger text-white col-1 h-50 d-inline-block">Absent</span>
+                                        <span class=" bg-warning text-dark col-1 h-50 d-inline-block">Incomplete</span>
+
+                                        <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                                            <div className="form-group col-md-3">
+                                                <button className="btn btn-sm btn-primary borderRadiusRound">
+                                                    <i className="fa fa-print"></i>
+                                                </button>
+                                            </div>
+
+                                            <div className="form-group col-md-3">
+                                                <button
+                                                    className="btn btn-sm btn-warning borderRadiusRound"
+                                                    onClick={downloadPdf}
+                                                    type="button"
+                                                >
+                                                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                            <div className="form-group col-md-3">
+                                                <CSVLink {...csvReport}>
+                                                    <button className="btn btn-sm btn-success borderRadiusRound">
+                                                        <i
+                                                            className="fa fa-file-pdf-o"
+                                                            aria-hidden="true"
+                                                        ></i>
+                                                    </button>
+                                                </CSVLink>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                    <div className="col-md-1 col-sm-1" align="right">
+                                        {visableDiv === "true" && (
+                                            <button
+                                                className="btn btn-dark fa fa-edit pl-3"
+                                                type="button"
+                                                onClick={(e) => {
+                                                    setDivToVisable("false");
+                                                    <input disabled="false" />;
+                                                }}
+                                            >
+                                                Edit
+                                            </button>
+                                        )}
+
+                                        {visableDiv === "false" && (
+                                            <button
+                                                className="btn btn-primary fa fa-save pl-3"
+                                                type="submit"
+                                                onClick={() => {
+                                                    editBalance();
+                                                    setDivToVisable("true");
+                                                }}
+                                            >
+                                                Update
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* //////////////////////////Form Structure///////////////////////////////// */}
+                                    <div id="report">
+                                        <div className="table-responsive px-3 pb-2 ">
+                                            <table className="table ">
+                                                <thead>
+                                                    <tr className="headings reportTableHead">
+
+                                                        <th
+                                                            className="column-title right-border-1 text-center " width="10%" >
+                                                            Date
+                                                        </th>
+                                                        <th
+                                                            className="column-title right-border-1 text-center " width="10%" >
+                                                            Shift Name
+                                                        </th>
+                                                        <th
+                                                            className="column-title right-border-1 text-center " width="10%" >
+                                                            Shift Start Time
+                                                        </th>
+                                                        <th
+                                                            className="column-title right-border-1 text-center " width="10%" >
+                                                            Shift End Time
+                                                        </th>
+                                                        <th
+                                                            className="column-title right-border-1 text-center" width="10%">
+                                                            Date/Time In
+                                                        </th>
+                                                        <th className="column-title text-center right-border-1" width="10%">
+                                                            Date/Time Out
+                                                        </th>
+                                                        <th
+                                                            className="column-title right-border-1 text-center " width="10%" >
+                                                            Duty Time
+                                                        </th>
+
+                                                        <th className="column-title text-center" width="10%">
+                                                            Over Time
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+
+
+
+                                                {/* //////////////////////////Form Entries///////////////////////////////// */}
+                                                <tbody>
+                                                    {attendenceData.map((item, index) => {
+                                                        return (
 
 
 
 
-                                                        <tr className="even pointer" key={index}>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.Date?.slice(0, 10)}</td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
-                                                                {" "}
-                                                                <input
-                                                                    type="datetime-local"
-                                                                    value={item?.in_date}
-                                                                    className="form-control border-none"
-                                                                    disabled={visableDiv == "true" ? true : false}
-                                                                    min="0"
-                                                                    onKeyPress={(e) => preventMinus(e)}
-                                                                    onChange={(e) => {
-                                                                        let arr = attendenceData;
-                                                                        let selected_index = arr.findIndex(
-                                                                            (obj) =>
-                                                                                obj.employee_id ==
-                                                                                item.employee_id
-                                                                        ); //it tells us about index of selected account in array of attendenceData
+                                                            <tr className="even pointer" key={index}>
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.Date?.slice(0, 10)}</td>
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
+                                                                    {" "}
+                                                                    <input
+                                                                        type="datetime-local"
+                                                                        value={item?.in_date}
+                                                                        className="form-control border-none"
+                                                                        disabled={visableDiv == "true" ? true : false}
+                                                                        min="0"
+                                                                        onKeyPress={(e) => preventMinus(e)}
+                                                                        onChange={(e) => {
+                                                                            let arr = attendenceData;
+                                                                            let selected_index = arr.findIndex(
+                                                                                (obj) =>
+                                                                                    obj.employee_id ==
+                                                                                    item.employee_id
+                                                                            ); //it tells us about index of selected account in array of attendenceData
 
-                                                                        arr[selected_index] = {
-                                                                            ...arr[selected_index],
-                                                                            in_date: e.target.value,
-                                                                            //out_date: e.target.value,
-                                                                        };
+                                                                            arr[selected_index] = {
+                                                                                ...arr[selected_index],
+                                                                                in_date: e.target.value,
+                                                                                //out_date: e.target.value,
+                                                                            };
 
-                                                                        //<span className="text-danger">First Select this </span>
-                                                                        //(item.in_date == null || item.out_date == null) ? <span className="text-danger">First Select this </span> : <span className="text-danger">First Select this </span>
-                                                                        setAttendenceData(arr);
-                                                                        setreRender(!reRender);
-                                                                        setindate(e.target.value);
-                                                                    }}
-                                                                />
-                                                                {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
-                                                            </td>
+                                                                            //<span className="text-danger">First Select this </span>
+                                                                            //(item.in_date == null || item.out_date == null) ? <span className="text-danger">First Select this </span> : <span className="text-danger">First Select this </span>
+                                                                            setAttendenceData(arr);
+                                                                            setreRender(!reRender);
+                                                                            setindate(e.target.value);
+                                                                        }}
+                                                                    />
+                                                                    {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
+                                                                </td>
 
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
-                                                                {" "}
-                                                                <input
-                                                                    type="datetime-local"
-                                                                    value={item?.out_date}
-                                                                    className="form-control border-none"
-                                                                    disabled={visableDiv == "true" ? true : false}
-                                                                    min="0"
-                                                                    onKeyPress={(e) => preventMinus(e)}
-                                                                    onChange={(e) => {
-                                                                        let arr = attendenceData;
-                                                                        let selected_index = arr.findIndex(
-                                                                            (obj) =>
-                                                                                obj.employee_id ==
-                                                                                item.employee_id
-                                                                        );
-                                                                        arr[selected_index] = {
-                                                                            ...arr[selected_index],
-                                                                            //in_date: e.target.value,
-                                                                            out_date: e.target.value,
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
+                                                                    {" "}
+                                                                    <input
+                                                                        type="datetime-local"
+                                                                        value={item?.out_date}
+                                                                        className="form-control border-none"
+                                                                        disabled={visableDiv == "true" ? true : false}
+                                                                        min="0"
+                                                                        onKeyPress={(e) => preventMinus(e)}
+                                                                        onChange={(e) => {
+                                                                            let arr = attendenceData;
+                                                                            let selected_index = arr.findIndex(
+                                                                                (obj) =>
+                                                                                    obj.employee_id ==
+                                                                                    item.employee_id
+                                                                            );
+                                                                            arr[selected_index] = {
+                                                                                ...arr[selected_index],
+                                                                                //in_date: e.target.value,
+                                                                                out_date: e.target.value,
 
-                                                                        };
+                                                                            };
 
-                                                                        setAttendenceData(arr);
-                                                                        setreRender(!reRender);
-                                                                        setoutdate(e.target.value);
-                                                                    }}
+                                                                            setAttendenceData(arr);
+                                                                            setreRender(!reRender);
+                                                                            setoutdate(e.target.value);
+                                                                        }}
 
 
-                                                                />
-                                                            </td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
-                                                            <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
-                                                        </tr>
-                                                    );
-                                                })}
-                                            </tbody>
-                                            {/* <tfoot>
+                                                                    />
+                                                                </td>
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
+                                                                <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                </tbody>
+                                                {/* <tfoot>
                                                 <tr className="font-weight-bold">
                                                     <td></td>
                                                     <td className="col-md-12 col-sm-12" align="right">
@@ -584,42 +606,45 @@ const EmployeeWiseAttendance = () => {
                                                     </td>
                                                 </tr>
                                             </tfoot> */}
-                                        </table>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="col-md-12 col-sm-12" align="right">
+                                        {visableDiv === "true" && (
+                                            <button
+                                                className="btn btn-dark fa fa-edit pl-3"
+                                                type="button"
+                                                onClick={(e) => {
+                                                    setDivToVisable("false");
+                                                    <input disabled="false" />;
+                                                }}
+                                            >
+                                                Edit
+                                            </button>
+                                        )}
+
+                                        {visableDiv === "false" && (
+                                            <button
+                                                className="btn btn-primary fa fa-save pl-3"
+                                                type="submit"
+                                                onClick={() => {
+                                                    editBalance();
+                                                    setDivToVisable("true");
+                                                }}
+                                            >
+                                                Update
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="col-md-12 col-sm-12" align="right">
-                                {visableDiv === "true" && (
-                                    <button
-                                        className="btn btn-dark fa fa-edit pl-3"
-                                        type="button"
-                                        onClick={(e) => {
-                                            setDivToVisable("false");
-                                            <input disabled="false" />;
-                                        }}
-                                    >
-                                        Edit
-                                    </button>
-                                )}
-
-                                {visableDiv === "false" && (
-                                    <button
-                                        className="btn btn-primary fa fa-save pl-3"
-                                        type="submit"
-                                        onClick={() => {
-                                            editBalance();
-                                            setDivToVisable("true");
-                                        }}
-                                    >
-                                        Update
-                                    </button>
-                                )}
                             </div>
                         </div>
                     </div>
                 </>
-            )}
+            )
+            }
         </>
     );
 };
