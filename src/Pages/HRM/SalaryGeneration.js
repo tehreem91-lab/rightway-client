@@ -18,6 +18,9 @@ const SalaryGeneration = () => {
     const [attendenceData, setAttendenceData] = useState([{}]);
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
+    const [show, setShow] = useState(false);
+    const [selectedDate, setSelectedDate] = useState("2020-09-01");
+
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -108,11 +111,10 @@ const SalaryGeneration = () => {
     const fetchAllData = async (e) => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${date}`,
+            url: `${endPoint}api/Attendence/GetSalaryDepartmentWiseFormData?date=${selectedDate}-01&sal_dept_id=${selectedValue.salary_value}`,
             //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${e.date}`,
             headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
-                    }`,
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
             },
         };
 
@@ -122,30 +124,31 @@ const SalaryGeneration = () => {
                 let core_data = response.data.map((item) => {
                     return {
                         employee_id: item.employee_id,
-                        employee_code: item.employee_code,
-                        employee_name: item.employee_name,
-                        department_title: item.department_title,
-                        designation_title: item.designation_title,
-                        shift_title: item.shift_title,
-                        shift_start_time: item.shift_start_time,
-                        shift_end_time: item.shift_end_time,
-                        in_date: item.in_date,
-                        out_date: item.out_date,
-                        total_hour: item.total_hour,
-                        extra_hour: item.extra_hour,
-                        entry_MachineInfo1_id: item.entry_MachineInfo1_id,
-                        last_MachineInfo1_id: item.last_MachineInfo1_id,
+                        //employee_code: item.employee_code,
+                        employee_name_code: item.employee_name_code,
+                        monthly_salary: item.monthly_salary,
+                        benefits_amount: item.benefits_amount,
+                        overtime_hour: item.overtime_hour,
+                        total_working_hour: item.total_working_hour,
+                        remarks: item.remarks,
+                        advance_deduction: item.advance_deduction,
+                        total_presence: item.total_presence,
+                        total_absent: item.total_absent,
+                        holidays_in_month: item.holidays_in_month,
+                        attachments: item.attachments,
+                        net_salary: item.net_salary,
+                        loan_deduction_record: item.loan_deduction_record,
                     };
                 });
                 setAttendenceDataCSV([
                     ...core_data,
                     {
-                        employee_code: "",
-                        employee_name: "Total",
-                        in_date: response.data.map((e) => e.in_date).reduce((a, b) => a + b, 0),
-                        out_date: response.data
-                            .map((e) => e.out_date)
-                            .reduce((a, b) => a + b, 0),
+                        // employee_code: "",
+                        // employee_name: "Total",
+                        // in_date: response.data.map((e) => e.in_date).reduce((a, b) => a + b, 0),
+                        // out_date: response.data
+                        //     .map((e) => e.out_date)
+                        //     .reduce((a, b) => a + b, 0),
                     },
                 ]);
                 setisLoading(false);
@@ -204,6 +207,57 @@ const SalaryGeneration = () => {
             .catch(function (error) {
                 console.log(error);
             });
+    };
+
+    const postSalary = () => {
+        var axios = require('axios');
+        var data = JSON.stringify({
+            "attachment": "string",
+            "first_date_of_month": "2022-09-26T06:48:57.292Z",
+            "remarks": "Sample Data",
+            "department_id": 0,
+            "records": [
+                {
+                    "employee_id": 2,
+                    "department_id": 146,
+                    "emoloyee_over_time": 74,
+                    "total_working_hour": 300,
+                    "monthly_salary": 95000,
+                    "allowence_amount": 0,
+                    "gross_salary": 114800,
+                    "total_loan_deduction": 0,
+                    "advance_deduction": 0,
+                    "total_deduction": 0,
+                    "net_salary": 115000,
+                    "benefits_amount": 70,
+                    "loan_records": [
+                        {
+                            "loan_id": 144,
+                            "deduction_amount": 20
+                        }
+                    ]
+                }
+            ]
+        });
+
+        var config = {
+            method: 'post',
+            url: 'http://rightway-api.genial365.com/api/Attendence/PostSalaryForm',
+            headers: {
+                'Authorization': 'Bearer Sxbn4dmKcKAmmkhOxRG2j1vOlEf1OPWV2I4CrTZ0GWuisJYo92BYQRmBpMZ1eeBcVnjYN3VXwTv26_6Z5HOZrK-n1rpmiHowYeSWH3VhKO-80Ok-LxQ9wNM7Xby5jPCKR4fO59d40aWI0OMpMDNU1O5WDhQJUN477Wv-Im6baho0KyCLhaeICOnZG40_UKucfzC6L1tKYxjH7SVY4yT1SwmGqifYUjdKUHz-xy_RQwJ8c0dSMSLhH0tYKKhwM0kGFXmxlScdQ36QtEb4fdlsOZWgogPYgB1ImRSVvuqoQss08OWW8rYfiw0VQaSQWsk-YhPoad5ROHv1JiuYYOVd3JqqrGLBLkbc4aheciTNH8e5_nRltVplG6lRTpjkcaImpBSmFav9NaBcy1IbsQbOPgrh3kI7Ha5U8gnQOnCo4J5hASxt0OpIe3veXAbD8wyXhmIiELTQJ08yGtpdvxguj_bRYaCUwTXhJd3UtAV1HoWpvnOngkrNMRzDPMXWvafD534sCmHPwmESNIORFYLyrg',
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
     };
 
     ////////////////////////////For Downloading CSV Files////////////////////////////
@@ -301,47 +355,52 @@ const SalaryGeneration = () => {
                                             <i className="fa fa-filter pl-2"></i>&nbsp;Report Filter
                                         </span>
                                         <div className="row">
-                                            <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-36 label-align">
-                                                    {" "}
+                                            <div className="field item form-group col-md-12 col-sm-12">
+
+
+                                                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                                    Select Date <span className="required">*</span>
+                                                </label>
+                                                <div className="col-md-3 col-sm-3">
+                                                    <div>
+                                                        <input
+
+                                                            //onChange={handleChangeDate}
+                                                            //placeholder="All Dates"
+                                                            styles={customStyles}
+                                                            className="form-control"
+                                                            type="month"
+                                                            value={selectedDate}
+                                                            //min="2022-09-09"
+                                                            onChange={(e) => {
+                                                                setSelectedDate(e.target.value);
+
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <label className="col-form-label col-md-2 col-sm-2 label-align">
                                                     Select Department <span className="required">*</span>
                                                 </label>
-                                                <div className="col-md-8 col-sm-8">
-                                                    <Select
-                                                        placeholder={"All"}
-                                                        getOptionLabel={(e) => e.label}
-                                                        getOptionValue={(e) => e.value}
-                                                        value={selectedValue}
-                                                        options={inputOptions}
-                                                        onChange={handleChange}
-                                                        styles={customStyles}
-                                                    />
-
-                                                    {/* {validationState === false && dateFrom === "" && (
-                                                        <span className="text-danger">First Select this </span>
-                                                    )} */}
-
-                                                    {/* // it shows fiscal year's initial value */}
+                                                <div className="col-md-3 col-sm-3">
+                                                    <div>
+                                                        <Select
+                                                            placeholder={"Select Department"}
+                                                            getOptionLabel={(e) => e.salary_label}
+                                                            getOptionValue={(e) => e.salary_value}
+                                                            value={selectedValue}
+                                                            options={inputOptions}
+                                                            onChange={(e) => {
+                                                                setSelectedValue(e);
+                                                            }}
+                                                            styles={customStyles}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">
-                                                    {" "}
-                                                    Select Month/Year <span className="required">*</span>
-                                                </label>
-                                                <div className="col-md-8 col-sm-8">
-                                                    <input
-                                                        onChange={handleChangeDate}
-                                                        placeholder="All Dates"
-                                                        styles={customStyles}
-                                                        className="form-control"
-                                                        type="month"
-                                                        value={date}
-                                                    />
-                                                    {/* {validationState === false && dateTo === "" && (
-                                                        <span className="text-danger">First Select this </span>
-                                                    )} */}
-                                                </div>
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -353,10 +412,11 @@ const SalaryGeneration = () => {
                                             onClick={() => {
                                                 // setfromDate(dateFrom);
                                                 // settoDate(dateTo);
-                                                fetchData();
-                                                setAttendenceData = { attendenceData }
-                                                setindate = { indate }
-                                                setoutdate = { outdate }
+                                                fetchAllData();
+                                                setShow(true);
+                                                // setAttendenceData = { attendenceData }
+                                                // setindate = { indate }
+                                                // setoutdate = { outdate }
                                                 // console.log({ LadgerData });
                                             }}
                                         >
@@ -379,31 +439,36 @@ const SalaryGeneration = () => {
                         className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
                             } `}
                     >
-                        <div className="x_panel  ">
-                            <div className="clearfix" >
-                                <SalaryGenReciept
-                                    ref={ref}
-                                    setSelectedAttachmentName={setSelectedAttachmentName}
-                                    setSelectedAttachmentFile={selectedAttachmentFile}
-                                    isFileUploadingModeOn={isFileUploadingModeOn}
-                                    UploadFile={UploadFile}
-                                    fileEntity={fileEntity}
-                                    customStyles={customStyles}
-                                    downloadPdf={downloadPdf}
-                                    CSVLink={CSVLink}
-                                    csvReport={csvReport}
-                                    attendenceData={attendenceData}
-                                    setAttendenceData={setAttendenceData}
-                                    visableDiv={visableDiv}
-                                    preventMinus={preventMinus}
-                                    setreRender={setreRender}
-                                    reRender={reRender}
-                                    setindate={setindate}
-                                    setoutdate={setoutdate}
-                                    endPoint={endPoint}
-                                />
-                            </div>
-                        </div>
+                        {show ?
+                            <>
+                                <div className="x_panel  ">
+                                    <div className="clearfix" >
+                                        <SalaryGenReciept
+                                            ref={ref}
+                                            setSelectedAttachmentName={setSelectedAttachmentName}
+                                            setSelectedAttachmentFile={selectedAttachmentFile}
+                                            isFileUploadingModeOn={isFileUploadingModeOn}
+                                            UploadFile={UploadFile}
+                                            fileEntity={fileEntity}
+                                            customStyles={customStyles}
+                                            downloadPdf={downloadPdf}
+                                            CSVLink={CSVLink}
+                                            csvReport={csvReport}
+                                            attendenceData={attendenceData}
+                                            setAttendenceData={setAttendenceData}
+                                            visableDiv={visableDiv}
+                                            preventMinus={preventMinus}
+                                            setreRender={setreRender}
+                                            reRender={reRender}
+                                            setindate={setindate}
+                                            setoutdate={setoutdate}
+                                            endPoint={endPoint}
+                                            postSalary={postSalary}
+                                        />
+                                    </div>
+                                </div>
+                            </> : null
+                        }
                     </div>
                 </>
             )

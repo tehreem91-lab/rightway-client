@@ -20,7 +20,8 @@ const SalaryGenReciept = React.forwardRef(
         reRender,
         setindate,
         setoutdate,
-        endPoint }, ref) => {
+        endPoint,
+        postSalary }, ref) => {
         const navigate = useNavigate();
         //let curent_balance = LadgerData;
 
@@ -118,42 +119,41 @@ const SalaryGenReciept = React.forwardRef(
                     </div>
                 </div>
 
-                {/* ///////////////////////For Downloadling Data/////////////////////////// */}
-                <div className="col-md-12 col-sm-12 pr-4" >
-
-                    <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                        <div className="form-group col-md-3">
-                            <button className="btn btn-sm btn-primary borderRadiusRound">
-                                <i className="fa fa-print"></i>
-                            </button>
-                        </div>
-
-                        <div className="form-group col-md-3">
-                            <button
-                                className="btn btn-sm btn-warning borderRadiusRound"
-                                onClick={downloadPdf}
-                                type="button"
-                            >
-                                <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div className="form-group col-md-3">
-                            <CSVLink {...csvReport}>
-                                <button className="btn btn-sm btn-success borderRadiusRound">
-                                    <i
-                                        className="fa fa-file-pdf-o"
-                                        aria-hidden="true"
-                                    ></i>
-                                </button>
-                            </CSVLink>
-                        </div>
-                    </ul>
-                </div>
-
                 {/* //////////////////////////Form Structure///////////////////////////////// */}
 
                 <div className="x_panel  px-0 ">
                     <div className="x_content my-3">
+                        {/* ///////////////////////For Downloadling Data/////////////////////////// */}
+                        <div className="col-md-12 col-sm-12 pr-4" >
+
+                            <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                                <div className="form-group col-md-3">
+                                    <button className="btn btn-sm btn-primary borderRadiusRound">
+                                        <i className="fa fa-print"></i>
+                                    </button>
+                                </div>
+
+                                <div className="form-group col-md-3">
+                                    <button
+                                        className="btn btn-sm btn-warning borderRadiusRound"
+                                        onClick={downloadPdf}
+                                        type="button"
+                                    >
+                                        <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <CSVLink {...csvReport}>
+                                        <button className="btn btn-sm btn-success borderRadiusRound">
+                                            <i
+                                                className="fa fa-file-pdf-o"
+                                                aria-hidden="true"
+                                            ></i>
+                                        </button>
+                                    </CSVLink>
+                                </div>
+                            </ul>
+                        </div>
                         <div id="report">
                             <div className="table-responsive px-3 pb-2 ">
 
@@ -171,15 +171,11 @@ const SalaryGenReciept = React.forwardRef(
                                             </th>
                                             <th
                                                 className="column-title right-border-1 text-center " width="10%" >
-                                                Gross Salary
+                                                Monthly Salary
                                             </th>
                                             <th
                                                 className="column-title right-border-1 text-center " width="10%" >
-                                                Net Salary
-                                            </th>
-                                            <th
-                                                className="column-title right-border-1 text-center " width="10%" >
-                                                Benefits
+                                                Benefits Amount
                                             </th>
                                             <th
                                                 className="column-title right-border-1 text-center " width="10%" >
@@ -187,15 +183,15 @@ const SalaryGenReciept = React.forwardRef(
                                             </th>
                                             <th
                                                 className="column-title right-border-1 text-center " width="10%" >
-                                                Advance
+                                                Working Hours
                                             </th>
+                                            {/* <th
+                                                className="column-title right-border-1 text-center " width="10%" >
+                                                Remarks
+                                            </th> */}
                                             <th
                                                 className="column-title right-border-1 text-center " width="10%" >
-                                                Loan
-                                            </th>
-                                            <th
-                                                className="column-title right-border-1 text-center " width="10%" >
-                                                Paid Salary
+                                                Advance Deduction
                                             </th>
                                             <th
                                                 className="column-title right-border-1 text-center " width="10%" >
@@ -207,8 +203,17 @@ const SalaryGenReciept = React.forwardRef(
                                             </th>
                                             <th
                                                 className="column-title right-border-1 text-center " width="10%" >
-                                                Leaves
+                                                Holidays in Month
                                             </th>
+                                            {/* <th
+                                                className="column-title right-border-1 text-center " width="10%" >
+                                                Attachments
+                                            </th> */}
+                                            <th
+                                                className="column-title right-border-1 text-center " width="10%" >
+                                                Net Salary
+                                            </th>
+
                                             {/* <th
                                                         className="column-title right-border-1 text-center" width="10%">
                                                         Date/Time In
@@ -238,79 +243,19 @@ const SalaryGenReciept = React.forwardRef(
 
 
                                                 <tr className="even pointer" key={index}>
-                                                    <td   > {item.employee_code}</td>
-                                                    <td   > {item.employee_name} </td>
-                                                    <td   > {item.department_title}</td>
-                                                    <td   > {item.designation_title}</td>
-                                                    <td   > {item.shift_title}</td>
-                                                    <td   > {item.shift_start_time?.slice(8, 19)}</td>
-                                                    <td   > {item.shift_end_time?.slice(8, 19)}</td>
-                                                    <td   >
-                                                        {" "}
-                                                        <input
-                                                            type="datetime-local"
-                                                            value={item?.in_date}
-                                                            className="form-control border-none"
-                                                            disabled={visableDiv == "true" ? true : false}
-                                                            min="0"
-                                                            onKeyPress={(e) => preventMinus(e)}
-                                                            onChange={(e) => {
-                                                                let arr = attendenceData;
-                                                                let selected_index = arr.findIndex(
-                                                                    (obj) =>
-                                                                        obj.employee_id ==
-                                                                        item.employee_id
-                                                                ); //it tells us about index of selected account in array of attendenceData
-
-                                                                arr[selected_index] = {
-                                                                    ...arr[selected_index],
-                                                                    in_date: e.target.value,
-                                                                    //out_date: e.target.value,
-                                                                };
-
-                                                                //<span className="text-danger">First Select this </span>
-                                                                //(item.in_date == null || item.out_date == null) ? <span className="text-danger">First Select this </span> : <span className="text-danger">First Select this </span>
-                                                                setAttendenceData(arr);
-                                                                setreRender(!reRender);
-                                                                setindate(e.target.value);
-                                                            }}
-                                                        />
-                                                        {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
-                                                    </td>
-
-                                                    <td   >
-                                                        {" "}
-                                                        <input
-                                                            type="datetime-local"
-                                                            value={item?.out_date}
-                                                            className="form-control border-none"
-                                                            disabled={visableDiv == "true" ? true : false}
-                                                            min="0"
-                                                            onKeyPress={(e) => preventMinus(e)}
-                                                            onChange={(e) => {
-                                                                let arr = attendenceData;
-                                                                let selected_index = arr.findIndex(
-                                                                    (obj) =>
-                                                                        obj.employee_id ==
-                                                                        item.employee_id
-                                                                );
-                                                                arr[selected_index] = {
-                                                                    ...arr[selected_index],
-                                                                    //in_date: e.target.value,
-                                                                    out_date: e.target.value,
-
-                                                                };
-
-                                                                setAttendenceData(arr);
-                                                                setreRender(!reRender);
-                                                                setoutdate(e.target.value);
-                                                            }}
-
-
-                                                        />
-                                                    </td>
-                                                    <td   > {item.total_hour}</td>
-                                                    <td   > {item.extra_hour}</td>
+                                                    <td   > {item.employee_name_code}</td>
+                                                    <td   > {item.employee_name_code?.slice(0, 7)} </td>
+                                                    <td   > {item.monthly_salary}</td>
+                                                    <td   > {item.benefits_amount}</td>
+                                                    <td   > {item.overtime_hour}</td>
+                                                    <td   > {item.total_working_hour}</td>
+                                                    {/* <td   > {item.remarks}</td> */}
+                                                    <td   > {item.advance_deduction}</td>
+                                                    <td   > {item.total_presence}</td>
+                                                    <td   > {item.total_absent}</td>
+                                                    <td   > {item.holidays_in_month}</td>
+                                                    {/* <td   > {item.attachments}</td> */}
+                                                    <td   > {item.net_salary}</td>
                                                 </tr>
                                             );
                                         })}
@@ -348,6 +293,7 @@ const SalaryGenReciept = React.forwardRef(
                         className="btn btn-dark"
                         type="submit"
                         onClick={() => {
+                            postSalary();
                         }}
                     >
                         Generate Report
