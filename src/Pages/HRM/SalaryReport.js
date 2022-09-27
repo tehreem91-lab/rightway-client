@@ -9,7 +9,7 @@ import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
-import SalaryGenReciept from "./SalaryGenReciept.js";
+import SalaryReportReciept from "./SalaryReportReciept.js";
 
 const SalaryReport = () => {
 
@@ -18,13 +18,16 @@ const SalaryReport = () => {
     const [attendenceData, setAttendenceData] = useState([{}]);
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
+    const [show, setShow] = useState(false);
+    const [selectedDate, setSelectedDate] = useState("2020-09-01");
+
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
     const dateToday = `${year}-${month}-${day}`;
     // const [date, setdate] = useState("2020-09-01T00:00:00");
-    const [date, setdate] = useState("2020-09-01");
+    const [date, setdate] = useState("2020-09");
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
 
@@ -86,7 +89,7 @@ const SalaryReport = () => {
     const fetchData = async () => {
         var config = {
             method: "get",
-            url: `${endPoint}api/ChartOfAccounts/GetSalaryDepartments`,
+            url: `${endPoint}api/EmployeeDetails/GetActiveEmployee`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
                     }`,
@@ -95,7 +98,7 @@ const SalaryReport = () => {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { label: "All", value: 0 },
+                    { label: "Select Employee", value: 0 },
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -108,44 +111,55 @@ const SalaryReport = () => {
     const fetchAllData = async (e) => {
         var config = {
             method: "get",
-            url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${date}`,
-            //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${e.date}`,
+            // url: `${endPoint}api/Attendence/GetSalaryDepartmentWiseFormData?date=${selectedDate}-01&sal_dept_id=${selectedValue.salary_value}`,
+            url: `http://rightway-api.genial365.com/api/Attendence/GetEmployeeSalaryReport?first_date_month=09-01-2020&employee_id=2`,
+
             headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
-                    }`,
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
             },
         };
 
         await axios(config)
             .then(function (response) {
                 setAttendenceData(response.data);
-                let core_data = response.data.map((item) => {
-                    return {
-                        employee_id: item.employee_id,
-                        employee_code: item.employee_code,
-                        employee_name: item.employee_name,
-                        department_title: item.department_title,
-                        designation_title: item.designation_title,
-                        shift_title: item.shift_title,
-                        shift_start_time: item.shift_start_time,
-                        shift_end_time: item.shift_end_time,
-                        in_date: item.in_date,
-                        out_date: item.out_date,
-                        total_hour: item.total_hour,
-                        extra_hour: item.extra_hour,
-                        entry_MachineInfo1_id: item.entry_MachineInfo1_id,
-                        last_MachineInfo1_id: item.last_MachineInfo1_id,
-                    };
-                });
+                // let core_data = response.data.map((item) => {
+                //     return {
+                //         main_voucher_inv: item.main_voucher_inv,
+                //         single_voucher_inv: item.single_voucher_inv,
+                //         employee_name: item.employee_name,
+                //         employee_code: item.employee_code,
+                //         salary_type: item.salary_type,
+                //         status: item.status,
+                //         designationName: item.designationName,
+                //         salary_id: item.salary_id,
+                //         department_id: item.department_id,
+                //         over_time: item.over_time,
+                //         total_working_hour: item.total_working_hour,
+                //         total_deduction: item.total_deduction,
+                //         pm_salary: item.pm_salary,
+                //         allowence_amount: item.allowence_amount,
+                //         gross_salary: item.gross_salary,
+                //         date: item.date,
+                //         loan_deduction: item.loan_deduction,
+                //         advance_deduction: item.advance_deduction,
+                //         net_salary: item.net_salary,
+                //         created_by: {
+                //             user_id: item.created_by.user_id,
+                //             UserName: item.created_by.UserName,
+                //         }
+                //     };
+
+                // });
+
                 setAttendenceDataCSV([
-                    ...core_data,
+                    // ...core_data,
                     {
-                        employee_code: "",
-                        employee_name: "Total",
-                        in_date: response.data.map((e) => e.in_date).reduce((a, b) => a + b, 0),
-                        out_date: response.data
-                            .map((e) => e.out_date)
-                            .reduce((a, b) => a + b, 0),
+                        // employee_code: "",
+                        // employee_name: "Total",
+                        // in_date: response.data.map((e) => e.in_date).reduce((a, b) => a + b, 0),
+                        // out_date: response.data
+                        //     .map((e) => e.out_date)
+                        //     .reduce((a, b) => a + b, 0),
                     },
                 ]);
                 setisLoading(false);
@@ -155,56 +169,7 @@ const SalaryReport = () => {
             });
     };
 
-    const editBalance = () => {
 
-        const updatedCode4post = attendenceData.filter((item) => {
-            // if ((item.in_date != null && item.out_date != null) || (item.in_date != null && item.out_date == null) || (item.in_date == null && item.out_date != null))
-            if (item.in_date != null && item.out_date != null)
-                return {
-                    "employee_id": item.employee_id,
-                    "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
-                    "last_MachineInfo1_id": item.last_MachineInfo1_id,
-                    "in_time": item.in_date,
-                    "out_time": item.out_date,
-                }
-
-            else {
-                console.log("Errorlalala")
-            }
-
-        });
-
-        const updatedCode = updatedCode4post.map((item) => {
-            return {
-                "employee_id": item.employee_id,
-                "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
-                "last_MachineInfo1_id": item.last_MachineInfo1_id,
-                "in_time": item.in_date,
-                "out_time": item.out_date,
-            };
-        });
-
-        var data = {
-            attendence_record: updatedCode,
-        };
-        console.log(data);
-
-        var config = {
-            method: "put",
-            url: `${endPoint}api/Attendence/UpdateShiftWiseAttendenceReport?date=${date}`,
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
-                    }`,
-            },
-            data: data,
-        };
-
-        axios(config)
-            .then(function (response) { })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
 
     ////////////////////////////For Downloading CSV Files////////////////////////////
 
@@ -276,7 +241,7 @@ const SalaryReport = () => {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                        <span>&nbsp;Salary Report</span>
+                        <span>&nbsp;Employee Salary Report</span>
 
                     </div>
                     <div
@@ -301,47 +266,53 @@ const SalaryReport = () => {
                                             <i className="fa fa-filter pl-2"></i>&nbsp;Report Filter
                                         </span>
                                         <div className="row">
-                                            <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-36 label-align">
-                                                    {" "}
-                                                    Select Department <span className="required">*</span>
-                                                </label>
-                                                <div className="col-md-8 col-sm-8">
-                                                    <Select
-                                                        placeholder={"All"}
-                                                        getOptionLabel={(e) => e.label}
-                                                        getOptionValue={(e) => e.value}
-                                                        value={selectedValue}
-                                                        options={inputOptions}
-                                                        onChange={handleChange}
-                                                        styles={customStyles}
-                                                    />
+                                            <div className="field item form-group col-md-12 col-sm-12">
 
-                                                    {/* {validationState === false && dateFrom === "" && (
-                                                        <span className="text-danger">First Select this </span>
-                                                    )} */}
 
-                                                    {/* // it shows fiscal year's initial value */}
-                                                </div>
-                                            </div>
-                                            <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">
-                                                    {" "}
-                                                    Select Month/Year <span className="required">*</span>
+                                                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                                    Select Date <span className="required">*</span>
                                                 </label>
-                                                <div className="col-md-8 col-sm-8">
-                                                    <input
-                                                        onChange={handleChangeDate}
-                                                        placeholder="All Dates"
-                                                        styles={customStyles}
-                                                        className="form-control"
-                                                        type="month"
-                                                        value={date}
-                                                    />
-                                                    {/* {validationState === false && dateTo === "" && (
-                                                        <span className="text-danger">First Select this </span>
-                                                    )} */}
+                                                <div className="col-md-3 col-sm-3">
+                                                    <div>
+                                                        <input
+
+                                                            //onChange={handleChangeDate}
+                                                            //placeholder="All Dates"
+                                                            styles={customStyles}
+                                                            className="form-control"
+                                                            type="month"
+                                                            value={selectedDate}
+                                                            //min="2022-09-09"
+                                                            onChange={(e) => {
+                                                                setSelectedDate(e.target.value);
+
+                                                            }}
+                                                        />
+                                                    </div>
                                                 </div>
+
+                                                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                                    Select Employee <span className="required">*</span>
+                                                </label>
+                                                <div className="col-md-3 col-sm-3">
+                                                    <div>
+                                                        <Select
+                                                            placeholder={"Select Employee"}
+                                                            // getOptionLabel={(e) => e.label}
+                                                            // getOptionValue={(e) => e.value}
+                                                            value={selectedValue}
+                                                            options={inputOptions}
+                                                            //onChange={handleChange}
+                                                            onChange={(e) => {
+                                                                setSelectedValue(e);
+                                                            }}
+                                                            styles={customStyles}
+                                                        />
+                                                    </div>
+                                                </div>
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -353,10 +324,11 @@ const SalaryReport = () => {
                                             onClick={() => {
                                                 // setfromDate(dateFrom);
                                                 // settoDate(dateTo);
-                                                fetchData();
+                                                fetchAllData();
+                                                setShow(true);
                                                 setAttendenceData = { attendenceData }
-                                                setindate = { indate }
-                                                setoutdate = { outdate }
+                                                // setindate = { indate }
+                                                // setoutdate = { outdate }
                                                 // console.log({ LadgerData });
                                             }}
                                         >
@@ -379,31 +351,35 @@ const SalaryReport = () => {
                         className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
                             } `}
                     >
-                        <div className="x_panel  ">
-                            <div className="clearfix" >
-                                <SalaryGenReciept
-                                    ref={ref}
-                                    setSelectedAttachmentName={setSelectedAttachmentName}
-                                    setSelectedAttachmentFile={selectedAttachmentFile}
-                                    isFileUploadingModeOn={isFileUploadingModeOn}
-                                    UploadFile={UploadFile}
-                                    fileEntity={fileEntity}
-                                    customStyles={customStyles}
-                                    downloadPdf={downloadPdf}
-                                    CSVLink={CSVLink}
-                                    csvReport={csvReport}
-                                    attendenceData={attendenceData}
-                                    setAttendenceData={setAttendenceData}
-                                    visableDiv={visableDiv}
-                                    preventMinus={preventMinus}
-                                    setreRender={setreRender}
-                                    reRender={reRender}
-                                    setindate={setindate}
-                                    setoutdate={setoutdate}
-                                    endPoint={endPoint}
-                                />
-                            </div>
-                        </div>
+                        {show ?
+                            <>
+                                <div className="x_panel  ">
+                                    <div className="clearfix" >
+                                        <SalaryReportReciept
+                                            ref={ref}
+                                            setSelectedAttachmentName={setSelectedAttachmentName}
+                                            setSelectedAttachmentFile={selectedAttachmentFile}
+                                            isFileUploadingModeOn={isFileUploadingModeOn}
+                                            UploadFile={UploadFile}
+                                            fileEntity={fileEntity}
+                                            customStyles={customStyles}
+                                            downloadPdf={downloadPdf}
+                                            CSVLink={CSVLink}
+                                            csvReport={csvReport}
+                                            attendenceData={attendenceData}
+                                            setAttendenceData={setAttendenceData}
+                                            visableDiv={visableDiv}
+                                            preventMinus={preventMinus}
+                                            setreRender={setreRender}
+                                            reRender={reRender}
+                                            setindate={setindate}
+                                            setoutdate={setoutdate}
+                                            endPoint={endPoint}
+                                        />
+                                    </div>
+                                </div>
+                            </> : null
+                        }
                     </div>
                 </>
             )
