@@ -81,50 +81,51 @@ const SalaryReportReciept = React.forwardRef(
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5 bold-5   text-dark ">   Main Voucher No: </div>
-                                            <div className="col-md-7  bold-6  text-dark "> {attendenceData.main_voucher_inv} </div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.main_voucher_inv} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Single Voucher No:</div>
-                                            <div className="col-md-7  bold-6  text-dark "> {attendenceData.single_voucher_inv} </div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.single_voucher_inv} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Employee Code:</div>
-                                            <div className="col-md-7  bold-6  text-dark "> {attendenceData.employee_code}</div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.employee_code}</div>
                                         </div>
                                     </div>
 
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Status:</div>
-                                            <div className="col-md-7  bold-6  text-dark "> {attendenceData.status} </div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.status} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Employee Name:</div>
-                                            <div className="col-md-7  bold-6  text-dark "> {attendenceData.employee_name}</div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.employee_name}</div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">User Name:</div>
-                                            <div className="col-md-7  bold-6  text-dark "> {attendenceData.created_by.UserName}</div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.created_by.UserName}</div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5 bold-5     text-dark ">Salary Type: </div>
-                                            <div className="col-md-7  bold-6   text-dark ">{attendenceData.salary_type} </div>
+                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData.salary_type} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
-                                            <div className="col-md-2 bold-5     text-dark "> Date: </div>
-                                            <div className="col-md-9  bold-6   text-dark " style={{ marginLeft: "-18px" }}>{attendenceData.date} </div>
+                                            <div className="col-md-5 bold-5     text-dark "> Date: </div>
+                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData.date} </div>
+                                            {/* <div className="col-md-9  bold-6   text-dark " style={{ marginLeft: "-8px" }}>{attendenceData.date} </div> */}
                                         </div>
                                     </div>
                                 </div>
