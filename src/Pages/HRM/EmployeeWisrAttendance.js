@@ -133,7 +133,7 @@ const EmployeeWiseAttendance = () => {
             // if ((item.in_date != null && item.out_date != null) || (item.in_date != null && item.out_date == null) || (item.in_date == null && item.out_date != null))
             if (item.in_date != null && item.out_date != null)
                 return {
-                    "employee_id": item.employee_id,
+                    "employee_id": selectedValue.value,
                     "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
                     "last_MachineInfo1_id": item.last_MachineInfo1_id,
                     "in_time": item.in_date,
@@ -144,6 +144,7 @@ const EmployeeWiseAttendance = () => {
                 // console.log("Error Ageya!")
                 // toast.error("Enter correct values of both in & out time")
                 setIsValidateValue(false);
+                console.log(selectedValue.value, "emp iddddd");
             }
 
         });
@@ -156,7 +157,7 @@ const EmployeeWiseAttendance = () => {
             }
             if (is_form_validated === true) {
                 return {
-                    "employee_id": item.employee_id,
+                    "employee_id": selectedValue.value,
                     "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
                     "last_MachineInfo1_id": item.last_MachineInfo1_id,
                     "in_time": item.in_date,
@@ -308,104 +309,106 @@ const EmployeeWiseAttendance = () => {
     }, []);
 
     return (
+
         <>
-            {isLoading ? (
-                <>
-                    <Loader />
-                </>
-            ) : (
-                <>
-                    <div
-                        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
-                            }   `}
-                    >
-                        <span>&nbsp;Employee Monthly Attendance</span>
+            <div
+                className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+                    }   `}
+            >
+                <span>&nbsp;Employee Monthly Attendance</span>
 
-                    </div>
-                    <div
-                        role="main"
-                        className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
-                            } `}
-                    >
-                        <div className="x_panel  ">
-                            <div className="x_content">
-                                <span className="section pl-3">
-                                    <div className="row   pt-3">
-                                        <div className="col-3">
-                                            <i className="fa fa-filter"></i>&nbsp;Employee Filter
-                                        </div>
-                                        <div className="col-9 text-right "></div>
-                                    </div>
-                                </span>
+            </div>
+            <div
+                role="main"
+                className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
+                    } `}
+            >
+                <div className="x_panel  ">
+                    <div className="x_content">
+                        <span className="section pl-3">
+                            <div className="row   pt-3">
+                                <div className="col-3">
+                                    <i className="fa fa-filter"></i>&nbsp;Employee Filter
+                                </div>
+                                <div className="col-9 text-right "></div>
+                            </div>
+                        </span>
 
-                                <div className="row">
-                                    <div className="field item form-group col-md-12 col-sm-12">
+                        <div className="row">
+                            <div className="field item form-group col-md-12 col-sm-12">
 
 
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                            Select Date <span className="required">*</span>
-                                        </label>
-                                        <div className="col-md-3 col-sm-3">
-                                            <div>
-                                                <input
+                                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                    Select Date <span className="required">*</span>
+                                </label>
+                                <div className="col-md-3 col-sm-3">
+                                    <div>
+                                        <input
 
-                                                    //onChange={handleChangeDate}
-                                                    //placeholder="All Dates"
-                                                    styles={customStyles}
-                                                    className="form-control"
-                                                    type="month"
-                                                    value={selectedDate}
-                                                    //min="2022-09-09"
-                                                    onChange={(e) => {
-                                                        setSelectedDate(e.target.value);
+                                            //onChange={handleChangeDate}
+                                            //placeholder="All Dates"
+                                            styles={customStyles}
+                                            className="form-control"
+                                            type="month"
+                                            value={selectedDate}
+                                            //min="2022-09-09"
+                                            onChange={(e) => {
+                                                setSelectedDate(e.target.value);
 
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                            Select Employee <span className="required">*</span>
-                                        </label>
-                                        <div className="col-md-3 col-sm-3">
-                                            <div>
-                                                <Select
-                                                    placeholder={"Select Employee"}
-                                                    // getOptionLabel={(e) => e.label}
-                                                    // getOptionValue={(e) => e.value}
-                                                    value={selectedValue}
-                                                    options={inputOptions}
-                                                    //onChange={handleChange}
-                                                    onChange={(e) => {
-                                                        setSelectedValue(e);
-                                                    }}
-                                                    styles={customStyles}
-                                                />
-                                            </div>
-                                        </div>
-
-
-
+                                            }}
+                                        />
                                     </div>
                                 </div>
-                                <div className="col-md-12 text-right x_footer">
-                                    <button
-                                        className="btn btn-primary"
-                                        type="submit"
-                                        onClick={() => {
-                                            // setSelectedValue(selectedValue);
-                                            // setSelectedDate(selectedDate);
-                                            fetchAllData();
-                                            setShow(true);
-                                        }}
-                                    >
-                                        Show Report
-                                    </button>
+
+                                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                    Select Employee <span className="required">*</span>
+                                </label>
+                                <div className="col-md-3 col-sm-3">
+                                    <div>
+                                        <Select
+                                            placeholder={"Select Employee"}
+                                            // getOptionLabel={(e) => e.label}
+                                            // getOptionValue={(e) => e.value}
+                                            value={selectedValue}
+                                            options={inputOptions}
+                                            //onChange={handleChange}
+                                            onChange={(e) => {
+                                                setSelectedValue(e);
+                                            }}
+                                            styles={customStyles}
+                                        />
+                                    </div>
                                 </div>
+
+
+
                             </div>
                         </div>
+                        <div className="col-md-12 text-right x_footer">
+                            <button
+                                className="btn btn-primary"
+                                type="submit"
+                                onClick={() => {
+                                    // setSelectedValue(selectedValue);
+                                    // setSelectedDate(selectedDate);
+                                    setAttendenceData([{}]);
+                                    fetchAllData();
+                                    setShow(true);
+                                    setisLoading(true);
+                                }}
+                            >
+                                Show Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-
+                <>
+                    {isLoading ? (
+                        <>
+                            <Loader />
+                        </>
+                    ) : (
 
                         <div className="">
                             {show ?
@@ -451,6 +454,8 @@ const EmployeeWiseAttendance = () => {
                                                                     onClick={(e) => {
                                                                         setDivToVisable("true");
                                                                         fetchAllData();
+                                                                        setAttendenceData([{}]);
+                                                                        setisLoading(true);
                                                                         // <input disabled="false" />;
                                                                     }}
                                                                 >
@@ -586,7 +591,7 @@ const EmployeeWiseAttendance = () => {
                                                                                     setindate(e.target.value);
                                                                                 }}
                                                                             />
-                                                                            {isValidateValue === false && Number(attendenceData.in_date || attendenceData.out_date) === 0 && <span className="text-danger">First Select this </span>}
+                                                                            {/* {isValidateValue === false && Number(attendenceData.in_date || attendenceData.out_date) === 0 && <span className="text-danger">First Select this </span>} */}
 
                                                                             {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
 
@@ -623,7 +628,7 @@ const EmployeeWiseAttendance = () => {
 
                                                                             />
 
-                                                                            {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
+                                                                            {/* {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>} */}
 
                                                                         </td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
@@ -691,8 +696,10 @@ const EmployeeWiseAttendance = () => {
                                                             className="btn btn-dark fa fa-edit pl-3"
                                                             type="button"
                                                             onClick={(e) => {
+                                                                setAttendenceData([{}]);
                                                                 setDivToVisable("true");
                                                                 fetchAllData();
+                                                                setisLoading(true);
                                                                 // <input disabled="false" />;
                                                             }}
                                                         >
@@ -706,11 +713,11 @@ const EmployeeWiseAttendance = () => {
                                 </> : null
                             }
                         </div>
-                    </div>
+                    )}
                 </>
-            )
-            }
+            </div>
         </>
+
     );
 };
 
