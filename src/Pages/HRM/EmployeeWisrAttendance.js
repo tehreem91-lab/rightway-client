@@ -18,11 +18,6 @@ const EmployeeWiseAttendance = () => {
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
 
-    var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
-    var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
-    var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
-    const dateToday = `${year}-${month}-${day}`;
-    const [date, setdate] = useState("2020-09-01T00:00:00");
     const [selectedDate, setSelectedDate] = useState("2020-09-01");
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
@@ -32,26 +27,34 @@ const EmployeeWiseAttendance = () => {
         setVisableDiv(displayDiv);
     };
 
-    const [inputValue, setInputValue] = useState("");
     const [selectedValue, setSelectedValue] = useState("");
     const [show, setShow] = useState(false);
     const [isValidateValue, setIsValidateValue] = useState(true);
 
     const [inputOptions, setInputOptions] = useState("");
-    // handle input change event
-    const handleInputChange = (value) => {
-        setInputValue(value);
-    };
-    // handle selection
-    const handleChange = (value) => {
-        setSelectedValue(value);
-        fetchAllData(value);
-    };
 
-    const handleChangeDate = (value) => {
-        setSelectedDate(value);
-        fetchAllData(value);
-    };
+
+    const updateFunct = (e) => {
+
+        e.preventDefault();
+        let is_form_validated = true;
+
+        {
+            attendenceData.map((item, index) => {
+
+                if (Number(item.in_date) === 0 || Number(item.out_date) === 0) {
+                    setIsValidateValue(false);
+                    is_form_validated = false;
+                }
+                console.log(item.in_date); console.log(item.out_date);
+            })
+        }
+
+        if (is_form_validated === true) {
+            editBalance();
+            setDivToVisable("true");
+        }
+    }
 
     const fetchData = async () => {
         var config = {
@@ -76,12 +79,11 @@ const EmployeeWiseAttendance = () => {
     };
 
     const fetchAllData = async (e) => {
-        console.log(selectedDate)
-        console.log(selectedValue)
+
         var config = {
             method: "get",
+            //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${selectedValue.value}&date=${selectedDate}`,
             url: `${endPoint}api/Attendence/GetEmployeeAttendenceReport?employee_id=${selectedValue.value}&date=${selectedDate}-01`,
-            //url: `${endPoint}api/Attendence/GetShiftWiseAttendenceReport?department_id=${e.department_id}&date=${e.date}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
                     }`,
@@ -133,7 +135,7 @@ const EmployeeWiseAttendance = () => {
             // if ((item.in_date != null && item.out_date != null) || (item.in_date != null && item.out_date == null) || (item.in_date == null && item.out_date != null))
             if (item.in_date != null && item.out_date != null)
                 return {
-                    "employee_id": selectedValue.value,
+                    "employee_id": item.employee_id,
                     "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
                     "last_MachineInfo1_id": item.last_MachineInfo1_id,
                     "in_time": item.in_date,
@@ -143,27 +145,21 @@ const EmployeeWiseAttendance = () => {
             else {
                 // console.log("Error Ageya!")
                 // toast.error("Enter correct values of both in & out time")
-                setIsValidateValue(false);
-                console.log(selectedValue.value, "emp iddddd");
+                //setIsValidateValue(false);
             }
 
         });
 
         const updatedCode = updatedCode4post.map((item) => {
-            let is_form_validated = true;
-            if (Number(item.in_time) === 0 || Number(item.out_time) === 0) {
-                setIsValidateValue(false);
-                is_form_validated = false;
-            }
-            if (is_form_validated === true) {
-                return {
-                    "employee_id": selectedValue.value,
-                    "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
-                    "last_MachineInfo1_id": item.last_MachineInfo1_id,
-                    "in_time": item.in_date,
-                    "out_time": item.out_date,
-                };
-            }
+
+            return {
+                "employee_id": item.employee_id,
+                "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
+                "last_MachineInfo1_id": item.last_MachineInfo1_id,
+                "in_time": item.in_date,
+                "out_time": item.out_date,
+            };
+
         });
 
         var data = {
@@ -193,63 +189,12 @@ const EmployeeWiseAttendance = () => {
     };
 
 
-    // const editBalance = () => {
-    //     var axios = require('axios');
-    //     const updatedCode4post = attendenceData.filter((item) => {
-    //         if ((item.in_date != null && item.out_date != null) || (item.in_date != null && item.out_date == null) || (item.in_date == null && item.out_date != null))
-    //             // if (item.in_date != null && item.out_date != null)
-    //             return {
-    //                 "employee_id": item.employee_id,
-    //                 "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
-    //                 "last_MachineInfo1_id": item.last_MachineInfo1_id,
-    //                 "in_time": item.in_date,
-    //                 "out_time": item.out_date,
-    //             }
-
-    //         else {
-    //             console.log("Errorlalala")
-    //         }
-
-    //     });
-
-    //     const updatedCode = updatedCode4post.map((item) => {
-    //         return {
-    //             "employee_id": item.employee_id,
-    //             "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
-    //             "last_MachineInfo1_id": item.last_MachineInfo1_id,
-    //             "in_time": item.in_date,
-    //             "out_time": item.out_date,
-    //         };
-    //     });
-
-    //     var data = JSON.stringify({
-    //         "attendence_record": updatedCode
-    //     });
-
-    //     var config = {
-    //         method: 'put',
-    //         url: `${endPoint}api/Attendence/UpdateShiftWiseAttendenceReport?date=${date}`,
-    //         headers: {
-    //             'Authorization': 'Bearer 6MXIGHVUI8s-yesABITtSioEralCZMzBAhaF28RLWWEVRyZkwG8XylzdbrsUSZTlV4dgz1-q8qq0xPk7zB5qOd75eOM3qjG1CLH88Q1tJZ2B6CosyGuWXC64jc7tKfXn_HPcRdk7vRd_no0dAeA84hADK7GmHeoyukfBjIl0n6PVtd4Oz09ZqEg6SX8L4U58LmnMz-eK-c7YoJwzzT_0L7qESohelJ-mWvaf04I7UfNbtlumqUyv8uWfdOQQY82h3eTGHACJ9NMvywcs438ok-Xwg2QVy-H0n21sfvIR4_oxRjai4XskDIYmcoNNTFHaFc-UdFKEWp37n9SVcFhmNLgaIP0s5RwHzhGOCkF5t40fBp2Lu1LCHN5JjmAdaJkYIFotuHoXLYrqRBeBCGKf0nfr7c_XmpdBgphX98bhP_ewKfK609MYelsYM4PpBmbxb_aARrDu46TDY45IPW3NhC_Tf9aNux_nBeWiOctGpipM-aKgZoGZlZR09T20ke1uBd_bYdhxEq83S5tHL5OqbQ',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         data: data
-    //     };
-
-    //     axios(config)
-    //         .then(function (response) {
-    //             console.log(JSON.stringify(response.data));
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-
-    // };
-
     ////////////////////////////For Downloading CSV Files////////////////////////////
 
     const headers = [
-        { label: "Date", key: "Date" },
+        { label: "Code", key: "employee_code" },
+        { label: "Employee Name", key: "employee_name" },
+        { label: "Designation", key: "designation_title" },
         { label: "Shift Name", key: "shift_title" },
         { label: "Shift Start Time", key: "shift_start_time" },
         { label: "Shift End Time", key: "shift_end_time" },
@@ -268,16 +213,13 @@ const EmployeeWiseAttendance = () => {
     ////////////////////////////For Downloading PDF Files////////////////////////////
     const downloadPdf = async () => {
         var data = document.getElementById("report");
-        //$("pdfOpenHide").attr("hidden", true);
-        // To disable the scroll
+
         document.getElementById("report").style.overflow = "inherit";
         document.getElementById("report").style.maxHeight = "inherit";
 
         await html2canvas(data).then((canvas) => {
             const contentDataURL = canvas.toDataURL("image/png", 1.0);
-            // enabling the scroll
-            //document.getElementById("report").style.overflow = "scroll";
-            //document.getElementById("report").style.maxHeight = "150px";
+
 
             let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
 
@@ -339,7 +281,7 @@ const EmployeeWiseAttendance = () => {
 
 
                                 <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                    Select Date <span className="required">*</span>
+                                    Select Month <span className="required">*</span>
                                 </label>
                                 <div className="col-md-3 col-sm-3">
                                     <div>
@@ -367,8 +309,8 @@ const EmployeeWiseAttendance = () => {
                                     <div>
                                         <Select
                                             placeholder={"Select Employee"}
-                                            // getOptionLabel={(e) => e.label}
-                                            // getOptionValue={(e) => e.value}
+                                            // getOptionLabel={(e) => e.salary_label}
+                                            // getOptionValue={(e) => e.salary_value}
                                             value={selectedValue}
                                             options={inputOptions}
                                             //onChange={handleChange}
@@ -377,6 +319,7 @@ const EmployeeWiseAttendance = () => {
                                             }}
                                             styles={customStyles}
                                         />
+
                                     </div>
                                 </div>
 
@@ -394,7 +337,9 @@ const EmployeeWiseAttendance = () => {
                                     setAttendenceData([{}]);
                                     fetchAllData();
                                     setShow(true);
-                                    setisLoading(true);
+                                    //setisLoading(true);
+
+                                    { (selectedValue.value) && setisLoading(true) }
                                 }}
                             >
                                 Show Report
@@ -441,9 +386,12 @@ const EmployeeWiseAttendance = () => {
                                                                 <button
                                                                     className="btn btn-primary fa fa-save pl-3"
                                                                     type="submit"
-                                                                    onClick={() => {
-                                                                        editBalance();
-                                                                        setDivToVisable("true");
+                                                                    // onClick={() => {
+                                                                    //     editBalance();
+                                                                    //     setDivToVisable("true");
+                                                                    // }}
+                                                                    onClick={(e) => {
+                                                                        updateFunct(e)
                                                                     }}
                                                                 >
                                                                     Update
@@ -452,9 +400,9 @@ const EmployeeWiseAttendance = () => {
                                                                     className="btn btn-dark fa fa-edit pl-3"
                                                                     type="button"
                                                                     onClick={(e) => {
+                                                                        setAttendenceData([{}]);
                                                                         setDivToVisable("true");
                                                                         fetchAllData();
-                                                                        setAttendenceData([{}]);
                                                                         setisLoading(true);
                                                                         // <input disabled="false" />;
                                                                     }}
@@ -470,8 +418,6 @@ const EmployeeWiseAttendance = () => {
 
                                             {/* ///////////////////////For Downloadling Data/////////////////////////// */}
                                             <div className="col-md-12 col-sm-12 pr-4" > Color Indicators:
-                                                {/* <button type="button" className="btn btn-danger" align="left">Absent</button>
-                                    <button type="button" className="btn btn-warning" align="left">Incomplete</button> */}
                                                 <span class=" bg-danger text-white col-1 h-50 d-inline-block">Absent</span>
                                                 <span class=" bg-warning text-dark col-1 h-50 d-inline-block">Incomplete</span>
 
@@ -548,6 +494,7 @@ const EmployeeWiseAttendance = () => {
 
 
 
+
                                                         {/* //////////////////////////Form Entries///////////////////////////////// */}
                                                         <tbody>
                                                             {attendenceData.map((item, index) => {
@@ -584,17 +531,15 @@ const EmployeeWiseAttendance = () => {
                                                                                         //out_date: e.target.value,
                                                                                     };
 
-                                                                                    //<span className="text-danger">First Select this </span>
-                                                                                    //(item.in_date == null || item.out_date == null) ? <span className="text-danger">First Select this </span> : <span className="text-danger">First Select this </span>
                                                                                     setAttendenceData(arr);
                                                                                     setreRender(!reRender);
                                                                                     setindate(e.target.value);
                                                                                 }}
                                                                             />
-                                                                            {/* {isValidateValue === false && Number(attendenceData.in_date || attendenceData.out_date) === 0 && <span className="text-danger">First Select this </span>} */}
+                                                                            {isValidateValue === false && Number(item.in_date) === 0 && <span className="text-danger">First Select this </span>}
+
 
                                                                             {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
-
                                                                         </td>
 
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
@@ -627,9 +572,9 @@ const EmployeeWiseAttendance = () => {
 
 
                                                                             />
+                                                                            {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
 
-                                                                            {/* {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>} */}
-
+                                                                            {/* {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""} */}
                                                                         </td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
@@ -637,28 +582,6 @@ const EmployeeWiseAttendance = () => {
                                                                 );
                                                             })}
                                                         </tbody>
-                                                        {/* <tfoot>
-                                                <tr className="font-weight-bold">
-                                                    <td></td>
-                                                    <td className="col-md-12 col-sm-12" align="right">
-                                                        Total:
-                                                    </td>
-                                                    <td>
-                                                        {attendenceData
-                                                            .map((values) => {
-                                                                return Number(values.in_date);
-                                                            })
-                                                            .reduce((a, b) => a + b, 0)}
-                                                    </td>
-                                                    <td>
-                                                        {attendenceData
-                                                            .map((values) => {
-                                                                return Number(values.out_date);
-                                                            })
-                                                            .reduce((a, b) => a + b, 0)}
-                                                    </td>
-                                                </tr>
-                                            </tfoot> */}
                                                     </table>
                                                 </div>
                                             </div>
@@ -685,9 +608,12 @@ const EmployeeWiseAttendance = () => {
                                                         <button
                                                             className="btn btn-primary fa fa-save pl-3"
                                                             type="submit"
-                                                            onClick={() => {
-                                                                editBalance();
-                                                                setDivToVisable("true");
+                                                            // onClick={() => {
+                                                            //     editBalance();
+                                                            //     setDivToVisable("true");
+                                                            // }}
+                                                            onClick={(e) => {
+                                                                updateFunct(e)
                                                             }}
                                                         >
                                                             Update
