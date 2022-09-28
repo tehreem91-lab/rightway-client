@@ -213,6 +213,14 @@ const SalaryGenReciept = React.forwardRef(
                                                 className="column-title right-border-1 text-center " width="10%" >
                                                 Net Salary
                                             </th>
+                                            <th
+                                                className="column-title right-border-1 text-center  " width="10%"  >
+                                                Loan Deduction
+                                                {/* <tr>
+                                                    <th className="column-title right-border-1 text-center  " width="50%">ID</th>
+                                                    <th >Amount</th>
+                                                </tr> */}
+                                            </th>
 
                                             {/* <th
                                                         className="column-title right-border-1 text-center" width="10%">
@@ -237,6 +245,7 @@ const SalaryGenReciept = React.forwardRef(
                                     {/* //////////////////////////Form Entries///////////////////////////////// */}
                                     <tbody>
                                         {attendenceData.map((item, index) => {
+                                            //console.log(item.loan_deduction_record[index].loan_deduction_amount, "aaaaaaaaa");
                                             return (
 
 
@@ -256,8 +265,18 @@ const SalaryGenReciept = React.forwardRef(
                                                     <td   > {item.holidays_in_month}</td>
                                                     {/* <td   > {item.attachments}</td> */}
                                                     <td   > {item.net_salary}</td>
+                                                    {/* <td   > {item.loan_deduction_record[index].loan_id} {item.loan_deduction_record[index].loan_deduction_amount}</td> */}
+
+                                                    <td>
+
+                                                        <td>ID:{item.loan_deduction_record[index]?.loan_id} </td>
+                                                        <td>Amount:{item.loan_deduction_record[index]?.loan_deduction_amount}</td>
+
+                                                    </td>
+
                                                 </tr>
                                             );
+
                                         })}
                                     </tbody>
                                     {/* <tfoot>

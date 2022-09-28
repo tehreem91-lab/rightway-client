@@ -137,7 +137,12 @@ const SalaryGeneration = () => {
                         holidays_in_month: item.holidays_in_month,
                         attachments: item.attachments,
                         net_salary: item.net_salary,
-                        loan_deduction_record: item.loan_deduction_record,
+                        loan_deduction_record: [
+                            {
+                                loan_id: item.loan_deduction_record.loan_id,
+                                loan_deduction_amount: item.loan_deduction_record.loan_deduction_amount
+                            }
+                        ]
                     };
                 });
                 setAttendenceDataCSV([
@@ -213,9 +218,9 @@ const SalaryGeneration = () => {
         var axios = require('axios');
         var data = JSON.stringify({
             "attachment": "string",
-            "first_date_of_month": "2022-09-26T06:48:57.292Z",
+            "first_date_of_month": "2020-09-01T00:00:00.000Z",
             "remarks": "Sample Data",
-            "department_id": 0,
+            "department_id": 146,
             "records": [
                 {
                     "employee_id": 2,
@@ -242,9 +247,9 @@ const SalaryGeneration = () => {
 
         var config = {
             method: 'post',
-            url: 'http://rightway-api.genial365.com/api/Attendence/PostSalaryForm',
+            url: `${endPoint}api/Attendence/PostSalaryForm`,
             headers: {
-                'Authorization': 'Bearer Sxbn4dmKcKAmmkhOxRG2j1vOlEf1OPWV2I4CrTZ0GWuisJYo92BYQRmBpMZ1eeBcVnjYN3VXwTv26_6Z5HOZrK-n1rpmiHowYeSWH3VhKO-80Ok-LxQ9wNM7Xby5jPCKR4fO59d40aWI0OMpMDNU1O5WDhQJUN477Wv-Im6baho0KyCLhaeICOnZG40_UKucfzC6L1tKYxjH7SVY4yT1SwmGqifYUjdKUHz-xy_RQwJ8c0dSMSLhH0tYKKhwM0kGFXmxlScdQ36QtEb4fdlsOZWgogPYgB1ImRSVvuqoQss08OWW8rYfiw0VQaSQWsk-YhPoad5ROHv1JiuYYOVd3JqqrGLBLkbc4aheciTNH8e5_nRltVplG6lRTpjkcaImpBSmFav9NaBcy1IbsQbOPgrh3kI7Ha5U8gnQOnCo4J5hASxt0OpIe3veXAbD8wyXhmIiELTQJ08yGtpdvxguj_bRYaCUwTXhJd3UtAV1HoWpvnOngkrNMRzDPMXWvafD534sCmHPwmESNIORFYLyrg',
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
                 'Content-Type': 'application/json'
             },
             data: data
@@ -320,27 +325,21 @@ const SalaryGeneration = () => {
 
     return (
         <>
-            {isLoading ? (
-                <>
-                    <Loader />
-                </>
-            ) : (
-                <>
-                    <div
-                        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
-                            }   `}
-                    >
-                        <span>&nbsp;Salary Generation Form</span>
+            <div
+                className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+                    }   `}
+            >
+                <span>&nbsp;Salary Generation Form</span>
 
-                    </div>
-                    <div
-                        role="main"
-                        className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
-                            } `}
-                    >
-                        <div className="x_panel  ">
-                            <div className="x_content">
-                                {/* <span className="section pl-3">
+            </div>
+            <div
+                role="main"
+                className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
+                    } `}
+            >
+                <div className="x_panel  ">
+                    <div className="x_content">
+                        {/* <span className="section pl-3">
                                     <div className="row   pt-3">
                                         <div className="col-3">
                                             <i className="fa fa-list"></i>&nbsp;Listing
@@ -349,89 +348,97 @@ const SalaryGeneration = () => {
                                     </div>
                                 </span> */}
 
-                                <div className="x_panel  px-0 ">
-                                    <div className="x_content my-3">
-                                        <span className="section  px-2 ">
-                                            <i className="fa fa-filter pl-2"></i>&nbsp;Report Filter
-                                        </span>
-                                        <div className="row">
-                                            <div className="field item form-group col-md-12 col-sm-12">
+                        <div className="x_panel  px-0 ">
+                            <div className="x_content my-3">
+                                <span className="section  px-2 ">
+                                    <i className="fa fa-filter pl-2"></i>&nbsp;Report Filter
+                                </span>
+                                <div className="row">
+                                    <div className="field item form-group col-md-12 col-sm-12">
 
 
-                                                <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                                    Select Date <span className="required">*</span>
-                                                </label>
-                                                <div className="col-md-3 col-sm-3">
-                                                    <div>
-                                                        <input
+                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                            Select Date <span className="required">*</span>
+                                        </label>
+                                        <div className="col-md-3 col-sm-3">
+                                            <div>
+                                                <input
 
-                                                            //onChange={handleChangeDate}
-                                                            //placeholder="All Dates"
-                                                            styles={customStyles}
-                                                            className="form-control"
-                                                            type="month"
-                                                            value={selectedDate}
-                                                            //min="2022-09-09"
-                                                            onChange={(e) => {
-                                                                setSelectedDate(e.target.value);
+                                                    //onChange={handleChangeDate}
+                                                    //placeholder="All Dates"
+                                                    styles={customStyles}
+                                                    className="form-control"
+                                                    type="month"
+                                                    value={selectedDate}
+                                                    //min="2022-09-09"
+                                                    onChange={(e) => {
+                                                        setSelectedDate(e.target.value);
 
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                                    Select Department <span className="required">*</span>
-                                                </label>
-                                                <div className="col-md-3 col-sm-3">
-                                                    <div>
-                                                        <Select
-                                                            placeholder={"Select Department"}
-                                                            getOptionLabel={(e) => e.salary_label}
-                                                            getOptionValue={(e) => e.salary_value}
-                                                            value={selectedValue}
-                                                            options={inputOptions}
-                                                            onChange={(e) => {
-                                                                setSelectedValue(e);
-                                                            }}
-                                                            styles={customStyles}
-                                                        />
-                                                    </div>
-                                                </div>
-
-
-
+                                                    }}
+                                                />
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="col-md-12 text-right x_footer">
-                                        <button
-                                            className="btn btn-primary"
-                                            type="submit"
-                                            onClick={() => {
-                                                // setfromDate(dateFrom);
-                                                // settoDate(dateTo);
-                                                fetchAllData();
-                                                setShow(true);
-                                                // setAttendenceData = { attendenceData }
-                                                // setindate = { indate }
-                                                // setoutdate = { outdate }
-                                                // console.log({ LadgerData });
-                                            }}
-                                        >
-                                            Show Report
-                                        </button>
+                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                            Select Department <span className="required">*</span>
+                                        </label>
+                                        <div className="col-md-3 col-sm-3">
+                                            <div>
+                                                <Select
+                                                    placeholder={"Select Department"}
+                                                    getOptionLabel={(e) => e.salary_label}
+                                                    getOptionValue={(e) => e.salary_value}
+                                                    value={selectedValue}
+                                                    options={inputOptions}
+                                                    onChange={(e) => {
+                                                        setSelectedValue(e);
+                                                    }}
+                                                    styles={customStyles}
+                                                />
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className="col-md-12 text-right x_footer">
+                                <button
+                                    className="btn btn-primary"
+                                    type="submit"
+                                    onClick={() => {
+                                        // setfromDate(dateFrom);
+                                        // settoDate(dateTo);
+                                        fetchAllData();
+                                        setShow(true);
+                                        setisLoading(true);
+                                        // setAttendenceData = { attendenceData }
+                                        // setindate = { indate }
+                                        // setoutdate = { outdate }
+                                        // console.log({ LadgerData });
+                                    }}
+                                >
+                                    Show Report
+                                </button>
+                            </div>
+                        </div>
 
 
 
-                            </div >
-
-
-                        </div >
                     </div >
+
+
+                </div >
+            </div >
+            {isLoading ? (
+                <>
+                    <Loader />
+                </>
+            ) : (
+                <>
+
 
 
                     <div
