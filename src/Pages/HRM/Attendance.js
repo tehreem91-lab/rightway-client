@@ -38,18 +38,22 @@ const Attendance = () => {
 
         e.preventDefault();
         let is_form_validated = true;
-
         {
             attendenceData.map((item, index) => {
-
-                if (Number(item.in_date) === 0 || Number(item.out_date) === 0) {
-                    setIsValidateValue(false);
-                    is_form_validated = false;
+                if (Number(item.in_date) !== null && Number(item.out_date) !== null) {
+                    if (Number(item.in_date) === 0 || Number(item.out_date) === 0) {
+                        setIsValidateValue(false);
+                        is_form_validated = false;
+                    }
                 }
                 console.log(item.in_date); console.log(item.out_date);
+
+                if (Number(item.in_date) !== 0 && Number(item.out_date) !== 0) {
+                    setIsValidateValue(true);
+                    is_form_validated = true;
+                }
             })
         }
-
         if (is_form_validated === true) {
             editBalance();
             setDivToVisable("true");
@@ -409,6 +413,7 @@ const Attendance = () => {
                                                                         setDivToVisable("true");
                                                                         fetchAllData();
                                                                         setisLoading(true);
+                                                                        setIsValidateValue(true);
                                                                         // <input disabled="false" />;
                                                                     }}
                                                                 >
@@ -557,7 +562,7 @@ const Attendance = () => {
                                                                             {isValidateValue === false && Number(item.in_date) === 0 && <span className="text-danger">First Select this </span>}
 
 
-                                                                            {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
+                                                                            {/* {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""} */}
                                                                         </td>
 
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
@@ -592,7 +597,7 @@ const Attendance = () => {
                                                                             />
                                                                             {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
 
-                                                                            {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
+                                                                            {/* {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""} */}
                                                                         </td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
@@ -644,6 +649,7 @@ const Attendance = () => {
                                                                 setDivToVisable("true");
                                                                 fetchAllData();
                                                                 setisLoading(true);
+                                                                setIsValidateValue(true);
                                                                 // <input disabled="false" />;
                                                             }}
                                                         >
