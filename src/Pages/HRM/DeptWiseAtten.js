@@ -42,14 +42,20 @@ const DeptWiseAtten = () => {
         {
             attendenceData.map((item, index) => {
 
-                if (Number(item.in_date) === 0 || Number(item.out_date) === 0) {
-                    setIsValidateValue(false);
-                    is_form_validated = false;
+                if (Number(item.in_date) !== null && Number(item.out_date) !== null) {
+                    if (Number(item.in_date) === 0 || Number(item.out_date) === 0) {
+                        setIsValidateValue(false);
+                        is_form_validated = false;
+                    }
                 }
                 console.log(item.in_date); console.log(item.out_date);
+
+                if (Number(item.in_date) !== 0 && Number(item.out_date) !== 0) {
+                    setIsValidateValue(true);
+                    is_form_validated = true;
+                }
             })
         }
-
         if (is_form_validated === true) {
             editBalance();
             setDivToVisable("true");
@@ -407,6 +413,7 @@ const DeptWiseAtten = () => {
                                                                         setDivToVisable("true");
                                                                         fetchAllData();
                                                                         setisLoading(true);
+                                                                        setIsValidateValue(true);
                                                                         // <input disabled="false" />;
                                                                     }}
                                                                 >
@@ -636,6 +643,7 @@ const DeptWiseAtten = () => {
                                                                 setDivToVisable("true");
                                                                 fetchAllData();
                                                                 setisLoading(true);
+                                                                setIsValidateValue(true);
                                                                 // <input disabled="false" />;
                                                             }}
                                                         >

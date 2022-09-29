@@ -42,14 +42,18 @@ const EmployeeWiseAttendance = () => {
         {
             attendenceData.map((item, index) => {
 
+                if (Number(item.in_date) !== 0 && Number(item.out_date) !== 0) {
+                    setIsValidateValue(true);
+                    is_form_validated = true;
+                }
                 if (Number(item.in_date) === 0 || Number(item.out_date) === 0) {
                     setIsValidateValue(false);
                     is_form_validated = false;
                 }
-                console.log(item.in_date); console.log(item.out_date);
+
+
             })
         }
-
         if (is_form_validated === true) {
             editBalance();
             setDivToVisable("true");
@@ -404,6 +408,7 @@ const EmployeeWiseAttendance = () => {
                                                                         setDivToVisable("true");
                                                                         fetchAllData();
                                                                         setisLoading(true);
+                                                                        setIsValidateValue(true);
                                                                         // <input disabled="false" />;
                                                                     }}
                                                                 >
@@ -499,10 +504,6 @@ const EmployeeWiseAttendance = () => {
                                                         <tbody>
                                                             {attendenceData.map((item, index) => {
                                                                 return (
-
-
-
-
                                                                     <tr className="even pointer" key={index}>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.Date?.slice(0, 10)}</td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
@@ -521,8 +522,8 @@ const EmployeeWiseAttendance = () => {
                                                                                     let arr = attendenceData;
                                                                                     let selected_index = arr.findIndex(
                                                                                         (obj) =>
-                                                                                            obj.employee_id ==
-                                                                                            item.employee_id
+                                                                                            obj.Date ==
+                                                                                            item.Date
                                                                                     ); //it tells us about index of selected account in array of attendenceData
 
                                                                                     arr[selected_index] = {
@@ -531,6 +532,8 @@ const EmployeeWiseAttendance = () => {
                                                                                         //out_date: e.target.value,
                                                                                     };
 
+
+                                                                                    console.log(arr, "arrrr");
                                                                                     setAttendenceData(arr);
                                                                                     setreRender(!reRender);
                                                                                     setindate(e.target.value);
@@ -539,7 +542,7 @@ const EmployeeWiseAttendance = () => {
                                                                             {isValidateValue === false && Number(item.in_date) === 0 && <span className="text-danger">First Select this </span>}
 
 
-                                                                            {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
+
                                                                         </td>
 
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
@@ -555,8 +558,8 @@ const EmployeeWiseAttendance = () => {
                                                                                     let arr = attendenceData;
                                                                                     let selected_index = arr.findIndex(
                                                                                         (obj) =>
-                                                                                            obj.employee_id ==
-                                                                                            item.employee_id
+                                                                                            obj.Date ==
+                                                                                            item.Date
                                                                                     );
                                                                                     arr[selected_index] = {
                                                                                         ...arr[selected_index],
@@ -574,7 +577,7 @@ const EmployeeWiseAttendance = () => {
                                                                             />
                                                                             {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
 
-                                                                            {/* {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""} */}
+
                                                                         </td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
                                                                         <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
@@ -626,6 +629,7 @@ const EmployeeWiseAttendance = () => {
                                                                 setDivToVisable("true");
                                                                 fetchAllData();
                                                                 setisLoading(true);
+                                                                setIsValidateValue(true);
                                                                 // <input disabled="false" />;
                                                             }}
                                                         >
