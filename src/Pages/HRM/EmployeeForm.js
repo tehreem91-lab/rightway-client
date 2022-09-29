@@ -226,7 +226,7 @@ const EmployeeForm = (props) => {
                                             className='form-control'
                                             //value={props.selectEmployee.employee_code}
                                             //value={props.empCode.slice(1, 7)}
-                                            value={(props.selectEmployee.employee_name ? (props.selectEmployee.employee_code) : (props.empCode.slice(1, 7)))}
+                                            value={(props.selectEmployee.employee_code ? (props.selectEmployee.employee_code) : (props.empCode.slice(1, 6)))}
                                             disabled
                                         // onChange={(e) => {
                                         //     //setEmplEditValidator(emplEditValidatorInitialState)
