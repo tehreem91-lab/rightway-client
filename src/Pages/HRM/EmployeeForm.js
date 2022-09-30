@@ -31,8 +31,8 @@ const EmployeeForm = (props) => {
     ]
 
     const optionsStatus = [
-        { value: '0', label: 'Active' },
-        { value: '1', label: 'Left' }
+        { value: '0', label: 'Left' },
+        { value: '1', label: 'Active' }
     ]
 
 

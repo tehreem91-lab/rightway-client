@@ -42,15 +42,16 @@ const EmployeeWiseAttendance = () => {
         {
             attendenceData.map((item, index) => {
 
-                if (Number(item.in_date) !== 0 && Number(item.out_date) !== 0) {
-                    setIsValidateValue(true);
-                    is_form_validated = true;
-                }
                 if (Number(item.in_date) === 0 || Number(item.out_date) === 0) {
                     setIsValidateValue(false);
                     is_form_validated = false;
                 }
 
+                if (Number(item.in_date) != 0 && Number(item.out_date) != 0) {
+                    setIsValidateValue(true);
+                    is_form_validated = true;
+                }
+                console.log(Number(item.in_date), "in"); console.log(Number(item.out_date), "out");
 
             })
         }
@@ -139,7 +140,7 @@ const EmployeeWiseAttendance = () => {
             // if ((item.in_date != null && item.out_date != null) || (item.in_date != null && item.out_date == null) || (item.in_date == null && item.out_date != null))
             if (item.in_date != null && item.out_date != null)
                 return {
-                    "employee_id": item.employee_id,
+                    "employee_id": selectedValue.value,
                     "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
                     "last_MachineInfo1_id": item.last_MachineInfo1_id,
                     "in_time": item.in_date,
@@ -157,7 +158,7 @@ const EmployeeWiseAttendance = () => {
         const updatedCode = updatedCode4post.map((item) => {
 
             return {
-                "employee_id": item.employee_id,
+                "employee_id": selectedValue.value,
                 "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
                 "last_MachineInfo1_id": item.last_MachineInfo1_id,
                 "in_time": item.in_date,
