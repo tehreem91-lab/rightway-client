@@ -81,50 +81,50 @@ const SalaryReportReciept = React.forwardRef(
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5 bold-5   text-dark ">   Main Voucher No: </div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.main_voucher_inv} </div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.main_voucher_inv} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Single Voucher No:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.single_voucher_inv} </div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.single_voucher_inv} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Employee Code:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.employee_code}</div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.employee_code}</div>
                                         </div>
                                     </div>
 
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Status:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.status} </div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.status} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">Employee Name:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.employee_name}</div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.employee_name}</div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5  bold-5  text-dark ">User Name:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData.created_by.UserName}</div>
+                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.created_by?.UserName}</div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5 bold-5     text-dark ">Salary Type: </div>
-                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData.salary_type} </div>
+                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData?.salary_type} </div>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="row">
                                             <div className="col-md-5 bold-5     text-dark "> Date: </div>
-                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData.date} </div>
+                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData?.date} </div>
                                             {/* <div className="col-md-9  bold-6   text-dark " style={{ marginLeft: "-8px" }}>{attendenceData.date} </div> */}
                                         </div>
                                     </div>
@@ -136,50 +136,50 @@ const SalaryReportReciept = React.forwardRef(
 
 
                                 <div className="col-lg-10 col-sm-10" style={{ marginTop: "28px" }}>
-                                    <table class="table">
+                                    <table className="table">
 
                                         <tbody>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom" width="20%">Overtime</th>
-                                                <td>{attendenceData.over_time}</td>
+                                                <td>{attendenceData?.over_time}</td>
                                                 {/* <td>Carter</td>
                                                 <td>johncarter@mail.com</td> */}
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom">Working Hours</th>
-                                                <td>{attendenceData.total_working_hour}</td>
+                                                <td>{attendenceData?.total_working_hour}</td>
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead  border-bottom">Total Deductions</th>
-                                                <td>{attendenceData.total_deduction}</td>
+                                                <td>{attendenceData?.total_deduction}</td>
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom">Primary Salary</th>
-                                                <td>{attendenceData.pm_salary}</td>
+                                                <td>{attendenceData?.pm_salary}</td>
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead  border-bottom">Allowence Amount</th>
-                                                <td>{attendenceData.allowence_amount}</td>
+                                                <td>{attendenceData?.allowence_amount}</td>
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom">Gross Salary</th>
-                                                <td>{attendenceData.gross_salary}</td>
+                                                <td>{attendenceData?.gross_salary}</td>
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead  border-bottom">Loan Deductions</th>
-                                                <td>{attendenceData.loan_deduction}</td>
+                                                <td>{attendenceData?.loan_deduction}</td>
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom">Advance Deduction</th>
-                                                <td>{attendenceData.advance_deduction}</td>
+                                                <td>{attendenceData?.advance_deduction}</td>
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead  border-bottom">Net Salary</th>
-                                                <td>{attendenceData.net_salary}</td>
+                                                <td>{attendenceData?.net_salary}</td>
                                             </tr>
                                             <tr>
-                                                <th className="headings reportTableHead border-bottom">llWorking Hours</th>
-                                                <td>{attendenceData.total_working_hour}</td>
+                                                <th className="headings reportTableHead border-bottom">Working Hours</th>
+                                                <td>{attendenceData?.total_working_hour}</td>
                                             </tr>
                                         </tbody>
                                     </table>

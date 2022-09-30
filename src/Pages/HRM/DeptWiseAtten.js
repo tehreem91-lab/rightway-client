@@ -308,6 +308,8 @@ const DeptWiseAtten = () => {
 
                                             }}
                                         />
+                                        {isValidateValue === false && Number(selectedDate) === 0 && <span className="text-danger">First Select Date </span>}
+
                                     </div>
                                 </div>
 
@@ -328,6 +330,7 @@ const DeptWiseAtten = () => {
                                             }}
                                             styles={customStyles}
                                         />
+                                        {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Department </span>}
 
                                     </div>
                                 </div>
@@ -341,14 +344,22 @@ const DeptWiseAtten = () => {
                                 className="btn btn-primary"
                                 type="submit"
                                 onClick={() => {
-                                    // setSelectedValue(selectedValue);
-                                    // setSelectedDate(selectedDate);
-                                    setAttendenceData([{}]);
-                                    fetchAllData();
-                                    setShow(true);
-                                    //setisLoading(true);
+                                    let is_form_validated = true;
+                                    {
 
-                                    { (selectedValue.salary_value) && setisLoading(true) }
+                                        if (Number(selectedValue) === 0 || Number(selectedDate) === 0) {
+                                            setIsValidateValue(false);
+                                            is_form_validated = false;
+                                        }
+
+                                    }
+                                    if (is_form_validated === true) {
+                                        fetchAllData();
+                                        setShow(true);
+                                        setisLoading(true);
+                                        setAttendenceData([{}]);
+                                    }
+
                                 }}
                             >
                                 Show Report

@@ -10,6 +10,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import SalaryGenReciept from "./SalaryGenReciept.js";
+import { toast } from "react-toastify";
 
 const SalaryGeneration = () => {
 
@@ -19,7 +20,7 @@ const SalaryGeneration = () => {
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
     const [show, setShow] = useState(false);
-    const [selectedDate, setSelectedDate] = useState("2020-09-01");
+
 
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
@@ -30,6 +31,8 @@ const SalaryGeneration = () => {
     const [date, setdate] = useState("2020-09-01");
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
+    const [selectedDate, setSelectedDate] = useState(dateToday);
+    const [isValidateValue, setIsValidateValue] = useState(true);
 
     const [visableDiv, setVisableDiv] = useState("true");
     const setDivToVisable = (displayDiv) => {
@@ -48,21 +51,6 @@ const SalaryGeneration = () => {
     const ref = useRef();
     const reset = () => {
         ref.current.value = "";
-    };
-
-    // handle input change event
-    const handleInputChange = (value) => {
-        setInputValue(value);
-    };
-    // handle selection
-    const handleChange = (value) => {
-        setSelectedValue(value);
-        fetchAllData(value);
-    };
-
-    const handleChangeDate = (value) => {
-        setdate(value);
-        fetchAllData(value);
     };
 
 
@@ -98,7 +86,7 @@ const SalaryGeneration = () => {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { label: "All", value: 0 },
+
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -137,6 +125,7 @@ const SalaryGeneration = () => {
                         holidays_in_month: item.holidays_in_month,
                         attachments: item.attachments,
                         net_salary: item.net_salary,
+                        gross_salary: 5678,
                         loan_deduction_record: [
                             {
                                 loan_id: item.loan_deduction_record.loan_id,
@@ -159,90 +148,48 @@ const SalaryGeneration = () => {
                 setisLoading(false);
             })
             .catch(function (error) {
-                console.log(error);
+
+                toast.error(error);
             });
     };
 
-    const editBalance = () => {
-
-        const updatedCode4post = attendenceData.filter((item) => {
-            // if ((item.in_date != null && item.out_date != null) || (item.in_date != null && item.out_date == null) || (item.in_date == null && item.out_date != null))
-            if (item.in_date != null && item.out_date != null)
-                return {
-                    "employee_id": item.employee_id,
-                    "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
-                    "last_MachineInfo1_id": item.last_MachineInfo1_id,
-                    "in_time": item.in_date,
-                    "out_time": item.out_date,
-                }
-
-            else {
-                console.log("Errorlalala")
-            }
-
-        });
-
-        const updatedCode = updatedCode4post.map((item) => {
-            return {
-                "employee_id": item.employee_id,
-                "entry_MachineInfo1_id": item.entry_MachineInfo1_id,
-                "last_MachineInfo1_id": item.last_MachineInfo1_id,
-                "in_time": item.in_date,
-                "out_time": item.out_date,
-            };
-        });
-
-        var data = {
-            attendence_record: updatedCode,
-        };
-        console.log(data);
-
-        var config = {
-            method: "put",
-            url: `${endPoint}api/Attendence/UpdateShiftWiseAttendenceReport?date=${date}`,
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
-                    }`,
-            },
-            data: data,
-        };
-
-        axios(config)
-            .then(function (response) { })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
 
     const postSalary = () => {
+
+        var records_data = attendenceData.map((item) => {
+            return {
+                "employee_id": item.employee_id,
+                "department_id": selectedValue.salary_value,
+                "emoloyee_over_time": item.overtime_hour,
+                "total_working_hour": item.total_working_hour,
+                "monthly_salary": item.monthly_salary,
+                "allowence_amount": 0,
+                "gross_salary": item.gross_salary,
+                "total_loan_deduction": 0,
+                "advance_deduction": item.advance_deduction,
+                "total_deduction": 0,
+                "net_salary": item.net_salary,
+                "benefits_amount": item.benefits_amount,
+                "loan_records": item.loan_deduction_record.map((i) => {
+                    return {
+                        "loan_id": i.loan_id,
+                        "deduction_amount": i.loan_deduction_amount
+                    }
+                })
+
+            }
+
+        })
+
+
         var axios = require('axios');
         var data = JSON.stringify({
-            "attachment": "string",
-            "first_date_of_month": "2020-09-01T00:00:00.000Z",
-            "remarks": "Sample Data",
-            "department_id": 146,
-            "records": [
-                {
-                    "employee_id": 2,
-                    "department_id": 146,
-                    "emoloyee_over_time": 74,
-                    "total_working_hour": 300,
-                    "monthly_salary": 95000,
-                    "allowence_amount": 0,
-                    "gross_salary": 114800,
-                    "total_loan_deduction": 0,
-                    "advance_deduction": 0,
-                    "total_deduction": 0,
-                    "net_salary": 115000,
-                    "benefits_amount": 70,
-                    "loan_records": [
-                        {
-                            "loan_id": 144,
-                            "deduction_amount": 20
-                        }
-                    ]
-                }
-            ]
+            "attachment": attendenceData.attachments,
+            "first_date_of_month": selectedDate,
+            "remarks": attendenceData.remarks,
+            "department_id": selectedValue.salary_value,
+            "records": records_data
+
         });
 
         var config = {
@@ -261,63 +208,10 @@ const SalaryGeneration = () => {
             })
             .catch(function (error) {
                 console.log(error);
+
             });
 
     };
-
-
-    // const postSalary = () => {
-    //     var axios = require('axios');
-    //     var data = JSON.stringify({
-    //         "attachment": item.attachments,
-    //         "first_date_of_month": selectedDate,
-    //         "remarks": item.remarks,
-    //         "department_id": selectedValue.salary_value,
-    //         "records": [
-    //             {
-    //                 "employee_id": item.employee_id,
-    //                 "department_id": selectedValue.salary_value,
-    //                 "emoloyee_over_time": item.overtime_hour,
-    //                 "total_working_hour": item.total_working_hour,
-    //                 "monthly_salary": item.monthly_salary,
-    //                 "allowence_amount": 0,
-    //                 "gross_salary": 114800,
-    //                 "total_loan_deduction": 0,
-    //                 "advance_deduction": item.advance_deduction,
-    //                 "total_deduction": 0,
-    //                 "net_salary": item.net_salary,
-    //                 "benefits_amount": item.benefits_amount,
-    //                 "loan_records": [
-    //                     {
-    //                         "loan_id": item.loan_deduction_record.loan_id,
-    //                         "deduction_amount": item.loan_deduction_record.loan_deduction_amount
-    //                     }
-    //                 ]
-    //             }
-    //         ]
-    //     });
-
-    //     var config = {
-    //         method: 'post',
-    //         url: `${endPoint}api/Attendence/PostSalaryForm`,
-    //         headers: {
-    //             Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
-    //             'Content-Type': 'application/json'
-    //         },
-    //         data: data
-    //     };
-
-    //     axios(config)
-    //         .then(function (response) {
-    //             console.log(JSON.stringify(response.data));
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //             toast.error(error);
-
-    //         });
-
-    // };
 
     ////////////////////////////For Downloading CSV Files////////////////////////////
 
@@ -424,12 +318,14 @@ const SalaryGeneration = () => {
                                                     className="form-control"
                                                     type="month"
                                                     value={selectedDate}
+                                                    //label={dateToday}
                                                     //min="2022-09-09"
                                                     onChange={(e) => {
                                                         setSelectedDate(e.target.value);
 
                                                     }}
                                                 />
+                                                {isValidateValue === false && Number(selectedDate) === 0 && <span className="text-danger">First Select Date </span>}
                                             </div>
                                         </div>
 
@@ -449,6 +345,7 @@ const SalaryGeneration = () => {
                                                     }}
                                                     styles={customStyles}
                                                 />
+                                                {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Department </span>}
                                             </div>
                                         </div>
 
@@ -463,11 +360,23 @@ const SalaryGeneration = () => {
                                     className="btn btn-primary"
                                     type="submit"
                                     onClick={() => {
-                                        // setfromDate(dateFrom);
-                                        // settoDate(dateTo);
-                                        fetchAllData();
-                                        setShow(true);
-                                        setisLoading(true);
+                                        let is_form_validated = true;
+                                        {
+
+                                            if (Number(selectedValue) === 0 || Number(selectedDate) === 0) {
+                                                setIsValidateValue(false);
+                                                is_form_validated = false;
+                                            }
+
+                                        }
+                                        if (is_form_validated === true) {
+                                            fetchAllData();
+                                            setShow(true);
+                                            setisLoading(true);
+                                        }
+                                        // fetchAllData();
+                                        // setShow(true);
+                                        // setisLoading(true);
                                         // setAttendenceData = { attendenceData }
                                         // setindate = { indate }
                                         // setoutdate = { outdate }

@@ -1136,16 +1136,16 @@ const EmployeeForm = (props) => {
                                             </div>
                                         </div> */}
 
-                                        <div className="row">
+                                        <div className="row" style={{ paddingTop: "8px" }}>
                                             <div className="col-md-10 ">
                                                 <input
-                                                    //ref={props.ref}
+                                                    ref={props.ref}
                                                     type="file"
                                                     className="form-control form-control-sm customStyleForInput"
                                                     data-validate-length-range={6}
                                                     data-validate-words={2}
                                                     name="name"
-                                                // onChange={props.fileHandle3ForUpdate}
+                                                    onChange={props.fileHandle3ForUpdate}
                                                 />
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>

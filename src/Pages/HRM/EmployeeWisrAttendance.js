@@ -304,6 +304,8 @@ const EmployeeWiseAttendance = () => {
 
                                             }}
                                         />
+                                        {isValidateValue === false && Number(selectedDate) === 0 && <span className="text-danger">First Select Date </span>}
+
                                     </div>
                                 </div>
 
@@ -324,6 +326,8 @@ const EmployeeWiseAttendance = () => {
                                             }}
                                             styles={customStyles}
                                         />
+                                        {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Employee </span>}
+
 
                                     </div>
                                 </div>
@@ -337,14 +341,21 @@ const EmployeeWiseAttendance = () => {
                                 className="btn btn-primary"
                                 type="submit"
                                 onClick={() => {
-                                    // setSelectedValue(selectedValue);
-                                    // setSelectedDate(selectedDate);
-                                    setAttendenceData([{}]);
-                                    fetchAllData();
-                                    setShow(true);
-                                    //setisLoading(true);
+                                    let is_form_validated = true;
+                                    {
 
-                                    { (selectedValue.value) && setisLoading(true) }
+                                        if (Number(selectedValue) === 0 || Number(selectedDate) === 0) {
+                                            setIsValidateValue(false);
+                                            is_form_validated = false;
+                                        }
+
+                                    }
+                                    if (is_form_validated === true) {
+                                        setAttendenceData([{}]);
+                                        fetchAllData();
+                                        setShow(true);
+                                        setisLoading(true);
+                                    }
                                 }}
                             >
                                 Show Report

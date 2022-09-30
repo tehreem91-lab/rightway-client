@@ -38,6 +38,7 @@ const SalaryReport = () => {
 
     const [inputValue, setInputValue] = useState("");
     const [selectedValue, setSelectedValue] = useState("");
+    const [isValidateValue, setIsValidateValue] = useState(true);
 
     const [inputOptions, setInputOptions] = useState("");
 
@@ -112,7 +113,7 @@ const SalaryReport = () => {
         var config = {
             method: "get",
             // url: `${endPoint}api/Attendence/GetSalaryDepartmentWiseFormData?date=${selectedDate}-01&sal_dept_id=${selectedValue.salary_value}`,
-            url: `http://rightway-api.genial365.com/api/Attendence/GetEmployeeSalaryReport?first_date_month=09-01-2020&employee_id=2`,
+            url: `${endPoint}api/Attendence/GetEmployeeSalaryReport?first_date_month=${selectedDate}-01&employee_id=${selectedValue.value}`,
 
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
@@ -288,6 +289,8 @@ const SalaryReport = () => {
 
                                                             }}
                                                         />
+                                                        {isValidateValue === false && Number(selectedDate) === 0 && <span className="text-danger">First Select Date </span>}
+
                                                     </div>
                                                 </div>
 
@@ -308,6 +311,8 @@ const SalaryReport = () => {
                                                             }}
                                                             styles={customStyles}
                                                         />
+                                                        {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Employee </span>}
+
                                                     </div>
                                                 </div>
 
@@ -322,11 +327,24 @@ const SalaryReport = () => {
                                             className="btn btn-primary"
                                             type="submit"
                                             onClick={() => {
+                                                let is_form_validated = true;
+                                                {
+
+                                                    if (Number(selectedValue) === 0 || Number(selectedDate) === 0) {
+                                                        setIsValidateValue(false);
+                                                        is_form_validated = false;
+                                                    }
+
+                                                }
+                                                if (is_form_validated === true) {
+                                                    fetchAllData();
+                                                    setShow(true);
+                                                    setAttendenceData = attendenceData
+                                                    setisLoading(true);
+                                                }
                                                 // setfromDate(dateFrom);
                                                 // settoDate(dateTo);
-                                                fetchAllData();
-                                                setShow(true);
-                                                setAttendenceData = { attendenceData }
+
                                                 // setindate = { indate }
                                                 // setoutdate = { outdate }
                                                 // console.log({ LadgerData });
