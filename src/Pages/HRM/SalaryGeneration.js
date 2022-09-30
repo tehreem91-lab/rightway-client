@@ -420,6 +420,7 @@ const SalaryGeneration = () => {
                                             isFileUploadingModeOn={isFileUploadingModeOn}
                                             UploadFile={UploadFile}
                                             fileEntity={fileEntity}
+                                            setFileEntity={setFileEntity}
                                             customStyles={customStyles}
                                             downloadPdf={downloadPdf}
                                             CSVLink={CSVLink}

@@ -1001,9 +1001,7 @@ const EmployeeForm = (props) => {
                                                 />
                                             </>
                                         )}
-                                        <div className="row my-1">
-
-
+                                        {/* <div className="row my-1">
                                             <div className=" ">
 
                                                 <>
@@ -1020,17 +1018,30 @@ const EmployeeForm = (props) => {
                                                         {isValidateValue === false && Number(props.selectEmployee.profile_image) === 0 && <span className="text-danger">First Select this </span>}
 
                                                     </div>
-                                                    {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-                                                        {
-                                                            props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
-                                                                <span className="sr-only">Loading...</span>
-                                                            </div> : <button
-                                                                disabled={props.ref?.current?.value === "" ? true : false}
-                                                                className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle1ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
-                                                        }
-                                                    </div> */}
                                                 </>
                                             </div>
+                                        </div> */}
+                                        <div className="row" style={{ paddingTop: "8px" }}>
+                                            <div className="col-md-10 ">
+                                                <input
+                                                    // ref={props.ref}
+                                                    type="file"
+                                                    className="form-control form-control-sm customStyleForInput"
+                                                    data-validate-length-range={6}
+                                                    data-validate-words={2}
+                                                    name="name"
+                                                    onChange={props.fileHandle1ForUpdate}
+                                                />
+                                            </div>
+                                            <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                                {
+                                                    props.isFileUploadingModeOn ?
+                                                        <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
+                                                        <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle1ForUpdate} type="button">
+                                                            <i className="fa fa-upload"></i></button>
+                                                }
+                                            </div>
+                                            {isValidateValue === false && Number(props.selectEmployee.profile_image) === 0 && <span className="text-danger">First Select this </span>}
                                         </div>
                                     </div>
 
@@ -1059,7 +1070,7 @@ const EmployeeForm = (props) => {
                                                 />
                                             </>
                                         )}
-                                        <div className="row my-1">
+                                        {/* <div className="row my-1">
                                             <div className=" ">
 
                                                 <>  <div className="col-md-12 ">
@@ -1075,18 +1086,29 @@ const EmployeeForm = (props) => {
                                                     {isValidateValue === false && Number(props.selectEmployee.cnic_front) === 0 && <span className="text-danger">First Select this </span>}
 
                                                 </div>
-                                                    {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-                                                            {
-                                                                props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
-                                                                    <span className="sr-only">Loading...</span>
-                                                                </div> : <button
-                                                                    disabled={props.ref?.current?.value === "" ? true : false}
-                                                                    className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle2ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
-                                                            }
-                                                        </div> */}
-                                                </>
-
+                                                </> </div>
+                                        </div> */}
+                                        <div className="row" style={{ paddingTop: "8px" }}>
+                                            <div className="col-md-10 ">
+                                                <input
+                                                    ref={props.ref}
+                                                    type="file"
+                                                    className="form-control form-control-sm customStyleForInput"
+                                                    data-validate-length-range={6}
+                                                    data-validate-words={2}
+                                                    name="name"
+                                                    onChange={props.fileHandle2ForUpdate}
+                                                />
                                             </div>
+                                            <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                                {
+                                                    props.isFileUploadingModeOn ?
+                                                        <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
+                                                        <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle2ForUpdate} type="button">
+                                                            <i className="fa fa-upload"></i></button>
+                                                }
+                                            </div>
+                                            {isValidateValue === false && Number(props.selectEmployee.cnic_front) === 0 && <span className="text-danger">First Select this </span>}
                                         </div>
                                     </div>
 
@@ -1150,11 +1172,10 @@ const EmployeeForm = (props) => {
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                 {
-                                                    props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
-                                                        <span className="sr-only">Loading...</span>
-                                                    </div> : <button className="btn btn-sm btn-outline-success"
-                                                        onClick={props.fileHandle3ForUpdate} type="button">
-                                                        <i className="fa fa-upload"></i></button>
+                                                    props.isFileUploadingModeOn ?
+                                                        <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
+                                                        <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle3ForUpdate} type="button">
+                                                            <i className="fa fa-upload"></i></button>
                                                 }
                                             </div>
                                             {isValidateValue === false && Number(props.selectEmployee.cnic_back) === 0 && <span className="text-danger">First Select this </span>}

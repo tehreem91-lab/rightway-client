@@ -8,6 +8,7 @@ const SalaryGenReciept = React.forwardRef(
         isFileUploadingModeOn,
         UploadFile,
         fileEntity,
+        setFileEntity,
         customStyles,
         downloadPdf,
         CSVLink,
@@ -85,8 +86,8 @@ const SalaryGenReciept = React.forwardRef(
                                                                 let arr_data = fileEntity.filter((each_image) => {
                                                                     return (fileEntity.indexOf(each_image) !== index);
                                                                 });
-                                                                // setFileEntity(arr_data)
-                                                                //setReRender(!reRender)
+                                                                setFileEntity(arr_data)
+                                                                setreRender(!reRender)
                                                             }}
                                                         ></i>
                                                     </button>
