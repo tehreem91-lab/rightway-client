@@ -200,6 +200,7 @@ const EmployeeProfile = () => {
                                             }}
                                             styles={customStyles}
                                         />
+                                        {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Employee </span>}
 
                                     </div>
                                 </div>
@@ -213,12 +214,21 @@ const EmployeeProfile = () => {
                                 className="btn btn-primary"
                                 type="submit"
                                 onClick={() => {
-                                    // setSelectedValue(selectedValue);
-                                    // setSelectedDate(selectedDate);
-                                    setAttendenceData([{}]);
-                                    fetchAllData();
-                                    setShow(true);
-                                    //setisLoading(true);
+
+                                    let is_form_validated = true;
+                                    {
+
+                                        if (Number(selectedValue) === 0) {
+                                            setIsValidateValue(false);
+                                            is_form_validated = false;
+                                        }
+
+                                    }
+                                    if (is_form_validated === true) {
+                                        setAttendenceData([{}]);
+                                        fetchAllData();
+                                        setShow(true);
+                                    }
 
                                     { (selectedValue.value) && setisLoading(true) }
                                 }}
@@ -318,7 +328,7 @@ const EmployeeProfile = () => {
                                                             </div>
                                                         </div>
 
-                                                        <div className="field item form-group col-md-6 col-sm-6">
+                                                        {/* <div className="field item form-group col-md-6 col-sm-6">
                                                             <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Surname  </label>
                                                             <div className="col-md-8 col-sm-8">
                                                                 <input
@@ -382,7 +392,7 @@ const EmployeeProfile = () => {
                                                                     disabled
                                                                 />
                                                             </div>
-                                                        </div>
+                                                        </div> */}
 
                                                     </div>
 
@@ -410,7 +420,7 @@ const EmployeeProfile = () => {
                                                                                 disabled
                                                                                 className='form-control'
                                                                                 //type="number"
-                                                                                value={ListOfEmployee?.emp_profile.total_persents}
+                                                                                value={ListOfEmployee?.emp_profile.total_presence}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -424,7 +434,7 @@ const EmployeeProfile = () => {
                                                                                 disabled
                                                                                 className='form-control'
                                                                                 //type="number"
-                                                                                value={ListOfEmployee?.emp_profile.total_absents}
+                                                                                value={ListOfEmployee?.emp_profile.total_absent}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -436,36 +446,44 @@ const EmployeeProfile = () => {
                                                                                 disabled
                                                                                 className='form-control'
                                                                                 //type="number"
-                                                                                value={ListOfEmployee?.emp_profile.total_holidays}
+                                                                                value={ListOfEmployee?.emp_profile.holidays_in_month}
                                                                             />
                                                                         </div>
                                                                     </div>
+                                                                    {ListOfEmployee?.current_loan_info.map(((item, index) => {
+                                                                        return (
+                                                                            <>
+                                                                                <div className="field item form-group col-md-6 col-sm-6">
+                                                                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Status
+                                                                                    </label>
+                                                                                    <div className="col-md-8 col-sm-8">
+                                                                                        <input
+                                                                                            disabled
+                                                                                            className='form-control'
+                                                                                            // type="number"
+                                                                                            value={item?.status}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Status
-                                                                        </label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                // type="number"
-                                                                                value={ListOfEmployee?.emp_profile.loan_status}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Remaining Amount
-                                                                        </label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                //type="number"
-                                                                                value={ListOfEmployee?.emp_profile.loan_remaining_amount}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
+                                                                                <div className="field item form-group col-md-6 col-sm-6">
+                                                                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Remaining Amount
+                                                                                    </label>
+                                                                                    <div className="col-md-8 col-sm-8">
+                                                                                        <input
+                                                                                            disabled
+                                                                                            className='form-control'
+                                                                                            //type="number"
+                                                                                            value={item?.remaining_amount}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </>
+                                                                        )
+                                                                    }))}
+
+
 
                                                                     <div className="field item form-group col-md-6 col-sm-6">
                                                                         <label className="col-form-label col-md-3 col-sm-3 label-align">Net Salary
@@ -596,7 +614,7 @@ const EmployeeProfile = () => {
                                                                         </div>
                                                                     </div>
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
+                                                                    {/* <div className="field item form-group col-md-6 col-sm-6">
                                                                         <label className="col-form-label col-md-3 col-sm-3 label-align">Presents
                                                                         </label>
                                                                         <div className="col-md-8 col-sm-8">
@@ -633,9 +651,9 @@ const EmployeeProfile = () => {
                                                                                 value={ListOfEmployee?.emp_profile.holidays_in_month}
                                                                             />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
+                                                                    {/* <div className="field item form-group col-md-6 col-sm-6">
                                                                         <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Deduction
                                                                         </label>
                                                                         <div className="col-md-8 col-sm-8">
@@ -646,7 +664,7 @@ const EmployeeProfile = () => {
                                                                                 value={ListOfEmployee?.emp_profile.loan_deduction_record.loan_deduction_amount}
                                                                             />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
 
                                                                     <div className="field item form-group col-md-6 col-sm-6">
                                                                         <label className="col-form-label col-md-3 col-sm-3 label-align">Net Salary
@@ -665,92 +683,92 @@ const EmployeeProfile = () => {
                                                             </div>
                                                         </Tab>
                                                         <Tab eventKey="loan" title="Loan Info" >
-                                                            {/* {ListOfEmployee.current_loan_info.map(((index) => {}))} */}
                                                             <div className="card" style={{ marginTop: "25px " }}> <h5 className="card-header"> Loan Information</h5>
 
-                                                                <div className="row" style={{ marginTop: "6px " }}>
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Voucher</label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                //type="number"
-                                                                                value={ListOfEmployee?.current_loan_info.loan_voucher_inv}
-                                                                            />
+                                                                {ListOfEmployee?.current_loan_info.map(((item, index) => {
+                                                                    return <div className="row" style={{ marginTop: "6px " }}>
+                                                                        <div className="field item form-group col-md-6 col-sm-6">
+                                                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Voucher</label>
+                                                                            <div className="col-md-8 col-sm-8">
+                                                                                <input
+                                                                                    disabled
+                                                                                    className='form-control'
+                                                                                    //type="number"
+                                                                                    value={item?.loan_voucher_inv}
+                                                                                />
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
 
 
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Loan Amount </label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                type="number"
-                                                                                value={ListOfEmployee?.current_loan_info.amount}
-                                                                            />
+                                                                        <div className="field item form-group col-md-6 col-sm-6">
+                                                                            <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Loan Amount </label>
+                                                                            <div className="col-md-8 col-sm-8">
+                                                                                <input
+                                                                                    disabled
+                                                                                    className='form-control'
+                                                                                    type="number"
+                                                                                    value={item?.amount}
+                                                                                />
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Status
-                                                                        </label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                type="number"
-                                                                                value={ListOfEmployee?.current_loan_info.status}
-                                                                            />
+                                                                        <div className="field item form-group col-md-6 col-sm-6">
+                                                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Status
+                                                                            </label>
+                                                                            <div className="col-md-8 col-sm-8">
+                                                                                <input
+                                                                                    disabled
+                                                                                    className='form-control'
+                                                                                    type="number"
+                                                                                    value={item?.status}
+                                                                                />
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Remaining Amount
-                                                                        </label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                type="number"
-                                                                                value={ListOfEmployee?.current_loan_info.remaining_amount}
-                                                                            />
+                                                                        <div className="field item form-group col-md-6 col-sm-6">
+                                                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Remaining Amount
+                                                                            </label>
+                                                                            <div className="col-md-8 col-sm-8">
+                                                                                <input
+                                                                                    disabled
+                                                                                    className='form-control'
+                                                                                    type="number"
+                                                                                    value={item?.remaining_amount}
+                                                                                />
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align">Monthly Deduction
-                                                                        </label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                type="number"
-                                                                                value={ListOfEmployee?.current_loan_info.monthly_deduction}
-                                                                            />
+                                                                        <div className="field item form-group col-md-6 col-sm-6">
+                                                                            <label className="col-form-label col-md-3 col-sm-3 label-align">Monthly Deduction
+                                                                            </label>
+                                                                            <div className="col-md-8 col-sm-8">
+                                                                                <input
+                                                                                    disabled
+                                                                                    className='form-control'
+                                                                                    type="number"
+                                                                                    value={item?.monthly_deduction}
+                                                                                />
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
 
-                                                                    <div className="field item form-group col-md-6 col-sm-6">
-                                                                        <label className="col-form-label col-md-3 col-sm-3 label-align"> Deduction Starting Date
-                                                                        </label>
-                                                                        <div className="col-md-8 col-sm-8">
-                                                                            <input
-                                                                                disabled
-                                                                                className='form-control'
-                                                                                type="number"
-                                                                                value={ListOfEmployee?.current_loan_info.deduction_starting_date}
-                                                                            />
+                                                                        <div className="field item form-group col-md-6 col-sm-6">
+                                                                            <label className="col-form-label col-md-3 col-sm-3 label-align"> Deduction Starting Date
+                                                                            </label>
+                                                                            <div className="col-md-8 col-sm-8">
+                                                                                <input
+                                                                                    disabled
+                                                                                    className='form-control'
+                                                                                    type="string"
+                                                                                    value={item?.deduction_starting_date.slice(0, 10)}
+                                                                                />
+                                                                            </div>
                                                                         </div>
+
                                                                     </div>
-
-                                                                </div>
-
-
+                                                                }))}
 
                                                             </div>
+
                                                         </Tab>
                                                     </Tabs>
 

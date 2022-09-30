@@ -77,9 +77,6 @@ const EmployeeForm = (props) => {
     const updateFunct = (e) => {
 
         e.preventDefault();
-        // props.updateEmployeeClouds();
-
-        // { (isFilled === true ? props.updateEmployeeClouds() : <span className="text-danger">*Required Field</span >) }
 
         let is_form_validated = true;
         if (Number(props.selectEmployee.employee_name) === 0 || Number(props.selectEmployee.sur_name) === 0 || Number(props.selectEmployee.cell) === 0 || Number(props.selectEmployee.cnic) === 0 || Number(props.selectEmployee.address) === 0
@@ -100,9 +97,6 @@ const EmployeeForm = (props) => {
         if (is_form_validated === true) {
             props.updateEmployeeClouds();
             props.fetchAllData();
-            // window.location.reload(false);
-
-            // { (props.updateEmployeeClouds() ? window.location.reload(false) : <span className="text-danger">*Required Field</span >) }
         }
 
         // if (props.selectEmployee.employee_name === "" || props.selectEmployee.employee_name === undefined || props.selectEmployee.employee_name === null || props.selectEmployee.employee_name === " ") { setEmplEditValidator({ ...emplEditValidator, employee_name: false }) }
@@ -204,18 +198,6 @@ const EmployeeForm = (props) => {
                 <>
 
                     <form id="form">
-
-
-
-
-
-
-
-
-
-
-
-
                         <div className="card" style={{ marginTop: "25px " }}> <h5 className="card-header"> Personal Information</h5>
                             <div className="row" style={{ marginTop: "6px " }}>
                                 <div className="field item form-group col-md-6 col-sm-6">
@@ -228,31 +210,9 @@ const EmployeeForm = (props) => {
                                             //value={props.empCode.slice(1, 7)}
                                             value={(props.selectEmployee.employee_code ? (props.selectEmployee.employee_code) : (props.empCode.slice(1, 6)))}
                                             disabled
-                                        // onChange={(e) => {
-                                        //     //setEmplEditValidator(emplEditValidatorInitialState)
-                                        //     props.setEmployeeToUpdate({
-                                        //         ...props.selectEmployee,
-                                        //         employee_code: e.target.value,
-                                        //     });
-                                        // }}
                                         />
 
-                                        {/* <input
 
-                                            isClearable={false}
-                                            name="name"
-                                            className='form-control'
-                                            value={props.selectEmployee.employee_code}
-                                            styles={customStyles}
-                                            disabled
-                                            onChange={(e) => {
-                                                //setEmplEditValidator(emplEditValidatorInitialState)
-                                                props.setEmployeeToUpdate({
-                                                    ...props.selectEmployee,
-                                                    employee_code: e.target.value,
-                                                });
-                                            }}
-                                        /> */}
 
                                     </div>
                                 </div>
@@ -1155,7 +1115,7 @@ const EmployeeForm = (props) => {
                                                 />
                                             </>
                                         )}
-                                        <div className="row my-1">
+                                        {/* <div className="row my-1">
 
                                             <div className="">
                                                 <div className="col-md-12 ">
@@ -1171,18 +1131,33 @@ const EmployeeForm = (props) => {
                                                     {isValidateValue === false && Number(props.selectEmployee.cnic_back) === 0 && <span className="text-danger">First Select this </span>}
 
                                                 </div>
-                                                {/* <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-                                                            {
-                                                                props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
-                                                                    <span className="sr-only">Loading...</span>
-                                                                </div> : <button
-                                                                    disabled={props.ref?.current?.value === "" ? true : false}
-                                                                    className="btn btn-sm btn-outline-success" onClick={() => props.fileHandle3ForUpdate()} type="button"><i className="fa fa-upload"></i></button>
-                                                            }
-                                                        </div> */}
 
 
                                             </div>
+                                        </div> */}
+
+                                        <div className="row">
+                                            <div className="col-md-10 ">
+                                                <input
+                                                    //ref={props.ref}
+                                                    type="file"
+                                                    className="form-control form-control-sm customStyleForInput"
+                                                    data-validate-length-range={6}
+                                                    data-validate-words={2}
+                                                    name="name"
+                                                // onChange={props.fileHandle3ForUpdate}
+                                                />
+                                            </div>
+                                            <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                                {
+                                                    props.isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div> : <button className="btn btn-sm btn-outline-success"
+                                                        onClick={props.fileHandle3ForUpdate} type="button">
+                                                        <i className="fa fa-upload"></i></button>
+                                                }
+                                            </div>
+                                            {isValidateValue === false && Number(props.selectEmployee.cnic_back) === 0 && <span className="text-danger">First Select this </span>}
                                         </div>
                                     </div>
 

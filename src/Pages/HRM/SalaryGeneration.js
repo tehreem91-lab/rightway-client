@@ -265,6 +265,60 @@ const SalaryGeneration = () => {
 
     };
 
+
+    // const postSalary = () => {
+    //     var axios = require('axios');
+    //     var data = JSON.stringify({
+    //         "attachment": item.attachments,
+    //         "first_date_of_month": selectedDate,
+    //         "remarks": item.remarks,
+    //         "department_id": selectedValue.salary_value,
+    //         "records": [
+    //             {
+    //                 "employee_id": item.employee_id,
+    //                 "department_id": selectedValue.salary_value,
+    //                 "emoloyee_over_time": item.overtime_hour,
+    //                 "total_working_hour": item.total_working_hour,
+    //                 "monthly_salary": item.monthly_salary,
+    //                 "allowence_amount": 0,
+    //                 "gross_salary": 114800,
+    //                 "total_loan_deduction": 0,
+    //                 "advance_deduction": item.advance_deduction,
+    //                 "total_deduction": 0,
+    //                 "net_salary": item.net_salary,
+    //                 "benefits_amount": item.benefits_amount,
+    //                 "loan_records": [
+    //                     {
+    //                         "loan_id": item.loan_deduction_record.loan_id,
+    //                         "deduction_amount": item.loan_deduction_record.loan_deduction_amount
+    //                     }
+    //                 ]
+    //             }
+    //         ]
+    //     });
+
+    //     var config = {
+    //         method: 'post',
+    //         url: `${endPoint}api/Attendence/PostSalaryForm`,
+    //         headers: {
+    //             Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+    //             'Content-Type': 'application/json'
+    //         },
+    //         data: data
+    //     };
+
+    //     axios(config)
+    //         .then(function (response) {
+    //             console.log(JSON.stringify(response.data));
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //             toast.error(error);
+
+    //         });
+
+    // };
+
     ////////////////////////////For Downloading CSV Files////////////////////////////
 
     const headers = [

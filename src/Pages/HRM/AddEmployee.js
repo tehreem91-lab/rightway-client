@@ -908,8 +908,8 @@ function AddEmployee() {
                                                         <td className="text-left "> {item.shift?.shift_name}</td> */}
                                                         <td className="text-left ">  {
                                                             item.status == 0
-                                                                ? 'Active'
-                                                                : 'Left'
+                                                                ? 'Left'
+                                                                : 'Active'
                                                         }</td>
                                                         {/* <td className="text-left "> {item.benefits.benefit_title}</td> */}
                                                         <td className=" text-center   ">
