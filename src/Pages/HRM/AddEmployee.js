@@ -920,13 +920,6 @@ function AddEmployee() {
                                                         <td className=" text-center   ">
                                                             <i className="fa fa-edit mr-2" onClick={() => {
 
-                                                                if ((employeeToUpdate.attachments == undefined) || (employeeToUpdate.attachments == null)) {
-                                                                    setFileEntity("");
-                                                                }
-                                                                else {
-                                                                    setFileEntity(employeeToUpdate.attachments.split(","));
-                                                                }
-
                                                                 setEmployeeToUpdate({
                                                                     ...item,
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
@@ -941,20 +934,18 @@ function AddEmployee() {
 
                                                                 });
 
-
-
+                                                                if (!item.attachments) {
+                                                                    setFileEntity("");
+                                                                }
+                                                                else {
+                                                                    setFileEntity(item.attachments.split(","));
+                                                                }
 
                                                                 setIsEmplEditModeOn(true)
                                                                 setShow(true)
 
                                                             }}></i>
                                                             <i className="fa fa-eye mr-2" onClick={() => {
-                                                                if ((employeeToUpdate.attachments == undefined) || (employeeToUpdate.attachments == null)) {
-                                                                    setFileEntity("");
-                                                                }
-                                                                else {
-                                                                    setFileEntity(employeeToUpdate.attachments.split(","));
-                                                                }
                                                                 setEmployeeToUpdate({
                                                                     ...item,
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
@@ -966,8 +957,13 @@ function AddEmployee() {
                                                                     loanDepUpdate: { value: item.loan_value, label: item.loan_label },
                                                                     empCodeUpdate: { value: item.employee_code }
 
-
                                                                 });
+                                                                if (!item.attachments) {
+                                                                    setFileEntity("");
+                                                                }
+                                                                else {
+                                                                    setFileEntity(item.attachments.split(","));
+                                                                }
                                                                 setIsEmplEditModeOn(true)
                                                                 setLgShow(true)
                                                             }}></i>

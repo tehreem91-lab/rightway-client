@@ -79,6 +79,27 @@ const EmployeeForm = (props) => {
     const [isFilled, setIsFilled] = useState(true)
     const [isValidateValue, setIsValidateValue] = useState(true)
 
+    const initializeBenefits = () => {
+        const value = props.selectEmployee.benefits.map((eachBen) => {
+            return {
+                label: eachBen.benefit_title,
+                value: eachBen.benefit_id,
+                amount: eachBen.benefit_amount,
+            }
+        })
+        
+        if(value?.length>0){
+            return value
+        }else{
+            return [
+                {
+                label: "",
+                value: "",
+                amount: "",
+            }
+            ]
+        }
+    }
 
     const updateFunct = (e) => {
 
@@ -182,13 +203,8 @@ const EmployeeForm = (props) => {
     };
 
     useEffect(() => {
-        props.setBenefitsRecordsValue(props.selectEmployee.benefits.map((eachBen) => {
-            return {
-                label: eachBen.benefit_title,
-                value: eachBen.benefit_id,
-                amount: eachBen.benefit_amount,
-            }
-        }))
+        props.setBenefitsRecordsValue(
+            initializeBenefits())
     }, [])
 
 
@@ -598,31 +614,50 @@ const EmployeeForm = (props) => {
                                     return <div className="row" key={index}>
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit</label>
-                                            <div className="col-md-8 col-sm-8" >
+                                            <div className="col-md-9 col-sm-9" >
 
 
 
                                                 {props.benefitsRecordsValue.map(((eachBenValue, index) => {
-                                                    return <Select
-                                                        key={index}
-                                                        value={props.benefitsRecordsValue[index]}
-                                                        isSearchable={true}
-                                                        onChange={(e) => {
-                                                            const objectData = props.benefitsRecordsValue;
-                                                            objectData[index] = {
-                                                                ...e,
-                                                                amount: objectData[index].amount
+                                                    return <>
+                                                        <Select
+                                                           className="col-md-8 col-sm-8"
+                                                            key={index}
+                                                            value={props.benefitsRecordsValue[index]}
+                                                            isSearchable={true}
+                                                            onChange={(e) => {
+                                                                const objectData = props.benefitsRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...e,
+                                                                    amount: objectData[index].amount
 
 
-                                                            }
-                                                            props.setBenefitsRecordsValue(objectData)
-                                                            setReRender(!reRender)
+                                                                }
+                                                                props.setBenefitsRecordsValue(objectData)
+                                                                setReRender(!reRender)
 
-                                                        }}
-                                                        styles={customStyles}
-                                                        options={props.benefit}
+                                                            }}
+                                                            styles={customStyles}
+                                                            options={props.benefit}
 
-                                                    />
+                                                        />
+                                                        {
+                                                        (props.benefitsRecordsValue?.length>1 && index>0) &&
+                                                        <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
+                                                            <i className="fa fa-trash text-customRed"
+                                                                id={`${index}-Delete`}
+                                                                onClick={(index) => {
+                                                                    let list = [...props.benefitsRecordsValue];
+                                                                    const i = parseInt(index.target.id.split('-')[0])
+                                                                    list = list.filter((value) => {
+                                                                        return list.indexOf(value) != i
+                                                                    })
+                                                                    props.setBenefitsRecordsValue(list);
+                                                                }}
+                                                            ></i>
+                                                        </div>
+                                                        }
+                                                    </>
                                                 }))}
                                                 {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">First Select Benefit </span>}
 
@@ -640,15 +675,6 @@ const EmployeeForm = (props) => {
 
                                                         }}
                                                     ></i></div>}
-                                            <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
-                                                <i className="fa fa-trash text-customRed"
-                                                    onClick={(index) => {
-                                                        const list = [...props.benefitsRecordsValue];
-                                                        list.splice(index, 1);
-                                                        props.setBenefitsRecordsValue(list);
-                                                    }}
-                                                ></i>
-                                            </div>
 
 
 
