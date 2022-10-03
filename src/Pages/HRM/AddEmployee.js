@@ -37,6 +37,9 @@ function AddEmployee() {
     const [salaryDepValue, setSalaryDepValue] = useState("");
     const [expenseDepValue, setExpenseDepValue] = useState("");
     const [loanDepValue, setLoanDepValue] = useState("");
+    const [picture, setPicture] = useState("");
+    const [pictureName, setPictureName] = useState("");
+
 
 
     const [designation, setDesignation] = useState([]);
@@ -61,8 +64,7 @@ function AddEmployee() {
     const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
-    //const [fileEntity, setFileEntity] = useState([]);
-    const [fileEntity, setFileEntity] = useState(["a", "b", "c", "d"]);
+    const [fileEntity, setFileEntity] = useState([]);
 
     const ref = useRef();
     const reset = () => {
@@ -101,7 +103,7 @@ function AddEmployee() {
         myHeaders.append("contentType", "false");
         myHeaders.append("processData", "false");
         var formdata = new FormData();
-        formdata.append("UploadedImage", e.target.files[0]);
+        formdata.append("UploadedImage", picture);
         var requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -109,7 +111,7 @@ function AddEmployee() {
             redirect: "follow",
         };
         //   ///api/Employees/attach-files
-        fetch(URL + "api/FileUpload?file_name=" + e.target.files[0].name, requestOptions)
+        fetch(`${endPoint}api/FileUpload?file_name=${pictureName}`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
 
@@ -125,7 +127,7 @@ function AddEmployee() {
         myHeaders.append("contentType", "false");
         myHeaders.append("processData", "false");
         var formdata = new FormData();
-        formdata.append("UploadedImage", e.target.files[0]);
+        formdata.append("UploadedImage", picture);
         var requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -133,7 +135,7 @@ function AddEmployee() {
             redirect: "follow",
         };
         //   ///api/Employees/attach-files
-        fetch(URL + "api/FileUpload?file_name=" + e.target.files[0].name, requestOptions)
+        fetch(`${endPoint}api/FileUpload?file_name=${pictureName}`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
 
@@ -149,7 +151,7 @@ function AddEmployee() {
         myHeaders.append("contentType", "false");
         myHeaders.append("processData", "false");
         var formdata = new FormData();
-        formdata.append("UploadedImage", e.target.files[0]);
+        formdata.append("UploadedImage", picture);
         var requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -157,7 +159,8 @@ function AddEmployee() {
             redirect: "follow",
         };
         //   ///api/Employees/attach-files
-        fetch(URL + "api/FileUpload?file_name=" + e.target.files[0].name, requestOptions)
+        //fetch(URL + "api/FileUpload?file_name=" + picture.name, requestOptions)
+        fetch(`${endPoint}api/FileUpload?file_name=${pictureName}`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
 
@@ -648,6 +651,8 @@ function AddEmployee() {
                                             amount: ""
                                         }])
                                     }}
+                                    picture={picture} setPicture={setPicture}
+                                    pictureName={pictureName} setPictureName={setPictureName}
 
                                     isEmplEditModeOn={isEmplEditModeOn}
                                     setIsEmplEditModeOn={setIsEmplEditModeOn}
@@ -927,6 +932,10 @@ function AddEmployee() {
 
 
                                                                 });
+
+                                                                setFileEntity(employeeToUpdate.attachments.split(","))
+
+
                                                                 setIsEmplEditModeOn(true)
                                                                 setShow(true)
 

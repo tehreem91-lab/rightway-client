@@ -8,6 +8,12 @@ import Creatable from "react-select/creatable";
 
 const EmployeeForm = (props) => {
 
+    // useEffect(() => {
+    //     console.log("df",);
+    //     props.setFileEntity(props.selectEmployee.attachments.split(","))
+
+
+    // }, [props.fileEntity])
 
 
     const showNavMenu = useSelector((state) => state.NavState);
@@ -1030,7 +1036,10 @@ const EmployeeForm = (props) => {
                                                     data-validate-length-range={6}
                                                     data-validate-words={2}
                                                     name="name"
-                                                    onChange={props.fileHandle1ForUpdate}
+                                                    onChange={(e) => {
+                                                        props.setPicture(e.target.files[0])
+                                                        props.setPictureName((e.target.files[0].name.split("."))[0])
+                                                    }}
                                                 />
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
@@ -1097,7 +1106,10 @@ const EmployeeForm = (props) => {
                                                     data-validate-length-range={6}
                                                     data-validate-words={2}
                                                     name="name"
-                                                    onChange={props.fileHandle2ForUpdate}
+                                                    onChange={(e) => {
+                                                        props.setPicture(e.target.files[0])
+                                                        props.setPictureName((e.target.files[0].name.split("."))[0])
+                                                    }}
                                                 />
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
@@ -1167,7 +1179,10 @@ const EmployeeForm = (props) => {
                                                     data-validate-length-range={6}
                                                     data-validate-words={2}
                                                     name="name"
-                                                    onChange={props.fileHandle3ForUpdate}
+                                                    onChange={(e) => {
+                                                        props.setPicture(e.target.files[0])
+                                                        props.setPictureName((e.target.files[0].name.split("."))[0])
+                                                    }}
                                                 />
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
