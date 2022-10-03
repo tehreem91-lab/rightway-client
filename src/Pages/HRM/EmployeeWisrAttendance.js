@@ -18,7 +18,11 @@ const EmployeeWiseAttendance = () => {
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
 
-    const [selectedDate, setSelectedDate] = useState("2020-09-01");
+
+    var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
+    var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
+    const dateToday = `${year}-${month}`;
+    const [selectedDate, setSelectedDate] = useState(dateToday);
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
 
@@ -528,9 +532,13 @@ const EmployeeWiseAttendance = () => {
                                                                                 value={item?.in_date}
                                                                                 className="form-control border-none"
                                                                                 disabled={visableDiv == "true" ? true : false}
-                                                                                min="0"
                                                                                 onKeyPress={(e) => preventMinus(e)}
                                                                                 onChange={(e) => {
+                                                                                    const limit=new Date(`${item.Date}`)
+                                                                                    const setDate=new Date(e.target.value)
+                                                                                    if(setDate<limit){
+                                                                                        e.target.value=`${item.Date}`
+                                                                                    }
                                                                                     let arr = attendenceData;
                                                                                     let selected_index = arr.findIndex(
                                                                                         (obj) =>
@@ -545,7 +553,6 @@ const EmployeeWiseAttendance = () => {
                                                                                     };
 
 
-                                                                                    console.log(arr, "arrrr");
                                                                                     setAttendenceData(arr);
                                                                                     setreRender(!reRender);
                                                                                     setindate(e.target.value);
@@ -567,6 +574,16 @@ const EmployeeWiseAttendance = () => {
                                                                                 min="0"
                                                                                 onKeyPress={(e) => preventMinus(e)}
                                                                                 onChange={(e) => {
+                                                                                    let limit=new Date(`${item.Date}`)
+                                                                                    limit=new Date(limit.setDate(limit.getDate()+2))
+                                                                                    const setDate=new Date(e.target.value)
+                                                                                    if(setDate>limit){
+                                                                                        const month = limit.toLocaleDateString(undefined, { month: "2-digit" });
+                                                                                        const year = limit.toLocaleDateString(undefined, { year: "numeric" });
+                                                                                        const day = limit.toLocaleDateString(undefined, { day: "2-digit" });
+                                                                                        const stringLimit=`${year}-${month}-${day}T00:00`
+                                                                                        e.target.value=stringLimit
+                                                                                    }
                                                                                     let arr = attendenceData;
                                                                                     let selected_index = arr.findIndex(
                                                                                         (obj) =>
