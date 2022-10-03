@@ -264,7 +264,7 @@ const EmployeeFormView = (props) => {
                             </div>
 
                             <div className="field item form-group col-md-6 col-sm-6">
-                                <label className="col-form-label col-md-3 col-sm-3 label-align">Salary Dept<span className="required">*</span></label>
+                                <label className="col-form-label col-md-3 col-sm-3 label-align">Salary Dept </label>
                                 <div className="col-md-8 col-sm-8">
                                     <Creatable
                                         isDisabled
@@ -297,7 +297,7 @@ const EmployeeFormView = (props) => {
 
 
                             <div className="field item form-group col-md-6 col-sm-6">
-                                <label className="col-form-label col-md-3 col-sm-3 label-align">Advance Dept<span className="required">*</span></label>
+                                <label className="col-form-label col-md-3 col-sm-3 label-align">Advance Dept </label>
                                 <div className="col-md-8 col-sm-8">
                                     <Creatable
                                         isDisabled
@@ -327,7 +327,7 @@ const EmployeeFormView = (props) => {
                             </div>
 
                             <div className="field item form-group col-md-6 col-sm-6">
-                                <label className="col-form-label col-md-3 col-sm-3 label-align">Expense Dept<span className="required">*</span></label>
+                                <label className="col-form-label col-md-3 col-sm-3 label-align">Expense Dept </label>
                                 <div className="col-md-8 col-sm-8">
                                     <Creatable
                                         isDisabled
@@ -340,7 +340,7 @@ const EmployeeFormView = (props) => {
                             </div>
 
                             <div className="field item form-group col-md-6 col-sm-6">
-                                <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Dept<span className="required">*</span></label>
+                                <label className="col-form-label col-md-3 col-sm-3 label-align">Loan Dept </label>
                                 <div className="col-md-8 col-sm-8">
                                     <Creatable
                                         isDisabled

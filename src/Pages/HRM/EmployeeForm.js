@@ -1044,10 +1044,10 @@ const EmployeeForm = (props) => {
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                 {
-                                                    props.isFileUploadingModeOn ?
-                                                        <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
-                                                        <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle1ForUpdate} type="button">
-                                                            <i className="fa fa-upload"></i></button>
+                                                    // props.isFileUploadingModeOn ?
+                                                    //     <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
+                                                    <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle1ForUpdate} type="button">
+                                                        <i className="fa fa-upload"></i></button>
                                                 }
                                             </div>
                                             {isValidateValue === false && Number(props.selectEmployee.profile_image) === 0 && <span className="text-danger">First Select this </span>}
@@ -1114,10 +1114,10 @@ const EmployeeForm = (props) => {
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                 {
-                                                    props.isFileUploadingModeOn ?
-                                                        <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
-                                                        <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle2ForUpdate} type="button">
-                                                            <i className="fa fa-upload"></i></button>
+                                                    // props.isFileUploadingModeOn ?
+                                                    //     <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
+                                                    <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle2ForUpdate} type="button">
+                                                        <i className="fa fa-upload"></i></button>
                                                 }
                                             </div>
                                             {isValidateValue === false && Number(props.selectEmployee.cnic_front) === 0 && <span className="text-danger">First Select this </span>}
@@ -1187,10 +1187,10 @@ const EmployeeForm = (props) => {
                                             </div>
                                             <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
                                                 {
-                                                    props.isFileUploadingModeOn ?
-                                                        <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
-                                                        <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle3ForUpdate} type="button">
-                                                            <i className="fa fa-upload"></i></button>
+                                                    // props.isFileUploadingModeOn ?
+                                                    //     <div className="spinner-border my-2 text-customOrange" role="status"> <span className="sr-only">Loading...</span> </div> :
+                                                    <button className="btn btn-sm btn-outline-success" onClick={props.fileHandle3ForUpdate} type="button">
+                                                        <i className="fa fa-upload"></i></button>
                                                 }
                                             </div>
                                             {isValidateValue === false && Number(props.selectEmployee.cnic_back) === 0 && <span className="text-danger">First Select this </span>}

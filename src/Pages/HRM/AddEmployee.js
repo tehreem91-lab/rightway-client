@@ -919,6 +919,14 @@ function AddEmployee() {
                                                         {/* <td className="text-left "> {item.benefits.benefit_title}</td> */}
                                                         <td className=" text-center   ">
                                                             <i className="fa fa-edit mr-2" onClick={() => {
+
+                                                                if ((employeeToUpdate.attachments == undefined) || (employeeToUpdate.attachments == null)) {
+                                                                    setFileEntity("");
+                                                                }
+                                                                else {
+                                                                    setFileEntity(employeeToUpdate.attachments.split(","));
+                                                                }
+
                                                                 setEmployeeToUpdate({
                                                                     ...item,
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
@@ -933,7 +941,7 @@ function AddEmployee() {
 
                                                                 });
 
-                                                                setFileEntity(employeeToUpdate.attachments.split(","))
+
 
 
                                                                 setIsEmplEditModeOn(true)
@@ -941,6 +949,12 @@ function AddEmployee() {
 
                                                             }}></i>
                                                             <i className="fa fa-eye mr-2" onClick={() => {
+                                                                if ((employeeToUpdate.attachments == undefined) || (employeeToUpdate.attachments == null)) {
+                                                                    setFileEntity("");
+                                                                }
+                                                                else {
+                                                                    setFileEntity(employeeToUpdate.attachments.split(","));
+                                                                }
                                                                 setEmployeeToUpdate({
                                                                     ...item,
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
