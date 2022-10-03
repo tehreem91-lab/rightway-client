@@ -20,6 +20,7 @@ const SalaryGeneration = () => {
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
     const [show, setShow] = useState(false);
+    const [isGenerated, setIsGenerated] = useState(false);
 
 
 
@@ -148,8 +149,12 @@ const SalaryGeneration = () => {
                 setisLoading(false);
             })
             .catch(function (error) {
+                console.log(error.response);
+                if (error.response.data.Message == 'Salary Voucher is Already Generated') {
+                    toast.error(error.response.data.Message);
+                }
 
-                toast.error(error);
+
             });
     };
 
@@ -374,6 +379,7 @@ const SalaryGeneration = () => {
                                             setShow(true);
                                             setisLoading(true);
                                         }
+
                                         // fetchAllData();
                                         // setShow(true);
                                         // setisLoading(true);
@@ -387,6 +393,8 @@ const SalaryGeneration = () => {
                                 </button>
                             </div>
                         </div>
+
+
 
 
 

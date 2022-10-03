@@ -135,7 +135,7 @@ const SalaryReportReciept = React.forwardRef(
 
 
 
-                                <div className="col-lg-10 col-sm-10" style={{ marginTop: "28px" }}>
+                                <div className="col-lg-5 col-sm-5" style={{ marginTop: "28px" }}>
                                     <table className="table">
 
                                         <tbody>
@@ -161,8 +161,18 @@ const SalaryReportReciept = React.forwardRef(
                                                 <th className="headings reportTableHead  border-bottom">Allowence Amount</th>
                                                 <td>{attendenceData?.allowence_amount}</td>
                                             </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div className="col-lg-5 col-sm-5" style={{ marginTop: "28px" }}>
+                                    <table className="table">
+
+                                        <tbody>
+
                                             <tr>
-                                                <th className="headings reportTableHead border-bottom">Gross Salary</th>
+                                                <th className="headings reportTableHead border-bottom" width="20%">Gross Salary</th>
                                                 <td>{attendenceData?.gross_salary}</td>
                                             </tr>
                                             <tr>
@@ -184,6 +194,7 @@ const SalaryReportReciept = React.forwardRef(
                                         </tbody>
                                     </table>
                                 </div>
+
 
 
 

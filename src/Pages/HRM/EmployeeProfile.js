@@ -685,6 +685,11 @@ const EmployeeProfile = () => {
                                                         <Tab eventKey="loan" title="Loan Info" >
                                                             <div className="card" style={{ marginTop: "25px " }}> <h5 className="card-header"> Loan Information</h5>
 
+                                                                {(ListOfEmployee?.current_loan_info?.length) > 0 ? "" : <div className="text-center" style={{ padding: "6px " }}> No Loan Information </div>}
+
+
+
+
                                                                 {ListOfEmployee?.current_loan_info.map(((item, index) => {
                                                                     return <div className="row" style={{ marginTop: "6px " }}>
                                                                         <div className="field item form-group col-md-6 col-sm-6">
@@ -765,6 +770,7 @@ const EmployeeProfile = () => {
                                                                         </div>
 
                                                                     </div>
+
                                                                 }))}
 
                                                             </div>
