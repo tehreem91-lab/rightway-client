@@ -366,7 +366,7 @@ const SalaryReport = () => {
                             <>
                                 <div className="x_panel  ">
                                     <div className="clearfix" >
-                                        {(attendenceData?.main_voucher_inv.length) > 0 ? <SalaryReportReciept
+                                        {(attendenceData?.main_voucher_inv?.length) > 0 ? <SalaryReportReciept
                                             ref={ref}
                                             setSelectedAttachmentName={setSelectedAttachmentName}
                                             setSelectedAttachmentFile={selectedAttachmentFile}
