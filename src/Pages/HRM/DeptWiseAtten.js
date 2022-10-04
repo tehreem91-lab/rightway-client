@@ -15,10 +15,15 @@ const DeptWiseAtten = () => {
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(false);
     const [attendenceData, setAttendenceData] = useState([{}]);
+    const [isError, setisError] = useState(false);
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
 
-    const [selectedDate, setSelectedDate] = useState("2020-09-01");
+    var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
+    var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
+    var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
+    const dateToday = `${year}-${month}-${day}`;
+    const [selectedDate, setSelectedDate] = useState(dateToday);
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
 
@@ -128,9 +133,12 @@ const DeptWiseAtten = () => {
                     },
                 ]);
                 setisLoading(false);
+                setisError(false);
             })
             .catch(function (error) {
-                console.log(error);
+                setisLoading(false);
+                setisError(true);
+                console.error(error);
             });
     };
 
@@ -255,7 +263,7 @@ const DeptWiseAtten = () => {
     };
 
     useEffect(() => {
-        fetchAllData({ department_id: 0 });
+        //fetchAllData({ department_id: 0 });
         fetchData();
     }, []);
 
@@ -373,7 +381,8 @@ const DeptWiseAtten = () => {
                         <>
                             <Loader />
                         </>
-                    ) : (
+                    ) : isError ? <div> <div className="x_panel text-center"><div className="x_content">No Employee record for this date</div></div></div> : (
+
 
                         <div className="">
                             {show ?

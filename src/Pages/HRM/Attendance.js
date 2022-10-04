@@ -17,8 +17,13 @@ const Attendance = () => {
     const [attendenceData, setAttendenceData] = useState([{}]);
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
+    const [isError, setisError] = useState(false);
 
-    const [selectedDate, setSelectedDate] = useState("2020-09-01");
+    var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
+    var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
+    var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
+    const dateToday = `${year}-${month}-${day}`;
+    const [selectedDate, setSelectedDate] = useState(dateToday);
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
 
@@ -127,9 +132,12 @@ const Attendance = () => {
                     },
                 ]);
                 setisLoading(false);
+                setisError(false);
             })
             .catch(function (error) {
-                console.log(error);
+                setisLoading(false);
+                setisError(true);
+                console.error(error);
             });
     };
 
@@ -255,7 +263,7 @@ const Attendance = () => {
     };
 
     useEffect(() => {
-        fetchAllData({ department_id: 0 });
+        //fetchAllData({ department_id: 0 });
         fetchData();
     }, []);
 
@@ -362,7 +370,8 @@ const Attendance = () => {
                         <>
                             <Loader />
                         </>
-                    ) : (
+                    ) : isError ? <div> <div className="x_panel text-center"><div className="x_content">No Employee record for this date</div></div></div> : (
+
 
                         <div className="">
                             {show ?
@@ -592,8 +601,6 @@ const Attendance = () => {
                                                                                     setreRender(!reRender);
                                                                                     setoutdate(e.target.value);
                                                                                 }}
-
-
                                                                             />
                                                                             {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
 
