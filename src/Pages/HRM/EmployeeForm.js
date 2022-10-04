@@ -87,16 +87,16 @@ const EmployeeForm = (props) => {
                 amount: eachBen.benefit_amount,
             }
         })
-        
-        if(value?.length>0){
+
+        if (value?.length > 0) {
             return value
-        }else{
+        } else {
             return [
                 {
-                label: "",
-                value: "",
-                amount: "",
-            }
+                    label: "",
+                    value: "",
+                    amount: "",
+                }
             ]
         }
     }
@@ -614,14 +614,14 @@ const EmployeeForm = (props) => {
                                     return <div className="row" key={index}>
                                         <div className="field item form-group col-md-6 col-sm-6">
                                             <label className="col-form-label col-md-3 col-sm-3 label-align">Benefit</label>
-                                            <div className="col-md-9 col-sm-9" >
+                                            <div className="col-md-8 col-sm-8" >
 
 
 
                                                 {props.benefitsRecordsValue.map(((eachBenValue, index) => {
                                                     return <>
                                                         <Select
-                                                           className="col-md-8 col-sm-8"
+                                                            className="col-md-11 col-sm-11"
                                                             key={index}
                                                             value={props.benefitsRecordsValue[index]}
                                                             isSearchable={true}
@@ -642,20 +642,20 @@ const EmployeeForm = (props) => {
 
                                                         />
                                                         {
-                                                        (props.benefitsRecordsValue?.length>1 && index>0) &&
-                                                        <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
-                                                            <i className="fa fa-trash text-customRed"
-                                                                id={`${index}-Delete`}
-                                                                onClick={(index) => {
-                                                                    let list = [...props.benefitsRecordsValue];
-                                                                    const i = parseInt(index.target.id.split('-')[0])
-                                                                    list = list.filter((value) => {
-                                                                        return list.indexOf(value) != i
-                                                                    })
-                                                                    props.setBenefitsRecordsValue(list);
-                                                                }}
-                                                            ></i>
-                                                        </div>
+                                                            (props.benefitsRecordsValue?.length > 1 && index > 0) &&
+                                                            <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
+                                                                <i className="fa fa-trash text-customRed"
+                                                                    id={`${index}-Delete`}
+                                                                    onClick={(index) => {
+                                                                        let list = [...props.benefitsRecordsValue];
+                                                                        const i = parseInt(index.target.id.split('-')[0])
+                                                                        list = list.filter((value) => {
+                                                                            return list.indexOf(value) != i
+                                                                        })
+                                                                        props.setBenefitsRecordsValue(list);
+                                                                    }}
+                                                                ></i>
+                                                            </div>
                                                         }
                                                     </>
                                                 }))}

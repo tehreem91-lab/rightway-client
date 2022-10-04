@@ -23,16 +23,14 @@ const SalaryGeneration = () => {
     const [isGenerated, setIsGenerated] = useState(false);
 
 
-
-    var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
+    const [isError, setisError] = useState(false);
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
-    const dateToday = `${year}-${month}-${day}`;
-    // const [date, setdate] = useState("2020-09-01T00:00:00");
-    const [date, setdate] = useState("2020-09-01");
+    const dateToday = `${year}-${month}`;
+    const [selectedDate, setSelectedDate] = useState(dateToday);
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
-    const [selectedDate, setSelectedDate] = useState(dateToday);
+
     const [isValidateValue, setIsValidateValue] = useState(true);
 
     const [visableDiv, setVisableDiv] = useState("true");
@@ -147,9 +145,13 @@ const SalaryGeneration = () => {
                     },
                 ]);
                 setisLoading(false);
+                setisError(false);
             })
             .catch(function (error) {
                 console.log(error.response);
+                setisLoading(false);
+                setisError(true);
+                console.error(error);
                 if (error.response.data.Message == 'Salary Voucher is Already Generated') {
                     toast.error(error.response.data.Message);
                 }
@@ -272,7 +274,7 @@ const SalaryGeneration = () => {
     };
 
     useEffect(() => {
-        fetchAllData({ department_id: 0 });
+        //fetchAllData({ department_id: 0 });
         fetchData();
     }, []);
 
@@ -407,7 +409,8 @@ const SalaryGeneration = () => {
                 <>
                     <Loader />
                 </>
-            ) : (
+            ) : isError ? <div> <div className="x_panel text-center"><div className="">No record for this date</div></div></div> : (
+
                 <>
 
 

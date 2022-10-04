@@ -19,15 +19,14 @@ const SalaryReport = () => {
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
     const [show, setShow] = useState(false);
-    const [selectedDate, setSelectedDate] = useState("2020-09-01");
 
 
-    var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
+
+    const [isError, setisError] = useState(false);
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
-    const dateToday = `${year}-${month}-${day}`;
-    // const [date, setdate] = useState("2020-09-01T00:00:00");
-    const [date, setdate] = useState("2020-09");
+    const dateToday = `${year}-${month}`;
+    const [selectedDate, setSelectedDate] = useState(dateToday);
     const [indate, setindate] = useState();
     const [outdate, setoutdate] = useState();
 
@@ -51,20 +50,7 @@ const SalaryReport = () => {
         ref.current.value = "";
     };
 
-    // handle input change event
-    const handleInputChange = (value) => {
-        setInputValue(value);
-    };
-    // handle selection
-    const handleChange = (value) => {
-        setSelectedValue(value);
-        fetchAllData(value);
-    };
 
-    const handleChangeDate = (value) => {
-        setdate(value);
-        fetchAllData(value);
-    };
 
 
     const UploadFile = async (e) => {
@@ -164,9 +150,15 @@ const SalaryReport = () => {
                     },
                 ]);
                 setisLoading(false);
+                setisError(false);
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error.response);
+                setisLoading(false);
+                setisError(true);
+                console.error(error);
+
+
             });
     };
 
@@ -226,7 +218,7 @@ const SalaryReport = () => {
     };
 
     useEffect(() => {
-        fetchAllData({ department_id: 0 });
+        //fetchAllData({ department_id: 0 });
         fetchData();
     }, []);
 
@@ -236,7 +228,8 @@ const SalaryReport = () => {
                 <>
                     <Loader />
                 </>
-            ) : (
+            ) : isError ? <div> <div className="x_panel text-center"><div className="">No record for this date</div></div></div> : (
+
                 <>
                     <div
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
