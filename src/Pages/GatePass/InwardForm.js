@@ -6,18 +6,24 @@ import { customStyles } from '../../Components/reactCustomSelectStyle';
 import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Creatable from "react-select/creatable";
 
 import { Button, Modal } from 'react-bootstrap';
 import { preventMinus } from '../../config/preventMinus.js';
 
 function InwardForm() {
+    const [noOfRows, setNoOfRows] = useState(1);
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(true);
 
     const [ListOfParty, setListOfParty] = useState([]);
     const [ListOfPartyPost, setListOfPartyPost] = useState([]);
 
-
+    var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
+    var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
+    var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
+    const dateToday = `${year}-${month}-${day}`;
+    const [selectedDate, setSelectedDate] = useState(dateToday);
     const [selectedValue, setSelectedValue] = useState("");
     const [inputOptions, setInputOptions] = useState("");
 
@@ -25,6 +31,27 @@ function InwardForm() {
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
     const [fileEntity, setFileEntity] = useState([]);
+
+    const [stockValue, setStockValue] = useState("");
+    const [stock, setStock] = useState([]);
+    const [packetValue, setPacketValue] = useState("");
+    const [packet, setPacket] = useState([]);
+
+    const optionsInwardType = [
+        { value: 'purchase', label: 'Purchase' },
+        { value: 'cmt', label: 'CMT' }
+    ]
+
+    const optionsRentType = [
+        { value: 'excluded', label: 'Excluded' },
+        { value: 'included', label: 'Included' }
+    ]
+
+    const optionsCondition = [
+        { value: 'defected', label: 'Defected' },
+        { value: 'acceptable', label: 'Acceptable' },
+        { value: 'good', label: 'Good' },
+    ]
 
     const ref = useRef();
     const reset = () => {
@@ -81,7 +108,7 @@ function InwardForm() {
 
         var config = {
             method: 'get',
-            url: `${endPoint}api/PartyInfo/GetPartyData`,
+            url: `${endPoint}api/GatePassInward/GetStockOptions`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
             },
@@ -90,7 +117,32 @@ function InwardForm() {
         axios(config)
             .then(function (response) {
                 setListOfParty(response.data);
-                console.log(JSON.stringify(response.data));
+                var stockarr = [];
+                var packetarr = [];
+
+                ListOfParty.map((item) => {
+                    stockarr.push({
+                        label: item?.stock_account.stock_account_label,
+                        value: item?.stock_account.stock_account_value,
+                    });
+                    // packetarr.push({
+                    //     label: item?.packets_details.packet_title,
+                    //     value: item?.packets_details.stock_packet_id,
+                    // });
+                })
+
+                // ListOfParty?.packets_details.map((item) => {
+                //     packetarr.push({
+                //         label: item?.packet_title,
+                //         value: item?.stock_packet_id,
+                //     });
+                // })
+
+                // console.log(JSON.stringify(response.data));
+
+                setStock(stockarr);
+                setPacket(packetarr);
+                console.log(packetarr);
             })
             .catch(function (error) {
                 console.log(error);
@@ -128,10 +180,9 @@ function InwardForm() {
 
     }
 
-
     useEffect(() => {
-        fetchData();
         fetchAllData();
+        fetchData();
     }, []);
 
     return (
@@ -161,13 +212,13 @@ function InwardForm() {
                                 <span className="section pl-3">
                                     <div className="row   pt-3">
                                         <div className="col-5">
-                                            <i className="fa fa-filter"></i>&nbsp;Gate Pass / Vehicle Information 
+                                            <i className="fa fa-filter"></i>&nbsp;Gate Pass / Vehicle Information
                                         </div>
                                         <div className="col-9 text-right "></div>
                                     </div>
                                 </span>
 
-                        {/* /////////////////////////////////UPPER INFO TABLE DATA///////////////////////////////////// */}
+                                {/* /////////////////////////////////UPPER INFO TABLE DATA///////////////////////////////////// */}
                                 <div id="report">
                                     <div className="card" style={{ marginTop: "25px " }}> <h5 className="headings reportTableHead border-bottom card-header"> Gate Pass Information</h5>
                                         <div className="row" style={{ marginTop: "6px " }}>
@@ -175,16 +226,24 @@ function InwardForm() {
                                                 <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Inward Type </label>
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
-                                                        placeholder={"Select Employee"}
+                                                        placeholder={"Select Inward Type"}
                                                         // getOptionLabel={(e) => e.salary_label}
                                                         // getOptionValue={(e) => e.salary_value}
-                                                        value={selectedValue}
-                                                        options={inputOptions}
-                                                        //onChange={handleChange}
-                                                        onChange={(e) => {
-                                                            setSelectedValue(e);
-                                                        }}
+                                                        value={optionsInwardType.find(e => Number(e.value) == ListOfParty.inward_type)}
+                                                        options={optionsInwardType}
                                                         styles={customStyles}
+                                                        onChange={(e) => {
+                                                            setListOfPartyPost({
+                                                                ...ListOfPartyPost,
+                                                                inward_type: e.value
+                                                            });
+                                                        }}
+                                                    // onChange={(value) => {
+                                                    //     setListOfPartyPost({
+                                                    //         ...ListOfPartyPost,
+                                                    //         inward_type: value.value,
+                                                    //     });
+                                                    // }}
                                                     />
                                                 </div>
                                             </div>
@@ -251,6 +310,12 @@ function InwardForm() {
                                                         name="name"
                                                         type="date"
                                                         className='form-control'
+                                                        value={selectedDate}
+                                                        //min="2022-09-09"
+                                                        onChange={(e) => {
+                                                            setSelectedDate(e.target.value);
+
+                                                        }}
                                                     //value={ListOfEmployee?.employee_detail.employee_name}
 
                                                     />
@@ -367,16 +432,16 @@ function InwardForm() {
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
-                                                        placeholder={"Select Employee"}
-                                                        // getOptionLabel={(e) => e.salary_label}
-                                                        // getOptionValue={(e) => e.salary_value}
-                                                        value={selectedValue}
-                                                        options={inputOptions}
-                                                        //onChange={handleChange}
-                                                        onChange={(e) => {
-                                                            setSelectedValue(e);
-                                                        }}
+                                                        placeholder={"Select Rent Type"}
+                                                        value={optionsRentType.find(e => Number(e.value) == ListOfParty.rent_type)}
+                                                        options={optionsRentType}
                                                         styles={customStyles}
+                                                        onChange={(e) => {
+                                                            setListOfPartyPost({
+                                                                ...ListOfPartyPost,
+                                                                rent_type: e.value
+                                                            });
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
@@ -466,14 +531,61 @@ function InwardForm() {
                                             {ListOfParty.map((item, index) => {
                                                 return (
                                                     <tr className="even pointer" key={index}>
-                                                        <td className=" "> {item.account_code}</td>
-                                                        <td className=" "> {item.account_name} </td>
+                                                        <td className=" ">
+                                                            {/* <Select
+                                                                placeholder={"Select Inward Type"}
+                                                                value={optionsInwardType.find(e => Number(e.value) == ListOfParty.inward_type)}
+                                                                options={optionsInwardType}
+                                                                styles={customStyles}
+                                                                onChange={(e) => {
+                                                                    setListOfPartyPost({
+                                                                        ...ListOfPartyPost,
+                                                                        inward_type: e.value
+                                                                    });
+                                                                }}
+                                                            /> */}
+                                                            <Creatable
+                                                                isClearable={false}
+                                                                options={stock}
+                                                                value={{ label: ListOfParty?.stock_account?.stock_account_label, value: ListOfParty?.stock_account?.stock_account_value }}
+                                                                styles={customStyles}
+                                                                onChange={(e) => {
+                                                                    setStockValue(e.value)
+                                                                    setListOfPartyPost({
+                                                                        ...setListOfParty,
+                                                                        stock_account: {
+                                                                            stock_account_value: e.value,
+                                                                            stock_account_label: e.label
+                                                                        },
+                                                                    });
+                                                                }}
+                                                            />
+
+                                                        </td>
+                                                        <td className=" ">
+                                                            <Creatable
+                                                                isClearable={false}
+                                                                options={packet}
+                                                                value={{ label: ListOfParty.packets_details?.packet_title, value: ListOfParty.packets_details?.stock_packet_id }}
+                                                                styles={customStyles}
+                                                                onChange={(value) => {
+                                                                    setPacketValue(value.value)
+                                                                    setListOfPartyPost({
+                                                                        ...setListOfParty,
+                                                                        packets_details: {
+                                                                            stock_packet_id: value.value,
+                                                                            packet_title: value.label
+                                                                        },
+                                                                    });
+                                                                }}
+                                                            />
+                                                        </td>
                                                         <td className="">
                                                             {" "}
                                                             <input
                                                                 type="number"
                                                                 value={item?.debit}
-                                                                className="form-control border-none"
+                                                                className="form-control"
                                                                 //disabled={visableDiv == "true" ? true : false}
                                                                 min="0"
                                                                 onKeyPress={(e) => preventMinus(e)}
@@ -496,13 +608,17 @@ function InwardForm() {
                                                                 }}
                                                             />
                                                         </td>
-                                                        <td className=" "> {item.account_name} </td>
+                                                        <td className=" ">
+                                                            <input
+                                                                className="form-control"
+                                                                styles={customStyles} />
+                                                        </td>
                                                         <td className=" ">
                                                             {" "}
                                                             <input
                                                                 type="number"
                                                                 value={item?.credit}
-                                                                className="form-control border-none"
+                                                                className="form-control"
                                                                 //disabled={visableDiv == "true" ? true : false}
                                                                 min="0"
                                                                 onKeyPress={(e) => preventMinus(e)}
@@ -524,7 +640,20 @@ function InwardForm() {
                                                                 }}
                                                             />
                                                         </td>
-                                                        <td className=" "> {item.account_name} </td>
+                                                        <td className=" ">
+                                                            <Select
+                                                                placeholder={"Condition"}
+                                                                value={optionsCondition.find(e => Number(e.value) == ListOfParty.rent_type)}
+                                                                options={optionsCondition}
+                                                                styles={customStyles}
+                                                                onChange={(e) => {
+                                                                    setListOfPartyPost({
+                                                                        ...ListOfPartyPost,
+                                                                        rent_type: e.value
+                                                                    });
+                                                                }}
+                                                            />
+                                                        </td>
                                                     </tr>
                                                 );
                                             })}
@@ -550,10 +679,70 @@ function InwardForm() {
                                                         })
                                                         .reduce((a, b) => a + b, 0)}
                                                 </td>
+                                                <td></td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
+                                {/* //////////////////////////XXXXXXXXXXXXXXXXXXXXXXXXX///////////////////////////////// */}
+                                <div className="app container p-5">
+                                    <h1 className="p-5">Add Delete Row on Button Click</h1>
+                                    <table className="table table-striped jambo_table bulk_action ">
+                                        <thead>
+                                            <tr className="headings reportTableHead">
+                                                <th className="column-title right-border-1 text-center " width="20%" >
+                                                    PRODUCT COMMODITY
+                                                </th>
+                                                <th className="column-title  right-border-1 text-center" width="20%">
+                                                    UNIT
+                                                </th>
+                                                <th className="column-title right-border-1 text-center" width="15%">
+                                                    PIECES
+                                                </th>
+                                                <th className="column-title right-border-1 text-center" width="15%">
+                                                    PIECE WEIGHT
+                                                </th>
+                                                <th className="column-title right-border-1 text-center" width="15%">
+                                                    TOTAL WEIGHT
+                                                </th>
+                                                <th className="column-title text-center" width="15%">
+                                                    CONDITION
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {[...Array(noOfRows)].map((elementInArray, index) => {
+                                                return (
+                                                    <tr className="even pointer" key={index}>
+                                                        {/* <th scope="row">{index}</th> */}
+                                                        <td><Select /></td>
+                                                        <td><Select /></td>
+                                                        <td><input /></td>
+                                                        <td><input /></td>
+                                                        <td><input /></td>
+                                                        <td><Select
+                                                            placeholder={"Condition"}
+                                                            value={optionsCondition.find(e => Number(e.value) == ListOfParty.rent_type)}
+                                                            options={optionsCondition}
+                                                            styles={customStyles}
+                                                            onChange={(e) => {
+                                                                setListOfPartyPost({
+                                                                    ...ListOfPartyPost,
+                                                                    rent_type: e.value
+                                                                });
+                                                            }}
+                                                        /></td>
+                                                    </tr>
+                                                );
+                                            })}
+
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-primary me-3" onClick={() => setNoOfRows(noOfRows + 1)}>Add</button>
+                                    <button type="button" class="btn btn-danger" onClick={() => setNoOfRows(noOfRows - 1)}>Delete</button>
+                                </div>
+                                {/* //////////////////////////XXXXXXXXXXXXXXXXXXXXXXXXXX///////////////////////////////// */}
                             </div>
                         </div>
 
