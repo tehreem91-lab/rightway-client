@@ -15,6 +15,7 @@ function PartyInfo() {
 
     const [ListOfParty, setListOfParty] = useState([]);
     const [ListOfPartyPost, setListOfPartyPost] = useState([]);
+    const [isValidateValue, setIsValidateValue] = useState(true);
 
 
     const [selectedValue, setSelectedValue] = useState("");
@@ -64,7 +65,6 @@ function PartyInfo() {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { label: "Select Party", value: 0 },
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -103,7 +103,7 @@ function PartyInfo() {
             "chart_id": selectedValue.chart_id,
             "party_cell": ListOfPartyPost.cell,
             "party_address": ListOfPartyPost.address,
-            "party_attachments": ListOfPartyPost.attachments
+            "party_attachments": fileEntity.join(",").toString(),
         });
 
         var config = {
@@ -190,7 +190,8 @@ function PartyInfo() {
                                                     }}
                                                     styles={customStyles}
                                                 />
-                                                {/* {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Department </span>} */}
+                                                {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Party </span>}
+
 
                                             </div>
                                         </div>
@@ -201,6 +202,7 @@ function PartyInfo() {
                                         <div className="col-md-3 col-sm-3">
                                             <div>
                                                 <Select
+                                                    placeholder={"Select Party for this"}
                                                     getOptionLabel={(e) => e.account_code}
                                                     // getOptionValue={(e) => e.chart_id}
                                                     value={selectedValue}
@@ -222,6 +224,7 @@ function PartyInfo() {
                                         <div className="col-md-3 col-sm-3">
                                             <div>
                                                 <Select
+                                                    placeholder={"Select Party for this"}
                                                     getOptionLabel={(e) => e.category_name}
                                                     getOptionValue={(e) => e.chart_id}
                                                     value={selectedValue}
@@ -243,6 +246,7 @@ function PartyInfo() {
                                                     className='form-control'
                                                     placeholder=""
                                                     value={ListOfParty.cell}
+                                                    onInput={(er) => (er.target.value = er.target.value.slice(0, 11))}
                                                     onChange={(e) => {
                                                         setListOfPartyPost({
                                                             ...ListOfPartyPost,
@@ -250,7 +254,7 @@ function PartyInfo() {
                                                         });
                                                     }}
                                                 />
-
+                                                {isValidateValue === false && Number(ListOfParty.cell) === 0 && <span className="text-danger">First Enter Cell </span>}
                                             </div>
                                         </div>
 
@@ -276,11 +280,11 @@ function PartyInfo() {
                                                         });
                                                     }}
                                                 />
-
+                                                {isValidateValue === false && Number(ListOfParty.address) === 0 && <span className="text-danger">First Enter Address </span>}
                                             </div>
                                         </div>
 
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                        {/* <label className="col-form-label col-md-2 col-sm-2 label-align">
                                             Attachments <span className="required">*</span>
                                         </label>
                                         <div className="col-md-3 col-sm-3">
@@ -299,7 +303,7 @@ function PartyInfo() {
                                                 />
 
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                     </div>
                                 </div>
@@ -368,23 +372,19 @@ function PartyInfo() {
                                         type="submit"
                                         onClick={() => {
 
-                                            postData();
-                                            fetchAllData();
-                                            // let is_form_validated = true;
-                                            // {
 
-                                            //     if (Number(selectedValue) === 0 || Number(selectedDate) === 0) {
-                                            //         setIsValidateValue(false);
-                                            //         is_form_validated = false;
-                                            //     }
-
-                                            // }
-                                            // if (is_form_validated === true) {
-                                            //     fetchAllData();
-                                            //     setShow(true);
-                                            //     setisLoading(true);
-                                            //     setAttendenceData([{}]);
-                                            // }
+                                            let is_form_validated = true;
+                                            {
+                                                if (Number(selectedValue) === 0 || Number(ListOfParty.cell) === 0 || Number(ListOfParty.address) === 0) {
+                                                    setIsValidateValue(false);
+                                                    is_form_validated = false;
+                                                }
+                                            }
+                                            if (is_form_validated === true) {
+                                                postData();
+                                                fetchAllData();
+                                                //setisLoading(true);
+                                            }
 
                                         }}
                                     >
@@ -432,7 +432,30 @@ function PartyInfo() {
                                                         <td className=" ">{item.party_name}</td>
                                                         <td className=" ">{item.cell}</td>
                                                         <td className=" ">{item.address}</td>
-                                                        <td className=" ">{item.attachments}</td>
+                                                        <td className=" ">{item.attachments}
+                                                            {/* {fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
+                                                                <label className="col-form-label col-md-2 col-sm-2 label-align">Attachments</label>
+                                                                <div className="col-md-12 col-sm-12 ">
+                                                                    {
+                                                                        fileEntity.map((each_attachment, index) => {
+                                                                            return <button className="btn btn-sm  bg-customBlue  text-light">
+                                                                                <a href={`${endPoint + each_attachment}`} target="_blank" className='text-light'>
+                                                                                    {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
+                                                                                <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
+                                                                                    onClick={() => {
+                                                                                        let arr_data = fileEntity.filter((each_image) => {
+                                                                                            return (fileEntity.indexOf(each_image) !== index);
+                                                                                        });
+                                                                                        setFileEntity(arr_data)
+                                                                                        //setReRender(!reRender)
+                                                                                    }}
+                                                                                ></i>
+                                                                            </button>
+                                                                        })
+                                                                    }
+                                                                </div>
+                                                            </div>} */}
+                                                        </td>
                                                     </tr>
                                                 );
                                             })}
