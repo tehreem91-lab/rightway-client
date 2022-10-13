@@ -1,11 +1,11 @@
 import React from 'react'
-import LadgerGlobalComponent from '../LadgerGlobalComponent'
+import BankBookComponent from './BankBookComponent'
 
 const BankBookLadger = () => {
     return (
         <div>
 
-            <LadgerGlobalComponent
+            <BankBookComponent
                 account_type="bank" page_name="Bank Book Report" />
 
         </div>

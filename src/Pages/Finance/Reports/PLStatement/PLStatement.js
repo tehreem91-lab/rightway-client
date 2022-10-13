@@ -280,8 +280,7 @@ const PLStatement = () => {
                                     );
                                   }}
                                   content={() => componentRef.current}
-                                  documentTitle="new docs"
-                                  pageStyle="print"
+                                  
                                 />
                               </li>
                               <li>

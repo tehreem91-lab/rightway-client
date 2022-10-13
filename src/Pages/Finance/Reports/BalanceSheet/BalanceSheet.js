@@ -255,18 +255,14 @@ const Balance = () => {
                           <div className="col-md-3 pr-4">
                             <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                               <li>
-                                <ReactToPrint
-                                  trigger={() => {
-                                    return (
-                                      <button className="btn btn-sm btn-success borderRadiusRound">
-                                        <i className="fa fa-print"></i>
-                                      </button>
-                                    );
-                                  }}
-                                  content={() => componentRef.current}
-                                  documentTitle="new docs"
-                                  pageStyle="print"
-                                />
+                              <ReactToPrint
+                              trigger={() =>  
+                              <button className="btn btn-sm btn-success borderRadiusRound">
+                              <i className="fa fa-print"></i>
+                              </button>}
+                              content={() => componentRef.current}
+                              documentTitle='new docs'
+                            />
                               </li>
                               <li>
                                 <button

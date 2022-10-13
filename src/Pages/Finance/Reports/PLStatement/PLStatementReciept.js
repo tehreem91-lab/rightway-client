@@ -22,12 +22,12 @@ const PLStatementReciept = React.forwardRef(
               <div className="row" ref={ref}>
                 <div className="col-md-6 px-0">
                   <div className="div_to_print_income">
-                    <div className="displayPropertyForPrint d-none">
+                    <div className="displayPropertyForPrint">
                       <h2 className="text-dark text-center font-weight-bold  ">
-                        Ladger Report
+                        PL Statement 
                       </h2>
                       <div className="row pb-2">
-                        <div className="col-md-4 col-4 text-dark text-center ">
+                        <div className="col-md-6 col-6 text-dark text-center ">
                           {" "}
                           Date From:{" "}
                           <strong className="text-dark  font-weight-bold ">
@@ -35,7 +35,7 @@ const PLStatementReciept = React.forwardRef(
                             {dateFrom}
                           </strong>{" "}
                         </div>
-                        <div className="col-md-4 col-4 text-dark  text-center">
+                        <div className="col-md-6 col-6 text-dark  text-center">
                           {" "}
                           Date To :{" "}
                           <strong className="text-dark  font-weight-bold ">

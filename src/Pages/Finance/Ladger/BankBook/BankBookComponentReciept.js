@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-const LadgerGlobalComponentReciept = React.forwardRef(
+const BankBookComponentReciept = React.forwardRef(
   ({ LadgerData, dateFrom, dateTo, employeeNameForPrint,page_name }, ref) => {
     const navigate = useNavigate();
     let curent_balance = LadgerData.opening_balance.opening_balance1;
@@ -359,4 +359,4 @@ const LadgerGlobalComponentReciept = React.forwardRef(
   }
 );
 
-export default LadgerGlobalComponentReciept;
+export default BankBookComponentReciept;
