@@ -47,12 +47,6 @@ import DeptWiseAtten from "../Pages/HRM/DeptWiseAtten";
 import SalaryReport from "../Pages/HRM/SalaryReport";
 import InwardForm from "../Pages/GatePass/InwardForm";
 import PartyInfo from "../Pages/GatePass/PartyInfo";
-import DepartmentWiseSalary from "../Pages/HRM/DepartmentWiseSalary";
-import AddStock from "../Pages/Stock/AddStock";
-import AvailableStock from "../Pages/Stock/AvailableStock";
-import AddStore from "../Pages/Store/AddStore";
-import AvailableStore from "../Pages/Store/AvailableStore";
-import Department from "../Pages/General/Department";
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
@@ -103,12 +97,6 @@ const ROUTES = {
   SalaryReport: { id: "48", element: SalaryReport, path: "SalaryReportAccess" },
   InwardForm: { id: "49", element: InwardForm, path: "InwardFormAccess" },
   PartyInfo: { id: "50", element: PartyInfo, path: "PartyInfoAccess" },
-  DepartmentWiseSalary:{id:"51", element:DepartmentWiseSalary, path: "DepartmentWiseSalaryAccess"},
-  AddStock:{id:"52", element:AddStock, path: "StockAccountAccess"},
-  AvailableStock:{id:"53", element:AvailableStock, path: "StockTabelAccesss"},
-  AddStore:{id:"54", element:AddStore, path: "AddStoreAccess"},
-  AvailableStore:{id:"55", element:AvailableStore, path: "AvailableStoreAccess"},
-  Department:{id:"56", element:Department, path: "DepartmentAccess"}
 
 
 };
