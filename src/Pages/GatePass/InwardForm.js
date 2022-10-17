@@ -15,6 +15,7 @@ function InwardForm() {
 
     const [ListOfParty, setListOfParty] = useState([]);
     const [ListOfPartyPost, setListOfPartyPost] = useState([]);
+    const [dataForUpdate, setDataForUpdate] = useState([]);
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -89,7 +90,7 @@ function InwardForm() {
         })
     }
 
-    const fetchData = async () => {
+    const fetchPartyData = async () => {
         var config = {
             method: "get",
             url: `${endPoint}api/PartyInfo/GetPartyData`,
@@ -111,7 +112,7 @@ function InwardForm() {
             });
     };
 
-    const fetchAllData = async (e) => {
+    const fetchStockData = async (e) => {
 
         var axios = require('axios');
 
@@ -132,6 +133,7 @@ function InwardForm() {
                     stockarr.push({
                         label: item?.stock_account.stock_account_label,
                         value: item?.stock_account?.stock_account_value,
+                        stock_account_unit: item?.stock_account?.stock_account_unit,
 
                         childElement: item.packets_details.map((er) => {
                             return {
@@ -151,8 +153,7 @@ function InwardForm() {
             });
     };
 
-    const postData1 = async () => {
-
+    const updateData = async () => {
         var axios = require('axios');
         var data = JSON.stringify({
             "party_chart_id": selectedValue.chart_id,
@@ -165,23 +166,23 @@ function InwardForm() {
             "bilty_no": ListOfPartyPost.bilty_no,
             "inward_type": ListOfPartyPost.inward_type,
             "remarks": ListOfPartyPost.remarks,
-            "attachments": ListOfPartyPost.attachments,
-            "stock_entries": [
-                {
-                    "stock_chart_id": ListOfPartyPost.stock_account.stock_account_value,
-                    "stock_unit_id": ListOfPartyPost.packets_details.stock_packet_id,
-                    "pair_unit_id": ListOfPartyPost.packets_details.pair_base_unit,
-                    "total_stock_pieces": ListOfPartyPost.total_stock_pieces,
-                    "weight_per_piece": ListOfPartyPost.weight_per_piece,
-                    "tatal_weight": ListOfPartyPost.tatal_weight
+            "attachments": fileEntity.join(",").toString(),
+            "stock_entries": StockRecordsValue.length === 0 ? [] : StockRecordsValue.map((i) => {
+                return {
+                    "stock_chart_id": i.stock_chart_id,
+                    "stock_unit_id": i.stock_unit_id,
+                    "pair_unit_id": i.pair_unit_id,
+                    "total_stock_pieces": i.total_stock_pieces,
+                    "weight_per_piece": i.weight_per_piece,
+                    "tatal_weight": i.tatal_weight
                 }
-            ]
+            })
         });
 
         var config = {
-            method: 'post',
-            url: 'http://rightway-api.genial365.com/api/GatePassInward/PostData',
-            //url: `${endPoint}api/GatePassInward/PostData`,
+            method: 'put',
+            url: 'http://rightway-api.genial365.com/api/GatePassInward/PutData?gate_pass_main_id=196',
+            //url: `${endPoint}api/GatePassInward/PutData?gate_pass_main_id=${e}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
                 'Content-Type': 'application/json'
@@ -197,21 +198,11 @@ function InwardForm() {
                 console.log(error);
             });
 
+
     }
 
     const postData = async () => {
 
-        // var records_data = ListOfPartyPost.map((i) => {
-        //     return {
-        //         "stock_chart_id": i.stock_account.stock_account_value,
-        //         "stock_unit_id": i.packets_details.stock_packet_id,
-        //         "pair_unit_id": i.packets_details.pair_base_unit,
-        //         "total_stock_pieces": i.total_stock_pieces,
-        //         "weight_per_piece": i.weight_per_piece,
-        //         "tatal_weight": i.tatal_weight
-        //     }
-
-        // })
 
         var axios = require('axios');
         var data = JSON.stringify({
@@ -228,9 +219,9 @@ function InwardForm() {
             "attachments": fileEntity.join(",").toString(),
             "stock_entries": StockRecordsValue.length === 0 ? [] : StockRecordsValue.map((i) => {
                 return {
-                    "stock_chart_id": i.stock_account?.stock_account_value,
-                    "stock_unit_id": i.packets_details?.stock_packet_id,
-                    "pair_unit_id": i.packets_details?.pair_base_unit,
+                    "stock_chart_id": i.stock_chart_id,
+                    "stock_unit_id": i.stock_unit_id,
+                    "pair_unit_id": i.pair_unit_id,
                     "total_stock_pieces": i.total_stock_pieces,
                     "weight_per_piece": i.weight_per_piece,
                     "tatal_weight": i.tatal_weight
@@ -268,13 +259,18 @@ function InwardForm() {
             })
             .catch(function (error) {
                 console.log(error);
+                // console.table(data);
+                // console.table(JSON.stringify(data));
             });
 
     }
 
+
+
+
     const CustomEffectRerendered = async () => {
-        await fetchAllData();
-        await fetchData();
+        await fetchStockData();
+        await fetchPartyData();
     }
 
     useEffect(() => {
@@ -584,7 +580,7 @@ function InwardForm() {
                                                         onChange={(e) => {
                                                             setListOfPartyPost({
                                                                 ...ListOfPartyPost,
-                                                                rent_amount: e.target.value
+                                                                rent_amount: parseInt(e.target.value)
                                                             });
                                                         }}
                                                     />
@@ -662,7 +658,7 @@ function InwardForm() {
                                                     TOTAL WEIGHT
                                                 </th>
                                                 <th className="column-title text-center" width="15%">
-                                                    CONDITION
+                                                    Action
                                                 </th>
 
                                             </tr>
@@ -675,16 +671,24 @@ function InwardForm() {
                                                             className="col-md-11 col-sm-11"
                                                             key={index}
                                                             //value={StockRecordsValue[index].stock_account_value}
-                                                            value={StockRecordsValue[index].stock_chart_id}
+                                                            value={StockRecordsValue[index].stock_account_value}
+                                                            //value= { value: item.designation_id, label: item.designationName },
+
                                                             isSearchable={true}
                                                             styles={customStyles}
                                                             options={stock}
                                                             onChange={(e) => {
+                                                                console.log("1eee hai", e);
                                                                 setStockValue(e);
                                                                 const objectData = StockRecordsValue;
                                                                 objectData[index] = {
                                                                     ...e,
-                                                                    stock_chart_id: objectData[index].stock_account_value,
+                                                                    //stock_chart_id: objectData[index].stock_account_value,
+                                                                    stock_unit_id: e.stock_account_unit,
+
+                                                                    stock_chart_id: e.value,
+                                                                    //label: e.label,
+
                                                                 }
                                                                 setStockRecordsValue(objectData)
                                                                 //setReRender(!reRender)
@@ -703,13 +707,20 @@ function InwardForm() {
                                                             styles={customStyles}
                                                             options={stockValue.childElement}
                                                             onChange={(e) => {
+                                                                console.log("2eee hai", e);
                                                                 const objectData = StockRecordsValue;
                                                                 objectData[index] = {
                                                                     ...e,
                                                                     //stock_chart_id: objectData[index].stock_account_value,
-                                                                    stock_packet_id: objectData[index].stock_packet_id,
-                                                                    packet_title: objectData[index].packet_title,
-                                                                    pair_base_unit: objectData[index].pair_base_unit,
+                                                                    // stock_packet_id: objectData[index].stock_packet_id,
+                                                                    // packet_title: objectData[index].packet_title,
+                                                                    // pair_base_unit: objectData[index].pair_base_unit,
+                                                                    // stock_chart_id: stockValue.value,
+                                                                    // stock_unit_id: e.value,
+
+                                                                    stock_unit_id: stockValue.stock_account_unit,
+                                                                    stock_chart_id: stockValue.value,
+                                                                    pair_unit_id: e.value,
                                                                 }
                                                                 setStockRecordsValue(objectData)
                                                                 //setReRender(!reRender)
@@ -729,7 +740,7 @@ function InwardForm() {
                                                                 const objectData = StockRecordsValue;
                                                                 objectData[index] = {
                                                                     ...objectData[index],
-                                                                    total_stock_pieces: e.target.value
+                                                                    total_stock_pieces: parseInt(e.target.value)
                                                                 }
                                                                 setStockRecordsValue(objectData)
                                                                 // setReRender(!reRender)
@@ -748,7 +759,7 @@ function InwardForm() {
                                                                 const objectData = StockRecordsValue;
                                                                 objectData[index] = {
                                                                     ...objectData[index],
-                                                                    weight_per_piece: e.target.value
+                                                                    weight_per_piece: parseInt(e.target.value)
                                                                 }
                                                                 setStockRecordsValue(objectData)
                                                             }} />
@@ -766,7 +777,7 @@ function InwardForm() {
                                                                 const objectData = StockRecordsValue;
                                                                 objectData[index] = {
                                                                     ...objectData[index],
-                                                                    tatal_weight: e.target.value
+                                                                    tatal_weight: parseInt(e.target.value)
                                                                 }
                                                                 setStockRecordsValue(objectData)
                                                             }} />
@@ -851,11 +862,11 @@ function InwardForm() {
 
                                             if (is_form_validated === true) {
                                                 postData();
-                                                fetchAllData();
+                                                fetchStockData();
                                                 //setisLoading(true);
                                             }
                                             //postData();
-                                            //fetchAllData();
+                                            //fetchStockData();
                                         }}
                                     >
                                         Save and Publish
