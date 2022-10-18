@@ -135,15 +135,13 @@ const SalaryReportReciept = React.forwardRef(
 
 
 
-                                <div className="col-lg-5 col-sm-5" style={{ marginTop: "28px" }}>
+                                {/* <div className="col-lg-5 col-sm-5" style={{ marginTop: "28px" }}>
                                     <table className="table">
 
                                         <tbody>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom" width="20%">Overtime</th>
                                                 <td>{attendenceData?.over_time}</td>
-                                                {/* <td>Carter</td>
-                                                <td>johncarter@mail.com</td> */}
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom">Working Hours</th>
@@ -193,7 +191,7 @@ const SalaryReportReciept = React.forwardRef(
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> */}
 
 
 
@@ -310,7 +308,83 @@ const SalaryReportReciept = React.forwardRef(
 
                                 </table>
                             </div>
+                            <div className="row mx-3  reportTableHead mt-2">
 
+                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                    Overtime
+                                </div>
+                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                    Working Hours
+                                </div>
+
+                                <div className="col-md-2 font-size-12  text-center  my-1 ">
+                                    Primary Salary
+                                </div>
+                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                    Allowence Amount
+                                </div>
+                                <div className="col-md-2 font-size-12  text-center  my-1 ">
+                                    Gross Salary
+                                </div>
+                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                    Loan Deductions
+                                </div>
+                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                    Advance Deductions
+                                </div>
+                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                    Total Deductions
+                                </div>
+                                <div className="col-md-2 font-size-12  text-center  my-1 ">
+                                    Net Salary
+                                </div>
+
+                            </div>
+
+                            <div className="row mx-3  reportTableBody bottom-border-2">
+                                <div className="col-md-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                    {attendenceData?.over_time}
+                                </div>
+                                <div className="col-md-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                    {attendenceData?.total_working_hour}
+                                </div>
+
+                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                    {attendenceData?.pm_salary}
+                                </div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                    {attendenceData?.allowence_amount}
+                                </div>
+                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                    {attendenceData?.gross_salary}
+                                </div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                    {attendenceData?.loan_deduction}
+                                </div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                    {attendenceData?.advance_deduction}
+                                </div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                    {attendenceData?.total_deduction}
+                                </div>
+                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                    {attendenceData?.net_salary}
+                                </div>
+                            </div>
+
+                            <div className="row mx-3  reportTableBody bottom-border-2">
+
+                                <div className="col-md-1    font-size-12   bold-6   py-1 pt-1     d-flex justify-content-start align-items-center ">  </div>
+                                <div className="col-md-1    font-size-12    py-1    pt-1  d-flex justify-content-center align-items-center "> </div>
+                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
