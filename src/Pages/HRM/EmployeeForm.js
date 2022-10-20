@@ -533,9 +533,9 @@ const EmployeeForm = (props) => {
                                                                 ></i>
                                                             </div>
                                                         }
+                                                        {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger col-md-11 col-sm-11">First Select Benefit </span>}
                                                     </>
                                                 }))}
-                                                {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">First Select Benefit </span>}
 
 
                                             </div>
@@ -563,7 +563,7 @@ const EmployeeForm = (props) => {
                                             <div className="col-md-8 col-sm-8">
 
                                                 {props.benefitsRecordsValue.map(((eachBenValue, index) => {
-                                                    return <input
+                                                    return <><input
                                                         className="form-control" style={{ marginBottom: "2px" }}
                                                         name="Benefit amount" min="0"
                                                         placeholder=""
@@ -580,9 +580,10 @@ const EmployeeForm = (props) => {
                                                             props.setBenefitsRecordsValue(objectData)
                                                             setReRender(!reRender)
                                                         }} />
+                                                        {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">Must enter benefit amount </span>}
+                                                    </>
                                                 }))}
 
-                                                {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">Must enter benefit amount </span>}
                                             </div>
                                         </div>
                                     </div>
