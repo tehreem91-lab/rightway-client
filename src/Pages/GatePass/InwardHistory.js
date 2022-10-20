@@ -31,6 +31,8 @@ const InwardHistory = () => {
     const [voucherHistoryRecord, setVoucherHistoryRecord] = useState([])
     const [voucherHistoryRecordConst, setVoucherHistoryRecordConst] = useState([])
     const [selectedVoucher, setSelectedVoucher] = useState("")
+    const [gatepassID, setGatepassID] = useState("")
+
 
     const [isShowVoucher, setisShowVoucher] = useState(false)
 
@@ -116,6 +118,7 @@ const InwardHistory = () => {
             .then(function (response) {
                 //console.log(response.data);
                 setSelectedVoucher(response.data);
+                setGatepassID(response.data.inward_gatepass_main_id)
 
                 // setroutePathToBeNavigate(voucherTypes.find(
                 //     (o) => o.voucher_id === response.data.voucher_type_id
@@ -441,8 +444,9 @@ const InwardHistory = () => {
                                                             //     });
                                                             // }}
                                                             onClick={() => {
+                                                                console.log("gatepassID", { gatepassID });
                                                                 navigate('/InwardFormAccess', {
-                                                                    state: null
+                                                                    state: { gatepassID }
                                                                 });
                                                             }}
                                                         >

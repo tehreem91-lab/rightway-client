@@ -7,8 +7,9 @@ import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { preventMinus } from '../../config/preventMinus.js';
+import { useLocation } from 'react-router-dom';
 
-function InwardForm() {
+const InwardForm = (props) => {
     const [noOfRows, setNoOfRows] = useState(1);
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(true);
@@ -32,11 +33,15 @@ function InwardForm() {
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
     const [fileEntity, setFileEntity] = useState([]);
+    const [gatepassID, setGatepassID] = useState("");
 
     const [stockValue, setStockValue] = useState("");
     const [stock, setStock] = useState([]);
     const [packetValue, setPacketValue] = useState("");
     const [packet, setPacket] = useState([]);
+    const location = useLocation();
+    const [updateMode, setUpdateMode] = useState(false);
+
 
     const optionsInwardType = [
         { value: 'purchase', label: 'Purchase' },
@@ -106,6 +111,10 @@ function InwardForm() {
                     ...response.data,
                 ]);
                 setisLoading(false);
+                { console.log("selected", location.state.gatepassID) }
+                const gpid =
+                    setGatepassID(location.state.gatepassID)
+                gatepassID !== "" ? setUpdateMode(true) : setUpdateMode(false)
             })
             .catch(function (error) {
                 console.log(error);
@@ -181,7 +190,7 @@ function InwardForm() {
 
         var config = {
             method: 'put',
-            url: 'http://rightway-api.genial365.com/api/GatePassInward/PutData?gate_pass_main_id=196',
+            url: 'http://rightway-api.genial365.com/api/GatePassInward/PutData?gate_pass_main_id=231',
             //url: `${endPoint}api/GatePassInward/PutData?gate_pass_main_id=${e}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
@@ -199,7 +208,36 @@ function InwardForm() {
             });
 
 
-    }
+    };
+
+    const fetch_selected_voucher_detail = () => {
+        setUpdateMode(false);
+        var config = {
+            method: 'get',
+            //url: `${endPoint}api/GatePassInward/GetGatePassById?gate_pass_main_id=221`,
+            url: `${endPoint}api/GatePassInward/GetGatePassById?gate_pass_main_id=${gatepassID}`,
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+            }
+        };
+
+        axios(config)
+            .then(function (response) {
+                //console.log(response.data);
+                setListOfParty(response.data);
+                setUpdateMode(true);
+                // setroutePathToBeNavigate(voucherTypes.find(
+                //     (o) => o.voucher_id === response.data.voucher_type_id
+                // ).multiple_router_path)
+
+
+                //setisShowVoucher(true)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    };
 
     const postData = async () => {
 
@@ -254,8 +292,19 @@ function InwardForm() {
         };
 
         axios(config)
+            // .then(function (response) {
+            //     console.log(JSON.stringify(response.data));
+            // })
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
+                if (response.status === 200) {
+
+                    toast.success("Inward Form Information has been Added successfully!")
+                    fetchStockData();
+                }
+                else {
+                    toast.error("An error occured!")
+                    fetchStockData();
+                }
             })
             .catch(function (error) {
                 console.log(error);
@@ -263,9 +312,62 @@ function InwardForm() {
                 // console.table(JSON.stringify(data));
             });
 
-    }
+    };
 
+    const formSubmit = () => {
+        console.log(updateMode, "mode");
 
+        fetch(
+            URL +
+            (updateMode ? "/api/GatePassInward/PutData?gate_pass_main_id=" + gatepassID
+                : "/api/GatePassInward/PostData"),
+            {
+                method: updateMode ? "PUT" : "POST",
+                headers: {
+                    Authorization:
+                        "Bearer " +
+                        JSON.parse(localStorage.getItem("access_token")).access_token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "party_chart_id": selectedValue.chart_id,
+                    "date": selectedDate,
+                    "vehicle_no": ListOfPartyPost.vehicle_no,
+                    "drive_name": ListOfPartyPost.drive_name,
+                    "driver_cell": ListOfPartyPost.driver_cell,
+                    "rent_type": ListOfPartyPost.rent_type,
+                    "rent_amount": ListOfPartyPost.rent_amount,
+                    "bilty_no": ListOfPartyPost.bilty_no,
+                    "inward_type": ListOfPartyPost.inward_type,
+                    "remarks": ListOfPartyPost.remarks,
+                    "attachments": fileEntity.join(",").toString(),
+                    "stock_entries": StockRecordsValue.length === 0 ? [] : StockRecordsValue.map((i) => {
+                        return {
+                            "stock_chart_id": i.stock_chart_id,
+                            "stock_unit_id": i.stock_unit_id,
+                            "pair_unit_id": i.pair_unit_id,
+                            "total_stock_pieces": i.total_stock_pieces,
+                            "weight_per_piece": i.weight_per_piece,
+                            "tatal_weight": i.tatal_weight
+                        }
+
+                    })
+                }),
+            }
+        ).then((response) => {
+            if (response.status === 201 || response.status === 400 || response.status === 204) {
+
+                toast.success(
+                    "Entry has been " +
+                    (updateMode ? "Updated" : "Added" + " successfully!")
+                );
+                //clearFields();
+                fetchStockData();
+                fetchPartyData();
+
+            }
+        });
+    };
 
 
     const CustomEffectRerendered = async () => {
@@ -321,7 +423,8 @@ function InwardForm() {
                                                         placeholder={"Select Inward Type"}
                                                         // getOptionLabel={(e) => e.salary_label}
                                                         // getOptionValue={(e) => e.salary_value}
-                                                        value={optionsInwardType.find(e => Number(e.value) == ListOfParty.inward_type)}
+                                                        //value={optionsInwardType.find(e => Number(e.value) == ListOfParty.inward_type)}
+                                                        value={optionsInwardType.find(e => e.value == ListOfParty.inward_type)}
                                                         options={optionsInwardType}
                                                         styles={customStyles}
                                                         onChange={(e) => {
@@ -487,10 +590,12 @@ function InwardForm() {
                                                 <label className="col-form-label col-md-3 col-sm-3 label-align"> Vehicle No. <span className="required">*</span></label>
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
-                                                        type="number"
+                                                        type="text"
                                                         className='form-control'
                                                         placeholder=""
-                                                        value={ListOfParty.vehicle_no}
+                                                        //value={ListOfParty.vehicle_no}
+                                                        value={ListOfParty.vehicle_number}
+                                                        onInput={(er) => (er.target.value = er.target.value.slice(0, 7))}
                                                         onChange={(e) => {
                                                             setListOfPartyPost({
                                                                 ...ListOfPartyPost,
@@ -512,7 +617,8 @@ function InwardForm() {
                                                         type="text"
                                                         className='form-control'
                                                         placeholder=""
-                                                        value={ListOfParty.drive_name}
+                                                        //value={ListOfParty.drive_name}
+                                                        value={ListOfParty.driver}
                                                         onChange={(e) => {
                                                             setListOfPartyPost({
                                                                 ...ListOfPartyPost,
@@ -553,7 +659,8 @@ function InwardForm() {
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
                                                         placeholder={"Select Rent Type"}
-                                                        value={optionsRentType.find(e => Number(e.value) == ListOfParty.rent_type)}
+                                                        //value={optionsRentType.find(e => Number(e.value) == ListOfParty.rent_type)}
+                                                        value={optionsRentType.find(e => e.value == ListOfParty.rent_type)}
                                                         options={optionsRentType}
                                                         styles={customStyles}
                                                         onChange={(e) => {
@@ -862,11 +969,12 @@ function InwardForm() {
 
                                             if (is_form_validated === true) {
                                                 postData();
+                                                //fetch_selected_voucher_detail();
+                                                //updateData();
                                                 fetchStockData();
                                                 //setisLoading(true);
+                                                formSubmit();
                                             }
-                                            //postData();
-                                            //fetchStockData();
                                         }}
                                     >
                                         Save and Publish
@@ -881,5 +989,5 @@ function InwardForm() {
             )}
         </>
     );
-}
+};
 export default InwardForm;
