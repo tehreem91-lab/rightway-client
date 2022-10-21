@@ -353,8 +353,7 @@ const TrialSheet = () => {
                                                                         );
                                                                     }}
                                                                     content={() => componentRef.current}
-                                                                    documentTitle="new docs"
-                                                                    pageStyle="print"
+                                                                  
                                                                 />
                                                             </li>
                                                             <li>

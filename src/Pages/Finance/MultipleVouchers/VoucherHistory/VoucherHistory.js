@@ -13,6 +13,7 @@ import VoucherReportReciept from "./VoucherReportReciept.js";
 
 import Select from 'react-select'
 import voucherTypes from '../../../../config/voucherTypes.js';
+import CustomInnerHeader from '../../../../Components/CustomInnerHeader.jsx';
 const VoucherHistory = () => {
 
     const componentRef = useRef();
@@ -141,7 +142,7 @@ const VoucherHistory = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;Voucher History</span>
+            <CustomInnerHeader moduleName="Voucher History" isShowSelector={true} /> 
             </div>
             <div
                 className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
@@ -225,6 +226,7 @@ const VoucherHistory = () => {
                                                         setIsValidateOK(false)
                                                     } else {
                                                         fetchHistory()
+                                                       
                                                     }
                                                 }}
                                             >
@@ -333,7 +335,7 @@ const VoucherHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm btn-warning my-2 pt-1 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
                                                         ><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                         </button>
@@ -356,7 +358,7 @@ const VoucherHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
                                                             onClick={() => setshowAttachment(!showAttachment)}
                                                         >
@@ -365,7 +367,7 @@ const VoucherHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm btn-info my-2 pt-1 borderRadiusRound"
                                                             onClick={() => {
                                                                 navigate(`/${voucherTypes.find(
                                                                     (o) => o.voucher_id === selectedVoucher.voucher_type_id

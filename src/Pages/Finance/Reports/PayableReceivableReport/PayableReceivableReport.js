@@ -60,7 +60,7 @@ const PayableReceivableReport = () => {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                        <CustomInnerHeader moduleName="Payable Receivable Report" isShowSelector={false} />
+                    <CustomInnerHeader moduleName="Payable Recievable Report" isShowSelector={true} />
                     </div>
                     <div
                         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
@@ -83,18 +83,13 @@ const PayableReceivableReport = () => {
                                                     <div className="col-md-3 pr-4">
                                                         <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                                             <li>
-                                                                <ReactToPrint
-                                                                    trigger={() => {
-                                                                        return (
-                                                                            <button className="btn btn-sm btn-success borderRadiusRound">
-                                                                                <i className="fa fa-print"></i>
-                                                                            </button>
-                                                                        );
-                                                                    }}
-                                                                    content={() => componentRef.current}
-                                                                    documentTitle="new docs"
-                                                                    pageStyle="print"
-                                                                />
+                                                            <ReactToPrint
+                                                            trigger={() =>  
+                                                            <button className="btn btn-sm btn-success borderRadiusRound">
+                                                            <i className="fa fa-print"></i>
+                                                            </button>}
+                                                            content={() => componentRef.current}
+                                                          />
                                                             </li>
                                                             <li>
                                                                 <button

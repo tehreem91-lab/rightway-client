@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import CustomInnerHeader from '../../../Components/CustomInnerHeader';
 
 import Loader from '../../../Layout/Loader/Loader'
 import { endPoint } from '../../../config/Config'
@@ -678,7 +679,7 @@ const MultiVoucherGlobalTemplate = ({
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;{page_name}</span>
+            <CustomInnerHeader moduleName={page_name} isShowSelector={true} />
             </div>
             <div
                 role="main"

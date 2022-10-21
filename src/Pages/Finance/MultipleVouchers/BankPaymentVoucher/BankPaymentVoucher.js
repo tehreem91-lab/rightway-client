@@ -1063,6 +1063,7 @@ const BankPaymentVoucher = () => {
         voucher_type_id={voucherTypes[2].voucher_id}
         page_name={voucherTypes[2].type_name}
         accountAbbr={`allexceptcash`}
+        isShowSelector={true} 
       /> 
   )
 }

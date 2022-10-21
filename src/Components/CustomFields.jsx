@@ -194,6 +194,7 @@ export const MyFileUpload = ({ label, ...props }) => {
           <input
             className="form-control"
             type="file"
+            accept="image/*"
             disabled={props.disabled}
             hidden={props.hidden}
             onChange={(e) => {

@@ -280,14 +280,14 @@ const AddPages = ({ pagePermission }) => {
       console.log(response , "role"); 
       if (response.status === 200 || response.status === 204 ) {
         toast.success(
-          "Page Name has been " +
-            (updateMode ? "Updated" : "Added" + " successfully!")
+         
+            (updateMode ?  "Page Name has been Updated" : "Page Name has been Added successfully!")
         );
         clearFields();
         fetchData();
       } else {
         response.json().then((json) => {
-          toast.error(json.Message);
+          // toast.error(json.Message);
         });
       }
     });

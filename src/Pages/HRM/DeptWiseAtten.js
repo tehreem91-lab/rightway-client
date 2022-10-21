@@ -12,6 +12,7 @@ import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import { toast } from "react-toastify";
 import ReactToPrint from "react-to-print";
 import { useRef } from "react";
+import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 const DeptWiseAtten = () => {
 
     const showNavMenu = useSelector((state) => state.NavState);
@@ -277,7 +278,7 @@ const DeptWiseAtten = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;Department Wise Attendance</span>
+                <CustomInnerHeader moduleName="Department Wise Attendance" isShowSelector={true} />
 
             </div>
             <div

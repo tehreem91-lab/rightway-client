@@ -111,7 +111,7 @@ function CustomForm(props) {
                     >
                       Cancel
                     </button>
-                    <button className="btn btn-primary" type="submit">
+                    <button className="btn btn-primary" type="submit" onClick={(data)=> props.formSubmit(data)} >
                       {props.updateMode ? "Update" : "Submit"}
                     </button>
                   </>

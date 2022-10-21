@@ -3,7 +3,7 @@ import React from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
-const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable }, ref) => {
+const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable, }, ref) => {
     return (
         <div>
             <div className="x_content px-0  mb-3">
@@ -14,8 +14,15 @@ const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable }, ref)
                     justify
                 >
                     {" "}
+
+                  
                     <Tab eventKey="profile" title="Receiveable" >
                         <div ref={ref}>
+                        <div className="displayPropertyForPrint">
+                        <h2 className="text-dark text-center font-weight-bold  ">
+                        Payable Receivable Report
+                        </h2>
+                          </div>
                             <div  className="row mx-3  reportTableHead bottom-border-1 ">
                                 <div className="  col-md-1   col-1    font-size-12  right-border-1  text-center  my-1">
                                     Sr.No

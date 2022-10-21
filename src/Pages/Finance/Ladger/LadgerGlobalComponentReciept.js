@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 const LadgerGlobalComponentReciept = React.forwardRef(
-  ({ LadgerData, dateFrom, dateTo, employeeNameForPrint }, ref) => {
+  ({ LadgerData, dateFrom, dateTo, employeeNameForPrint,page_name }, ref) => {
     const navigate = useNavigate();
     let curent_balance = LadgerData.opening_balance.opening_balance1;
     // initially its have opeining balance data but later map function call its update by adding debit and credit
@@ -9,9 +9,9 @@ const LadgerGlobalComponentReciept = React.forwardRef(
     return (
       <div>
         <div id="report" className="x_content mb-3" ref={ref}>
-          <div className="displayPropertyForPrint d-none">
+          <div className="displayPropertyForPrint ">
             <h2 className="text-dark text-center font-weight-bold  ">
-              Ladger Report
+            {page_name}
             </h2>
             <div className="row pb-2">
               <div className="col-md-4 col-4 pl-5 text-dark  text-center">

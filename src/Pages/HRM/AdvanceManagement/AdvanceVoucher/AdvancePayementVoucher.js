@@ -10,6 +10,7 @@ import Loader from '../../../../Layout/Loader/Loader';
 import { customStyles } from '../../../../Components/reactCustomSelectStyle';
 import dateToday, { dateFormaterForInput } from '../../../../config/todayDate';
 import { endPoint } from '../../../../config/Config';
+import CustomInnerHeader from "../../../../Components/CustomInnerHeader"
 // import dateToday, { dateFormaterForInput } from '../../../config/todayDate';
 // import { preventMinus } from '../../../config/preventMinus'
 
@@ -267,7 +268,7 @@ const AdvancePayementVoucher = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;Advance Payement Voucher</span>
+            <CustomInnerHeader moduleName="Advanced Payment Voucher" isShowSelector={true} />
             </div>
             <div
                 role="main"

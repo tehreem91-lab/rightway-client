@@ -8,6 +8,7 @@ import Tree from './Tree/Tree.js'
 import './Categories.css'
 import { endPoint } from '../../../config/Config'
 import { CustomAccountFormFour, CustomAccountFormOne, CustomAccountFormThree, CustomAccountFormTwo } from './CustomAccountForm'
+import CustomInnerHeader from '../../../Components/CustomInnerHeader';
 
 import { toast } from "react-toastify";
 
@@ -268,7 +269,7 @@ const Categories = ({ pagePermission }) => {
                 :
                 <> <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}>
-                    <span>&nbsp;Chart of Accounts</span>
+                    <CustomInnerHeader moduleName="Charts of Accounts" isShowSelector={true} />
                 </div>
                     <div
                         className={`right_col  h-100 ${showNavMenu == false ? "right_col-margin-remove" : "lorem "}   `} role="main"    >

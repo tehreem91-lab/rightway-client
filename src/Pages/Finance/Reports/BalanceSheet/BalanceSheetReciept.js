@@ -22,29 +22,22 @@ const BalanceSheetReciept = React.forwardRef(
                             <div className="row" ref={ref}>
                                 <div className="col-md-6 px-0">
                                     <div className="div_to_print_income">
-                                        <div className="displayPropertyForPrint d-none">
-                                            <h2 className="text-dark text-center font-weight-bold  ">
-                                                Ladger Report
-                                            </h2>
-                                            <div className="row pb-2">
-                                                <div className="col-md-4 col-4 text-dark text-center ">
-                                                    {" "}
-                                                    Date From:{" "}
-                                                    <strong className="text-dark  font-weight-bold ">
-                                                        {" "}
-                                                        {dateFrom}
-                                                    </strong>{" "}
-                                                </div>
-                                                <div className="col-md-4 col-4 text-dark  text-center">
-                                                    {" "}
-                                                    Date To :{" "}
-                                                    <strong className="text-dark  font-weight-bold ">
-                                                        {" "}
-                                                        {dateTo}
-                                                    </strong>{" "}
-                                                </div>
-                                            </div>
+                                    <div className="displayPropertyForPrint">
+                                    <h2 className="text-dark text-center font-weight-bold  ">
+                                       Balance Sheet Reciept
+                                    </h2>
+                                    <div className="row pb-2">
+                                        <div className="col-md-4 col-4 text-dark text-center ">
+                                            {" "}
+                                            Date To:{" "}
+                                            <strong className="text-dark  font-weight-bold ">
+                                                {" "}
+                                                {dateTo}
+                                            </strong>{" "}
                                         </div>
+                                        
+                                    </div>
+                                </div>
 
                                         <div className="row mx-3   bottom-border-1 bg-customBlue text-light">
                                             <div className="  col-md-6   col-4    font-size-12    text-left  my-1">

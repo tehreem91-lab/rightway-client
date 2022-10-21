@@ -6,6 +6,7 @@ import Select from "react-select";
 import { customStyles } from "../../Components/reactCustomSelectStyle";
 import { endPoint } from "../../config/Config";
 import Loader from "../../Layout/Loader/Loader";
+import CustomInnerHeader  from "../../Components/CustomInnerHeader"
 const BranchesPermission = () => {
   const [branchesOptions, setBranchesOptions] = useState([]);
   const [branchesValues, setBranchesValues] = useState("");
@@ -143,7 +144,7 @@ const BranchesPermission = () => {
         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
           }   `}
       >
-        <span>&nbsp; Branches Management</span>
+      <CustomInnerHeader moduleName="Branch Management" isShowSelector={true} />
       </div>
       {isLoading ? (
         <Loader />

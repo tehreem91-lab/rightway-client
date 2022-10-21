@@ -10,6 +10,7 @@ import axios from "axios";
 
 import { Button, Modal } from 'react-bootstrap';
 import EmployeeFormView from './EmployeeFormView';
+import CustomInnerHeader from '../../Components/CustomInnerHeader';
 
 function AddEmployee() {
     const showNavMenu = useSelector((state) => state.NavState);
@@ -553,7 +554,7 @@ function AddEmployee() {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                        <span>&nbsp;Employee Management</span>
+                       <CustomInnerHeader moduleName="Employee Managment" isShowSelector={true} />
                     </div>
                     <div
                         role="main"

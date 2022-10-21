@@ -10,6 +10,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import SalaryReportReciept from "./SalaryReportReciept.js";
+import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 
 const SalaryReport = () => {
 
@@ -235,7 +236,7 @@ const SalaryReport = () => {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                        <span>&nbsp;Employee Salary Report</span>
+                    <CustomInnerHeader moduleName="Employee Salary Report" isShowSelector={true} />
 
                     </div>
                     <div

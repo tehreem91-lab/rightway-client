@@ -4,7 +4,7 @@ import Select from 'react-select'
 import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import CustomInnerHeader from "../../../../Components/CustomInnerHeader"
 // import { endPoint } from '../../../config/Config' 
 import Loader from '../../../../Layout/Loader/Loader';
 import { customStyles } from '../../../../Components/reactCustomSelectStyle';
@@ -268,7 +268,7 @@ const LoanPayementVoucher = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;Loan Payement Voucher</span>
+            <CustomInnerHeader moduleName="Loan Payment Voucher" isShowSelector={true} />
             </div>
             <div
                 role="main"

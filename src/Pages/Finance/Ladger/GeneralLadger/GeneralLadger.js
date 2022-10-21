@@ -7,7 +7,6 @@ const GeneralLadger = () => {
 
             <LadgerGlobalComponent
                 account_type="all" page_name="Ladger Report" />
-
         </div>
     )
 }
