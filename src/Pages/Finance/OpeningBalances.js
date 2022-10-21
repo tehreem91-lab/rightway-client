@@ -8,7 +8,13 @@ import { preventMinus } from "../../config/preventMinus";
 import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+<<<<<<< HEAD
+import ReactToPrint from "react-to-print";
+import { useRef } from "react";
+
+=======
 import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
+>>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
 const customStyles = {
   control: (provided, state, base) => ({
     ...provided,
@@ -51,6 +57,8 @@ const OpeningBalances = () => {
   const [accountList, setAccountList] = useState([{}]);
   const [accountListCSV, setAccountListCSV] = useState([{}]);
   const [reRender, setreRender] = useState(false);
+  const componentRef = useRef();
+
 
   const [visableDiv, setVisableDiv] = useState("true");
   const setDivToVisable = (displayDiv) => {
@@ -75,9 +83,8 @@ const OpeningBalances = () => {
       method: "get",
       url: `${endPoint}api/ChartOfAccounts/GetCategoriesByLevel?level=4`,
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("access_token")).access_token
-        }`,
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
       },
     };
     await axios(config)
@@ -98,9 +105,8 @@ const OpeningBalances = () => {
       method: "get",
       url: `${endPoint}api/OpeningBalane/GetData?fiscal_year_id=1&account=${e.category_id}`,
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("access_token")).access_token
-        }`,
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
       },
     };
 
@@ -173,7 +179,7 @@ const OpeningBalances = () => {
     };
 
     axios(config)
-      .then(function (response) {})
+      .then(function (response) { })
       .catch(function (error) {
         console.log(error);
       });
@@ -231,29 +237,26 @@ const OpeningBalances = () => {
       ) : (
         <>
           <div
-            className={`container-fluid page-title-bar ${
-              showNavMenu == false ? "right_col-margin-remove" : ""
-            }   `}
+            className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+              }   `}
           >
           <CustomInnerHeader moduleName="Manage Opening Balance" isShowSelector={true} />
           </div>
           <div
             role="main"
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "right_col-margin-remove" : " "
-            } `}
+            className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
+              } `}
           >
             <div className="x_panel  ">
               <div className="x_content">
                 <span className="section pl-3">
                   <div className="row   pt-3">
                     <div className="col-3">
-                      <i className="fa fa-list"></i>&nbsp;Listing
+                      <i className="fa fa-filter"></i>&nbsp;Select Account
                     </div>
                     <div className="col-9 text-right "></div>
                   </div>
                 </span>
-
                 <div className="row">
                   <div className="field item form-group col-md-12 col-sm-12">
                     <label className="col-form-label col-md-2 col-sm-2 label-align">
@@ -299,24 +302,37 @@ const OpeningBalances = () => {
                       )}
                     </div>
                   </div>
-                </div>
+                </div></div></div>
+            <div className="x_panel  ">
+              <div className="x_content">
+                <span className="section pl-3">
+                  <div className="row   pt-3">
+                    <div className="col-3">
+                      <i className="fa fa-list"></i>&nbsp;Listing
+                    </div>
+                    <div className="col-9 text-right "></div>
+                  </div>
+                </span>
+
+
 
                 {/* ///////////////////////For Downloadling Data/////////////////////////// */}
                 <div className="col-md-12 col-sm-12 pr-4" align="right">
                   <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                     <div className="form-group col-md-3">
-                      {/* <ReactToPrint
+
+                      <ReactToPrint className="form-group col-md-3"
                         trigger={() => {
-                          return ( */}
-                      <button className="btn btn-sm btn-primary borderRadiusRound">
-                        <i className="fa fa-print"></i>
-                      </button>
-                      {/* );
+                          return (
+                            <button className="btn btn-sm btn-primary borderRadiusRound">
+                              <i className="fa fa-print"></i>
+                            </button>
+                          );
                         }}
                         content={() => componentRef.current}
                         documentTitle="new docs"
                         pageStyle="print"
-                      /> */}
+                      />
                     </div>
 
                     <div className="form-group col-md-3">
@@ -343,16 +359,18 @@ const OpeningBalances = () => {
 
                 {/* //////////////////////////Form Structure///////////////////////////////// */}
                 <div id="report">
-                  <div className="table-responsive px-3 pb-2 ">
+                  <div className="table-responsive px-3 pb-2 " ref={componentRef}>
+                    <div className="displayPropertyForPrint">
+                      <h2 className="text-dark text-center font-weight-bold  ">
+                        Opening Balances
+                      </h2>
+                    </div>
+
                     <table className="table table-striped jambo_table bulk_action ">
                       <thead>
-                        <tr className="headings reportTableHead">
-                          <th
-                            className="column-title col-md-3 col-3 right-border-1 text-center "
-                            width="10%"
-                          >
-                            {" "}
-                            Code{" "}
+                        <tr className="headings reportTableHead bottom-border-1 ">
+                          <th className="column-title right-border-1 text-center" width="10%">
+                            Code
                           </th>
                           <th className="column-title  right-border-1 text-center">
                             Account Name
@@ -435,8 +453,6 @@ const OpeningBalances = () => {
                             </tr>
                           );
                         })}
-                      </tbody>
-                      <tfoot>
                         <tr className="font-weight-bold">
                           <td></td>
                           <td className="col-md-12 col-sm-12" align="right">
@@ -457,7 +473,29 @@ const OpeningBalances = () => {
                               .reduce((a, b) => a + b, 0)}
                           </td>
                         </tr>
-                      </tfoot>
+                      </tbody>
+                      {/* <tfoot>
+                        <tr className="font-weight-bold">
+                          <td></td>
+                          <td className="col-md-12 col-sm-12" align="right">
+                            Total:
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.debit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.credit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                        </tr>
+                      </tfoot> */}
                     </table>
                   </div>
                 </div>

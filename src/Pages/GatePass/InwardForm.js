@@ -7,15 +7,20 @@ import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { preventMinus } from '../../config/preventMinus.js';
+<<<<<<< HEAD
+import { useLocation } from 'react-router-dom';
+=======
 import CustomInnerHeader from '../../Components/CustomInnerHeader.jsx';
+>>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
 
-function InwardForm() {
+const InwardForm = (props) => {
     const [noOfRows, setNoOfRows] = useState(1);
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(true);
 
     const [ListOfParty, setListOfParty] = useState([]);
     const [ListOfPartyPost, setListOfPartyPost] = useState([]);
+    const [dataForUpdate, setDataForUpdate] = useState([]);
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -30,11 +35,15 @@ function InwardForm() {
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
     const [fileEntity, setFileEntity] = useState([]);
+    const [gatepassID, setGatepassID] = useState("");
 
     const [stockValue, setStockValue] = useState("");
     const [stock, setStock] = useState([]);
     const [packetValue, setPacketValue] = useState("");
     const [packet, setPacket] = useState([]);
+    const location = useLocation();
+    const [updateMode, setUpdateMode] = useState(false);
+
 
     const optionsInwardType = [
         { value: 'purchase', label: 'Purchase' },
@@ -79,7 +88,7 @@ function InwardForm() {
         })
     }
 
-    const fetchData = async () => {
+    const fetchPartyData = async () => {
         var config = {
             method: "get",
             url: `${endPoint}api/PartyInfo/GetPartyData`,
@@ -95,13 +104,17 @@ function InwardForm() {
                     ...response.data,
                 ]);
                 setisLoading(false);
+                { console.log("selected", location.state.gatepassID) }
+                const gpid =
+                    setGatepassID(location.state.gatepassID)
+                gatepassID !== "" ? setUpdateMode(true) : setUpdateMode(false)
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
 
-    const fetchAllData = async (e) => {
+    const fetchStockData = async (e) => {
 
         var axios = require('axios');
 
@@ -122,6 +135,7 @@ function InwardForm() {
                     stockarr.push({
                         label: item?.stock_account.stock_account_label,
                         value: item?.stock_account?.stock_account_value,
+                        stock_account_unit: item?.stock_account?.stock_account_unit,
 
                         childElement: item.packets_details.map((er) => {
                             return {
@@ -141,8 +155,7 @@ function InwardForm() {
             });
     };
 
-    const postData1 = async () => {
-
+    const updateData = async () => {
         var axios = require('axios');
         var data = JSON.stringify({
             "party_chart_id": selectedValue.chart_id,
@@ -155,23 +168,23 @@ function InwardForm() {
             "bilty_no": ListOfPartyPost.bilty_no,
             "inward_type": ListOfPartyPost.inward_type,
             "remarks": ListOfPartyPost.remarks,
-            "attachments": ListOfPartyPost.attachments,
-            "stock_entries": [
-                {
-                    "stock_chart_id": ListOfPartyPost.stock_account.stock_account_value,
-                    "stock_unit_id": ListOfPartyPost.packets_details.stock_packet_id,
-                    "pair_unit_id": ListOfPartyPost.packets_details.pair_base_unit,
-                    "total_stock_pieces": ListOfPartyPost.total_stock_pieces,
-                    "weight_per_piece": ListOfPartyPost.weight_per_piece,
-                    "tatal_weight": ListOfPartyPost.tatal_weight
+            "attachments": fileEntity.join(",").toString(),
+            "stock_entries": StockRecordsValue.length === 0 ? [] : StockRecordsValue.map((i) => {
+                return {
+                    "stock_chart_id": i.stock_chart_id,
+                    "stock_unit_id": i.stock_unit_id,
+                    "pair_unit_id": i.pair_unit_id,
+                    "total_stock_pieces": i.total_stock_pieces,
+                    "weight_per_piece": i.weight_per_piece,
+                    "tatal_weight": i.tatal_weight
                 }
-            ]
+            })
         });
 
         var config = {
-            method: 'post',
-            url: 'http://rightway-api.genial365.com/api/GatePassInward/PostData',
-            //url: `${endPoint}api/GatePassInward/PostData`,
+            method: 'put',
+            url: 'http://rightway-api.genial365.com/api/GatePassInward/PutData?gate_pass_main_id=231',
+            //url: `${endPoint}api/GatePassInward/PutData?gate_pass_main_id=${e}`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
                 'Content-Type': 'application/json'
@@ -187,21 +200,40 @@ function InwardForm() {
                 console.log(error);
             });
 
-    }
+
+    };
+
+    const fetch_selected_voucher_detail = () => {
+        setUpdateMode(false);
+        var config = {
+            method: 'get',
+            //url: `${endPoint}api/GatePassInward/GetGatePassById?gate_pass_main_id=221`,
+            url: `${endPoint}api/GatePassInward/GetGatePassById?gate_pass_main_id=${gatepassID}`,
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+            }
+        };
+
+        axios(config)
+            .then(function (response) {
+                //console.log(response.data);
+                setListOfParty(response.data);
+                setUpdateMode(true);
+                // setroutePathToBeNavigate(voucherTypes.find(
+                //     (o) => o.voucher_id === response.data.voucher_type_id
+                // ).multiple_router_path)
+
+
+                //setisShowVoucher(true)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    };
 
     const postData = async () => {
 
-        // var records_data = ListOfPartyPost.map((i) => {
-        //     return {
-        //         "stock_chart_id": i.stock_account.stock_account_value,
-        //         "stock_unit_id": i.packets_details.stock_packet_id,
-        //         "pair_unit_id": i.packets_details.pair_base_unit,
-        //         "total_stock_pieces": i.total_stock_pieces,
-        //         "weight_per_piece": i.weight_per_piece,
-        //         "tatal_weight": i.tatal_weight
-        //     }
-
-        // })
 
         var axios = require('axios');
         var data = JSON.stringify({
@@ -218,9 +250,15 @@ function InwardForm() {
             "attachments": ListOfPartyPost.attachments,
             "stock_entries": ListOfParty.map((i) => {
                 return {
+<<<<<<< HEAD
+                    "stock_chart_id": i.stock_chart_id,
+                    "stock_unit_id": i.stock_unit_id,
+                    "pair_unit_id": i.pair_unit_id,
+=======
                     "stock_chart_id": i.stock_account.stock_account_value,
                     "stock_unit_id": i.packets_details.stock_packet_id,
                     "pair_unit_id": i.packets_details.pair_base_unit,
+>>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
                     "total_stock_pieces": i.total_stock_pieces,
                     "weight_per_piece": i.weight_per_piece,
                     "tatal_weight": i.tatal_weight
@@ -242,18 +280,87 @@ function InwardForm() {
         };
 
         axios(config)
+            // .then(function (response) {
+            //     console.log(JSON.stringify(response.data));
+            // })
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
+                if (response.status === 200) {
+
+                    toast.success("Inward Form Information has been Added successfully!")
+                    fetchStockData();
+                }
+                else {
+                    toast.error("An error occured!")
+                    fetchStockData();
+                }
             })
             .catch(function (error) {
                 console.log(error);
+                // console.table(data);
+                // console.table(JSON.stringify(data));
             });
 
-    }
+    };
+
+    const formSubmit = () => {
+        console.log(updateMode, "mode");
+
+        fetch(
+            URL +
+            (updateMode ? "/api/GatePassInward/PutData?gate_pass_main_id=" + gatepassID
+                : "/api/GatePassInward/PostData"),
+            {
+                method: updateMode ? "PUT" : "POST",
+                headers: {
+                    Authorization:
+                        "Bearer " +
+                        JSON.parse(localStorage.getItem("access_token")).access_token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "party_chart_id": selectedValue.chart_id,
+                    "date": selectedDate,
+                    "vehicle_no": ListOfPartyPost.vehicle_no,
+                    "drive_name": ListOfPartyPost.drive_name,
+                    "driver_cell": ListOfPartyPost.driver_cell,
+                    "rent_type": ListOfPartyPost.rent_type,
+                    "rent_amount": ListOfPartyPost.rent_amount,
+                    "bilty_no": ListOfPartyPost.bilty_no,
+                    "inward_type": ListOfPartyPost.inward_type,
+                    "remarks": ListOfPartyPost.remarks,
+                    "attachments": fileEntity.join(",").toString(),
+                    "stock_entries": StockRecordsValue.length === 0 ? [] : StockRecordsValue.map((i) => {
+                        return {
+                            "stock_chart_id": i.stock_chart_id,
+                            "stock_unit_id": i.stock_unit_id,
+                            "pair_unit_id": i.pair_unit_id,
+                            "total_stock_pieces": i.total_stock_pieces,
+                            "weight_per_piece": i.weight_per_piece,
+                            "tatal_weight": i.tatal_weight
+                        }
+
+                    })
+                }),
+            }
+        ).then((response) => {
+            if (response.status === 201 || response.status === 400 || response.status === 204) {
+
+                toast.success(
+                    "Entry has been " +
+                    (updateMode ? "Updated" : "Added" + " successfully!")
+                );
+                //clearFields();
+                fetchStockData();
+                fetchPartyData();
+
+            }
+        });
+    };
+
 
     const CustomEffectRerendered = async () => {
-        await fetchAllData();
-        await fetchData();
+        await fetchStockData();
+        await fetchPartyData();
     }
 
     useEffect(() => {
@@ -304,7 +411,8 @@ function InwardForm() {
                                                         placeholder={"Select Inward Type"}
                                                         // getOptionLabel={(e) => e.salary_label}
                                                         // getOptionValue={(e) => e.salary_value}
-                                                        value={optionsInwardType.find(e => Number(e.value) == ListOfParty.inward_type)}
+                                                        //value={optionsInwardType.find(e => Number(e.value) == ListOfParty.inward_type)}
+                                                        value={optionsInwardType.find(e => e.value == ListOfParty.inward_type)}
                                                         options={optionsInwardType}
                                                         styles={customStyles}
                                                         onChange={(e) => {
@@ -465,10 +573,12 @@ function InwardForm() {
                                                 <label className="col-form-label col-md-3 col-sm-3 label-align"> Vehicle No. </label>
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
-                                                        type="number"
+                                                        type="text"
                                                         className='form-control'
                                                         placeholder=""
-                                                        value={ListOfParty.vehicle_no}
+                                                        //value={ListOfParty.vehicle_no}
+                                                        value={ListOfParty.vehicle_number}
+                                                        onInput={(er) => (er.target.value = er.target.value.slice(0, 7))}
                                                         onChange={(e) => {
                                                             setListOfPartyPost({
                                                                 ...ListOfPartyPost,
@@ -488,7 +598,8 @@ function InwardForm() {
                                                         type="text"
                                                         className='form-control'
                                                         placeholder=""
-                                                        value={ListOfParty.drive_name}
+                                                        //value={ListOfParty.drive_name}
+                                                        value={ListOfParty.driver}
                                                         onChange={(e) => {
                                                             setListOfPartyPost({
                                                                 ...ListOfPartyPost,
@@ -524,7 +635,8 @@ function InwardForm() {
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
                                                         placeholder={"Select Rent Type"}
-                                                        value={optionsRentType.find(e => Number(e.value) == ListOfParty.rent_type)}
+                                                        //value={optionsRentType.find(e => Number(e.value) == ListOfParty.rent_type)}
+                                                        value={optionsRentType.find(e => e.value == ListOfParty.rent_type)}
                                                         options={optionsRentType}
                                                         styles={customStyles}
                                                         onChange={(e) => {
@@ -549,7 +661,7 @@ function InwardForm() {
                                                         onChange={(e) => {
                                                             setListOfPartyPost({
                                                                 ...ListOfPartyPost,
-                                                                rent_amount: e.target.value
+                                                                rent_amount: parseInt(e.target.value)
                                                             });
                                                         }}
                                                     />
@@ -623,12 +735,144 @@ function InwardForm() {
                                                     TOTAL WEIGHT
                                                 </th>
                                                 <th className="column-title text-center" width="15%">
-                                                    CONDITION
+                                                    Action
                                                 </th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
+<<<<<<< HEAD
+                                            {StockRecordsValue.map(((eachBenValue, index) => {
+                                                return <tr>
+                                                    <td>
+                                                        <Select
+                                                            className="col-md-11 col-sm-11"
+                                                            key={index}
+                                                            //value={StockRecordsValue[index].stock_account_value}
+                                                            value={StockRecordsValue[index].stock_account_value}
+                                                            //value= { value: item.designation_id, label: item.designationName },
+
+                                                            isSearchable={true}
+                                                            styles={customStyles}
+                                                            options={stock}
+                                                            onChange={(e) => {
+                                                                console.log("1eee hai", e);
+                                                                setStockValue(e);
+                                                                const objectData = StockRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...e,
+                                                                    //stock_chart_id: objectData[index].stock_account_value,
+                                                                    stock_unit_id: e.stock_account_unit,
+
+                                                                    stock_chart_id: e.value,
+                                                                    //label: e.label,
+
+                                                                }
+                                                                setStockRecordsValue(objectData)
+                                                                //setReRender(!reRender)
+                                                                console.log(objectData)
+                                                                console.log(StockRecordsValue)
+                                                            }}
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <Select
+                                                            className="col-md-11 col-sm-11"
+                                                            key={index}
+                                                            value={StockRecordsValue[index].stock_packet_id}
+                                                            //value={ListOfParty?.packets_details?.stock_packet_id}
+                                                            isSearchable={true}
+                                                            styles={customStyles}
+                                                            options={stockValue.childElement}
+                                                            onChange={(e) => {
+                                                                console.log("2eee hai", e);
+                                                                const objectData = StockRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...e,
+                                                                    //stock_chart_id: objectData[index].stock_account_value,
+                                                                    // stock_packet_id: objectData[index].stock_packet_id,
+                                                                    // packet_title: objectData[index].packet_title,
+                                                                    // pair_base_unit: objectData[index].pair_base_unit,
+                                                                    // stock_chart_id: stockValue.value,
+                                                                    // stock_unit_id: e.value,
+
+                                                                    stock_unit_id: stockValue.stock_account_unit,
+                                                                    stock_chart_id: stockValue.value,
+                                                                    pair_unit_id: e.value,
+                                                                }
+                                                                setStockRecordsValue(objectData)
+                                                                //setReRender(!reRender)
+                                                            }}
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <input
+                                                            className="form-control"
+                                                            name="Pieces" min="0"
+                                                            placeholder=""
+                                                            value={StockRecordsValue[index].total_stock_pieces}
+                                                            type="number"
+                                                            key={index}
+                                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 6))}
+                                                            onChange={(e) => {
+                                                                const objectData = StockRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...objectData[index],
+                                                                    total_stock_pieces: parseInt(e.target.value)
+                                                                }
+                                                                setStockRecordsValue(objectData)
+                                                                // setReRender(!reRender)
+                                                            }} />
+                                                    </td>
+                                                    <td>
+                                                        <input
+                                                            className="form-control"
+                                                            name="Piece Weight" min="0"
+                                                            placeholder=""
+                                                            value={StockRecordsValue[index].weight_per_piece}
+                                                            type="number"
+                                                            key={index}
+                                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 6))}
+                                                            onChange={(e) => {
+                                                                const objectData = StockRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...objectData[index],
+                                                                    weight_per_piece: parseInt(e.target.value)
+                                                                }
+                                                                setStockRecordsValue(objectData)
+                                                            }} />
+                                                    </td>
+                                                    <td>
+                                                        <input
+                                                            className="form-control"
+                                                            name="Total Weight" min="0"
+                                                            placeholder=""
+                                                            value={StockRecordsValue[index].tatal_weight}
+                                                            type="number"
+                                                            key={index}
+                                                            onInput={(er) => (er.target.value = er.target.value.slice(0, 6))}
+                                                            onChange={(e) => {
+                                                                const objectData = StockRecordsValue;
+                                                                objectData[index] = {
+                                                                    ...objectData[index],
+                                                                    tatal_weight: parseInt(e.target.value)
+                                                                }
+                                                                setStockRecordsValue(objectData)
+                                                            }} />
+                                                    </td>
+                                                    <td>      {(stock?.length - 1) > (StockRecordsValue?.length - 1) &&
+                                                        <div className="col-md-1 col-sm-1  " style={{ marginLeft: "-12px", marginTop: "5px" }}>
+                                                            <i className="fa fa-plus-circle text-customBlue"
+                                                                onClick={() => {
+                                                                    setStockRecordsValue([...StockRecordsValue, {
+                                                                        stock_chart_id: "",
+                                                                        stock_unit_id: "",
+                                                                        pair_unit_id: "",
+                                                                        total_stock_pieces: "",
+                                                                        weight_per_piece: "",
+                                                                        tatal_weight: "",
+                                                                    }])
+=======
                                             {[...Array(noOfRows)].map((elementInArray, index) => {
                                                 return (
                                                     <tr className="even pointer" key={index}>
@@ -649,6 +893,7 @@ function InwardForm() {
                                                                             stock_account_label: e.label
                                                                         },
                                                                     });
+>>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
                                                                 }}
                                                             />
                                                         </td>
@@ -768,9 +1013,29 @@ function InwardForm() {
                                         className="btn btn-primary"
                                         type="submit"
                                         onClick={() => {
+<<<<<<< HEAD
+                                            let is_form_validated = true;
+                                            console.log("hayee", Number(ListOfParty.inward_type) === 0, Number(selectedValue) === 0, Number(ListOfParty.vehicle_no) === 0);
+
+                                            if (Number(ListOfParty.inward_type) === 0 || Number(selectedValue) === 0 || Number(ListOfParty.vehicle_no) === 0 || Number(ListOfParty.drive_name) === 0
+                                                || Number(ListOfParty.driver_cell) === 0 || Number(ListOfParty.rent_type) === 0 || Number(ListOfParty.rent_amount) === 0 || Number(ListOfParty.bilty_no) === 0) {
+                                                setIsValidateValue(false);
+                                                is_form_validated = false;
+                                            }
+
+                                            if (is_form_validated === true) {
+                                                postData();
+                                                //fetch_selected_voucher_detail();
+                                                //updateData();
+                                                fetchStockData();
+                                                //setisLoading(true);
+                                                formSubmit();
+                                            }
+=======
 
                                             postData();
                                             //fetchAllData();
+>>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
                                         }}
                                     >
                                         Save and Publish
@@ -785,5 +1050,5 @@ function InwardForm() {
             )}
         </>
     );
-}
+};
 export default InwardForm;

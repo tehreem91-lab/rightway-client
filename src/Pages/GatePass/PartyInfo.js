@@ -6,6 +6,7 @@ import { customStyles } from '../../Components/reactCustomSelectStyle';
 import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Creatable from "react-select/creatable";
 import CustomInnerHeader from '../../Components/CustomInnerHeader.jsx';
 import { Button, Modal } from 'react-bootstrap';
 
@@ -21,10 +22,17 @@ function PartyInfo() {
     const [selectedValue, setSelectedValue] = useState("");
     const [inputOptions, setInputOptions] = useState("");
 
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [categoryOptions, setCategoryOptions] = useState("");
+
     const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
     const [isFileUploadingModeOn, setIsFileUploadingModeOn] = useState(false)
     const [fileEntity, setFileEntity] = useState([]);
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const ref = useRef();
     const reset = () => {
@@ -75,6 +83,48 @@ function PartyInfo() {
             });
     };
 
+    const fetchPartyCategory = async () => {
+        var config = {
+            method: "get",
+            url: `${endPoint}api/ChartOfAccounts/GetCategoriesByParentId?id=1233`,
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
+                    }`,
+            },
+        };
+        await axios(config)
+            .then(function (response) {
+                setCategoryOptions([
+                    ...response.data,
+                ]);
+                setisLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    const fetchPartyCategory = async () => {
+        var config = {
+            method: "get",
+            url: `${endPoint}api/ChartOfAccounts/GetCategoriesByParentId?id=1233`,
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
+                    }`,
+            },
+        };
+        await axios(config)
+            .then(function (response) {
+                setCategoryOptions([
+                    ...response.data,
+                ]);
+                setisLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     const fetchAllData = async (e) => {
 
         var axios = require('axios');
@@ -90,7 +140,7 @@ function PartyInfo() {
         axios(config)
             .then(function (response) {
                 setListOfParty(response.data);
-                console.log(JSON.stringify(response.data));
+                //console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -98,34 +148,78 @@ function PartyInfo() {
 
     };
 
-    const postData = async () => {
+    const postNewParty = async () => {
         var axios = require('axios');
-        if(selectedValue === ""|| selectedAttachmentFile === "" )
-        {
-              setisValidateValue(false)
-        }else{
         var data = JSON.stringify({
-            "chart_id": selectedValue.chart_id,
-            "party_cell": ListOfPartyPost.cell,
-            "party_address": ListOfPartyPost.address,
-            "party_attachments": ListOfPartyPost.attachments
+            "title": ListOfPartyPost.newParty,
+            "stock_unit_id": 1,
+            "level": 5,
+            "parent_id": selectedCategory.category_id,
+            "page_name": "string"
         });
 
         var config = {
             method: 'post',
-            //   url: 'http://rightway-api.genial365.com/api/PartyInfo/PostData',
-            url: `${endPoint}api/PartyInfo/PostData`,
+            url: `${endPoint}api/ChartOfAccounts/PostData`,
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
                 'Content-Type': 'application/json'
             },
             data: data
         };
-    }
+
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
-                toast.success("Your Response has been Added")
+                // console.log(JSON.stringify(response.data));
+                if (response.status === 200) {
+                    toast.success("New Party has been Created successfully!");
+                    fetchData();
+                } else {
+                    response.json().then((json) => {
+                        toast.error(json.Message);
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+
+    const postData = async () => {
+        var axios = require('axios');
+        if (selectedValue === "" || selectedAttachmentFile === "") {
+            setisValidateValue(false)
+        } else {
+            var data = JSON.stringify({
+                "chart_id": selectedValue.chart_id,
+                "party_cell": ListOfPartyPost.cell,
+                "party_address": ListOfPartyPost.address,
+                "party_attachments": ListOfPartyPost.attachments
+            });
+
+            var config = {
+                method: 'post',
+                //   url: 'http://rightway-api.genial365.com/api/PartyInfo/PostData',
+                url: `${endPoint}api/PartyInfo/PostData`,
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: data
+            };
+        }
+        axios(config)
+            .then(function (response) {
+                //console.log(JSON.stringify(response.data));
+                if (response.status === 200) {
+                    toast.success("Party Information has been Added Successfully!");
+                    fetchData();
+                } else {
+                    response.json().then((json) => {
+                        toast.error(json.Message);
+                    });
+                }
             })
             .catch(function (error) {
                 console.log(error);
@@ -136,7 +230,9 @@ function PartyInfo() {
 
     useEffect(() => {
         fetchData();
+        fetchPartyCategory();
         fetchAllData();
+
     }, []);
 
     return (
@@ -152,7 +248,7 @@ function PartyInfo() {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                    <CustomInnerHeader moduleName="Part Info" isShowSelector={true} />
+                        <CustomInnerHeader moduleName="Part Info" isShowSelector={true} />
                     </div>
                     <div
                         role="main"
@@ -180,13 +276,14 @@ function PartyInfo() {
                                         </label>
                                         <div className="col-md-3 col-sm-3">
                                             <div>
-                                                <Select
+                                                <Creatable
+                                                    isClearable
                                                     placeholder={"Select Party"}
                                                     getOptionLabel={(e) => e.account_name}
                                                     getOptionValue={(e) => e.chart_id}
                                                     value={selectedValue}
                                                     options={inputOptions}
-                                                    //onChange={handleChange}
+                                                    styles={customStyles}
                                                     onChange={(e) => {
                                                         setSelectedValue(e) &&
                                                             setListOfPartyPost({
@@ -194,12 +291,71 @@ function PartyInfo() {
                                                                 chart_id: e.target.value
                                                             });
                                                     }}
-                                                    styles={customStyles}
                                                 />
-                                                 {!isValidateValue && Number(selectedValue === "") && <span className="text-danger">First Select this field </span>} 
+                                                {!isValidateValue && Number(selectedValue === "") && <span className="text-danger">First Select this field </span>}
 
                                             </div>
+
                                         </div>
+                                        <>
+                                            <button className="btn btn-sm btn-outline-primary" style={{ marginTop: "2px" }} type="submit" variant="primary" onClick={handleShow}>
+                                                <i className="fa fa-plus"></i>
+                                            </button>
+                                            <Modal show={show} onHide={handleClose}>
+                                                <Modal.Header >
+                                                    <Modal.Title>
+                                                        <i className="fa fa-plus"></i>&nbsp;Create New Party
+                                                    </Modal.Title>
+                                                    <Button variant="secondary" className="btn-close" onClick={handleClose}> x </Button>
+                                                </Modal.Header>
+                                                <Modal.Body>Please select the category of this newly created party
+                                                    <Select
+                                                        placeholder={"Select Party Category"}
+                                                        getOptionLabel={(e) => e.category_name}
+                                                        getOptionValue={(e) => e.category_id}
+                                                        value={selectedCategory}
+                                                        options={categoryOptions}
+                                                        styles={customStyles}
+                                                        onChange={(e) => {
+                                                            setSelectedCategory(e)
+                                                        }}
+                                                    />
+                                                    <input required
+                                                        name="name"
+                                                        className='form-control' style={{ marginTop: "10px" }}
+                                                        placeholder="Enter Party Name"
+                                                        value={ListOfParty.newParty}
+                                                        onChange={(e) => {
+                                                            setListOfPartyPost({
+                                                                ...ListOfPartyPost,
+                                                                newParty: e.target.value
+                                                            });
+                                                        }}
+                                                    />
+                                                </Modal.Body>
+                                                <Modal.Footer>
+                                                    {/* <Button variant="secondary" onClick={handleClose}>
+                                                        Close
+                                                    </Button>
+                                                    <Button variant="primary" onClick={handleClose}>Save Changes</Button> */}
+                                                    <div className="col-md-12 text-right x_footer">
+                                                        <button
+                                                            className="btn btn-primary"
+                                                            type="submit"
+                                                            onClick={() => {
+                                                                postNewParty();
+                                                                fetchData();
+                                                                handleClose();
+                                                            }}
+                                                        >
+                                                            Create Party
+                                                        </button>
+                                                    </div>
+                                                </Modal.Footer>
+                                            </Modal>
+                                        </>
+
+
 
                                         <label className="col-form-label col-md-2 col-sm-2 label-align">
                                             Account Code <span className="required">*</span>
@@ -214,7 +370,7 @@ function PartyInfo() {
                                                     isDisabled
                                                     styles={customStyles}
                                                 />
-                                                {!isValidateValue && Number(selectedValue === "") && <span className="text-danger">First Select this field </span>} 
+                                                {!isValidateValue && Number(selectedValue === "") && <span className="text-danger">First Select this field </span>}
                                             </div>
                                         </div>
                                     </div>
@@ -239,7 +395,7 @@ function PartyInfo() {
                                             </div>
                                         </div>
 
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                        <label className="col-form-label col-md-2 col-sm-2 label-align" style={{ marginLeft: "35px" }}>
                                             Cell <span className="required">*</span>
                                         </label>
                                         <div className="col-md-3 col-sm-3">
@@ -315,7 +471,7 @@ function PartyInfo() {
                                         <label className="col-form-label col-md-4 col-sm-4 label-align">Select Attachment</label>
 
                                         <div className="row">
-                                            <div className="col-md-10 ">
+                                            <div className="col-md-9 col-sm-9" style={{ marginLeft: "10px", marginRight: "10px" }}>
                                                 <input
                                                     ref={ref}
                                                     type="file"
@@ -330,7 +486,7 @@ function PartyInfo() {
                                                 />
                                                 {!isValidateValue && Number(selectedAttachmentFile === "") && <span className="text-danger">First Select this field </span>}
                                             </div>
-                                            <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                                            <div className="col-md-1 col-sm-1 " style={{ paddingTop: "1.5px" }}>
                                                 {
                                                     isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
                                                         <span className="sr-only">Loading...</span>

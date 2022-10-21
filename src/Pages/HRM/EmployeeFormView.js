@@ -372,6 +372,7 @@ const EmployeeFormView = (props) => {
 
                                             {props.benefitsRecordsValue.map(((eachBenValue, index) => {
                                                 return <Select
+                                                    className="col-md-11 col-sm-11 form-group" style={{ marginTop: "2px" }}
                                                     isDisabled
                                                     isSearchable={true}
                                                     name="Benefit amount"
@@ -430,7 +431,7 @@ const EmployeeFormView = (props) => {
 
                                             {props.benefitsRecordsValue.map(((eachBenValue, index) => {
                                                 return <input
-                                                    className="form-control"
+                                                    className="form-control" style={{ marginBottom: "2px" }}
                                                     name="Benefit amount"
                                                     placeholder=""
                                                     value={props.benefitsRecordsValue[index].amount}
