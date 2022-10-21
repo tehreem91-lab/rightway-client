@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react';
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
 import Loader from '../../Layout/Loader/Loader';
+import CustomInnerHeader from '../../Components/CustomInnerHeader';
 const AvailableStock = () => {
     const showNavMenu = useSelector((state) => state.NavState);
 const navigation = useNavigate();
@@ -58,7 +59,7 @@ useEffect(() => {
             className={`container-fluid page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
                 }   `}
         >
-            <span>&nbsp;Stock Mangement</span>
+        <CustomInnerHeader moduleName="Stock Managment" isShowSelector={true} />
            </div>
            
            <div
@@ -78,14 +79,14 @@ useEffect(() => {
                                     </div>
                                 </div>
                             </span>
-                            <div className="table-responsive px-3 pb-2">
-                                <table className="table table-striped jambo_table bulk_action">
+                            <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll' ,height: '400px'}}>
+                                <table className="table table-striped jambo_table bulk_action"  >
                                     <thead>
                                         <tr className="headings">
                                         <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
                                             <th className="column-title  right-border-1 text-center" width="20%"> Name </th>
-                                            <th className="column-title  right-border-1 text-center">Code</th>
-                                            <th className="column-title  right-border-1 text-center">Unit</th>
+                                            <th className="column-title  right-border-1 text-center" width="20%">Code</th>
+                                            <th className="column-title  right-border-1 text-center" width="10%">Unit</th>
                                             <th className="column-title text-center" width="10%">
                                                 Action
                                             </th>
@@ -98,9 +99,9 @@ useEffect(() => {
     
                                             <>
                                             <tr className="even pointer"  >
-                                            <td className="text-center">{index+1}</td>
-                                            <td className="text-center">{item.stock_account.stock_account_label}</td>
-                                            <td className="text-center">{item.stock_account.stock_account_code} </td>
+                                            <td >{index+1}</td>
+                                            <td className="">{item.stock_account.stock_account_label}</td>
+                                            <td className="">{item.stock_account.stock_account_code} </td>
                                             <td className="text-center">{item.stock_account.stock_unit_name} </td>
                                             <td
                                                 className="a-right a-right     text-center"

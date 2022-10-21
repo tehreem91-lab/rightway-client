@@ -46,20 +46,7 @@ const PLStatementReciept = React.forwardRef(
                       </div>
                     </div>
 
-                    <div className="row mx-3   bottom-border-1 bg-customBlue text-light">
-                      <div className="  col-md-6   col-4    font-size-12    text-left  my-1">
-                        <b> Account Title</b>
-                      </div>
-                      <div className="  col-md-6  col-8    font-size-12     text-center  my-1">
-                        <div className="row">
-                          <div className="col-md-4"></div>
-                          <div className="col-md-4"></div>
-                          <div className="col-md-4">
-                            <div className="col-md-12  text-right">Amount</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    c
                     <div className=" ">
                       {reportDataIncome.map((each_level_1) => {
                         return (

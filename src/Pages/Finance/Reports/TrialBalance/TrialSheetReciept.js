@@ -184,12 +184,7 @@ const TrialSheetReciept = React.forwardRef(
                                         </>
                                     })
                                 }
-
-
-
-
-
-                            </>
+                             </>
                         })
                     }
 

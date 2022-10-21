@@ -252,7 +252,6 @@ function Banknames({ pagePermission }) {
         fetchData();
       } else {
         response.json().then((json) => {
-          toast.error(json.Message);
         });
       }
     });

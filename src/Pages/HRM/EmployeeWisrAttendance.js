@@ -10,6 +10,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import { toast } from "react-toastify";
+import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 const EmployeeWiseAttendance = () => {
 
     const showNavMenu = useSelector((state) => state.NavState);
@@ -271,7 +272,7 @@ const EmployeeWiseAttendance = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;Employee Monthly Attendance</span>
+            <CustomInnerHeader moduleName="Employee Monthly Attendance" isShowSelector={true} />
 
             </div>
             <div

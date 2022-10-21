@@ -8,7 +8,7 @@ import { preventMinus } from "../../config/preventMinus";
 import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-
+import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 const customStyles = {
   control: (provided, state, base) => ({
     ...provided,
@@ -235,7 +235,7 @@ const OpeningBalances = () => {
               showNavMenu == false ? "right_col-margin-remove" : ""
             }   `}
           >
-            <span>&nbsp;Manage Opening Balances</span>
+          <CustomInnerHeader moduleName="Manage Opening Balance" isShowSelector={true} />
           </div>
           <div
             role="main"

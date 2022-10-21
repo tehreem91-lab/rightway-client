@@ -7,6 +7,7 @@ import axios from "axios";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { customStyles } from "../../Components/reactCustomSelectStyle";
+import CustomInnerHeader from "../../Components/CustomInnerHeader";
 const RolePermission = () => {
   const accessToken = localStorage.getItem("access_token");
   const notifyAdd = () => toast("Page Permission updated!");
@@ -148,7 +149,7 @@ const RolePermission = () => {
             className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
               }   `}
           >
-            <span>&nbsp; Role Permission</span>
+          <CustomInnerHeader moduleName="Role Permission" isShowSelector={true} />
           </div>
 
           <div

@@ -12,6 +12,7 @@ import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import { toast } from "react-toastify";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 const EmployeeProfile = () => {
 
     const showNavMenu = useSelector((state) => state.NavState);
@@ -160,7 +161,7 @@ const EmployeeProfile = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;Employee Profile</span>
+            <CustomInnerHeader moduleName="Employee Profile" isShowSelector={true} />
 
             </div>
             <div

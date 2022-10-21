@@ -6,6 +6,7 @@ import Select from 'react-select'
 import { endPoint } from '../../../../config/Config'
 import { customStyles } from '../../../../Components/reactCustomSelectStyle';
 import dateToday, { dateFormaterForInput } from '../../../../config/todayDate';
+import CustomInnerHeader from '../../../../Components/CustomInnerHeader'
 const BankPaymentVoucher = () => {
   const voucherAbbr = 'JV'
   const accountAbbr = 'allexceptcash'
@@ -218,7 +219,7 @@ const BankPaymentVoucher = () => {
         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
           }   `}
       >
-        <span>&nbsp;Bank Payement Voucher</span>
+      <CustomInnerHeader moduleName="Bank Payment Voucher" isShowSelector={true} />
       </div>
       <div
         role="main"

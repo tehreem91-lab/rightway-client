@@ -257,7 +257,7 @@ function CurrencyUnits({ pagePermission }) {
   return (
     <PageTemplate
       pagePermission={rolePermissionTable}
-      moduleName="Manage Unit Names"
+      moduleName="Manage Currency Unit "
       formTitle="Add/Edit Unit Name"
       formFields={formFields}
       initialValues={initialValues}

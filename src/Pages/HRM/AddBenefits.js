@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-
 function AddBenefits({ pagePermission }) {
   const rolePermissionTable = {
     Add: pagePermission.AddPermission,

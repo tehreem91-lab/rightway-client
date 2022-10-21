@@ -195,7 +195,14 @@ const BankBookComponentReciept = React.forwardRef(
                   <strong>
                     {" "}
                     Closing Balance at &nbsp;
-                    <u className="text-customOrange">{dateTo}</u>
+                    <u className="text-customOrange">
+                    
+                    {`${dateFrom.slice(8, 10)}-${dateFrom.slice(
+                      5,
+                      7
+                    )}-${dateFrom.slice(0, 4)}`}
+                    
+                    </u>
                     &nbsp; is {} : &nbsp;
                     <strong className="text-customBlue">
                       {Math.abs(

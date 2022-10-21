@@ -5,6 +5,8 @@ import axios from 'axios';
 import { endPoint } from '../../config/Config';
 import { useLocation } from 'react-router-dom';
 import { toast } from "react-toastify";
+import CustomInnerHeader from '../../Components/CustomInnerHeader';
+import { customStyles } from '../../Components/reactCustomSelectStyle';
 const AddStock = () => {
   const inputRef = useRef(null);
   const ref = useRef(null);
@@ -115,9 +117,7 @@ setupdate(true)
   //  Update data by Id 
 
  const UpdateStock = (id) =>{
-if(unit === "" || selectedimage === "" || selectedFile === "" ){
-  setIsValidateAllStates(false)
-}else{
+
   var axios = require('axios');
   var data = JSON.stringify({
     "stock_type_id": stockvalue.value,
@@ -131,7 +131,6 @@ if(unit === "" || selectedimage === "" || selectedFile === "" ){
     "attachemnts_paths":fileEntity.join(",").toString(),
     "packets_details": packets_detail
   });
-}
   var config = {
     method: 'put',
     url: `http://rightway-api.genial365.com/api/Stock/PutData?stock_id=${id}`,
@@ -424,7 +423,7 @@ axios(config)
         className={`container-fluid page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
             }   `}
     >
-        <span>&nbsp;Stock Mangement</span>
+    <CustomInnerHeader moduleName="Stock Management" isShowSelector={true} />
        </div>
        <div
        className={`right_col  h-10 heightFixForFAult  ${showNavMenu === false ? "right_col-margin-remove" : " "
@@ -433,14 +432,14 @@ axios(config)
    >
    
     <div className="row">
-    <div className="col-md-12 p-2">
+    <div className="col-md-12">
     <div className="x_panel px-0">
 
      <div className="x_content  p-4  ">
     <span className="section">
         <div className="row px-2  ">
             <div className="col-8 ">
-             &nbsp;Add Stock Account
+            <i className="fa fa-edit"></i>&nbsp;Add Stock Account
             </div>
         </div>
     </span>
@@ -454,6 +453,7 @@ axios(config)
     isSearchable={true}
     options={stockoption}
     value={stockvalue}
+    style={customStyles}
     isDisabled={(location?.state?.id) ? true : false}
     styles={{ minHeight: "29px", height: "29px",}}
     onChange={(e)=>{setStockValue(e)}} 
@@ -471,6 +471,7 @@ axios(config)
     isSearchable={true}
     options={consumptionoption}
     value={consumptionvalue}
+    style={customStyles}
     isDisabled={(location?.state?.id) ? true : false}
     styles={{ minHeight: "29px", height: "29px",}}
     onChange={(e)=>{setConsumptionValue(e)}}
@@ -543,15 +544,27 @@ axios(config)
 
      <div className="row px-4 mt-2">
      <div className="col-md-6 col-sm-6">
-     <label className="col-form-label col-md-3 col-sm-3 label-align">Description</label>
+    <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Attactments <span className="required">*</span></label>
     <div className='col-md-8'>
-    <textarea
-
-    className="form-control"
-    value={Description}
-    onChange={(e)=>{setDescription(e.target.value)}}
+    <input 
+    ref={ref}
+    type="file"
+    className="form-control form-control-sm customStyleForInput"
+    data-validate-length-range={6}
+    data-validate-words={2}
+    name="name"
+    onChange={(e) => {
+      AttachmentFileHandler(e)
+      setFilename((e.target.files[0].name.split("."))[0])
+    }}
     />
     </div>
+    <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+
+    <button className="btn btn-sm btn-outline-warning" type="button" onClick={()=> UploadFile()} ><i className="fa fa-upload"></i></button>
+
+  </div>
+  
     </div>
 
     <div className="col-md-6 col-sm-6">
@@ -570,7 +583,6 @@ axios(config)
   } 
 
     />
-    {!isValidateAllStates && ( selectedimage === "" ) && <span className="text-danger">First Select this </span>} 
     </div>
     <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
 
@@ -589,34 +601,23 @@ axios(config)
 
     <div className="row px-4 mt-2">
     <div className="col-md-6 col-sm-6">
-    <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Attactments <span className="required">*</span></label>
+     <label className="col-form-label col-md-3 col-sm-3 label-align">Description</label>
     <div className='col-md-8'>
-    <input 
-    ref={ref}
-    type="file"
-    className="form-control form-control-sm customStyleForInput"
-    data-validate-length-range={6}
-    data-validate-words={2}
-    name="name"
-    onChange={(e) => {
-      AttachmentFileHandler(e)
-      setFilename((e.target.files[0].name.split("."))[0])
-    }}
+    <textarea
+
+    className="form-control"
+    value={Description}
+    onChange={(e)=>{setDescription(e.target.value)}}
     />
-    {!isValidateAllStates && ( selectedFile === "" ) && <span className="text-danger">First Select this </span>} 
     </div>
-    <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-
-    <button className="btn btn-sm btn-outline-warning" type="button" onClick={()=> UploadFile()} ><i className="fa fa-upload"></i></button>
-
-  </div>
-  
     </div>
+   
 
 
-    {fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6">
+    {fileEntity.length !== 0 && 
+      <div className="field item form-group col-md-6 col-sm-6 ">
     <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
-    <div className="col-md-8 col-sm-8 ">
+    <div className="col-md-8 col-sm-8  ">
      {fileEntity.map((each_file, index) => {
             return <button className="btn btn-sm  bg-info  text-light"
             >
@@ -641,7 +642,7 @@ axios(config)
      <span className="section mt-2">
      <div className="row px-2  ">
          <div className="col-8 ">
-          &nbsp;Add Pair Packets
+         <i className="fa fa-edit"></i>&nbsp;Add Pair Packets
          </div>
      </div>
  </span>
@@ -680,7 +681,7 @@ axios(config)
  </div>
  <div className="col-md-3 col-sm-3">
 
-       <button type="button" className='btn text-white col-md-12 ' style={{backgroundColor:"#f79c74"}}  onClick={() => removeFormFields(index)}>Remove</button> 
+          <i class="fa fa-times pt-2 text-danger" aria-hidden="true" onClick={() => removeFormFields(index)}></i> 
       
    
  
@@ -699,34 +700,31 @@ axios(config)
 
  })}
 
- <span className="section mt-2">
- <div className="row px-2  ">
- <div className="col-md-3 col-sm-4 px-5"> 
- <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={() => addFormFields()}> Add more </button>
- </div>
- 
- </div>
-</span>
+
 </div>
 
-<span className="section mt-2">
+
     <div className="row px-2 ">
-   
-   {update ?
+ <div className="col-md-12 d-flex justify-content-between x_footer mt-4"> 
+ <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={() => addFormFields()}> Add more </button>
+ {update ?
 
-    (<div className="col-md-3 col-sm-3 px-5"> 
-    <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UpdateStock(stockid) }> Update </button>
-    </div>):
-    
-    (<div className="col-md-3 col-sm-3 px-5"> 
-    <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UploadStock()}> Submit </button>
-   
-    </div>)
+(
+<button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UpdateStock(stockid) }> Update </button>
+):
 
-   }
+(
+<button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UploadStock()}> Submit </button>
+
+)
+
+}
+
+ </div>
+   
     
   </div>
-   </span>  
+   
      
      
     

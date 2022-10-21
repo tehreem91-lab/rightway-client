@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import CustomInnerHeader from "../../Components/CustomInnerHeader";
 const Department = () => {
     const [department, setDepatment] = useState({
         department_id: 0,
@@ -183,21 +184,7 @@ const Department = () => {
                 className={`container-fluid page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
                     }   `}
             >    
-            <div className="row">
-            <div className="col-8">  <span>&nbsp; Department  Management </span></div>
-            
-            <div className="col-4 justify-content-right ">
-            <select name="cars" id="cars" className="w-50 p-1 ms-5 form-control" 
-            data-validate-length-range={6}
-            data-validate-words={2} >
-            <option value="volvo">IT dep</option>
-            <option value="saab">Human Resourse</option>
-            <option value="opel">History</option>
-            <option value="audi">Maintainance</option>
-          </select>
-          </div>
-
-            </div>
+            <CustomInnerHeader moduleName="Department Mangement" isShowSelector={true} />
           
            
             

@@ -110,7 +110,7 @@ const AddUser = ({ pagePermission }) => {
       user_password: "",
       user_role: "",
       user_role_id: 0,
-      user_role_name: "",
+      user_role_name: [""],
     });
     setUpdateMode(false);
   };
@@ -337,7 +337,6 @@ console.log(json);
           toast.error(json)
         }
 
-        toast.error(json.Message)
 
         // calling another api to set role against this user id
 
@@ -452,7 +451,7 @@ console.log(json);
 
       <PageTemplate
         pagePermission={rolePermissionTable}
-        moduleName="Manage User"
+        moduleName="Add User"
         formTitle="Add/Edit User Name"
         formFields={formFields}
         initialValues={initialValues}

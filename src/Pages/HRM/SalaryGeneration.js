@@ -11,6 +11,7 @@ import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import SalaryGenReciept from "./SalaryGenReciept.js";
 import { toast } from "react-toastify";
+import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 
 const SalaryGeneration = () => {
 
@@ -284,7 +285,7 @@ const SalaryGeneration = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <span>&nbsp;Salary Generation Form</span>
+            <CustomInnerHeader moduleName="Salary Generation form" isShowSelector={true} />
 
             </div>
             <div
