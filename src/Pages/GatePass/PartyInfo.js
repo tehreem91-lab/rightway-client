@@ -104,27 +104,6 @@ function PartyInfo() {
             });
     };
 
-    const fetchPartyCategory = async () => {
-        var config = {
-            method: "get",
-            url: `${endPoint}api/ChartOfAccounts/GetCategoriesByParentId?id=1233`,
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
-                    }`,
-            },
-        };
-        await axios(config)
-            .then(function (response) {
-                setCategoryOptions([
-                    ...response.data,
-                ]);
-                setisLoading(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
-
     const fetchAllData = async (e) => {
 
         var axios = require('axios');

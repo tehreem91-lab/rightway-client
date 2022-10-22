@@ -8,13 +8,10 @@ import { preventMinus } from "../../config/preventMinus";
 import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-<<<<<<< HEAD
 import ReactToPrint from "react-to-print";
 import { useRef } from "react";
 
-=======
 import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
->>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
 const customStyles = {
   control: (provided, state, base) => ({
     ...provided,
@@ -240,7 +237,7 @@ const OpeningBalances = () => {
             className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
               }   `}
           >
-          <CustomInnerHeader moduleName="Manage Opening Balance" isShowSelector={true} />
+            <CustomInnerHeader moduleName="Manage Opening Balance" isShowSelector={true} />
           </div>
           <div
             role="main"
