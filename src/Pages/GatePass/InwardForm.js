@@ -7,11 +7,7 @@ import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { preventMinus } from '../../config/preventMinus.js';
-<<<<<<< HEAD
 import { useLocation } from 'react-router-dom';
-=======
-import CustomInnerHeader from '../../Components/CustomInnerHeader.jsx';
->>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
 
 const InwardForm = (props) => {
     const [noOfRows, setNoOfRows] = useState(1);
@@ -30,6 +26,8 @@ const InwardForm = (props) => {
     const [selectedValue, setSelectedValue] = useState("");
     const [inputOptions, setInputOptions] = useState("");
     const [reRenderedCustom, setReRenderedCustom] = useState(false)
+    const [isValidateValue, setIsValidateValue] = useState(true);
+
 
     const [selectedAttachmentFile, setSelectedAttachmentFile] = useState("")
     const [selectedAttachmentName, setSelectedAttachmentName] = useState("")
@@ -60,6 +58,15 @@ const InwardForm = (props) => {
         { value: 'acceptable', label: 'Acceptable' },
         { value: 'good', label: 'Good' },
     ]
+
+    const [StockRecordsValue, setStockRecordsValue] = useState([{
+        stock_chart_id: "",
+        stock_unit_id: "",
+        pair_unit_id: "",
+        total_stock_pieces: "",
+        weight_per_piece: "",
+        tatal_weight: "",
+    }])
 
     const ref = useRef();
     const reset = () => {
@@ -146,8 +153,8 @@ const InwardForm = (props) => {
                         })
                     });
                 })
-                console.log(stockarr, "data for options");
-                console.log(stockarr[1].childElement, "data for child");
+                // console.log(stockarr, "data for options");
+                // console.log(stockarr[1].childElement, "data for child");
                 setStock(stockarr);
             })
             .catch(function (error) {
@@ -247,24 +254,29 @@ const InwardForm = (props) => {
             "bilty_no": ListOfPartyPost.bilty_no,
             "inward_type": ListOfPartyPost.inward_type,
             "remarks": ListOfPartyPost.remarks,
-            "attachments": ListOfPartyPost.attachments,
-            "stock_entries": ListOfParty.map((i) => {
+            "attachments": fileEntity.join(",").toString(),
+            "stock_entries": StockRecordsValue.length === 0 ? [] : StockRecordsValue.map((i) => {
                 return {
-<<<<<<< HEAD
                     "stock_chart_id": i.stock_chart_id,
                     "stock_unit_id": i.stock_unit_id,
                     "pair_unit_id": i.pair_unit_id,
-=======
-                    "stock_chart_id": i.stock_account.stock_account_value,
-                    "stock_unit_id": i.packets_details.stock_packet_id,
-                    "pair_unit_id": i.packets_details.pair_base_unit,
->>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
                     "total_stock_pieces": i.total_stock_pieces,
                     "weight_per_piece": i.weight_per_piece,
                     "tatal_weight": i.tatal_weight
                 }
 
             })
+            // "stock_entries": ListOfParty.map((i) => {
+            //     return {
+            //         "stock_chart_id": i.stock_account.stock_account_value,
+            //         "stock_unit_id": i.packets_details.stock_packet_id,
+            //         "pair_unit_id": i.packets_details.pair_base_unit,
+            //         "total_stock_pieces": i.total_stock_pieces,
+            //         "weight_per_piece": i.weight_per_piece,
+            //         "tatal_weight": i.tatal_weight
+            //     }
+
+            // })
         });
 
 
@@ -380,7 +392,7 @@ const InwardForm = (props) => {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                    <CustomInnerHeader moduleName="Gate Pass Inword" isShowSelector={true} />
+                        <span>&nbsp;Gate Pass Inward Form</span>
                     </div>
                     <div
                         role="main"
@@ -405,7 +417,7 @@ const InwardForm = (props) => {
                                     <div className="card" style={{ marginTop: "25px " }}> <h5 className="headings reportTableHead border-bottom card-header"> Gate Pass Information</h5>
                                         <div className="row" style={{ marginTop: "6px " }}>
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Inward Type </label>
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Inward Type<span className="required">*</span> </label>
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
                                                         placeholder={"Select Inward Type"}
@@ -428,12 +440,15 @@ const InwardForm = (props) => {
                                                     //     });
                                                     // }}
                                                     />
+
+                                                    {isValidateValue === false && Number(ListOfParty.inward_type) === 0 && <span className="text-danger">First Select Type </span>}
+
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="row" >
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Select Party</label>{
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Select Party<span className="required">*</span></label>{
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
@@ -452,6 +467,8 @@ const InwardForm = (props) => {
                                                         }}
                                                         styles={customStyles}
                                                     />
+                                                    {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Party </span>}
+
                                                 </div>
                                             </div>
 
@@ -486,7 +503,7 @@ const InwardForm = (props) => {
                                             </div>
 
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Gate Pass Date</label>{
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Gate Pass Date<span className="required">*</span></label>{
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <input
@@ -570,7 +587,7 @@ const InwardForm = (props) => {
                                     <div className="card" style={{ marginTop: "25px " }}> <h5 className="headings reportTableHead border-bottom card-header"> Vehicle Information</h5>
                                         <div className="row" style={{ marginTop: "6px " }}>
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align"> Vehicle No. </label>
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align"> Vehicle No. <span className="required">*</span></label>
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
                                                         type="text"
@@ -586,12 +603,14 @@ const InwardForm = (props) => {
                                                             });
                                                         }}
                                                     />
+                                                    {isValidateValue === false && Number(ListOfParty.vehicle_no) === 0 && <span className="text-danger">First Enter This </span>}
+
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="row" >
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Driver Name</label>{
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Driver Name<span className="required">*</span></label>{
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
@@ -607,18 +626,21 @@ const InwardForm = (props) => {
                                                             });
                                                         }}
                                                     />
+                                                    {isValidateValue === false && Number(ListOfParty.drive_name) === 0 && <span className="text-danger">First Enter This </span>}
+
                                                 </div>
                                             </div>
 
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Driver Cell </label>{
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Driver Cell<span className="required">*</span> </label>{
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
-                                                        type="text"
+                                                        type="number"
                                                         className='form-control'
                                                         placeholder=""
                                                         value={ListOfParty.driver_cell}
+                                                        onInput={(er) => (er.target.value = er.target.value.slice(0, 11))}
                                                         onChange={(e) => {
                                                             setListOfPartyPost({
                                                                 ...ListOfPartyPost,
@@ -626,11 +648,13 @@ const InwardForm = (props) => {
                                                             });
                                                         }}
                                                     />
+                                                    {isValidateValue === false && Number(ListOfParty.driver_cell) === 0 && <span className="text-danger">First Enter This </span>}
+
                                                 </div>
                                             </div>
 
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Rent Type</label>{
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Rent Type<span className="required">*</span></label>{
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <Select
@@ -646,11 +670,13 @@ const InwardForm = (props) => {
                                                             });
                                                         }}
                                                     />
+                                                    {isValidateValue === false && Number(ListOfParty.rent_type) === 0 && <span className="text-danger">First Select This </span>}
+
                                                 </div>
                                             </div>
 
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Vehicle Rent</label>{
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Vehicle Rent<span className="required">*</span></label>{
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
@@ -665,11 +691,13 @@ const InwardForm = (props) => {
                                                             });
                                                         }}
                                                     />
+                                                    {isValidateValue === false && Number(ListOfParty.rent_amount) === 0 && <span className="text-danger">First Enter This </span>}
+
                                                 </div>
                                             </div>
 
                                             <div className="field item form-group col-md-6 col-sm-6">
-                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Bility No.</label>{
+                                                <label className="col-form-label col-md-3 col-sm-3 label-align">Bility No.<span className="required">*</span></label>{
                                                 }
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
@@ -684,6 +712,8 @@ const InwardForm = (props) => {
                                                             });
                                                         }}
                                                     />
+                                                    {isValidateValue === false && Number(ListOfParty.bilty_no) === 0 && <span className="text-danger">First Enter This </span>}
+
                                                 </div>
                                             </div>
 
@@ -741,7 +771,6 @@ const InwardForm = (props) => {
                                             </tr>
                                         </thead>
                                         <tbody>
-<<<<<<< HEAD
                                             {StockRecordsValue.map(((eachBenValue, index) => {
                                                 return <tr>
                                                     <td>
@@ -872,111 +901,27 @@ const InwardForm = (props) => {
                                                                         weight_per_piece: "",
                                                                         tatal_weight: "",
                                                                     }])
-=======
-                                            {[...Array(noOfRows)].map((elementInArray, index) => {
-                                                return (
-                                                    <tr className="even pointer" key={index}>
-                                                        {/* <th scope="row">{index}</th> */}
-                                                        <td>
-                                                            <Select
-                                                                isClearable={false}
-                                                                options={stock}
-                                                                //value={{ label: ListOfParty?.stock_account?.stock_account_label, value: ListOfParty?.stock_account?.stock_account_value }}
-                                                                value={ListOfParty?.stock_account?.stock_account_value}
-                                                                styles={customStyles}
-                                                                onChange={(e) => {
-                                                                    setStockValue(e)
-                                                                    setListOfPartyPost({
-                                                                        ...setListOfParty,
-                                                                        stock_account: {
-                                                                            stock_account_value: e.value,
-                                                                            stock_account_label: e.label
-                                                                        },
-                                                                    });
->>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
                                                                 }}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <Select
-                                                                isClearable={false}
-                                                                options={stockValue.childElement}
-                                                                value={ListOfParty?.packets_details?.stock_packet_id}
-                                                                //value= {ListOfParty?.packets_details?.stock_packet_id.packet.find(e => Number(e.value) == stockValue) }
-                                                                styles={customStyles}
-                                                                onChange={(e) => {
-                                                                    setPacketValue(e)
-                                                                    setListOfPartyPost({
-                                                                        ...setListOfParty,
-                                                                        packets_details: {
-                                                                            stock_packet_id: e.value,
-                                                                            packet_title: e.label,
-                                                                            pair_base_unit: e.pair_base_unit
-                                                                        },
-                                                                    });
-                                                                }}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input required
-                                                                type="number"
-                                                                className='form-control'
-                                                                placeholder=""
-                                                                value={ListOfParty.total_stock_pieces}
-                                                                onChange={(e) => {
-                                                                    setListOfPartyPost({
-                                                                        ...ListOfPartyPost,
-                                                                        total_stock_pieces: e.target.value
-                                                                    });
-                                                                }}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input required
-                                                                type="number"
-                                                                className='form-control'
-                                                                placeholder=""
-                                                                value={ListOfParty.weight_per_piece}
-                                                                onChange={(e) => {
-                                                                    setListOfPartyPost({
-                                                                        ...ListOfPartyPost,
-                                                                        weight_per_piece: e.target.value
-                                                                    });
-                                                                }}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input required
-                                                                type="number"
-                                                                className='form-control'
-                                                                placeholder=""
-                                                                value={ListOfParty.tatal_weight}
-                                                                onChange={(e) => {
-                                                                    setListOfPartyPost({
-                                                                        ...ListOfPartyPost,
-                                                                        tatal_weight: e.target.value
-                                                                    });
-                                                                }}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <Select
-                                                                placeholder={"Condition"}
-                                                                value={optionsCondition.find(e => Number(e.value) == ListOfParty.rent_type)}
-                                                                options={optionsCondition}
-                                                                styles={customStyles}
-                                                                onChange={(e) => {
-                                                                    setListOfPartyPost({
-                                                                        ...ListOfPartyPost,
-                                                                        rent_type: e.value
-                                                                    });
-                                                                }}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-
+                                                            ></i></div>}
+                                                        {
+                                                            (StockRecordsValue?.length > 1 && index > 0) &&
+                                                            <div className="col-md-1 col-sm-1  " style={{ marginLeft: "2px", marginTop: "5px" }}>
+                                                                <i className="fa fa-trash text-customRed"
+                                                                    id={`${index}-Delete`}
+                                                                    onClick={(index) => {
+                                                                        let list = [...StockRecordsValue];
+                                                                        const i = parseInt(index.target.id.split('-')[0])
+                                                                        list = list.filter((value) => {
+                                                                            return list.indexOf(value) != i
+                                                                        })
+                                                                        setStockRecordsValue(list);
+                                                                    }}
+                                                                ></i>
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }))}
                                         </tbody>
                                         <tfoot>
                                             <tr className="font-weight-bold">
@@ -985,7 +930,7 @@ const InwardForm = (props) => {
                                                     Total:
                                                 </td>
                                                 <td>
-                                                    {ListOfParty
+                                                    {StockRecordsValue
                                                         .map((values) => {
                                                             return Number(values.total_stock_pieces);
                                                         })
@@ -993,7 +938,7 @@ const InwardForm = (props) => {
                                                 </td>
                                                 <td></td>
                                                 <td>
-                                                    {ListOfParty
+                                                    {StockRecordsValue
                                                         .map((values) => {
                                                             return Number(values.tatal_weight);
                                                         })
@@ -1003,8 +948,8 @@ const InwardForm = (props) => {
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    <button type="button" className="btn btn-dark me-3" onClick={() => setNoOfRows(noOfRows + 1)}>Add</button>
-                                    <button type="button" className="btn btn-danger" onClick={() => noOfRows > 1 ? setNoOfRows(noOfRows - 1) : ""}>Delete</button>
+                                    {/* <button type="button" className="btn btn-dark me-3" onClick={() => setNoOfRows(noOfRows + 1)}>Add</button>
+                                    <button type="button" className="btn btn-danger" onClick={() => noOfRows > 1 ? setNoOfRows(noOfRows - 1) : ""}>Delete</button> */}
                                 </div>
                                 {/* //////////////////////////XXXXXXXXXXXXXXXXXXXXXXXXXX///////////////////////////////// */}
 
@@ -1013,7 +958,6 @@ const InwardForm = (props) => {
                                         className="btn btn-primary"
                                         type="submit"
                                         onClick={() => {
-<<<<<<< HEAD
                                             let is_form_validated = true;
                                             console.log("hayee", Number(ListOfParty.inward_type) === 0, Number(selectedValue) === 0, Number(ListOfParty.vehicle_no) === 0);
 
@@ -1031,11 +975,6 @@ const InwardForm = (props) => {
                                                 //setisLoading(true);
                                                 formSubmit();
                                             }
-=======
-
-                                            postData();
-                                            //fetchAllData();
->>>>>>> 196b2d3faf08ff97792be245356c2b7141a8cf81
                                         }}
                                     >
                                         Save and Publish
