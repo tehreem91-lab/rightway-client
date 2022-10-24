@@ -7,16 +7,17 @@ import { endPoint } from "../../config/Config.js";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Creatable from "react-select/creatable";
-import CustomInnerHeader from '../../Components/CustomInnerHeader.jsx';
+
 import { Button, Modal } from 'react-bootstrap';
 
 function PartyInfo() {
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(true);
+    const [showAttachment, setshowAttachment] = useState(false)
 
     const [ListOfParty, setListOfParty] = useState([]);
-    const [isValidateValue, setisValidateValue] = useState(true);
     const [ListOfPartyPost, setListOfPartyPost] = useState([]);
+    const [isValidateValue, setIsValidateValue] = useState(true);
 
 
     const [selectedValue, setSelectedValue] = useState("");
@@ -73,7 +74,6 @@ function PartyInfo() {
         await axios(config)
             .then(function (response) {
                 setInputOptions([
-                    { label: "Select Party", value: 0 },
                     ...response.data,
                 ]);
                 setisLoading(false);
@@ -167,27 +167,24 @@ function PartyInfo() {
 
     const postData = async () => {
         var axios = require('axios');
-        if (selectedValue === "" || selectedAttachmentFile === "") {
-            setisValidateValue(false)
-        } else {
-            var data = JSON.stringify({
-                "chart_id": selectedValue.chart_id,
-                "party_cell": ListOfPartyPost.cell,
-                "party_address": ListOfPartyPost.address,
-                "party_attachments": ListOfPartyPost.attachments
-            });
+        var data = JSON.stringify({
+            "chart_id": selectedValue.chart_id,
+            "party_cell": ListOfPartyPost.cell,
+            "party_address": ListOfPartyPost.address,
+            "party_attachments": fileEntity.join(",").toString(),
+        });
 
-            var config = {
-                method: 'post',
-                //   url: 'http://rightway-api.genial365.com/api/PartyInfo/PostData',
-                url: `${endPoint}api/PartyInfo/PostData`,
-                headers: {
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: data
-            };
-        }
+        var config = {
+            method: 'post',
+            //   url: 'http://rightway-api.genial365.com/api/PartyInfo/PostData',
+            url: `${endPoint}api/PartyInfo/PostData`,
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+
         axios(config)
             .then(function (response) {
                 //console.log(JSON.stringify(response.data));
@@ -227,7 +224,7 @@ function PartyInfo() {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                        <CustomInnerHeader moduleName="Part Info" isShowSelector={true} />
+                        <span>&nbsp;Party Info</span>
                     </div>
                     <div
                         role="main"
@@ -271,7 +268,8 @@ function PartyInfo() {
                                                             });
                                                     }}
                                                 />
-                                                {!isValidateValue && Number(selectedValue === "") && <span className="text-danger">First Select this field </span>}
+                                                {isValidateValue === false && Number(selectedValue) === 0 && <span className="text-danger">First Select Party </span>}
+
 
                                             </div>
 
@@ -342,6 +340,7 @@ function PartyInfo() {
                                         <div className="col-md-3 col-sm-3">
                                             <div>
                                                 <Select
+                                                    placeholder={"Select Party for this"}
                                                     getOptionLabel={(e) => e.account_code}
                                                     // getOptionValue={(e) => e.chart_id}
                                                     value={selectedValue}
@@ -349,7 +348,7 @@ function PartyInfo() {
                                                     isDisabled
                                                     styles={customStyles}
                                                 />
-                                                {!isValidateValue && Number(selectedValue === "") && <span className="text-danger">First Select this field </span>}
+
                                             </div>
                                         </div>
                                     </div>
@@ -363,6 +362,7 @@ function PartyInfo() {
                                         <div className="col-md-3 col-sm-3">
                                             <div>
                                                 <Select
+                                                    placeholder={"Select Party for this"}
                                                     getOptionLabel={(e) => e.category_name}
                                                     getOptionValue={(e) => e.chart_id}
                                                     value={selectedValue}
@@ -370,7 +370,7 @@ function PartyInfo() {
                                                     isDisabled
                                                     styles={customStyles}
                                                 />
-                                                {!isValidateValue && Number(selectedValue === "") && <span className="text-danger">First Select this field </span>}
+
                                             </div>
                                         </div>
 
@@ -381,9 +381,11 @@ function PartyInfo() {
                                             <div>
                                                 <input required
                                                     name="name"
+                                                    type="number"
                                                     className='form-control'
-                                                    placeholder=""
+                                                    placeholder="Enter Party Cell"
                                                     value={ListOfParty.cell}
+                                                    onInput={(er) => (er.target.value = er.target.value.slice(0, 11))}
                                                     onChange={(e) => {
                                                         setListOfPartyPost({
                                                             ...ListOfPartyPost,
@@ -391,7 +393,7 @@ function PartyInfo() {
                                                         });
                                                     }}
                                                 />
-                                                {/*{!isValidateValue && Number(ListOfPartyPost === "") && <span className="text-danger">First Select this field </span>}*/}
+                                                {isValidateValue === false && (Number(ListOfPartyPost?.cell) === 0 || typeof (ListOfPartyPost.cell) === 'undefined') && <span className="text-danger">First Enter Cell </span>}
                                             </div>
                                         </div>
 
@@ -408,7 +410,7 @@ function PartyInfo() {
                                                 <input required
                                                     name="name"
                                                     className='form-control'
-                                                    placeholder=""
+                                                    placeholder="Enter Party Address"
                                                     value={ListOfParty.address}
                                                     onChange={(e) => {
                                                         setListOfPartyPost({
@@ -417,28 +419,7 @@ function PartyInfo() {
                                                         });
                                                     }}
                                                 />
-                                                {/*{!isValidateValue && Number(ListOfPartyPost === "") && <span className="text-danger">First Select this field </span>}*/}
-                                            </div>
-                                        </div>
-
-                                        <label className="col-form-label col-md-2 col-sm-2 label-align">
-                                            Attachments <span className="required">*</span>
-                                        </label>
-                                        <div className="col-md-3 col-sm-3">
-                                            <div>
-                                                <input required
-                                                    name="name"
-                                                    className='form-control'
-                                                    placeholder=""
-                                                    value={ListOfParty.attachments}
-                                                    onChange={(e) => {
-                                                        setListOfPartyPost({
-                                                            ...ListOfPartyPost,
-                                                            attachments: e.target.value
-                                                        });
-                                                    }}
-                                                />
-
+                                                {isValidateValue === false && (Number(ListOfPartyPost?.address) === 0 || typeof (ListOfPartyPost.address) === 'undefined') && <span className="text-danger">First Enter Address </span>}
                                             </div>
                                         </div>
 
@@ -463,7 +444,6 @@ function PartyInfo() {
                                                         setSelectedAttachmentFile(e.target.files[0])
                                                     }}
                                                 />
-                                                {!isValidateValue && Number(selectedAttachmentFile === "") && <span className="text-danger">First Select this field </span>}
                                             </div>
                                             <div className="col-md-1 col-sm-1 " style={{ paddingTop: "1.5px" }}>
                                                 {
@@ -510,23 +490,20 @@ function PartyInfo() {
                                         type="submit"
                                         onClick={() => {
 
-                                            postData();
-                                            fetchAllData();
-                                            // let is_form_validated = true;
-                                            // {
-
-                                            //     if (Number(selectedValue) === 0 || Number(selectedDate) === 0) {
-                                            //         setIsValidateValue(false);
-                                            //         is_form_validated = false;
-                                            //     }
-
-                                            // }
-                                            // if (is_form_validated === true) {
-                                            //     fetchAllData();
-                                            //     setShow(true);
-                                            //     setisLoading(true);
-                                            //     setAttendenceData([{}]);
-                                            // }
+                                            console.log("cell", typeof (ListOfPartyPost.cell) === 'undefined', Number(ListOfPartyPost.cell) === 0)
+                                            let is_form_validated = true;
+                                            {
+                                                if (Number(selectedValue) === 0 || Number(ListOfPartyPost.cell) === 0 || typeof (ListOfPartyPost.cell) === 'undefined' || typeof (ListOfPartyPost.address) === 'undefined' || Number(ListOfPartyPost.address) === 0) {
+                                                    setIsValidateValue(false);
+                                                    is_form_validated = false;
+                                                }
+                                            }
+                                            if (is_form_validated === true) {
+                                                postData();
+                                                fetchAllData();
+                                                fetchData();
+                                                //setisLoading(true);
+                                            }
 
                                         }}
                                     >
@@ -545,10 +522,16 @@ function PartyInfo() {
                             <div className="x_content ">
                                 <span className="section">
                                     <div className="row px-2  pt-3">
-                                        <div className="col-5 ">
+                                        <div className="col-11 ">
                                             <i className='fa fa-list'></i>&nbsp;Listing
                                         </div>
-
+                                        <button
+                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                            data-toggle="tooltip" data-placement="top" title="View Attachments"
+                                            onClick={() => setshowAttachment(!showAttachment)}
+                                        >
+                                            <i className="fa fa-paperclip" aria-hidden="true"></i>
+                                        </button>
 
 
                                     </div>
@@ -574,7 +557,54 @@ function PartyInfo() {
                                                         <td className=" ">{item.party_name}</td>
                                                         <td className=" ">{item.cell}</td>
                                                         <td className=" ">{item.address}</td>
-                                                        <td className=" ">{item.attachments}</td>
+                                                        <td className=" ">
+                                                            {
+                                                                showAttachment && <>
+                                                                    {
+                                                                        <div className="row">
+                                                                            <div className="col-md-12 px-5 bold-7 text-dark ">
+                                                                                {
+                                                                                    item.attachments !== "" ? item.attachments?.split(',').map((each_file) => {
+                                                                                        return <button className="btn btn-sm  bg-customBlue  text-light">
+                                                                                            <a href={`${endPoint + each_file}`} target="_blank" rel="noopener noreferrer" className='text-light'>
+
+                                                                                                {((each_file?.split("_"))[0]).slice(15)}
+
+
+                                                                                            </a>
+
+                                                                                        </button>
+                                                                                    }) : "No Attachment Available "
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </>
+                                                            }
+                                                            {/* {item.attachments} */}
+                                                            {/* {fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
+                                                                <label className="col-form-label col-md-2 col-sm-2 label-align">Attachments</label>
+                                                                <div className="col-md-12 col-sm-12 ">
+                                                                    {
+                                                                        fileEntity.map((each_attachment, index) => {
+                                                                            return <button className="btn btn-sm  bg-customBlue  text-light">
+                                                                                <a href={`${endPoint + each_attachment}`} target="_blank" className='text-light'>
+                                                                                    {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
+                                                                                <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
+                                                                                    onClick={() => {
+                                                                                        let arr_data = fileEntity.filter((each_image) => {
+                                                                                            return (fileEntity.indexOf(each_image) !== index);
+                                                                                        });
+                                                                                        setFileEntity(arr_data)
+                                                                                        //setReRender(!reRender)
+                                                                                    }}
+                                                                                ></i>
+                                                                            </button>
+                                                                        })
+                                                                    }
+                                                                </div>
+                                                            </div>} */}
+                                                        </td>
                                                     </tr>
                                                 );
                                             })}
