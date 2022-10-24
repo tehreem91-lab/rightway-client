@@ -427,40 +427,40 @@ function PartyInfo() {
                                 </div>
 
                                 <div className="row">
-                                    <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
-                                        <label className="col-form-label col-md-4 col-sm-4 label-align">Select Attachment</label>
+                                    <div className="field item form-group col-md-12 col-sm-12">
+                                        <label className="col-form-label col-md-2 col-sm-2 label-align">Select Attachment</label>
 
-                                        <div className="row">
-                                            <div className="col-md-9 col-sm-9" style={{ marginLeft: "10px", marginRight: "10px" }}>
-                                                <input
-                                                    ref={ref}
-                                                    type="file"
-                                                    className="form-control form-control-sm customStyleForInput"
-                                                    data-validate-length-range={6}
-                                                    data-validate-words={2}
-                                                    name="name"
-                                                    onChange={(e) => {
-                                                        setSelectedAttachmentName((e.target.files[0].name.split("."))[0])
-                                                        setSelectedAttachmentFile(e.target.files[0])
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="col-md-1 col-sm-1 " style={{ paddingTop: "1.5px" }}>
-                                                {
-                                                    isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
-                                                        <span className="sr-only">Loading...</span>
-                                                    </div> : <button
-                                                        disabled={ref?.current?.value === "" ? true : false}
-                                                        className="btn btn-sm btn-outline-success" onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
-                                                }
-                                            </div>
+
+                                        <div className="col-md-3 col-sm-3" >
+                                            <input
+                                                ref={ref}
+                                                type="file"
+                                                className="form-control form-control-sm customStyleForInput"
+                                                data-validate-length-range={6}
+                                                data-validate-words={2}
+                                                name="name"
+                                                onChange={(e) => {
+                                                    setSelectedAttachmentName((e.target.files[0].name.split("."))[0])
+                                                    setSelectedAttachmentFile(e.target.files[0])
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="" style={{ paddingTop: "1.5px" }}>
+                                            {
+                                                isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div> : <button
+                                                    disabled={ref?.current?.value === "" ? true : false}
+                                                    className="btn btn-sm btn-outline-success" onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
+                                            }
                                         </div>
 
 
 
 
+
                                     </div>
-                                    {fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
+                                    {fileEntity.length !== 0 && <div className="field item form-group col-md-12 col-sm-12">
                                         <label className="col-form-label col-md-2 col-sm-2 label-align">Attachments</label>
                                         <div className="col-md-12 col-sm-12 ">
                                             {
@@ -526,7 +526,7 @@ function PartyInfo() {
                                             <i className='fa fa-list'></i>&nbsp;Listing
                                         </div>
                                         <button
-                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                            className="btn btn-sm btn-customOrange  borderRadiusRound"
                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
                                             onClick={() => setshowAttachment(!showAttachment)}
                                         >
@@ -581,29 +581,6 @@ function PartyInfo() {
                                                                     }
                                                                 </>
                                                             }
-                                                            {/* {item.attachments} */}
-                                                            {/* {fileEntity.length !== 0 && <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
-                                                                <label className="col-form-label col-md-2 col-sm-2 label-align">Attachments</label>
-                                                                <div className="col-md-12 col-sm-12 ">
-                                                                    {
-                                                                        fileEntity.map((each_attachment, index) => {
-                                                                            return <button className="btn btn-sm  bg-customBlue  text-light">
-                                                                                <a href={`${endPoint + each_attachment}`} target="_blank" className='text-light'>
-                                                                                    {((each_attachment.split("_"))[0]).slice(15)} {index + 1}</a>
-                                                                                <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
-                                                                                    onClick={() => {
-                                                                                        let arr_data = fileEntity.filter((each_image) => {
-                                                                                            return (fileEntity.indexOf(each_image) !== index);
-                                                                                        });
-                                                                                        setFileEntity(arr_data)
-                                                                                        //setReRender(!reRender)
-                                                                                    }}
-                                                                                ></i>
-                                                                            </button>
-                                                                        })
-                                                                    }
-                                                                </div>
-                                                            </div>} */}
                                                         </td>
                                                     </tr>
                                                 );
