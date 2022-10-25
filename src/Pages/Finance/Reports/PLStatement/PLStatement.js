@@ -24,11 +24,13 @@ const PLStatement = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [reportDataIncome, setReportDataIncome] = useState([])
   const [reportDataExpense, setReportDataExpense] = useState([])
+  const [isLoader, setisLoader] = useState(true)
 
   const level_options = [{ label: "Level 1", value: 1 }, { label: "Level 2", value: 2 }, { label: "Level 3", value: 3 }, { label: "Level 4", value: 4 }, { label: "Level 5", value: 5 }]
   const [levelValue, setLevelValue] = useState({ label: "Level 5", value: 5 })
 
   const fetchTrialBalanceReport = () => {
+    setisLoader(false)
     var config = {
       method: 'get',
       url: `${endPoint}api/PLStatement/GetData?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
@@ -40,6 +42,7 @@ const PLStatement = () => {
     axios(config)
       .then(function (response) {
         if (response.status === 200) {
+          setisLoader(true)
           setIsLoading(true)
           const categories_all_data = response.data.categories_all;
           const account_all_data = response.data.account_all
@@ -150,10 +153,10 @@ const PLStatement = () => {
   return (
     <>
       <div
-        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+        className={`container-fluid right_col page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
           }   `}
       >
-        <CustomInnerHeader moduleName="Trial Balance" isShowSelector={true} />
+        <CustomInnerHeader moduleName="PL Statement" isShowSelector={true} />
 
       </div>
       <div
@@ -239,10 +242,19 @@ const PLStatement = () => {
 
               <div className="col-md-12 text-right x_footer">
 
-                <button className="btn btn-primary" type="submit" onClick={() => { fetchTrialBalanceReport() }} >
-                  Show Report
-                </button>
-
+              <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={() => { fetchTrialBalanceReport() }}
+            >
+            Show Report
+            {!isLoader && 
+              (
+               <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+              )
+           }
+            </button>
+              
 
 
               </div>
@@ -283,14 +295,7 @@ const PLStatement = () => {
                                   
                                 />
                               </li>
-                              <li>
-                                <button
-                                  className="btn btn-sm btn-primary borderRadiusRound"
-                                  onClick={() => console.log("print")}
-                                >
-                                  <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                </button>
-                              </li>
+                            
                             </ul>
                           </div>
                         </div>

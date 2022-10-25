@@ -1,10 +1,5 @@
 import React from "react";
-import { useState } from "react";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import ReactToPrint from "react-to-print";
 
 const SalaryReportReciept = React.forwardRef(
     ({
@@ -14,6 +9,7 @@ const SalaryReportReciept = React.forwardRef(
         UploadFile,
         fileEntity,
         customStyles,
+        downloadPdf,
         CSVLink,
         csvReport,
         attendenceData,
@@ -27,45 +23,6 @@ const SalaryReportReciept = React.forwardRef(
         endPoint,
         postSalary }, ref) => {
         const navigate = useNavigate();
-        const componentRef = useRef();
-        const [showAttachment, setshowAttachment] = useState(false);
-
-        ////////////////////////////For Downloading PDF Files////////////////////////////
-        const downloadPdf = async () => {
-            var data = document.getElementById("report");
-
-            document.getElementById("report").style.overflow = "inherit";
-            document.getElementById("report").style.maxHeight = "inherit";
-
-            await html2canvas(data).then((canvas) => {
-                const contentDataURL = canvas.toDataURL("image/png", 1.0);
-
-
-                let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
-
-                let imgWidth = 300;
-                let pageHeight = pdf.internal.pageSize.height;
-                let imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
-
-                pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                window.open(
-                    pdf.output("bloburl", { filename: "new-file.pdf" }),
-                    "_blank"
-                );
-            });
-        };
-
-
         //let curent_balance = LadgerData;
 
         return (
@@ -73,52 +30,8 @@ const SalaryReportReciept = React.forwardRef(
 
                 <div className="x_panel  px-0 ">
                     <div className="x_content my-3">
-                        <span className="section pb-0">
-                            <div className="row px-2 ">
-                                <div className="col-3  pt-3">
-                                    <i className='fa fa-list'></i>&nbsp;Report
-                                </div>
-                                <div className="col-9 text-right ">
-                                    <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-
-                                        <li>
-                                            <ReactToPrint
-                                                trigger={() => {
-                                                    return (
-                                                        <button
-                                                            className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound" title="Print"
-                                                        >
-                                                            <i className="fa fa-print"></i>
-                                                        </button>
-                                                    );
-                                                }}
-                                                content={() => componentRef.current}
-                                                documentTitle="new docs"
-                                                pageStyle="print"
-                                            />
-                                        </li>
-                                        <li>
-                                            <button
-                                                className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                                data-toggle="tooltip" data-placement="top" title="Download as PDF"
-                                                onClick={downloadPdf}
-                                            ><i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                            </button>
-                                        </li>
-
-                                        <li>
-                                            <button
-                                                className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                                data-toggle="tooltip" data-placement="top" title="View Attachments"
-                                                onClick={() => setshowAttachment(!showAttachment)}
-                                            >
-                                                <i className="fa fa-paperclip" aria-hidden="true"></i>
-                                            </button>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </div>
+                        <span className="section  px-2 ">
+                            <i className="fa fa-list"></i>&nbsp; Report Data
                         </span>
 
 
@@ -159,26 +72,9 @@ const SalaryReportReciept = React.forwardRef(
                             </ul>
                         </div> */}
 
-                        {
-                            showAttachment && <>
-                                {
-                                    <div className="row">
-                                        <div className="col-md-12 px-5 bold-7 text-dark text-left" style={{ marginBottom: "10px" }}>
-                                            Attachments : {
-                                                attendenceData.attachments_paths !== "" ? attendenceData.attachments_paths?.split(',').map((each_file) => {
-                                                    return <button className="btn btn-sm  bg-customBlue  text-light">
-                                                        <a href={`${endPoint + each_file}`} target="_blank" rel="noopener noreferrer" className='text-light'>
-                                                            {((each_file.split("_"))[0]).slice(15)}
-                                                        </a></button>
-                                                }) : "No Attachment Available "
-                                            }
-                                        </div>
-                                    </div>
-                                }
-                            </>
-                        }
+
                         {/* //////////////////////////Form Entries///////////////////////////////// */}
-                        <div id="report" ref={componentRef}>
+                        <div id="report">
                             <div className="table-responsive px-3 pb-2 ">
 
                                 <div className="row  mx-3 ">
@@ -239,13 +135,15 @@ const SalaryReportReciept = React.forwardRef(
 
 
 
-                                {/* <div className="col-lg-5 col-sm-5" style={{ marginTop: "28px" }}>
+                                <div className="col-lg-5 col-sm-5" style={{ marginTop: "28px" }}>
                                     <table className="table">
 
                                         <tbody>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom" width="20%">Overtime</th>
                                                 <td>{attendenceData?.over_time}</td>
+                                                {/* <td>Carter</td>
+                                                <td>johncarter@mail.com</td> */}
                                             </tr>
                                             <tr>
                                                 <th className="headings reportTableHead border-bottom">Working Hours</th>
@@ -295,7 +193,7 @@ const SalaryReportReciept = React.forwardRef(
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div> */}
+                                </div>
 
 
 
@@ -412,86 +310,42 @@ const SalaryReportReciept = React.forwardRef(
 
                                 </table>
                             </div>
-                            <div className="row mx-3  reportTableHead mt-2">
 
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
-                                    Overtime
-                                </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
-                                    Working Hours
-                                </div>
+                        </div>
+                    </div>
+                </div>
 
-                                <div className="col-md-2 font-size-12  text-center  my-1 ">
-                                    Primary Salary
-                                </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
-                                    Allowence Amount
-                                </div>
-                                <div className="col-md-2 font-size-12  text-center  my-1 ">
-                                    Gross Salary
-                                </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
-                                    Loan Deductions
-                                </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
-                                    Advance Deductions
-                                </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
-                                    Total Deductions
-                                </div>
-                                <div className="col-md-2 font-size-12  text-center  my-1 ">
-                                    Net Salary
-                                </div>
+                {/* //////////////////////////Attachments///////////////////////////////// */}
+                <div className="x_panel  px-0 ">
+                    <div className="x_content my-3">
+                        <div className="row">
+                            <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
+                                <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments:</label>
 
-                            </div>
 
-                            <div className="row mx-3  reportTableBody bottom-border-2">
-                                <div className="col-md-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
-                                    {attendenceData?.over_time}
-                                </div>
-                                <div className="col-md-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
-                                    {attendenceData?.total_working_hour}
-                                </div>
 
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
-                                    {attendenceData?.pm_salary}
-                                </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
-                                    {attendenceData?.allowence_amount}
-                                </div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
-                                    {attendenceData?.gross_salary}
-                                </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
-                                    {attendenceData?.loan_deduction}
-                                </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
-                                    {attendenceData?.advance_deduction}
-                                </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
-                                    {attendenceData?.total_deduction}
-                                </div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
-                                    {attendenceData?.net_salary}
-                                </div>
-                            </div>
-
-                            <div className="row mx-3  reportTableBody bottom-border-2">
-
-                                <div className="col-md-1    font-size-12   bold-6   py-1 pt-1     d-flex justify-content-start align-items-center ">  </div>
-                                <div className="col-md-1    font-size-12    py-1    pt-1  d-flex justify-content-center align-items-center "> </div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-
+                                {fileEntity.length !== 0 &&
+                                    <div className="field item form-group col-md-8 col-sm-8">
+                                        <div className="col-md-12 col-sm-12 ">
+                                            {
+                                                fileEntity.map((each_attachment, index) => {
+                                                    return <button className="btn btn-sm  bg-customBlue  text-light">
+                                                        <a href={`${endPoint + each_attachment}`}
+                                                            src={`${URL}${attendenceData.attachments_paths?.slice(1, -1)}`}
+                                                            target="_blank" rel="noopener noreferrer" className='text-light'>
+                                                            {((each_attachment.split("_"))[0])?.slice(15)} {index + 1}</a>
+                                                    </button>
+                                                })
+                                            }
+                                        </div>
+                                    </div>}
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
             </div>
         );
     }

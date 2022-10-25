@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect ,useRef} from 'react'
 import { useSelector } from "react-redux";
 import Select from 'react-select'
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
+import { toast } from "react-toastify";
 const CreateJob = () => {
+    const navigate = useNavigate();
     const location = useLocation();
+    const ref = useRef();
+    const [isFileUploadingModeOn, setisFileUploadingModeOn]= useState(false)
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -115,15 +120,24 @@ const CreateJob = () => {
                 method: 'put',
                 url: `http://rightway-api.genial365.com/api/Jobs/UpdateProduct?job_id=${location.state.id}`,
                 headers: {
-                    'Authorization': 'Bearer  wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig',
-                    'Content-Type': 'application/json'
+                    'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                    'content-Type': 'application/json'
                 },
                 data: data
             };
 
             axios(config)
                 .then(function (response) {
-                  
+                    toast.success(
+                        "Record has been " +
+                        ("Updated" + " successfully!")
+                    );
+                    // navigate.reset({
+                    //     state: {  },
+                    //     routes: [{ name: '/CreateJobAccess' }],
+                    //   });
+                    // navigate('/CreateJobAccess', { state: {  } })
+                    navigate(-1)
                     dataupdate = false;
                     setJobdata({
                         customer_chart_id: 0,
@@ -146,6 +160,7 @@ const CreateJob = () => {
                     })
                     setfilearray([]);
                     setmachine_ids([]);
+                    setproIdData([])
                 })
                 .catch(function (error) {
                     
@@ -209,15 +224,18 @@ const CreateJob = () => {
                 method: 'post',
                 url: 'http://rightway-api.genial365.com/api/Jobs/AddProduct',
                 headers: {
-                    'Authorization': 'Bearer  wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig',
-                    'Content-Type': 'application/json'
+                    'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                    'content-Type': 'application/json'
                 },
                 data: data
             };
 
             axios(config)
                 .then(function (response) {
-
+                    toast.success(
+                        "Record has been " +
+                        ("Added" + " successfully!")
+                    );
                     dataupdate = false;
                     setmachine_ids([]);
                     setJobdata({
@@ -241,7 +259,7 @@ const CreateJob = () => {
                     })
                     setfilearray([]);
                     machine_ids.map(data => { data.checked = false })
-
+          setproIdData([])
                     console.log(machine_ids);
                 })
                 .catch(function (error) {
@@ -256,7 +274,7 @@ const CreateJob = () => {
             method: 'GET',
             url: `http://rightway-api.genial365.com/api/Jobs/GetJobRecordById?job_id=${location.state.id}`,
             headers: {
-                'Authorization': 'Bearer wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig'
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
             }
         };
         (axios(config)
@@ -291,7 +309,7 @@ const CreateJob = () => {
                 setmachine_ids(response.data[0].machine_entires);
                 setfilearray(response.data[0].attachments.split(','));
 
-
+                
             })
             .catch(function (error) {
 
@@ -303,7 +321,7 @@ const CreateJob = () => {
             method: 'GET',
             url: APIurl,
             headers: {
-                'Authorization': 'Bearer wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig'
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
             }
 
         };
@@ -399,23 +417,26 @@ const CreateJob = () => {
 
     }
     const uploadFile = async () => {
+        if(fileupload.name){
+        setisFileUploadingModeOn(true);
+
         let response_from_api = "";
         let data = new FormData();
         data.append("UploadedImage", fileupload);
 
         await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${fileupload.name}`, data,).then(res => {
             if (res.status === 200) {
-               
+            setisFileUploadingModeOn(false);
+            ref.current.value = "";
                 response_from_api = res.data
-                setfilearray([...filearray, res.data])
-
+                setfilearray([...filearray,res.data])
                 setJobdata({ ...JobData, attachments: [...filearray, response_from_api].toString() })
-
+                setfileupload("")
             }
 
 
         })
-
+    }
 
     }
     useEffect(() => {
@@ -602,7 +623,7 @@ const CreateJob = () => {
                                     </label>
                                     <div className="col-md-7 col-sm-6">
                                         <input required
-                                            type="file" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                            type="file" ref={ref} accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
 text/plain, application/pdf, image/*" onChange={(e) => {
 
 
@@ -616,13 +637,16 @@ text/plain, application/pdf, image/*" onChange={(e) => {
 
 
                                     </div>
-                                    <div className="col-md-1 col-sm-2 p-0">
-                                        <button className="btn btn-sm btn-outline-success" type="button" onClick={() => uploadFile()}><i className="fa fa-upload"></i></button>
-                                    </div>
+                                  
+                                    <div className="col-md-1 col-sm-2 p-0">{
+                  isFileUploadingModeOn?  <div className="spinner-border my-2 text-customOrange" role="status">
+                            <span className="sr-only">Loading...</span>
+                         </div> :(<button className="btn btn-sm btn-outline-success" type="button" onClick={() => {uploadFile()}}><i className="fa fa-upload"></i></button>)}
+                  </div>
                                 </div>
                                 <div className="field item form-group">
-                                    <div className="col-md-8 col-sm-6 text-center">
-                                        {filearray?.map((file, i) => (<a key={i} target="_blank" className=" bg-customBlue text-light m-1 p-1">{i + 1}_{file}<i className="fa fa-times" onClick={() => { setfilearray(filearray.filter((del, index) => (i !== index))); setJobdata({ ...JobData, attachments: JobData.attachments.replace(`,${filearray[i]}`, '') }) }}></i></a>))}
+                                    <div className="col-md-12 col-sm-6 text-center">
+                                        {filearray?.map((file, i) => (<a key={i} target="_blank" className=" bg-customBlue text-light m-1 p-1">{i + 1}.   {file?.substring(file.indexOf("s") + 2, file.indexOf("_"))}<i className="fa fa-times" onClick={() => { setfilearray(filearray.filter((del, index) => (i !== index))); setJobdata({ ...JobData, attachments: JobData.attachments.replace(`,${filearray[i]}`, '') }) }}></i></a>))}
                                     </div>
                                 </div>
                                 <div className="field item form-group">
@@ -641,8 +665,8 @@ text/plain, application/pdf, image/*" onChange={(e) => {
                                 </div>
                                 <div className="col-md-12 text-right x_footer">
                                     {location?.state?.flag ? (<button className="btn btn-primary" type="submit" onClick={() => { PutData() }} >
-                                        Edit
-                                    </button>) : (<button className="btn btn-primary" type="submit" onClick={() => { Postdata() }} >
+                                        Update
+                                    </button>) : (<button className="btn btn-primary" type="submit" disabled={isFileUploadingModeOn} onClick={() => { Postdata() }} >
                                         Add
                                     </button>)}
                                 </div>

@@ -10,8 +10,6 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import { toast } from "react-toastify";
-import ReactToPrint from "react-to-print";
-import { useRef } from "react";
 import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 const Attendance = () => {
 
@@ -21,7 +19,6 @@ const Attendance = () => {
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
     const [isError, setisError] = useState(false);
-    const componentRef = useRef();
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -278,7 +275,7 @@ const Attendance = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <CustomInnerHeader moduleName="Manage Attendance" isShowSelector={true} />
+            <CustomInnerHeader moduleName="Manage Attendance" isShowSelector={true} />
 
             </div>
             <div
@@ -446,19 +443,9 @@ const Attendance = () => {
 
                                                 <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                                     <div className="form-group col-md-3">
-
-                                                        <ReactToPrint className="form-group col-md-3"
-                                                            trigger={() => {
-                                                                return (
-                                                                    <button className="btn btn-sm btn-primary borderRadiusRound">
-                                                                        <i className="fa fa-print"></i>
-                                                                    </button>
-                                                                );
-                                                            }}
-                                                            content={() => componentRef.current}
-                                                            documentTitle="new docs"
-                                                            pageStyle="print"
-                                                        />
+                                                        <button className="btn btn-sm btn-primary borderRadiusRound">
+                                                            <i className="fa fa-print"></i>
+                                                        </button>
                                                     </div>
 
                                                     <div className="form-group col-md-3">
@@ -485,8 +472,8 @@ const Attendance = () => {
 
 
                                             {/* //////////////////////////Form Structure///////////////////////////////// */}
-                                            <div id="report" >
-                                                <div className="table-responsive px-3 pb-2 " ref={componentRef}>
+                                            <div id="report">
+                                                <div className="table-responsive px-3 pb-2 ">
                                                     <table className="table ">
                                                         <thead>
                                                             <tr className="headings reportTableHead">

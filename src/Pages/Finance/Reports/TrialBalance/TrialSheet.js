@@ -8,6 +8,7 @@ import { endPoint } from "../../../../config/Config.js";
 import { preventLowerDate } from "../../../../config/preventMinus.js";
 import CustomInnerHeader from '../../../../Components/CustomInnerHeader'
 import TrialSheetReciept from "./TrialSheetReciept.js";
+import Spinner from 'react-bootstrap/Spinner'
 const TrialSheet = () => {
 
     const componentRef = useRef();
@@ -21,11 +22,13 @@ const TrialSheet = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [grandsTotals, setGrandsTotals] = useState({})
     const [reportData, setReportData] = useState([])
+    const [isLoader, setisLoader] = useState(true);
 
     const level_options = [{ label: "Level 1", value: 1 }, { label: "Level 2", value: 2 }, { label: "Level 3", value: 3 }, { label: "Level 4", value: 4 }, { label: "Level 5", value: 5 }]
     const [levelValue, setLevelValue] = useState({ label: "Level 5", value: 5 })
 
     const fetchTrialBalanceReport = () => {
+        setisLoader(false)
         var config = {
             method: 'get',
             url: `${endPoint}api/trialBalace/GetData?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
@@ -37,6 +40,7 @@ const TrialSheet = () => {
         axios(config)
             .then(function (response) {
                 if (response.status === 200) {
+                    setisLoader(true)
                     setIsLoading(true)
                     const categories_all_data = response.data.categories_all;
                     const account_all_data = response.data.account_all
@@ -229,7 +233,7 @@ const TrialSheet = () => {
     return (
         <>
             <div
-                className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+                className={`container-fluid right_col page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
                 <CustomInnerHeader moduleName="Trial Balance" isShowSelector={true} />
@@ -318,9 +322,18 @@ const TrialSheet = () => {
 
                             <div className="col-md-12 text-right x_footer">
 
-                                <button className="btn btn-primary" type="submit" onClick={() => { fetchTrialBalanceReport() }} >
-                                    Show Report
-                                </button>
+                                <button
+                                className="btn btn-primary"
+                                type="submit"
+                                onClick={() => { fetchTrialBalanceReport() }}
+                              >
+                              Show Report
+                              {!isLoader && 
+                                (
+                                 <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                                )
+                             }
+                              </button>
 
 
 

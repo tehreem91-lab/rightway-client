@@ -7,9 +7,10 @@ import axios from 'axios'
 import { endPoint } from "../../../../config/Config.js";
 import CustomInnerHeader from '../../../../Components/CustomInnerHeader'
 import BalanceSheetReciept from "./BalanceSheetReciept.js";
-
+import Spinner from 'react-bootstrap/Spinner'
 
 const Balance = () => {
+  const [isLoader, setisLoader] = useState(true);
 
   const componentRef = useRef();
   const showNavMenu = useSelector((state) => state.NavState);
@@ -26,6 +27,7 @@ const Balance = () => {
   const [levelValue, setLevelValue] = useState({ label: "Level 5", value: 5 })
 
   const fetchTrialBalanceReport = () => {
+    setisLoader(false)
     var config = {
       method: 'get',
       url: `${endPoint}/api/BalanceSheet/GetData?dateTo=${dateTo}T00:00:00`,
@@ -38,6 +40,9 @@ const Balance = () => {
       .then(function (response) {
         if (response.status === 200) {
           setIsLoading(true)
+
+          setisLoader(true)
+        
           const categories_all_data = response.data.categories_all;
           const account_all_data = response.data.account_all
           let filtralized_data = [];
@@ -131,7 +136,6 @@ const Balance = () => {
           }
           setReportDataAssets([filtralized_data[1]])
           setReportDataLiabilities([filtralized_data[0]])
-
           setIsLoading(false)
         }
       })
@@ -147,7 +151,7 @@ const Balance = () => {
   return (
     <>
       <div
-        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+        className={`container-fluid right_col page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
           }   `}
       >
         <CustomInnerHeader moduleName="Trial Balance" isShowSelector={true} />
@@ -222,12 +226,19 @@ const Balance = () => {
               </div>
 
               <div className="col-md-12 text-right x_footer">
-
-                <button className="btn btn-primary" type="submit" onClick={() => { fetchTrialBalanceReport() }} >
-                  Show Report
-                </button>
-
-
+             <button
+                className="btn btn-primary"
+                type="submit"
+                onClick={() => { fetchTrialBalanceReport() }}
+              >
+              Show Report
+              {!isLoader && 
+                (
+                 <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                )
+             }
+              </button>
+           
 
               </div>
 

@@ -23,13 +23,13 @@ var hours = new Date().getHours(undefined, { hours: "2-digit" })
 var minuts = new Date().getMinutes(undefined, { minuts: "2-digit" })
 
 
+ 
   //  const  time = today.getHours() + ':' + today.getMinutes() ;
 const dateToday = `${year}-${month}-${day}T${hours}:${minuts}`
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleClose1 = () => setShow1(false);
     const handleShow1 = (id) => {setShow1(true)
-        console.log(id)
         setstockissueid(id)
     };
     const [IsValidation, setIsValidation] = useState(true);
@@ -63,7 +63,7 @@ const [remarks, setRemarks] = useState("")
 const [quantity, setquantity] = useState(0)
 const [issueOption, setissueOption] = useState([])
 
-const [job_shift_entries, setjob_shift_entries] = useState([{ item_chart_id:0, quantity_credit: 0, credit: 0,average_rate: 0,stock_type:0}])
+const [job_shift_entries, setjob_shift_entries] = useState([{ item_chart_id:0, quantity_credit: 0, credit: 0,average_rate: 0,stock_type:""}])
 
 // All selectors 
 
@@ -74,8 +74,10 @@ const Get_Job_Selector = () =>{
     var config = {
       method: 'get',
       url: 'http://rightway-api.genial365.com/api/IssueStock/GetProcessJob',
-      headers: { 
-        'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+      headers: {
+        Authorization: `bearer ${
+          JSON.parse(localStorage.getItem("access_token")).access_token
+        }`,
       },
       data : data
     };
@@ -110,8 +112,10 @@ const Get_Job_Selector = () =>{
       var config = {
         method: 'get',
         url: 'http://rightway-api.genial365.com/api/Shifts/GetData',
-        headers: { 
-          'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+        headers: {
+          Authorization: `bearer ${
+            JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
         },
       };
       
@@ -142,8 +146,10 @@ const Get_Job_Selector = () =>{
       var config = {
         method: 'get',
         url: 'http://rightway-api.genial365.com/api/EmployeeDetails/GetActiveEmployee',
-        headers: { 
-          'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+        headers: {
+          Authorization: `bearer ${
+            JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
         },
       };
       
@@ -176,18 +182,25 @@ const Get_Job_Selector = () =>{
       var config = {
         method: 'get',
         url: `http://rightway-api.genial365.com/api/IssueStock/GetRequioredItems?job_id=${e.value}`,
-        headers: { 
-          'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+        headers: {
+          Authorization: `bearer ${
+            JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
         },
       };
       
       axios(config)
       .then(function (response) {
       
+        // setjob_shift_entries(response.data)
+        // job_shift_entries.item_chart_id(response.data.item_chart_id)
         setjob_shift_entries(response.data.map((item)=>{
           return{
             item_chart_id:item.item_chart_id,
-            quantity_credit:item.item_quantity
+            quantity_credit:item.item_quantity,
+            credit:0,
+            average_rate: 0,
+            stock_type:""
           }
     
           
@@ -207,8 +220,10 @@ const Get_Job_Selector = () =>{
       var config = {
         method: 'get',
         url: 'http://rightway-api.genial365.com/api/IssueStock/GetItems',
-        headers: { 
-          'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+        headers: {
+          Authorization: `bearer ${
+            JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
         },
       };
       
@@ -240,8 +255,10 @@ const Get_Job_Selector = () =>{
         var config = {
           method: 'get',
           url: `http://rightway-api.genial365.com/api/IssueStock/GetProcessJobById?process_job_id=${e.value}`,
-          headers: { 
-            'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+          headers: {
+            Authorization: `bearer ${
+              JSON.parse(localStorage.getItem("access_token")).access_token
+            }`,
           },
           data : data
         };
@@ -265,8 +282,10 @@ const Get_Job_Selector = () =>{
         var config = {
           method: 'get',
           url: 'http://rightway-api.genial365.com/api/IssueStock/GetShiftNumber',
-          headers: { 
-            'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+          headers: {
+            Authorization: `bearer ${
+              JSON.parse(localStorage.getItem("access_token")).access_token
+            }`,
           },
           data : data
         };
@@ -289,8 +308,10 @@ const Get_Job_Selector = () =>{
                 method: 'get',
                 url:(aftersubmit ? `http://rightway-api.genial365.com/api/IssueStock/GetJobStockIssueDetails?job_id=${e.value}`:
                 `http://rightway-api.genial365.com/api/IssueStock/GetJobStockIssueDetails?job_id=${jobvalue.value}`),
-                headers: { 
-                  'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+                headers: {
+                  Authorization: `bearer ${
+                    JSON.parse(localStorage.getItem("access_token")).access_token
+                  }`,
                 },
                 data : data
               };
@@ -313,7 +334,7 @@ const Get_Job_Selector = () =>{
 
             const Create = (id) =>{
                 var axios = require('axios');
-                if(shiftvalue === "" || total_hours === "" )
+                if(shiftvalue === "" || total_hours === ""  )
                 {setIsValidation(false)}
                 else{
                 var data = JSON.stringify({
@@ -329,8 +350,10 @@ const Get_Job_Selector = () =>{
                   url:(updatemode ? `http://rightway-api.genial365.com/api/IssueStock/PostShift?job_id=${jobvalue.value}`:
                   `http://rightway-api.genial365.com/api/IssueStock/PutShift?job_stock_shift_issues_id=${id}`
                   ),
-                  headers: { 
-                    'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw', 
+                  headers: {
+                    Authorization: `bearer ${
+                      JSON.parse(localStorage.getItem("access_token")).access_token
+                    }`,
                     'Content-Type': 'application/json'
                   },
                   data : data
@@ -368,9 +391,11 @@ const Get_Job_Selector = () =>{
          var config = {
          method: 'delete',
          url: `http://rightway-api.genial365.com/api/IssueStock/DeleteShift?job_stock_shift_issues_id=${id}`,
-        headers: { 
-       'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
-         },
+         headers: {
+          Authorization: `bearer ${
+            JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
+        },
        data : data
            };
 
@@ -395,8 +420,10 @@ const Get_Job_Selector = () =>{
               var config = {
                 method: 'get',
                 url: `http://rightway-api.genial365.com/api/IssueStock/GetShiftById?job_stock_shift_issues_id=${id}`,
-                headers: { 
-                  'Authorization': 'Bearer 7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+                headers: {
+                  Authorization: `bearer ${
+                    JSON.parse(localStorage.getItem("access_token")).access_token
+                  }`,
                 },
                 data : data
               };
@@ -404,8 +431,8 @@ const Get_Job_Selector = () =>{
               axios(config)
               .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                setShift_start_date(response.data.shift_start_date.slice(0,10))
-                setshift_end_date(response.data.shift_close_date.slice(0,10))
+                setShift_start_date(response.data.shift_start_date)
+                setshift_end_date(response.data.shift_close_date)
                 setStock_issue_date(response.data.stock_issue_date.slice(0,10))
                 setnumber(response.data.shift_number)
                 setTotalhours(response.data.shift_hour)
@@ -428,8 +455,11 @@ const Get_Job_Selector = () =>{
 // Post Issue Stock
  const POST_ISSUE_STOCK =(id) =>{
 var axios = require('axios');
-
-
+if(issueto === ""  )
+  {
+    setIsValidation(false)
+  }
+  else{
 var data = JSON.stringify({
   "date": formDate,
   "issue_to": issueto.value,
@@ -438,28 +468,32 @@ var data = JSON.stringify({
   "quantity":quantity ,
   "job_shift_entries":job_shift_entries 
 });
-
 var config = {
   method: 'POST',
   url: `http://rightway-api.genial365.com/api/IssueStock/PostStockIssue?job_id=${jobvalue.value}&job_stock_shift_issues_entries_id=${id}`,
-  headers: { 
-    'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw', 
+  headers: {
+    Authorization: `bearer ${
+      JSON.parse(localStorage.getItem("access_token")).access_token
+    }`,
     'Content-Type': 'application/json'
   },
   data : data
 };
+}
 
 axios(config)
 .then(function (response) {
   console.log(JSON.stringify(response.data));
- 
-   
- 
+    console.log(data)
+   setissueto("")
+   setRemarks("")
   setFileEntity([])
-  setjob_shift_entries([{
-    item_chart_id:"", quantity_credit: "", credit:"",average_rate:"",stock_type:""
+  setquantity(0)
 
+  setjob_shift_entries([{
+    item_chart_id:0, quantity_credit: 0, credit: 0,average_rate: 0,stock_type:""
   }])
+  setIsValidation(true)
 })
 .catch(function (error) {
   console.log(error);
@@ -542,7 +576,7 @@ useEffect(() => {
         {/*1st row*/}
     <div className="row px-2  ">
         <div className="col-8 ">
-        <i className="fa fa-edit"></i>&nbsp;Stock Issue Shift Wise
+        <i className="fa fa-filter pl-2"></i>&nbsp;Stock Issue Shift Wise Report
         </div>
     </div>
     </span>
@@ -586,11 +620,29 @@ useEffect(() => {
           </div>
           <div className='row  text-dark  bottom-border-1 ' style={{ backgroundColor: "#f7ab8b" }}   >
           <div className="col-md-6  font-size-12 p-2  right-border-1 " > Job starting Date </div> 
-          <div className='col-md-6 font-size-12    text-right '>{item.job_starting_date}</div>
+          <div className='col-md-6 font-size-12    text-right '>
+          {`${item.job_starting_date.slice(
+            8,
+            10
+          )}-${item.job_starting_date.slice(
+            5,
+            7
+          )}-${item.job_starting_date.slice(0, 4)}`}
+          
+          </div>
           </div>
           <div className='row  text-dark  bottom-border-1 ' style={{ backgroundColor: "#f7ab8b" }}>
           <div className="col-md-6 font-size-12  p-2  right-border-1">Job Ending Date</div> 
-          <div className='col-md-6 font-size-12   my-2 text-right'>{item.job_ending_date}</div>
+          <div className='col-md-6 font-size-12   my-2 text-right'>
+          {`${item.job_ending_date.slice(
+            8,
+            10
+          )}-${item.job_ending_date.slice(
+            5,
+            7
+          )}-${item.job_ending_date.slice(0, 4)}`}
+          
+          </div>
           </div>
           <div className='row  text-dark  bottom-border-1 ' style={{ backgroundColor: "#f7ab8b" }}>
           <div className="col-md-6 font-size-12  p-2 right-border-1 ">Job Customer Name</div> 
@@ -631,16 +683,14 @@ useEffect(() => {
 </div>
      </div>
  </div>
-
-
-
- 
+  </div>
     </div>
     </div>
 
 
    
-    {!isloading && (<>
+    {!isloading && (
+      <>
       <div className="x_panel  ">
       <div className="x_content">
       <span className="section pl-3">
@@ -778,15 +828,20 @@ useEffect(() => {
        
        
        
-        <Modal show={show} onHide={handleClose}
+        <Modal 
+        show={show} 
+        onHide={handleClose}
+        size="lg"
+        aria-labelledby="example-modal-sizes-title-lg "
       
         >
         <Modal.Header >
        <Modal.Title>Creating Shift</Modal.Title>
-        <i class="fa fa-times pt-2 text-dark font-size-18" aria-hidden="true" onClick={handleClose} ></i>
+        <i class="fa fa-times pt-2 text-dark font-size-18" style={{fontSize: 14,}} aria-hidden="true" onClick={handleClose} ></i>
       </Modal.Header>
       <Modal.Body>
       <Form>
+      <div className="row">
       <div className = "col-md-6">
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>Shift Number</Form.Label>
@@ -810,6 +865,8 @@ useEffect(() => {
            {!IsValidation && (shiftvalue === "" ) && <span className="text-danger">First Select this </span>} 
           </Form.Group>
           </div>
+          </div>
+          <div className="row">
           <div className = "col-md-6">
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>Shift Start date</Form.Label>
@@ -820,15 +877,30 @@ useEffect(() => {
               onChange={(e)=>{
                 
                 setShift_start_date(e.target.value)
-                   let dt1 = new Date (shift_start_date.slice(11)); 
-                   let dt2 = new Date (shift_end_date.slice(11));
-                   let hours = Math.abs(dt1 - dt2) / 36e5;
-                   console.log(hours);
+                
+           
+  function diff_hours(dt2, dt1) 
+ {
+
+  var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+  diff /= (60 * 60);
+  return Math.abs(Math.round(diff));
+  
+ }
+ let dt1 = new Date (shift_start_date.slice(0,10)); 
+ let dt2 = new Date (shift_end_date.slice(0,10));     
+
+ let hours = diff_hours(dt1, dt2)
+                  //  let dt1 = new Date (shift_start_date.slice(0,10)); 
+                  //  let dt2 = new Date (shift_end_date.slice(0,10));
+                  //  let hours = Math.abs(dt2 - dt1) / 36e5;
+                  //  console.log(hours);
                    setTotalhours(hours)
                 
                
               }}
           />
+          {!IsValidation && (shift_start_date > shift_end_date ) && <span className="text-danger"  >Start time should be less then End time  </span>} 
         </Form.Group>
           
           </div>
@@ -843,20 +915,36 @@ useEffect(() => {
                 {
                   
                   setshift_end_date(e.target.value)
-                  let dt1 = new Date(shift_start_date.slice(0,10)); 
-                   let dt2 = new Date(shift_end_date.slice(0,10));
-                   let hours = Math.abs(dt1 - dt2) / 36e5;
-                   console.log(hours);
-                   setTotalhours(hours)
+                  function diff_hours(dt2, dt1) 
+                  {
+                 
+                   var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+                   diff /= (60 * 60);
+                   return Math.abs(Math.round(diff));
+                   
+                  }
+                  let dt1 = new Date (shift_start_date); 
+                  let dt2 = new Date (shift_end_date);     
+                 
+                  let hours = diff_hours(dt1, dt2)
+                  setTotalhours(hours)
+
+                  // let dt1 = new Date (shift_start_date.slice(0,10)); 
+                  //  let dt2 = new Date (shift_end_date.slice(0,10));
+                  //  let hours = Math.abs(dt2 - dt1) / 36e5;
+                  //  console.log(hours);
+                 
                 }
                
               
               
               }
           />
+          {!IsValidation && (shift_start_date === shift_end_date  ) && <span className="text-danger"  >End time should be greater then Start time  </span>} 
         </Form.Group>
            </div>
-           <div className='col-md-6'>
+           </div>
+           <div className='col-md-6 '>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>stock issue date:</Form.Label>
             <Form.Control
@@ -872,6 +960,7 @@ useEffect(() => {
             <Form.Label>Total hours</Form.Label>
             <input
              type="number"
+             min="0"
              className='form-control'
              value={total_hours}  
              onChange={(e)=>setTotalhours(e.target.value)}         
@@ -905,10 +994,11 @@ useEffect(() => {
     show={show1} 
     onHide={handleClose1}
     size="lg"
-    aria-labelledby="example-modal-sizes-title-lg">
+    aria-labelledby="example-modal-sizes-title-lg "
+    >
         <Modal.Header >
           <Modal.Title>Issue Stock</Modal.Title>
-          <i class="fa fa-times pt-2 text-dark font-size-18" aria-hidden="true" onClick={handleClose1} ></i>
+          <i class="fa fa-times pt-2 text-dark font-size-18" aria-hidden="true" style={{fontSize: 14,}} onClick={handleClose1} ></i>
         </Modal.Header>
         <Modal.Body>
         <Form>
@@ -933,12 +1023,11 @@ useEffect(() => {
             <Form.Label>Issue To:</Form.Label>
             <Select
             isSearchable={true}
-            name="issue_to"
             options={issueOption}
-            value={issueOption.issue_to}
+            value={issueto}
               onChange={(e)=>{setissueto(e)}}
            />
-           {!IsValidation && (issueto === "" ) && <span className="text-danger">First Select this </span>} 
+           {!IsValidation && (issueto.label === "" ) && <span className="text-danger">First Select this </span>} 
             </Form.Group>
             </div>
             </div>
@@ -953,7 +1042,7 @@ useEffect(() => {
               value={quantity}
               onChange={(e)=>setquantity(e.target.value)}
             />
-            {!IsValidation && ( quantity === "") && <span className="text-danger">First Select this </span>} 
+            {!IsValidation && (quantity === "") && <span className="text-danger">First Select this </span>} 
           </Form.Group>
             </div>
             <div className="col-md-4">
@@ -1090,7 +1179,20 @@ useEffect(() => {
                    {!IsValidation && (element.average_rate === "" ) && <span className="text-danger">First Select this </span>} 
                   </td>
                   <td className='text-center'>
-                  <input type="radio" name='stocktype'  value={element.stock_type}  onChange={e => handleChange(index, e)} />  Purchase <input type="radio" name='stocktype'  value={element.stock_type}  onChange={e => handleChange(index, e)}/>  CMT
+                  <tr>
+                  <input type="radio" 
+                  name ={index}
+                  // name="stocktype" 
+                  value = "Purchase"
+                    onChange={e => handleChange(index, e)}
+                 
+                    />  Purchase 
+                    <input type="radio" 
+                    name ={index}
+                    // name="stocktype" 
+                    value = " CMT"
+                    onChange={e => handleChange(index, e)}/>  CMT
+                    </tr>
                   </td>
                   <td>
                   <i class="fa fa-times pt-2 text-danger font-size-18" aria-hidden="true" onClick={()=>removeFormFields(index)}  ></i>
@@ -1105,8 +1207,11 @@ useEffect(() => {
                   </table>
                   </div>
                   <div className="col-md-12">
-                  <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={(e)=> {setjob_shift_entries([...job_shift_entries, {}])
-                  e.preventDefault(e)
+                  <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={(e)=> {setjob_shift_entries([...job_shift_entries, {
+                    item_chart_id:0, quantity_credit: 0, credit: 0,average_rate: 0,stock_type:""
+
+                  }])
+                  e.preventDefault()
                 }}> Add more </button>
                   </div>
                   </Form>
@@ -1117,15 +1222,16 @@ useEffect(() => {
           <Button variant="secondary" onClick={handleClose1}>
             Close
           </Button>
-          <Button variant="primary" onClick={()=>POST_ISSUE_STOCK(stockissueId)}>
-            Save Changes
+          <Button variant="primary" onClick={()=>{POST_ISSUE_STOCK(stockissueId)
+          setIsValidation(true)
+          }}>
+            Submit
           </Button>
         </Modal.Footer>
       </Modal>
 
    
         
-        </div>
     </div>
     </>
 

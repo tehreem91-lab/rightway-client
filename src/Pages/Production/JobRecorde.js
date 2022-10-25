@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import Select from 'react-select'
 import ReactToPrint from "react-to-print";
 import { useNavigate } from "react-router-dom";
-import Loader from '../../Layout/Loader/Loader';
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 const JobRecord = () => {
   const [showTable, setshowTable] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  
+  
   const navigate = useNavigate();
   var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
   var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -23,6 +23,7 @@ const JobRecord = () => {
     navigate('/CreateJobAccess', { state: { id: Recid, flag: true } })
   }
   const Report = () => {
+    
     let isValidationOk = true;
     //Status Validation
 
@@ -32,20 +33,20 @@ const JobRecord = () => {
     setIsValidateAllStates(isValidationOk)
     var axios = require('axios');
     if (isValidationOk === true) {
+      setshowTable(true)
       // setshowTable(true)
-      setIsLoading(true)
+     
       var config = {
 
         method: 'get',
         url: `http://rightway-api.genial365.com/api/Jobs/GetJobRecord?dateFrom=${data.dateFrom}&dateTo=${data.dateTo}&job_status=${data.Status}`,
         headers: {
-          'Authorization': 'Bearer  wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig'
-        }
+          'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+      }
       };
 
       axios(config)
         .then(function (response) {
-          setIsLoading(false)
         
           setApiRes(response.data);
         })
@@ -59,9 +60,7 @@ const JobRecord = () => {
 
     <>
 
-      {isLoading ? (
-        <Loader />
-      ) : (<> <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
+       <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
       <CustomInnerHeader moduleName={"Job Record"} isShowSelector={true}/>
       </div>
         <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
@@ -126,11 +125,12 @@ const JobRecord = () => {
                 </div>
 
               </div>
+              
+              <div className="row right_col-margin-remove" ref={componentRef} style={{ margin: "0px !important" }}  >
+              {showTable&&
+                <div className="field item form-group col-md-12 col-sm-12" style={{ overflow: 'scroll', height: '400px' }}   >
 
-              <div className="row right_col-margin-remove" style={{ margin: "0px !important" }}  >
-                <div className="field item form-group col-md-12 col-sm-12" ref={componentRef} style={{ overflow: 'scroll', height: '400px' }}   >
-
-                {/* {showTable?  */}
+              
                  <table className="table table-striped"   >
                     <thead className="bg-customBlue text-light">
                       <tr >
@@ -148,8 +148,11 @@ const JobRecord = () => {
 
                       </tr>
                     </thead>
-
+                   
                     <tbody>
+                    {ApiRes?.length== 0 && <tr style={{ cursor: "pointer" }}>
+                   <td colspan="9" className="text-center"> No data available</td>
+                                                </tr> }
                       {ApiRes?.map((item, id) => (<tr key={id}>
 
                         <td>{id + 1}</td>
@@ -175,17 +178,16 @@ const JobRecord = () => {
                       </tr>
                       ))}
                     </tbody>
+                   
                   </table>
-                  {/* :<>jnj</>} */}
+               
 
-                </div>
+                </div>}
               </div>
             </div>
           </div>
         </div></>)}
-    </>
-  )
-}
+    
 
 export default JobRecord
 

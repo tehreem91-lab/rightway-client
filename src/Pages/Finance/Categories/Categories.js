@@ -267,7 +267,7 @@ const Categories = ({ pagePermission }) => {
             {isLoading ?
                 <Loader />
                 :
-                <> <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+                <> <div className={`container-fluid right_col  page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}>
                     <CustomInnerHeader moduleName="Charts of Accounts" isShowSelector={true} />
                 </div>

@@ -7,11 +7,13 @@ import { useLocation } from 'react-router-dom';
 import { toast } from "react-toastify";
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 import { customStyles } from '../../Components/reactCustomSelectStyle';
+import { useNavigate } from "react-router-dom"
+
 const AddStock = () => {
   const inputRef = useRef(null);
   const ref = useRef(null);
   const location = useLocation();
-  
+  const navigation = useNavigate();
 
   const [isValidateAllStates, setIsValidateAllStates] = useState(true)
     const [stockvalue, setStockValue] = useState("");
@@ -24,7 +26,7 @@ const AddStock = () => {
     const [stockoption , setStockoption] = useState([])
     const [consumptionoption , setConsumptionOption] = useState([])
     const [unitoption , setUnitOption] = useState([])
-    const [isupload,setIsUpload] = useState(true);
+    const [isupload,setIsUpload] = useState(false);
     const [fileEntity, setFileEntity] = useState([]);
     const [Fname, setFilename] = useState("")
     const [imagefilename, setImageFilename] = useState("")
@@ -48,8 +50,10 @@ const AddStock = () => {
   var config = {
     method: 'get',
     url: `http://rightway-api.genial365.com/api/Stock/GetStockById?stock_info_id=${id}`,
-    headers: { 
-      'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+    headers: {
+      Authorization: `bearer ${
+        JSON.parse(localStorage.getItem("access_token")).access_token
+      }`,
     },
     data : data
   };
@@ -57,7 +61,8 @@ const AddStock = () => {
   axios(config)
   .then(function (response) {
    
-    
+    setupdate(true)
+
     setFetchdata(response.data)
    
     const id = (response.data.stock_account.stock_account_value)
@@ -106,7 +111,6 @@ if (response.data.image!== "") {
   setImageEntity(response.data.image.toString());
 }
  setSelectedImage(response.data.image.toString())
-setupdate(true)
 
 
 
@@ -134,8 +138,10 @@ setupdate(true)
   var config = {
     method: 'put',
     url: `http://rightway-api.genial365.com/api/Stock/PutData?stock_id=${id}`,
-    headers: { 
-      'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw',
+    headers: {
+      Authorization: `bearer ${
+        JSON.parse(localStorage.getItem("access_token")).access_token
+      }`,
       'Content-Type': 'application/json'
     },
    
@@ -145,6 +151,7 @@ setupdate(true)
   axios(config)
   .then(function (response) {
     setIsValidateAllStates(true)
+  
     setAccountvalue("") 
     setStockValue("")
     setConsumptionValue("")
@@ -158,7 +165,10 @@ setupdate(true)
    
      toast.success("Your response has been Updated successfully")
   })
- 
+  .catch(function (error) {
+    toast.error("stock unit Entry Is missig")
+  
+  });
 
 
  } 
@@ -191,8 +201,10 @@ const UploadStock = ()=>{
   var config = {
     method: 'post',
     url: 'http://rightway-api.genial365.com/api/Stock/AddStock',
-    headers: { 
-      'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw',
+    headers: {
+      Authorization: `bearer ${
+        JSON.parse(localStorage.getItem("access_token")).access_token
+      }`,
       'Content-Type': 'application/json'
     },
    
@@ -228,37 +240,36 @@ const reset2 = () => {
 };
      
 
-     const UploadFile = async (e) => {
-      
-      let data = new FormData();
-      data.append("UploadedImage",selectedFile);
-      await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedFile.name}`, data).then(res => {
-          setFileEntity([...fileEntity, res.data])
-
-          
-          if (res.status === 200) {
-            setIsUpload(true)
+const UploadFile = async (e) => {
+  setIsUpload(true)
+    const options = {
+        onUploadProgerss: (progressEvent) => {
+            const { loaded, total } = progressEvent;
+            let percentage = Math.floor((loaded * 100) / total)
+            console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+        }
+    }
+    let data = new FormData();
+    data.append("UploadedImage", selectedFile);
+    await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedFile.name}`, data, options).then(res => {
+        setFileEntity([...fileEntity, res.data])
+        if (res.status === 200) {
+            setIsUpload(false)
             reset()
         }
-
-
-         
-      })
-
-   
-
-  }
-
-  const UploadImage = async () => {
-    let data = new FormData();
-    data.append("UploadedImage", selectedimage);
-    await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedimage.name}`, data).then(res => {
-      setImageEntity([...imageEntity, res.data])
-        if (res.status === 200) {
-            setIsUpload(true);
-            reset2()
-        }
     })
+}
+
+const UploadImage = async () => {
+  let data = new FormData();
+  data.append("UploadedImage", selectedimage);
+  await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedimage.name}`, data).then(res => {
+    setImageEntity([...imageEntity, res.data])
+      if (res.status === 200) {
+          setIsUpload(false);
+          reset2()
+      }
+  })
 }
 
   let handleChange = (i, e) => {
@@ -302,9 +313,11 @@ const GetStock_type = ()=>
     var config = {
       method: 'get',
       url: 'http://rightway-api.genial365.com/api/Stock/GetStockAccount',
-      headers: { 
-        'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
-      },
+       headers: {
+    Authorization: `bearer ${
+      JSON.parse(localStorage.getItem("access_token")).access_token
+    }`,
+  },
       data : data
     };
     
@@ -337,8 +350,10 @@ const Get_Consumption = ()=>
 var config = {
   method: 'get',
   url: 'http://rightway-api.genial365.com/api/Stock/GetStockConsumtionAccount',
-  headers: { 
-    'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+  headers: {
+    Authorization: `bearer ${
+      JSON.parse(localStorage.getItem("access_token")).access_token
+    }`,
   },
   data : data
 };
@@ -371,8 +386,10 @@ const Get_Unit = (APIurl)=>
 var config = {
   method: 'get',
   url: APIurl,
-  headers: { 
-    'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+  headers: {
+    Authorization: `bearer ${
+      JSON.parse(localStorage.getItem("access_token")).access_token
+    }`,
   },
 };
 
@@ -420,7 +437,7 @@ axios(config)
     return (
         <>
         <div
-        className={`container-fluid page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
+        className={` container-fluid right_col  page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
             }   `}
     >
     <CustomInnerHeader moduleName="Stock Management" isShowSelector={true} />
@@ -560,37 +577,46 @@ axios(config)
     />
     </div>
     <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-
-    <button className="btn btn-sm btn-outline-warning" type="button" onClick={()=> UploadFile()} ><i className="fa fa-upload"></i></button>
-
-  </div>
+    {
+      isupload ? <div className="spinner-border  text-customOrange " role="status">
+          <span className="sr-only">Loading...</span>
+      </div> : <button
+          disabled={ref?.current?.value === "" ? true : false}
+          className="btn btn-sm btn-outline-success " onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
+  }
+   </div> 
   
     </div>
 
     <div className="col-md-6 col-sm-6">
     <label className="col-form-label col-md-4 col-sm-4 label-align"> Select Image <span className="required">*</span></label>
     <div className='col-md-6'>
-    <input type="file" id="img" name="img" accept="image/*"
+    <input  
+    type="file"
+    className="form-control form-control-sm customStyleForInput"
+    data-validate-length-range={6}
+    data-validate-words={2}
+    name="name"
+    accept="image/*"
     ref={inputRef}
     onChange={(e)=>
      
       {
-        setSelectedImage((e.target.files[0]))
+        setSelectedImage(e.target.files[0]);
 
-      setImageFilename((e.target.files[0].name.split("."))[0])
       }
   
   } 
 
     />
+    
     </div>
     <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-
+    
     <button
    
-     className="btn btn-sm btn-outline-warning" 
+     className="btn btn-sm btn-outline-success" 
     type="button" onClick={()=>UploadImage()} ><i className="fa fa-upload"></i></button>
-
   </div>
     
   
@@ -710,7 +736,11 @@ axios(config)
  {update ?
 
 (
-<button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UpdateStock(stockid) }> Update </button>
+<button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  
+onClick={() =>{UpdateStock(stockid)
+  navigation(-1)
+
+} }> Update </button>
 ):
 
 (

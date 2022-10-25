@@ -5,10 +5,10 @@ const TransReportGlobalCompReciept = React.forwardRef(
   ({ LadgerData, dateFrom, dateTo }, ref) => {
     const navigate = useNavigate();
     let curent_balance = LadgerData;
-
+   
     return (
       <div>
-        <div id="report" className="x_content mb-3" ref={ref}>
+        <div id="report" className="x_content mb-3" ref={ref} style={{ overflow: 'scroll' ,height: '400px'}} >
           <div className="displayPropertyForPrint">
             <h2 className="text-dark text-center font-weight-bold  ">
               Transaction Report
@@ -34,26 +34,24 @@ const TransReportGlobalCompReciept = React.forwardRef(
           </div>
 
           <div>
-            <div className="row mx-3  reportTableHead bottom-border-1 ">
-              <div className="col-md-1  col-1   font-size-12   right-border-1  text-center  left-border-2 py-1">
+            <div className="row mx-3  reportTableHead bottom-border-1 "  >
+              <div className=" col-md-2 col-2  font-size-12   right-border-1  text-center  left-border-2 py-1">
                 Date
               </div>
-              <div className="col-md-2  col-2   font-size-12   right-border-1  text-center  px-0 ">
+              <div className="col-md-2  col-2   font-size-12   right-border-1  text-center  px-1 py-1">
                 Voucher Inv
               </div>
-              <div className="col-md-2  col-2   font-size-12   right-border-1  text-center   px-0">
+              <div className="col-md-2  col-2   font-size-12   right-border-1  text-center   px-1 py-1">
                 Account Name
               </div>
-              <div className="col-md-1  col-1   font-size-12   right-border-1  text-center   px-0">
+              <div className="col-md-2  col-2   font-size-12   right-border-1  text-center   px-1 py-1">
                 Account Code
               </div>
-              <div className="col-md-4  col-4    font-size-12  right-border-1  text-center  my-1">
-                Description
-              </div>
-              <div className="  col-md-1   col-1    font-size-12  right-border-1  text-center  my-1">
+             
+              <div className="  col-md-2   col-2    font-size-12  right-border-1  text-center   py-1">
                 Debit
               </div>
-              <div className="  col-md-1  col-1  right-border-2 py-1  font-size-12   text-center  ">
+              <div className="  col-md-2  col-2  right-border-2 py-1  font-size-12   text-center py-1 ">
                 Credit
               </div>
 
@@ -77,7 +75,7 @@ const TransReportGlobalCompReciept = React.forwardRef(
                 return (
                   <div key={index}>
                     <div className="row mx-3  reportTableBody bottom-border-2">
-                      <div className="col-md-1  col-1  left-border-2  right-border-2 py-1 text-center">
+                      <div className="col-md-2  col-2  left-border-2  right-border-2 py-1 text-center">
                         {`${eachLadgerItem.voucher_date.slice(
                           8,
                           10
@@ -92,16 +90,13 @@ const TransReportGlobalCompReciept = React.forwardRef(
                       <div className="col-md-2  col-2    right-border-2 py-1 text-center">
                         {eachLadgerItem.account_name}
                       </div>
-                      <div className="col-md-1  col-1    right-border-2 py-1 text-center">
+                      <div className="col-md-2  col-2    right-border-2 py-1 text-center">
                         {eachLadgerItem.account_code}
                       </div>
-                      <div className="col-md-4  col-4    right-border-2 py-1 text-center">
-                        {eachLadgerItem.description}
-                      </div>
-                      <div className="col-md-1 col-1 col-xl-1  font-size-12 py-1 right-border-2  text-center">
+                      <div className="col-md-2 col-2   font-size-12 py-1 right-border-2  text-center">
                         {eachLadgerItem.debit.toFixed(2)}
                       </div>
-                      <div className="col-md-1 col-1 col-xl-1 right-border-2 py-1 font-size-12  text-center">
+                      <div className="col-md-2 col-2  right-border-2 py-1 font-size-12  text-center">
                         {eachLadgerItem.credit.toFixed(2)}
                       </div>
                     </div>

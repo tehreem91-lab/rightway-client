@@ -28,8 +28,9 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
   const [balanceState, setBalanceState] = useState(0);
   const [validationState, setValidationState] = useState(true);
   const [LadgerDataCSV, setLadgerDataCSV] = useState([{}]);
-
+  const [isLoader, setisLoader] = useState(true);
   const fetch_selelctor_options = () => {
+  
     var config = {
       method: "get",
       url: `${endPoint}api/AccountOptions/GetData?category_name=${account_type}`,
@@ -61,6 +62,7 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
     if (accountValue === "" || dateFrom === "" || dateTo === "") {
       setValidationState(false);
     } else {
+      setisLoader(false)
       var config = {
         method: "get",
         url: `${endPoint}api/LadgerReport/GetReport?chart_id=${accountValue.value}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
@@ -74,6 +76,7 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
       axios(config)
         .then(function (response) {
           if (response.status === 200) {
+            setisLoader(true)
             setLadgerData(response.data);
 
             setBalanceState(response.data.opening_balance.opening_balance1);
@@ -161,7 +164,7 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
   return (
     <>
       <div
-        className={`container-fluid page-title-bar ${
+        className={`container-fluid right_col  page-title-bar ${
           showNavMenu == false ? "right_col-margin-remove" : ""
         }   `}
       >
@@ -250,15 +253,21 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
               </div>
 
               <div className="col-md-12 text-right x_footer">
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  onClick={() => {
-                    fetchLadger();
-                  }}
-                >
-                  Show Report
-                </button>
+              <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={() => {
+                fetchLadger();
+              }}
+            >
+            Show Report
+            {!isLoader && 
+              (
+               <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+              )
+           }
+            </button>
+                
               </div>
             </div>
 
@@ -276,7 +285,7 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
                           <div className="col-md-4  text-left "> </div>
                           <div className="col-md-3 pr-4">
                             <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                              <div className="form-group col-md-4">
+                              <div className="form-group col-4">
                               <ReactToPrint
                               trigger={() =>  
                               <button className="btn btn-sm btn-primary borderRadiusRound">
@@ -285,19 +294,8 @@ const LadgerGlobalComponent = ({ account_type, page_name }) => {
                               content={() => componentRef.current}
                             />
                               </div>
-                              <div className="form-group col-md-4">
-                                <button
-                                  className="btn btn-sm btn-warning borderRadiusRound"
-                                  onClick={downloadPdf}
-                                  type="button"
-                                >
-                                  <i
-                                    className="fa fa-file-pdf-o"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
-                              </div>
-                              <div className="form-group col-md-4">
+                             
+                              <div className="form-group col-4 ">
                                 <CSVLink {...csvReport}>
                                   <button className="btn btn-sm btn-success borderRadiusRound">
                                     <i

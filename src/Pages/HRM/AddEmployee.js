@@ -88,10 +88,12 @@ function AddEmployee() {
             body: formdata,
             redirect: "follow",
         };
+        //   ///api/Employees/attach-files
         fetch(URL + "api/FileUpload?file_name=" + e.target.files[0].name, requestOptions)
             .then((response) => response.text())
             .then((result) => {
                 setAddNewEmployee({ ...addNewEmployee, profile_image: result });
+                // setAddNewEmployee({ ...addNewEmployee, employeePic2: result });
                 setdisableSubmitForUpdatePhoto(false);
             })
             .catch((error) => console.log("error", error));
@@ -109,6 +111,7 @@ function AddEmployee() {
             body: formdata,
             redirect: "follow",
         };
+        //   ///api/Employees/attach-files
         fetch(`${endPoint}api/FileUpload?file_name=${pictureName}`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
@@ -132,6 +135,7 @@ function AddEmployee() {
             body: formdata,
             redirect: "follow",
         };
+        //   ///api/Employees/attach-files
         fetch(`${endPoint}api/FileUpload?file_name=${pictureName}`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
@@ -155,6 +159,8 @@ function AddEmployee() {
             body: formdata,
             redirect: "follow",
         };
+        //   ///api/Employees/attach-files
+        //fetch(URL + "api/FileUpload?file_name=" + picture.name, requestOptions)
         fetch(`${endPoint}api/FileUpload?file_name=${pictureName}`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
@@ -200,12 +206,35 @@ function AddEmployee() {
                     setListOfEmployee(data);
                     setAllEmpListConst(data);
                     setEmployeeStatusState(data)
+                    //setFileEntity(data.attachments.split(","))
+                    // if (response.data.attachments !== "") {
+                    //     setFileEntity(response.data.attachments.split(","));
+                    // }
 
                     // ----- Setting Empoyee Code ------
                     fetch("http://rightway-api.genial365.com/api/EmployeeDetails/GetEmployeeCode", requestOptions)
                         .then(response => response.text())
                         .then(result => setEmpCode(result))
                         .catch(error => console.log('error', error));
+
+                    // fetch(URL + "api/EmployeeDetails/GetEmployeeCode", {
+                    //     method: "GET",
+                    //     headers: {
+                    //         Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                    //     },
+                    // })
+                    //     .then((response) => response.json())
+                    //     .then((data) => {
+                    //         var arr = [];
+                    //         data.map((item) => {
+                    //             arr.push({
+                    //                 label: item.label,
+                    //                 value: item.value,
+                    //             });
+                    //         });
+
+                    //         setEmpCode(arr);
+                    //     });
                     // ----- Setting Empoyee Code ------
 
                     // ----- Setting Designation List ------
@@ -391,6 +420,7 @@ function AddEmployee() {
 
     const updateEmployeeClouds = (e) => {
 
+        //console.log(employeeToUpdate, "ooooooooooooo");
         var raw
 
         raw = JSON.stringify({
@@ -430,6 +460,13 @@ function AddEmployee() {
                 }
 
             })
+            // "benefits": employeeToUpdate.map((eachBenefit) => {
+            //     return {
+            //         "benefit_id": eachBenefit.value,
+            //         "benefit_title": eachBenefit.label,
+            //         "benefit_amount": eachBenefit.amount
+            //     }
+            // }),
 
         });
 
@@ -507,9 +544,25 @@ function AddEmployee() {
                     setEmployeeStatusState(sortedEmpConst)
                     setAllEmpListConst(sortedEmpConst)
 
-                    toast.success("Employee updated successfully");
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
+
+                    //setStatusFilterValue(statusFilterOptions[0])
+                    toast.success(
+                        "Employee updated successfully")
                 } else {
-                    toast.error("Please fill all the required fields")
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
+                    toast.error(
+                        "Please fill all the required fields")
                 }
 
 
@@ -519,10 +572,18 @@ function AddEmployee() {
             })
             .then((result) => setShow(false))
             .catch((error) => {
-                toast.success("Employee updated successfully")
+                toast.success(
+                    // "Something went wrong")
+                    "Employee updated successfully")
                 console.log("error", error)
             });
         setIsEmplEditModeOn(false)
+
+        // setBenefitsRecordsValue([{
+        //     label: "",
+        //     value: "",
+        //     amount: ""
+        // }])
     };
 
     const handleChange = (value) => {
@@ -535,6 +596,9 @@ function AddEmployee() {
         setExpenseDepValue(value.expense_value);
         setLoanDepValue(value.loan_value);
         setEmpCode(value.employee_code);
+        //setFileEntity(value.attachments);
+
+
     };
 
     useEffect(() => {
@@ -599,7 +663,6 @@ function AddEmployee() {
                                     ListOfEmployee={ListOfEmployee} setListOfEmployee={setListOfEmployee}
                                     updateEmployeeClouds={updateEmployeeClouds}
                                     handleChange={handleChange}
-                                    handleClose={handleClose}
 
                                     setDesignationValue={setDesignationValue}
                                     setDepartmentValue={setDepartmentValue}
@@ -647,6 +710,14 @@ function AddEmployee() {
                                     endPoint={endPoint}
                                 />
                             </Modal.Body>
+                            {/* <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" onClick={handleClose}>
+                                    Save Changes
+                                </Button>
+                            </Modal.Footer> */}
                         </Modal>
 
 
@@ -660,6 +731,7 @@ function AddEmployee() {
                             centered
                             show={lgShow}
                             onHide={() => setLgShow(false)
+                                // && { handleClose }
                             }
 
 
@@ -669,6 +741,7 @@ function AddEmployee() {
                                 <Modal.Title id="example-modal-sizes-title-lg">
                                     View Employee Information
                                 </Modal.Title>
+                                {/* <Button variant="secondary" onClick={handleClose}> x </Button> */}
                             </Modal.Header>
                             <Modal.Body>
                                 <EmployeeFormView
@@ -683,6 +756,7 @@ function AddEmployee() {
                                     setIsEmplEditModeOn={setIsEmplEditModeOn}
                                     selectEmployee={employeeToUpdate}
                                     setEmployeeToUpdate={setEmployeeToUpdate}
+                                    //designation={designation} jobStatus={jobStatus} recruitmentType={recruitmentType}
                                     ListOfEmployee={ListOfEmployee} setListOfEmployee={setListOfEmployee}
                                     updateEmployeeClouds={updateEmployeeClouds}
                                     handleChange={handleChange}
@@ -747,6 +821,35 @@ function AddEmployee() {
                                         <div className="col-5 ">
                                             <i className='fa fa-list'></i>&nbsp;Listing
                                         </div>
+                                        {/* <div className="col-7 text-right px-0 ">
+                                            <div className="col-md-5"> <input
+                                                type="text"
+                                                placeholder="Search Filter"
+                                                className="form-control height-button   "
+                                            // onChange={(e) => searchItem((e.target.value).toLowerCase())}
+                                            /></div>
+                                            <div className="col-md-4  text-left ">
+                                                <Select
+                                                    className="basic-single"
+                                                    classNamePrefix="select"
+                                                    defaultValue={"Active"}
+                                                    // value={statusFilterValue}
+                                                    // onChange={(value) => {
+                                                    //     setStatusFilterValue(value)
+                                                    //     updateEmployeeStatusBase(value)
+                                                    // }}
+                                                    // isSearchable={true}
+                                                    // name="color"
+                                                    // options={statusFilterOptions}
+                                                    styles={customStyles}
+                                                /></div>
+                                            <div className="col-md-3 pr-4">
+                                                <Button variant="primary" onClick={handleShow}>
+                                                    Add New <i className="ml-2 fa fa-plus-square"></i>
+                                                </Button>
+                                            </div>
+                                        </div> */}
+
 
 
 

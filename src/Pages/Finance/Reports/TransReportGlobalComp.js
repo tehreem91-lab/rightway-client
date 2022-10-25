@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef} from "react";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 import ReactToPrint from "react-to-print";
@@ -12,9 +12,10 @@ import { CSVLink } from "react-csv";
 import Pdf from "react-to-pdf";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-
 const TransReportGlobalComp = ({ account_type, page_name }) => {
   const componentRef = useRef();
+
+ 
   const showNavMenu = useSelector((state) => state.NavState);
   var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
   var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -28,15 +29,20 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
   const [accountOptions, setaccountOptions] = useState([]);
   const [accountValue, setAccountValue] = useState("");
   const [validationState, setValidationState] = useState(true);
-
+  const[isUpload,setIsUpload] = useState(false)
   const [fromDate, setfromDate] = useState("");
   const [toDate, settoDate] = useState("");
   const ref1 = React.createRef();
+ 
+const [isLoader, setisLoader] = useState(true);
+
+
 
   const fetchLadger = () => {
     if (dateFrom === "" || dateTo === "") {
       setValidationState(false);
     } else {
+      setisLoader(false)
       var config = {
         method: "get",
         url: `${endPoint}api/TransactionReport/GetReport?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
@@ -50,6 +56,7 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
       axios(config)
         .then(function (response) {
           if (response.status === 200) {
+            setisLoader(true)
             setLadgerData(response.data);
             let core_data = response.data.map((item) => {
               return {
@@ -78,12 +85,15 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
                   .reduce((a, b) => a + b, 0),
               },
             ]);
+           
             setIsLoading(false);
+            
           }
         })
         .catch(function (error) {
           console.log(error);
           setIsLoading(true);
+      
           setLadgerData({});
           setLadgerDataCSV([]);
         });
@@ -118,42 +128,7 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
   };
 
   ////////////////////////////For Downloading PDF Files////////////////////////////
-  const downloadPdf = async () => {
-    var data = document.getElementById("report");
-    //$("pdfOpenHide").attr("hidden", true);
-    // To disable the scroll
-    document.getElementById("report").style.overflow = "inherit";
-    document.getElementById("report").style.maxHeight = "inherit";
-
-    await html2canvas(data).then((canvas) => {
-      const contentDataURL = canvas.toDataURL("image/png", 1.0);
-      // enabling the scroll
-      //document.getElementById("report").style.overflow = "scroll";
-      //document.getElementById("report").style.maxHeight = "150px";
-
-      let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
-
-      let imgWidth = 300;
-      let pageHeight = pdf.internal.pageSize.height;
-      let imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      window.open(
-        pdf.output("bloburl", { filename: "new-file.pdf" }),
-        "_blank"
-      );
-    });
-  };
+ 
 
   useEffect(() => {
     //fetch_selelctor_options();
@@ -163,7 +138,7 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
   return (
     <>
       <div
-        className={`container-fluid page-title-bar ${
+        className={`container-fluid right_col page-title-bar ${
           showNavMenu == false ? "right_col-margin-remove" : ""
         }   `}
       >
@@ -231,17 +206,36 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
 
               <div className="col-md-12 text-right x_footer">
                 <button
-                  className="btn btn-primary"
-                  type="submit"
-                  onClick={() => {
-                    setfromDate(dateFrom);
-                    settoDate(dateTo);
-                    fetchLadger();
-                    console.log({ LadgerData });
-                  }}
-                >
-                  Show Report
-                </button>
+                className="btn btn-primary"
+                type="submit"
+                onClick={() => {
+                  setfromDate(dateFrom);
+                  settoDate(dateTo);
+                  fetchLadger();
+                  console.log({ LadgerData });
+                }}
+              >
+                Show Report
+                {!isLoader && 
+                  (
+                   <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                  )
+               }
+             
+              </button>
+             
+           
+                
+                
+           
+                 
+                 
+                
+              
+             
+               
+                
+               
               </div>
             </div>
 
@@ -259,10 +253,10 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
                           <div className="col-md-4  text-left "> </div>
                           <div className="col-md-3 pr-4">
                             <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                              <div className="form-group col-md-4">
+                              <div className="form-group col-4">
                               <ReactToPrint
                               trigger={() =>  
-                              <button className="btn btn-sm btn-success borderRadiusRound">
+                              <button className="btn btn-sm btn-primary borderRadiusRound">
                               <i className="fa fa-print"></i>
                               </button>}
                               content={() => componentRef.current}
@@ -270,19 +264,8 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
                             />
                               </div>
 
-                              <div className="form-group col-md-4">
-                                <button
-                                  className="btn btn-sm btn-warning borderRadiusRound"
-                                  onClick={downloadPdf}
-                                  type="button"
-                                >
-                                  <i
-                                    className="fa fa-file-pdf-o"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
-                              </div>
-                              <div className="form-group col-md-4">
+                            
+                              <div className="form-group col-4">
                                 <CSVLink {...csvReport}>
                                   <button className="btn btn-sm btn-success borderRadiusRound">
                                     <i
@@ -309,7 +292,9 @@ const TransReportGlobalComp = ({ account_type, page_name }) => {
                   />
                 </div>{" "}
               </>
-            )}
+           
+            )
+          }
           </div>
           <div className="col-md-8 px-0"></div>
         </div>

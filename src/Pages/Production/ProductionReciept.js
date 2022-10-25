@@ -3,11 +3,13 @@ import { useSelector } from "react-redux";
 import Select from 'react-select'
 import { useLocation } from 'react-router-dom';
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
-const ProductReciept = () => {
-
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+const ProductionReciept = () => {
+    const [isFileUploadingModeOn, setisFileUploadingModeOn]= useState(false)
     const imageInputRef = useRef();
     const location = useLocation();
-
+    const navigate = useNavigate();
     const showNavMenu = useSelector((state) => state.NavState);
     const [proDetails, setProDetails] = useState({
         product_name: "",
@@ -64,7 +66,7 @@ const ProductReciept = () => {
             method: 'GET',
             url: APIurl,
             headers: {
-                'Authorization': 'Bearer wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig'
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
             }
         };
 
@@ -214,15 +216,20 @@ const ProductReciept = () => {
 
                 url: `http://rightway-api.genial365.com/api/Product/PutProduct?product_chart_id=${proId}`,
                 headers: {
-                    'Authorization': 'Bearer wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig',
-                    'Content-Type': 'application/json'
+                    'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                    'content-Type': 'application/json'
                 },
                 data: data
             };
 
             axios(config)
                 .then(function (response) {
-                  
+                    toast.success(
+                        "Record has been " +
+                        ("Updated" + " successfully!")
+                    );
+                    navigate(-1)
+                    
                     setProDetails({
                         product_name: "",
                         product_barcode: "", stock_unit_id: 0, consumption_chart_id: "",
@@ -304,15 +311,18 @@ const ProductReciept = () => {
                 method: 'POST',
                 url: 'http://rightway-api.genial365.com/api/Product/AddProduct',
                 headers: {
-                    'Authorization': 'Bearer wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig',
-                    'Content-Type': 'application/json'
+                    'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                    'content-Type': 'application/json'
                 },
                 data: data
             };
 
             axios(config)
                 .then(function (response) {
-                  
+                    toast.success(
+                        "Record has been " +
+                        ("Added" + " successfully!")
+                    );
                     setProDetails({
                         product_name: "",
                         product_barcode: "", stock_unit_id: 0, consumption_chart_id: "",
@@ -348,11 +358,15 @@ const ProductReciept = () => {
     //POST Image (Upload)
     const updateData = async () => {
         if(filename){
+            setisFileUploadingModeOn(true)
         let data = new FormData();
         data.append("UploadedImage", filename);
         await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${filename.name}`, data).then(res => {
             if (res.status === 200) {
+                imageInputRef.current.value = "";
                 setimgPreview(true);
+                setisFileUploadingModeOn(false)
+                setfilename("")
             }
         })
     }
@@ -367,7 +381,7 @@ const ProductReciept = () => {
                 <div className="x_panel needs-validation">
                     <div className="x_content my-3">
                         <span className="section pl-4">
-                            <i className="fa fa-edit"></i>&nbsp;Product Details
+                            <i className="fa fa-list"></i>&nbsp;Product Details
                         </span>
                         <div className="row">
                             <div className="field item form-group col-md-6 col-sm-6">
@@ -461,9 +475,12 @@ const ProductReciept = () => {
                                     {/* <img src="http://rightway-api.genial365.com/api/Product/GetProduct/C:/fakepath/pexels-nao-triponez-129208.jpg" /> */}
                                    
                                 </div>
-                                <div className="col-md-1 col-sm-2 p-1">
+                                {
+                  isFileUploadingModeOn? <div className="spinner-border my-2 text-customOrange" role="status">
+                            <span className="sr-only">Loading...</span>
+                         </div> :  <div className="col-md-1 col-sm-2 p-1">
                                     <button className="btn btn-sm btn-outline-warning" type="button" onClick={() => updateData()}><i className="fa fa-upload"></i></button>
-                                </div>
+                                </div>}
 
                             </div>
 
@@ -472,7 +489,7 @@ const ProductReciept = () => {
                     </div>
                     <div className="x_content my-3">
                         <span className="section pl-4">
-                            <i className="fa fa-edit"></i>&nbsp;Pair Packet
+                            <i className="fa fa-list"></i>&nbsp;Pair Packet
                         </span>
                         {packets_details?.map((Rec, id) => <><div key={id} className="row">
                             <div className="field item form-group col-md-6 col-sm-6">
@@ -504,7 +521,7 @@ const ProductReciept = () => {
                                     />
                                     {!isValidateAllStates && (packets_details[id].pair_base_unit == "" || packets_details[id].pair_base_unit == 0) && <span className="text-danger">First Select this </span>}
                                 </div>
-                                <i className="fa fa-trash-o btn text-danger  mx-0 p-0 " onClick={() => delPacketitem(id + 1)}></i>
+                                <i  style={{cursor:'pointer', fontSize:17}}  className="fa fa-times btn text-danger  mx-0 p-1  " onClick={() => delPacketitem(id + 1)}></i>
                             </div>
 
                         </div></>)}
@@ -514,7 +531,7 @@ const ProductReciept = () => {
                     </div>
                     <div className="x_content my-3">
                         <span className="section pl-4">
-                            <i className="fa fa-edit"></i>&nbsp;Attach Stock
+                            <i className="fa fa-list"></i>&nbsp;Attach Stock
                         </span>
                         {stock_attachments?.map((Rec, i) => <><div key={i} className="row">
                             <div className="field item form-group col-md-6 col-sm-6">
@@ -565,7 +582,7 @@ const ProductReciept = () => {
                                     />
                                     {/* {!isValidateAllStates && (stock_attachments[id].product_percentage === "" || stock_attachments.product_percentage === undefined) && <span className="text-danger">First Select this </span>} */}
                                 </div>
-                                <i className="fa fa-trash-o btn text-danger  mx-0 p-0 " onClick={() => delStockitem(i + 1)} ></i>
+                                <i style={{cursor:'pointer', fontSize:17}}  className="fa fa-times btn text-danger  mx-0 p-1  " onClick={() => delStockitem(i + 1)} ></i>
                             </div>
 
                         </div></>)}
@@ -574,7 +591,7 @@ const ProductReciept = () => {
                         </button>
                     </div>
                     <div className="col-md-12 text-right x_footer">
-                        {(location?.state?.flag) ? (<button className="btn btn-primary" onClick={EditAPi} type="submit">Edit</button>) : (<button className="btn btn-primary" type="submit" onClick={() => postdata()}>
+                        {(location?.state?.flag) ? (<button className="btn btn-primary" onClick={EditAPi} type="submit">Update</button>) : (<button className="btn btn-primary" type="submit" disabled={isFileUploadingModeOn} onClick={() => postdata()}>
                             Submit
                         </button>)}
                     </div>   </div>
@@ -582,4 +599,4 @@ const ProductReciept = () => {
     )
 }
 
-export default ProductReciept
+export default ProductionReciept

@@ -19,7 +19,7 @@ const BalanceSheetReciept = React.forwardRef(
                     >
                         {" "}
                         <Tab eventKey="profile" title="Assets" disabled>
-                            <div className="row" ref={ref}>
+                            <div className="row" ref={ref} style={{ overflow: 'scroll' ,height: '400px'}}>
                                 <div className="col-md-6 px-0">
                                     <div className="div_to_print_income">
                                     <div className="displayPropertyForPrint">

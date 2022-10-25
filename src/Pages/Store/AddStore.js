@@ -7,9 +7,11 @@ import { useLocation } from 'react-router-dom';
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 import { toast } from "react-toastify";
 import { customStyles } from '../../Components/reactCustomSelectStyle';
+import { useNavigate } from "react-router-dom"
 
 const AddStore = () => {
     const showNavMenu = useSelector((state) => state.NavState);
+    const navigation = useNavigate();
     const [isValidateAllStates, setIsValidateAllStates] = useState(true)
     const [storevalue, setstorevalue] = useState("");
     const [accountvalue, setAccountvalue] = useState("");
@@ -21,7 +23,7 @@ const AddStore = () => {
     const [storeoption , setstoreoption] = useState([])
     const [consumptionoption , setConsumptionOption] = useState([])
     const [unitoption , setUnitOption] = useState([])
-    const [isupload,setIsUpload] = useState(true);
+    const [isupload,setIsUpload] = useState(false);
     const [fileEntity, setFileEntity] = useState([]);
     const [Fname, setFilename] = useState("")
     const [selectedFile, setSelectedFile] = useState("")
@@ -40,7 +42,7 @@ const AddStore = () => {
  
         var axios = require('axios');
         if(accountvalue === "" || storevalue === "" || consumptionvalue ===  ""  || unit === "" || quantity_grams === "" ||
-        Opening_quantity === "" || packets_detail === "" )
+        Opening_quantity === "" ||  packets_detail === ""  )
         {
           setIsValidateAllStates(false)
         }else{
@@ -64,8 +66,10 @@ const AddStore = () => {
         var config = {
           method: 'post',
           url: 'http://rightway-api.genial365.com/api/Store/AddStore',
-          headers: { 
-            'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw',
+          headers: {
+            Authorization: `bearer ${
+              JSON.parse(localStorage.getItem("access_token")).access_token
+            }`,
             'Content-Type': 'application/json'
           },
          
@@ -101,8 +105,10 @@ const AddStore = () => {
           var config = {
             method: 'get',
             url: `http://rightway-api.genial365.com/api/Store/GetStoreById?store_info_id=${id}`,
-            headers: { 
-              'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+            headers: {
+              Authorization: `bearer ${
+                JSON.parse(localStorage.getItem("access_token")).access_token
+              }`,
             },
             data : data
           };
@@ -159,7 +165,7 @@ const AddStore = () => {
         }
          setSelectedImage(response.data.image.toString())
 
-        setupdate(true)
+         setupdate(true)
         
           })
           .catch(function (error) {
@@ -186,8 +192,10 @@ const AddStore = () => {
               var config = {
                 method: 'put',
                 url: `http://rightway-api.genial365.com/api/Store/PutData?store_id=${id}`,
-                headers: { 
-                  'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw',
+                headers: {
+                  Authorization: `bearer ${
+                    JSON.parse(localStorage.getItem("access_token")).access_token
+                  }`,
                   'Content-Type': 'application/json'
                 },
                
@@ -208,7 +216,10 @@ const AddStore = () => {
                 
                  toast.success("Your response has been Updated successfully")
               })
-             
+              .catch(function (error) {
+                toast.error("stock unit Entry Is missig")
+              
+              });
             
             
              } 
@@ -220,26 +231,25 @@ const AddStore = () => {
       };
            
       
-           const UploadFile = async (e) => {
-            
-            let data = new FormData();
-            data.append("UploadedImage",selectedFile);
-            await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedFile.name}`, data).then(res => {
-                setFileEntity([...fileEntity, res.data])
-      
-                
-                if (res.status === 200) {
-                  setIsUpload(true)
+      const UploadFile = async (e) => {
+        setIsUpload(true)
+          const options = {
+              onUploadProgerss: (progressEvent) => {
+                  const { loaded, total } = progressEvent;
+                  let percentage = Math.floor((loaded * 100) / total)
+                  console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+              }
+          }
+          let data = new FormData();
+          data.append("UploadedImage", selectedFile);
+          await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedFile.name}`, data, options).then(res => {
+              setFileEntity([...fileEntity, res.data])
+              if (res.status === 200) {
+                  setIsUpload(false)
                   reset()
               }
-      
-      
-               
-            })
-      
-         
-      
-        }
+          })
+      }
       
         const UploadImage = async () => {
           let data = new FormData();
@@ -247,7 +257,6 @@ const AddStore = () => {
           await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedimage.name}`, data).then(res => {
             setImageEntity([...imageEntity, res.data])
               if (res.status === 200) {
-                  setIsUpload(true);
                   reset2()
               }
           })
@@ -292,8 +301,10 @@ const Getstore_type = ()=>
     var config = {
       method: 'get',
       url: 'http://rightway-api.genial365.com/api/Store/GetStoreAccount',
-      headers: { 
-        'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+      headers: {
+        Authorization: `bearer ${
+          JSON.parse(localStorage.getItem("access_token")).access_token
+        }`,
       },
       data : data
     };
@@ -327,8 +338,10 @@ const Get_Consumption = ()=>
 var config = {
   method: 'get',
   url: 'http://rightway-api.genial365.com/api/Store/GetStore/ConsumtionAccount',
-  headers: { 
-    'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+  headers: {
+    Authorization: `bearer ${
+      JSON.parse(localStorage.getItem("access_token")).access_token
+    }`,
   },
   data : data
 };
@@ -360,8 +373,10 @@ const Get_Unit = (APIurl)=>
 var config = {
   method: 'get',
   url: APIurl,
-  headers: { 
-    'Authorization': 'Bearer  7w0PZQkvLOKOdcgw-rPUhjmXi4hklOSKslVKVzQMiDBmtPEcCFHWCYQYji-i37Y3sRMcv3jmAcZiLrer5giGe07bj0C6KOKfaetCES_IdJH_EytRl-YphGc-qAuWm53D-a4-J4biNQbB5e1Aj_yoZWQBl_o7SyFtP02I13-SfXZbESpG-2m6AXJHtzk35Ow0wRl_9_13SiWH0Pe97_rmadYEVNcvHjD27v3fkWpkDcD_pTKN_RHxKsSQrxHPm1XI-_yoSwsbfYD0RNOEKLS3RjfzlWts7EbPkmQZCbBm9IgPjoCwTcPRaMzB-cnD-FKGFuHLZkiT2tmjHIYoI8ZRwVkLWNZGdKPlvjQ3uu9KPcywOKFc6AO8_iPpfBMbf0FSBHbPty_lEjKA0NOLPQ_bZD2q1192qc8cUAUXXdpkugHBIuB5gPeZ2HFl-i82Og3-Autmp5cFWkiZSktF9S1xfVKd2fgL_ySFrOIRlNqcLvFGntpa6SLsDvD4cq9hX43bz7ojMIEAoM6qeVjF_PZJnw'
+  headers: {
+    Authorization: `bearer ${
+      JSON.parse(localStorage.getItem("access_token")).access_token
+    }`,
   },
 };
 
@@ -405,7 +420,7 @@ axios(config)
     return (
         <>
         <div
-        className={`container-fluid page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
+        className={`container-fluid right_col  page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
             }   `}
     >
     <CustomInnerHeader moduleName="Store Managment" isShowSelector={true} />
@@ -544,10 +559,14 @@ axios(config)
     />
     </div>
     <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
-
-    <button className="btn btn-sm btn-outline-warning" type="button" onClick={()=> UploadFile()} ><i className="fa fa-upload"></i></button>
-
-  </div>
+    {
+      isupload ? <div className="spinner-border  text-customOrange " role="status">
+          <span className="sr-only">Loading...</span>
+      </div> : <button
+          disabled={ref?.current?.value === "" ? true : false}
+          className="btn btn-sm btn-outline-success " onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
+  }
+   </div> 
   
     </div>
    
@@ -580,7 +599,7 @@ axios(config)
 
     <button
    
-     className="btn btn-sm btn-outline-warning" 
+     className="btn btn-sm btn-outline-success" 
     type="button" onClick={()=>UploadImage()} ><i className="fa fa-upload"></i></button>
 
   </div>
@@ -654,7 +673,7 @@ axios(config)
 
  value={element.packet_name} onChange={e => handleChange(index, e)}
  />
- {!isValidateAllStates && (element.packet_name === "" ) && <span className="text-danger">First Select this </span>} 
+ {!isValidateAllStates && ( element.packet_name === "" ) && <span className="text-danger">First Select this </span>} 
  
  </div>
 
@@ -669,7 +688,8 @@ axios(config)
  min="0"
  value={element.pair_base_unit} onChange={e => handleChange(index, e)}
  />
- {!isValidateAllStates && (element.pair_base_unit=== "" ) && <span className="text-danger">First Select this </span>} 
+ {!isValidateAllStates && ( element.pair_base_unit === "" ) && <span className="text-danger">First Select this </span>} 
+
  </div>
  <div className="col-md-3 col-sm-3">
 
@@ -700,9 +720,13 @@ axios(config)
  <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={() => addFormFields()}> Add more </button>
  {update ?
 
-(
-<button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UpdateStore(storeid) }> Update </button>
-):
+  (
+  <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  
+  onClick={() =>{UpdateStore(storeid)
+    navigation(-1)
+  
+  } }> Update </button>
+  ):
 
 (
 <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UploadStore()}> Submit </button>

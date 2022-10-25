@@ -918,7 +918,7 @@ const JournalVoucherSingle = () => {
     return (
         <>
             <div
-                className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+                className={`right_col page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
                 <span>&nbsp;{page_name}</span>

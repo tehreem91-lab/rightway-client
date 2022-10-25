@@ -181,7 +181,7 @@ function AddBenefits({ pagePermission }) {
         }),
       }
     ).then((response) => {
-      if (response.status === 201 || response.status === 400 || response.status === 204) {
+      if (response.status === 201 || response.status === 400) {
 
         toast.success(
           "Benefit Title has been " +
