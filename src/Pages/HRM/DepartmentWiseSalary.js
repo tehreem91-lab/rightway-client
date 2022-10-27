@@ -6,6 +6,8 @@ import  {CSVLink}  from "react-csv";
  import jsPDF from "jspdf";
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 import html2canvas from "html2canvas";
+import { customStyles } from '../../Components/reactCustomSelectStyle';
+
 
 const DepartmentWiseSalary = () => {
 
@@ -18,7 +20,7 @@ const DepartmentWiseSalary = () => {
   
   
     const showNavMenu = useSelector((state) => state.NavState);
-  
+    const [isLoader, setisLoader] = useState(true);
     const [validationState, setValidationState] = useState(true);
     const [dateFrom, setdateFrom] = useState(dateToday);
     const [departmentvalue, setDepartmentvalue] = useState("");
@@ -133,6 +135,7 @@ const DepartmentWiseSalary = () => {
       if (departmentvalue === "" || dateFrom === "") {
           setValidationState(false);
       }else{
+        setisLoader(false)
           var config = {
               method: 'get',
               url: `http://rightway-api.genial365.com/api/Attendence/GetDepartmentWiseSalaryReport?first_date_month=${dateFrom}&sal_dept_id=${departmentvalue.value}`,
@@ -168,6 +171,7 @@ const DepartmentWiseSalary = () => {
       }
   
     }))
+    setisLoader(true)
     setIsloading(false)
     
   })
@@ -219,21 +223,22 @@ const DepartmentWiseSalary = () => {
                  <div className="row">
                      <div className="col-md-12">
                          <div className="x_panel  px-0 ">
-                             <div className="x_content my-3">
+                             <div className="x_content ">
                                  <span className="section  px-2 ">
-                                     <i className="fa fa-filter pl-2"></i>&nbsp;Report Filter
+                                     <i className="fa fa-filter pl-2"></i>&nbsp;Department Filter
                                  </span>
                                  <div className="row">
-                                     <div className="field item form-group col-md-6 col-sm-6">
-                                         <label className="col-form-label col-md-3 col-sm-36 label-align">
+                                 <div className="field item form-group col-md-12 col-sm-12">
+                                         <label className="col-form-label col-md-2 col-sm-2 label-align">
                                              {" "}
                                              From Date <span className="required">*</span>
                                          </label>
-                                         <div className="col-md-8 col-sm-8">
+                                         <div className="col-md-3 col-sm-3">
                                              <input
                                                  className="form-control"
                                                  type="month"
                                                  value={dateFrom}
+                                                 styles={customStyles}
                                                  onChange={(e) => {
                                                      setdateFrom(e.target.value);
                                                  }}
@@ -245,18 +250,17 @@ const DepartmentWiseSalary = () => {
    
                                              {/* // its show fiscal year initial value */}
                                          </div>
-                                     </div>
-                                     <div className="field item form-group col-md-6 col-sm-6">
-                                     <label className="col-form-label col-md-3 col-sm-3 label-align">
+                                     <label className="col-form-label col-md-2 col-sm-2 label-align">
                                          {" "}
                                          Select Department <span className="required">*</span>
                                      </label>
-                                     <div className="col-md-8 col-sm-8">
+                                     <div className="col-md-3 col-sm-3">
                                          <Select
                                              isSearchable={true}
+                                             placeholder={"Select Department"}
                                              options={departmentoption}
                                              value={departmentvalue}
-                                             styles={{ minHeight: "29px", height: "29px",}}
+                                             styles={customStyles}
                                              onChange={(e) => {
                                                  setDepartmentvalue(e);
                                              }}
@@ -267,27 +271,30 @@ const DepartmentWiseSalary = () => {
                                      </div>
                                  </div>
                                  </div>
-                                 
-                             </div>
-   
-                             <div className="col-md-12 text-right x_footer">
+                                 <div className="col-md-12 text-right x_footer">
                                  <button
-                                     className="btn btn-primary"
-                                     type="submit"
-                                     onClick={() => {
-                                       Fetch_salary_department();
-                                     }}
-                                 >
-                                     Show Report
-                                 </button>
-   
+                                className="btn btn-primary"
+                                type="submit"
+                                onClick={() => {
+                                     Fetch_salary_department();
+                                   }}
+                                     >
+                                 Show Report
+                {!isLoader && 
+                  (
+                   <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                  )
+               }
+             
+              </button>
+                          </div> 
                              </div>
-                         </div>
+                          </div>
    
                          {!isloadding && (
                              <>
    
-                                 <div className="x_panel px-0">
+                                 <div className="x_panel px-0"  >
                                      <div className="x_content ">
                                          <span className="section mb-0 pb-1">
                                              <div className="row pl-2 ">
@@ -300,7 +307,7 @@ const DepartmentWiseSalary = () => {
                                                  <div className="col-md-3 pr-4">
                                                  <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                                  
-                                                     <div className="col-md-4">
+                                                     <div className="col-4">
                                                      <ReactToPrint
                                                      trigger={() =>  
                                                      <button className="btn btn-sm btn-primary borderRadiusRound">
@@ -310,19 +317,7 @@ const DepartmentWiseSalary = () => {
                                                    />
                                                     
                                                     </div>
-                                                    <div className="col-md-4">
-                                                    <button
-                                                       className="btn btn-sm btn-warning borderRadiusRound"
-                                                       onClick={downloadPdf}
-                                                       type="button"
-                                                       >
-                                                       <i
-                                                             className="fa fa-file-pdf-o"
-                                                             aria-hidden="true"
-                                                              ></i>
-                                                        </button>
-                                                    </div>
-                                                             <div className="col-md-4">
+                                                   <div className="col-4">
                                                              <CSVLink {...csvReport}>
                                                              <button className="btn btn-sm btn-success borderRadiusRound ms-4" >
                                                                  <i
@@ -341,20 +336,13 @@ const DepartmentWiseSalary = () => {
                                                   </div>
                                          </span>
                                      </div>
-                                    <div className="table_section p-5 table-responsive border-1 x_content mb-3" id ='table'  ref={componentRef}  >
-                                    <div className="displayPropertyForPrint">
-                                 <h2 className="text-dark text-center font-weight-bold  ">
-                                    Department Salary Report
-                                  </h2>
+                                     <div id="report" className="x_content mb-3" ref={componentRef}     >
+                                     <div className="displayPropertyForPrint">
+                                       <h2 className="text-dark text-center font-weight-bold  ">
+                                         Department Slary Report
+                                       </h2>
                                 <div className="row pb-2">
-                          <div className="col-md-6 col-6 text-dark text-center ">
-                   {" "}
-                   Date From:{" "}
-                   <strong className="text-dark  font-weight-bold ">
-                     {" "}
-                     {dateFrom}
-                   </strong>{" "}
-                 </div>
+              
                  <div className="col-md-6 col-6 text-dark  text-center">
                    {" "}
                    Department :{" "}
@@ -365,42 +353,37 @@ const DepartmentWiseSalary = () => {
                  </div>
                </div>
              </div>
-               
-             <div className="row mx-3  reportTableHead bottom-border-1 ">
-             <div className='col-md-6 col-6 font-size-12      text-center  my-1 px-0'>
-             <div className="col-md-3   col-3   font-size-12   right-border-1  text-center  p-1  px-0">
-             Employee_name
+            <div  id="report" >
+            <div className="table-responsive px-3 pb-2 ">
+             <div className="row    reportTableHead bottom-border-1 "  >
+             <div className="   col-md-2 col-2  font-size-12   right-border-1  text-center  p-1  px-0">
+             Employee Name
              </div>
-             <div className="col-md-3 col-3   font-size-12   right-border-1  text-center p-1 px-0 ">
-             Employee_code
+             <div className=" col-md-2 col-2  font-size-12   right-border-1  text-center p-1 px-0 ">
+             Employee Code
              </div>
             
-          <div className="col-md-2 col-2   font-size-12   right-border-1  text-center p-1 px-0 ">
-          Salary_type
+          <div className=" col-md-1 col-1  font-size-12   right-border-1  text-center p-1 px-0 ">
+          Salary Type
         </div>
-          <div className="col-md-2   col-2   font-size-12   right-border-1  text-center p-1  px-0">
+          <div className="col-md-1   col-1   font-size-12   right-border-1  text-center p-1  px-0">
           Designation
           </div>
-          <div className="col-md-2   col-2   font-size-12   right-border-1  text-center p-1  px-0">
-          Over_time
+          <div className="col-md-1  col-1   font-size-12   right-border-1  text-center p-1  px-0">
+          Over Time
           </div>
+          <div className="col-md-1 col-1   font-size-12   right-border-1  text-center  p-1 px-0 ">
+          Working Hour
           </div>
-          <div className='col-md-6 col-6 font-size-12      text-center  my-1 px-0'>
-          <div className="col-md-2 col-2   font-size-12   right-border-1  text-center  p-1 px-0 ">
-          Working_hour
-          </div>
-          <div className="col-md-3 col-3   font-size-12   right-border-1  text-center  px-0 p-1 ">
-          Total_deduction
-        </div>
+         
         <div className="col-md-2  col-2   font-size-12   right-border-1  text-center   px-0 p-1">
-       Pm_salary
+       Permanent Salary
        </div>
-       <div className="col-md-3 col-3   font-size-12   right-border-1  text-center  px-0 p-1 ">
-       loan_deduction
-       </div>
-       <div className="col-md-2   col-2   font-size-12     text-center   px-0 p-1">
-       Net_salary
-       </div>
+       <div className="col-md-1 col-1   font-size-12   right-border-1  text-center  px-0 p-1 ">
+          Total Deduction
+        </div>
+       <div className="col-md-1   col-1   font-size-12     text-center   px-0 p-1">
+       Net Salary
        </div>
        </div>
    {/*table body*/}
@@ -409,7 +392,7 @@ const DepartmentWiseSalary = () => {
      {department_salary.length === 0 ? (
    
      
-       <div className="row mx-3  reportTableBody bottom-border-2">
+       <div className="row   reportTableBody bottom-border-2">
                        <div className=" col-md-12   col-12   px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
                          No Data Available
                        </div>
@@ -420,40 +403,34 @@ const DepartmentWiseSalary = () => {
      { department_salary.map((item)=>{
      return(
          <>
-         <div className="row mx-3  reportTableBody bottom-border-2 ">
-         <div className='col-md-6 col-6 font-size-12      left-border-2 p-0 m-0   text-center px-0'>
-         <div className="col-md-3   col-3  right-border-2   py-1 px-0">
+         <div className="row   reportTableBody bottom-border-2  ">
+         <div className="col-md-2   col-2  right-border-2   py-1 px-2">
          {item.employee_name}
          </div>
-         <div className="col-md-3 col-3    font-size-12 right-border-2    py-1 px-0 ">
+         <div className="col-md-2 col-2    font-size-12 right-border-2    py-1 px-2 ">
          {item.employee_code}
          </div>
-      <div className="col-md-2 col-2   font-size-12  right-border-2   py-1 px-0 ">
+      <div className="col-md-1 col-1   font-size-12  right-border-2 text-left  py-1 px-2 ">
       {item.salary_type}
      </div>
-      <div className="col-md-2   col-2   font-size-12  right-border-2   py-1 px-0">
+      <div className="col-md-1   col-1   font-size-12  right-border-2   py-1 px-2">
       {item.designationName}
       </div>
-      <div className="col-md-2   col-2   font-size-12  right-border-2  py-1 px-0">
+      <div className="col-md-1   col-1   font-size-12  right-border-2 text-right  py-1 px-2">
       {item.over_time}
       </div>
-      </div>
-      <div className='col-md-6 col-6 font-size-12     p-0 m-0 right-border-2  text-center px-0'>
-      <div className="col-md-2 col-2   font-size-12  right-border-2    p-1 px-0 ">
+      <div className="col-md-1 col-1   font-size-12  right-border-2  text-right  p-1 px-2 ">
       {item.total_working_hour}
       </div>
-      <div className="col-md-3 col-3   font-size-12  right-border-2    px-0 p-1 ">
-      {item.total_deduction}
-     </div>
-     <div className="col-md-2  col-2   font-size-12  right-border-2   px-0 p-1">
+     
+     <div className="col-md-2  col-2   font-size-12  right-border-2 text-right   px-0 p-2">
      {item.pm_salary}
      </div>
-     <div className="col-md-3 col-3   font-size-12  right-border-2    px-0 p-1 ">
-     {item.loan_deduction}
+     <div className="col-md-1 col-1   font-size-12  right-border-2  text-right   px-0 p-2 ">
+      {item.total_deduction}
      </div>
-     <div className="col-md-2   col-2   font-size-12     px-0 p-1">
+     <div className="col-md-1  col-1   font-size-12  text-right   px-0 p-2">
      {item.net_salary}
-     </div>
      </div>
      </div>
     </>
@@ -469,8 +446,11 @@ const DepartmentWiseSalary = () => {
    }
    </div>
    </div>
+   </div>
+   </div>
    </>
    )}
+
     </div>
    </div>
    </div>

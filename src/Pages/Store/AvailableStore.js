@@ -89,8 +89,8 @@ const AvailableStore = () => {
                                   <thead>
                                       <tr className="headings">
                                       <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
-                                          <th className="column-title  right-border-1 text-center" width="20%"> Name </th>
-                                          <th className="column-title  right-border-1 text-center" width="20%">Code</th>
+                                          <th className="column-title  right-border-1 text-center" width="14%"> Name </th>
+                                          <th className="column-title  right-border-1 text-center" width="24%">Code</th>
                                           <th className="column-title  right-border-1 text-center" width="10%">Unit</th>
                                           <th className="column-title text-center" width="10%">
                                               Action
@@ -134,24 +134,7 @@ const AvailableStore = () => {
                                   </tbody>
                               </table>
                            </div>
-                          {/* <Modal
-                           show={show}
-                           size="xl"
-                           aria-labelledby="contained-modal-title-vcenter"
-                           centered
-                           onHide={() => setShow(false)}
-                           dialogClassName="modal-100w"
-                         >
-                           <Modal.Header closeButton>
-                             <Modal.Title id="example-custom-modal-styling-title">
-                               Stock Management
-                               
-                             </Modal.Title>
-                           </Modal.Header>
-                           <Modal.Body>
-                            <Stockaccount  data={fetchdata} />
-                           </Modal.Body>
-                                </Modal>*/}
+                         
                         
                       </div>
                       

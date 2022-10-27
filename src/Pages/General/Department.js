@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CustomInnerHeader from "../../Components/CustomInnerHeader";
+import { customStyles } from "../../Components/reactCustomSelectStyle";
 const Department = () => {
     const [department, setDepatment] = useState({
         department_id: 0,
@@ -195,32 +196,28 @@ const Department = () => {
                     }   `}
             >    
             <CustomInnerHeader moduleName="Department Mangement" isShowSelector={true} />
-          
-           
-            
-
-
-            </div>
+          </div>
             <div
                 role="main"
                 className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
                     } `}
             >
                 <div className="x_panel">
-                    <div className="x_content my-3">
+                    <div className="x_content ">
                         <span className="section pl-4">
                             <i className="fa fa-edit"></i>&nbsp;Add Department
                         </span>
                         <div className="row">
-                            <div className="field item form-group col-md-6 col-sm-6">
-                                <label className="col-form-label col-md-3 col-sm-3 label-align"> Enter Department Title <span className="required">*</span></label>
-                                <div className="col-md-8 col-sm-8">
+                            <div className="field item form-group col-md-6 col-sm-6 ">
+                                <label className="col-form-label col-md-4 col-sm-4 label-align"> Enter Department Title <span className="required">*</span></label>
+                                <div className="col-md-7 col-sm-7">
                                     {togglesubmit ?
                                         <input
-                                            className="form-control"
+                                            className="form-control mx-2"
                                             data-validate-length-range={6}
                                             data-validate-words={2}
                                             name="name"
+                                            styles={customStyles}
                                             value={department.department_name}
                                             placeholder="Enter Department here"
                                             onChange={(e) => setDepatment({
@@ -248,19 +245,17 @@ const Department = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                       </div>
                     <div className="col-md-12 text-right x_footer">
-                        <button className="btn text-white" type="submit" style={{ backgroundColor: "#003a4d" }} onClick={CancelEvent} >Cancel</button>
-                        {togglesubmit ?
+                    <button className="btn text-white" type="submit" style={{ backgroundColor: "#003a4d" }} onClick={CancelEvent} >Cancel</button>
+                    {togglesubmit ?
 
-                            <button className="btn btn-primary" type="submit" onClick={AddData} > Submit</button> :
+                        <button className="btn btn-primary" type="submit" onClick={AddData} > Submit</button> :
 
-                            <button className="btn btn-primary" type="submit" onClick={() => Edit()} > Update </button>
-                        }
+                        <button className="btn btn-primary" type="submit" onClick={() => Edit()} > Update </button>
+                    }
 
-                    </div>
-
+                </div>
                 </div>
                 <div className="x_panel  ">
                     <div className="x_content">

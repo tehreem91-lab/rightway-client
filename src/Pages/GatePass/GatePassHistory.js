@@ -3,9 +3,15 @@ import { useSelector } from "react-redux";
 import ReactToPrint from 'react-to-print'
 import { useNavigate } from "react-router-dom";
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
+import Select from 'react-select'
+import { useLocation } from 'react-router-dom';
 
 const GatePassHistory = () => {
+    const location = useLocation();
+    const [isValidateOK, setIsValidateOK] = useState(true)
     const navigate = useNavigate();
+    const [flag, setflag] = useState(false);
+    const InvType = [{ label: 'All', value: 'all' }, { label: 'Cmt', value: 'cmt' }, { label: 'Purchase', value: 'purchase' }]
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -14,9 +20,13 @@ const GatePassHistory = () => {
     const componentRef = useRef();
     const [dateFrom, setDateFrom] = useState(dateToday)
     const [dateTo, setDateTo] = useState(dateToday)
+    const [invType, setInvType] = useState('')
     const [GatepassInv, setGatepassInv] = useState([])
     const [isShowVoucher, setisShowVoucher] = useState(false)
+    const [isShowInv, setisShowInv] = useState(false)
     const [ReportData, setReportData] = useState({})
+    const [SearchInv, setSearchInv] = useState([])
+    const [filearray, setfilearray] = useState([])
     const GatePassReport = (id) => {
         var config = {
             method: 'get',
@@ -29,43 +39,81 @@ const GatePassHistory = () => {
         axios(config)
             .then(function (response) {
                 setReportData(response.data)
+                if (response.data?.attachments)
+                    setfilearray(response.data.attachments.split(','))
                 setisShowVoucher(true)
-                console.log(response.data);
+
 
             })
             .catch(function (error) {
-                console.log(error);
+
             });
 
     }
     var axios = require('axios');
     const showInv = () => {
+        let ValidationOk = true;
 
-        var config = {
-            method: 'get',
-            url: `http://rightway-api.genial365.com/api/GatePassInward/GetGatePassInvHistory?date_from=${dateFrom}T00:00:00.928Z&date_to=${dateTo}T00:00:00.928Z`,
-            headers: {
-                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
-            }
-        };
+        //  validation
+        if (invType === "") {
 
-        axios(config)
-            .then(function (response) {
-                setGatepassInv(response.data)
-                console.log(response.data);
+            ValidationOk = false
 
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        }
+        setIsValidateOK(ValidationOk)
+        if (ValidationOk === true) {
 
+            var config = {
+                method: 'get',
+                url: `http://rightway-api.genial365.com/api/GatePassInward/GetGatePassInvHistory?date_from=${dateFrom}T00:00:00.928Z&date_to=${dateTo}T00:00:00.928Z&inward_type=${invType}`,
+                headers: {
+                    'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+                }
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(response.data);
+                    setisShowInv(true)
+                    setGatepassInv(response.data)
+                    setSearchInv(response.data)
+
+                })
+                .catch(function (error) {
+
+                });
+
+        }
     }
+    const searchItem = (e) => {
+        var allData = SearchInv;
+        setGatepassInv(SearchInv);
+        var filteredData = allData.filter((obj) => {
+            var data = Object.keys(obj)
+                .filter((key) => obj[key].toString().toLowerCase().includes(e))
+                .reduce((cur, key) => {
+                    return Object.assign(cur, { [key]: obj[key] });
+                }, {});
+            if (Object.keys(data).length !== 0) {
+                return obj;
+            }
+        });
+        setGatepassInv(filteredData);
+    };
+    useEffect(() => {
+
+        if ((location?.state?.id) && (location?.state?.flag)) {
+            GatePassReport(location?.state?.id)
+        }
+
+    }, [])
+
     return (
         <>
             <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-            <CustomInnerHeader moduleName={"Gate Inward"} isShowSelector={true}/> 
+                <CustomInnerHeader moduleName={"Gate Inward History"} isShowSelector={true} />
             </div>
-            <div role="main" style={{ padding: '0px', backgroundColor: 'white' }} className={`right_col  h-100  ${showNavMenu === false ?
+            <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  ${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
                 <div className="row">
                     <div className="col-md-5 ">
@@ -103,6 +151,39 @@ const GatePassHistory = () => {
                                         />
                                     </div>
                                 </div>
+                                <div className="field item form-group">
+                                    <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
+                                        Type
+                                    </label>
+                                    <div className="col-md-8 col-sm-6">
+
+                                        <Select
+                                            value={InvType.value}
+                                            isSearchable={true}
+
+                                            options={InvType}
+                                            onChange={(e) => setInvType(e.value)}
+                                        />
+                                        {
+                                            !isValidateOK && invType === "" && <span className="text-danger">First Select this </span>
+                                        }
+                                    </div>
+                                </div>
+                                <div className="field item form-group">
+                                    <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
+                                        Search
+                                    </label>
+                                    <div className="col-md-8 col-sm-6">
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            placeholder='seach ...'
+                                            onChange={(e) => searchItem(e.target.value)}
+                                        />
+
+                                    </div>
+                                </div>
+
                                 <div className="text-right">
                                     <button
                                         className="btn btn-customOrange btn-sm px-3 mt-2 mr-0"
@@ -133,7 +214,7 @@ const GatePassHistory = () => {
                                                             trigger={() => {
                                                                 return (
                                                                     <button
-                                                                        className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                                                                        className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound" title="Print Doc"
                                                                     >
                                                                         <i className="fa fa-print"></i>
                                                                     </button>
@@ -147,15 +228,15 @@ const GatePassHistory = () => {
                                                     <li>
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                                            data-toggle="tooltip" data-placement="top" title="View Attachments"
+                                                            data-toggle="tooltip" data-placement="top"
                                                         ><i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                                            data-toggle="tooltip" data-placement="top" title="View Attachments"
-
+                                                            data-toggle="tooltip" data-placement="top" title="Add New Record"
+                                                            onClick={() => { navigate('/GatePassInward') }}
                                                         >
                                                             <i className="fa fa-plus" aria-hidden="true"></i>
                                                         </button>
@@ -164,15 +245,15 @@ const GatePassHistory = () => {
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
-
+                                                            onClick={() => { setflag(!flag) }}
                                                         >
                                                             <i className="fa fa-paperclip" aria-hidden="true"></i>
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                                            onClick={() => {navigate('/GatePassInward', { state: { id: ReportData.inward_gatepass_main_id, flag: true } }) }}
+                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound" title="Edit Record"
+                                                            onClick={() => { navigate('/GatePassInward', { state: { id: ReportData.inward_gatepass_main_id, flag: true } }) }}
                                                         >
                                                             <i className="fa fa-edit" ></i>
                                                         </button>
@@ -182,7 +263,11 @@ const GatePassHistory = () => {
                                         </div>
                                     </span>
                                     <div className="x_content my-3" ref={componentRef}>
-                                        <h2 >GatePass Report </h2>
+                                        <h2> GatePass Report </h2>
+                                        <div className="row">
+                                            <div className="col-md-12 px-5 bold-7 text-dark ">
+                                                {flag && <h6>Attachment: {ReportData.attachments ? (filearray?.map((file, i) => (<a key={i} target="_blank" className=" bg-customBlue text-light m-1 p-1">{i + 1}.   {file?.substring(file.indexOf("s") + 2, file.indexOf("_"))}</a>))) : "Not Available"}</h6>}
+                                            </div></div>
 
                                         <div className="row row-1 mx-0 ">
                                             <div className="col-md-4 col-4">
@@ -228,28 +313,28 @@ const GatePassHistory = () => {
                                         </div>
                                         {
                                             ReportData.stock_entries.length === 0 && <div className="row mx-1 row-1  reportTableBody bottom-border-2" style={{ cursor: "pointer" }}>
-                                            <div className="col-md-12  col-12  font-size-12 bold-6   py-1 pt-1   text-center ">
-                                                        <span className='text-center'> No Data Available</span>
-                                                    </div>
+                                                <div className="col-md-12  col-12  font-size-12 bold-6   py-1 pt-1   text-center ">
+                                                    <span className='text-center'> No Data Available</span>
                                                 </div>
-                                            }{
+                                            </div>
+                                        }{
                                             ReportData.stock_entries.map((each_entry, index) => {
                                                 return <React.Fragment key={index}>
                                                     <div className="row mx-1 row-1  reportTableBody bottom-border-2">
 
-                                                        <div className="col-md-2  col-2  font-size-12 bold-6   py-1 pt-1 right-border-2 left-border-2   d-flex justify-content-start align-items-center ">
+                                                        <div className="col-md-2 text-left  col-2  font-size-12 bold-6   py-1 pt-1 right-border-2 left-border-2    ">
                                                             {each_entry.account_name.toUpperCase()}
                                                         </div>
-                                                        <div className="col-md-2  col-2  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                                        <div className="col-md-2 text-right col-2  font-size-12    py-1  right-border-2 pt-1    ">
                                                             {each_entry.account_code}
                                                         </div>
-                                                        <div className="col-md-2  col-2  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                                        <div className="col-md-2  text-left col-2  font-size-12    py-1  right-border-2 pt-1    ">
                                                             {each_entry.stock_unit_name}</div>
-                                                        <div className="col-md-2  col-2  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                                        <div className="col-md-2  col-2 text-right font-size-12    py-1  right-border-2 pt-1    ">
                                                             {each_entry.total_stock_piece}</div>
-                                                        <div className="col-md-2  col-2  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                                        <div className="col-md-2  col-2 text-right font-size-12    py-1  right-border-2 pt-1    ">
                                                             {each_entry.total_weight}</div>
-                                                        <div className="col-md-2 col-2   font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                                        <div className="col-md-2 col-2 text-right  font-size-12    py-1  right-border-2 pt-1    ">
                                                             {each_entry.weight_per_piece}</div>
                                                     </div>
                                                 </React.Fragment>
@@ -263,7 +348,7 @@ const GatePassHistory = () => {
                         </div>
                     }
                 </div>
-                <div className="row">
+                {isShowInv && <div className="row">
                     <div className="col-md-5 ">
                         <div className="x_panel px-0">
                             <div className="x_content  ">
@@ -294,10 +379,10 @@ const GatePassHistory = () => {
                                                         <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_inv}</strong></div>
                                                     </td>
                                                     <td className='text-right pb-0 pt-1' >
-                                                        <div> <strong style={{ fontSize: '12px' }} onClick={() => GatePassReport(each_voucher_record.inward_gatepass_main_id)}> {each_voucher_record.party_name}</strong> </div>
+                                                        <div> <strong style={{ fontSize: '12px' }} onClick={() => GatePassReport(each_voucher_record.inward_gatepass_main_id)}><span className="badge bg-warning">{each_voucher_record.status || each_voucher_record.purchase_status}</span> {each_voucher_record.party_name}</strong> </div>
                                                         <div className='py-0'>
                                                             <span className='text-customOrange'>
-                                                                <u onClick={() => {navigate('/GatePassInward', { state: { id: each_voucher_record.inward_gatepass_main_id, flag: true } }) }
+                                                                <u onClick={() => { navigate('/GatePassInward', { state: { id: each_voucher_record.inward_gatepass_main_id, flag: true } }) }
                                                                 }
                                                                 > Edit</u>
                                                             </span>
@@ -308,7 +393,7 @@ const GatePassHistory = () => {
                                         </tbody>
                                     </table>
                                 </div></div></div>
-                    </div></div>
+                    </div></div>}
             </div>
         </>
     )

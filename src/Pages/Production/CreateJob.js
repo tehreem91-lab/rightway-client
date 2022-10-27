@@ -132,10 +132,7 @@ const CreateJob = () => {
                         "Record has been " +
                         ("Updated" + " successfully!")
                     );
-                    // navigate.reset({
-                    //     state: {  },
-                    //     routes: [{ name: '/CreateJobAccess' }],
-                    //   });
+                    
                     // navigate('/CreateJobAccess', { state: {  } })
                     navigate(-1)
                     dataupdate = false;
@@ -237,7 +234,7 @@ const CreateJob = () => {
                         ("Added" + " successfully!")
                     );
                     dataupdate = false;
-                    setmachine_ids([]);
+                   
                     setJobdata({
                         customer_chart_id: 0,
                         stock_type: "",
@@ -258,7 +255,8 @@ const CreateJob = () => {
                         machine_entries: []
                     })
                     setfilearray([]);
-                    machine_ids.map(data => { data.checked = false })
+                    setmachine_ids([]);
+                    
           setproIdData([])
                     console.log(machine_ids);
                 })
@@ -307,6 +305,7 @@ const CreateJob = () => {
                 })
                 fetchData(`http://rightway-api.genial365.com/api/Jobs/GetProductById?product_chart_id= ${response.data[0].product_info?.product_chart_id}`);
                 setmachine_ids(response.data[0].machine_entires);
+                if (response.data[0]?.attachments)
                 setfilearray(response.data[0].attachments.split(','));
 
                 
@@ -439,9 +438,7 @@ const CreateJob = () => {
     }
 
     }
-    useEffect(() => {
-        console.log(JobData)
-    }, [JobData]);
+   
     useEffect(() => {
 
         fetchData("http://rightway-api.genial365.com/api/Jobs/GetProductList")

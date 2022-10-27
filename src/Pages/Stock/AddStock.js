@@ -37,6 +37,46 @@ const AddStock = () => {
      const [selectedimage, setSelectedImage] = useState("");
      const [update, setupdate] = useState(false);
      const [imageEntity, setImageEntity] = useState([]);
+     const [imgsrc, setImgsrc] = useState('')
+     const [imgPreview, setimgPreview] = useState(false)
+     const [imguploader, setimguploader] = useState(false)
+     const [Stockdata, setStockdata] = useState([]);
+     const [isLoading, setisLoading] = useState(true);
+     
+     
+     
+     
+     const Get_Stockaccount = () =>{
+     var axios = require('axios');
+     var data = '';
+     
+     var config = {
+       method: 'get',
+       url: 'http://rightway-api.genial365.com/api/Stock/GetStock',
+       headers: {
+         Authorization: `bearer ${
+           JSON.parse(localStorage.getItem("access_token")).access_token
+         }`,
+       },
+       data : data
+     };
+     
+     axios(config)
+     .then(function (response) {
+       setStockdata(response.data)
+       setisLoading(false)
+       
+     })
+     .catch(function (error) {
+     });
+     
+     }
+     
+    //  const Navigation_id =(key)=>{
+     
+    //  navigation('/StockAccountAccess',{state:{id:key} })
+     
+    //  }
 
  
 
@@ -161,8 +201,8 @@ if (response.data.image!== "") {
      setQuantity_grams("")
      setpackets_detail([ {packet_name: "", pair_base_unit: ""}])
      setFileEntity([])
-   
-   
+     Get_Stockaccount()
+     setupdate(false)
      toast.success("Your response has been Updated successfully")
   })
   .catch(function (error) {
@@ -223,6 +263,7 @@ const UploadStock = ()=>{
      setQuantity_grams("")
      setpackets_detail([ {packet_name: "", pair_base_unit: ""}])
      setFileEntity([])
+     Get_Stockaccount()
      toast.success("Your response has been submitted successfully")
   })
  
@@ -261,12 +302,21 @@ const UploadFile = async (e) => {
 }
 
 const UploadImage = async () => {
+  setimguploader(true)
+  const options = {
+      onUploadProgerss: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          let percentage = Math.floor((loaded * 100) / total)
+          console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+      }
+  }
   let data = new FormData();
   data.append("UploadedImage", selectedimage);
-  await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedimage.name}`, data).then(res => {
+  await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedimage.name}`,  data, options).then(res => {
     setImageEntity([...imageEntity, res.data])
       if (res.status === 200) {
-          setIsUpload(false);
+         setimgPreview(true)
+         setimguploader(false)
           reset2()
       }
   })
@@ -422,11 +472,11 @@ axios(config)
         GetStock_type()
         Get_Consumption()
         Get_Unit("http://rightway-api.genial365.com/api/StockUnits/GetData")
-        if (location?.state?.id) {
-                  FetchDataforEdit(location.state.id)
-        }
+        // if (location?.state?.id) {
+        //           FetchDataforEdit(location.state.id)
+        // }
      
-       
+        Get_Stockaccount()
 
     }, []);
 
@@ -470,9 +520,8 @@ axios(config)
     isSearchable={true}
     options={stockoption}
     value={stockvalue}
-    style={customStyles}
+    styles={customStyles}
     isDisabled={(location?.state?.id) ? true : false}
-    styles={{ minHeight: "29px", height: "29px",}}
     onChange={(e)=>{setStockValue(e)}} 
   
     />
@@ -488,9 +537,8 @@ axios(config)
     isSearchable={true}
     options={consumptionoption}
     value={consumptionvalue}
-    style={customStyles}
+    styles={customStyles}
     isDisabled={(location?.state?.id) ? true : false}
-    styles={{ minHeight: "29px", height: "29px",}}
     onChange={(e)=>{setConsumptionValue(e)}}
     />
     {!isValidateAllStates && (consumptionvalue ===  "") && <span className="text-danger">First Select this </span>}  
@@ -507,6 +555,7 @@ axios(config)
     type="text"
     className="form-control"
     value={accountvalue}
+    styles={customStyles}
     onChange={(e)=>{setAccountvalue(e.target.value)}}
     />
     {!isValidateAllStates && (accountvalue === "" ) && <span className="text-danger">First Select this </span>}
@@ -521,6 +570,7 @@ axios(config)
     min="0"
     className="form-control"
     value={quantity_grams}
+    styles={customStyles}
     onChange={(e)=>{setQuantity_grams(e.target.value)}}
     />
     {!isValidateAllStates && (quantity_grams === "" ) && <span className="text-danger">First Select this </span>}  
@@ -537,6 +587,7 @@ axios(config)
     isSearchable={true}
     options={unitoption}
     value={unit}
+    styles={customStyles}
     onChange={(e)=>{setUnit(e)}}
     />
     {!isValidateAllStates && (unit === "" ) && <span className="text-danger">First Select this </span>} 
@@ -551,6 +602,7 @@ axios(config)
     min="0"
     className="form-control"
     value={Opening_quantity}
+    styles={customStyles}
     onChange={(e)=>{setOpening_quantity(e.target.value)}}
     />
     {!isValidateAllStates && (Opening_quantity === "" ) && <span className="text-danger">First Select this </span>} 
@@ -569,6 +621,7 @@ axios(config)
     className="form-control form-control-sm customStyleForInput"
     data-validate-length-range={6}
     data-validate-words={2}
+    styles={customStyles}
     name="name"
     onChange={(e) => {
       AttachmentFileHandler(e)
@@ -590,7 +643,7 @@ axios(config)
 
     <div className="col-md-6 col-sm-6">
     <label className="col-form-label col-md-4 col-sm-4 label-align"> Select Image <span className="required">*</span></label>
-    <div className='col-md-6'>
+    <div className='col-md-4'>
     <input  
     type="file"
     className="form-control form-control-sm customStyleForInput"
@@ -599,24 +652,43 @@ axios(config)
     name="name"
     accept="image/*"
     ref={inputRef}
+    styles={customStyles}
     onChange={(e)=>
      
       {
+       
+        setImgsrc(URL.createObjectURL(e.target.files[0]));
         setSelectedImage(e.target.files[0]);
 
       }
   
   } 
-
+   
     />
-    
+   
+    <div >
+   
+    </div>
     </div>
     <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
     
-    <button
-   
-     className="btn btn-sm btn-outline-success" 
-    type="button" onClick={()=>UploadImage()} ><i className="fa fa-upload"></i></button>
+    {
+      imguploader ? <div className="spinner-border  text-customOrange " role="status">
+          <span className="sr-only">Loading...</span>
+      </div> : <button
+          disabled={inputRef?.current?.value === "" ? true : false}
+          className="btn btn-sm btn-outline-success " onClick={() => UploadImage()} type="button"><i className="fa fa-upload"></i></button>
+  }
+  </div>
+  <div className="col-md-2  " style={{ paddingTop: "1.5px" }}>
+    
+  {(imgPreview) ? (
+    
+    <img className="my-0" width="50" height="35"src={imgsrc} />
+  
+  
+    
+    ) : null}
   </div>
     
   
@@ -626,20 +698,6 @@ axios(config)
     {/*attachments*/}
 
     <div className="row px-4 mt-2">
-    <div className="col-md-6 col-sm-6">
-     <label className="col-form-label col-md-3 col-sm-3 label-align">Description</label>
-    <div className='col-md-8'>
-    <textarea
-
-    className="form-control"
-    value={Description}
-    onChange={(e)=>{setDescription(e.target.value)}}
-    />
-    </div>
-    </div>
-   
-
-
     {fileEntity.length !== 0 && 
       <div className="field item form-group col-md-6 col-sm-6 ">
     <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
@@ -664,39 +722,66 @@ axios(config)
    
      </div>
 
+    <div className="row px-4 mt-2">
+    <div className="col-md-6 col-sm-6">
+     <label className="col-form-label col-md-3 col-sm-3 label-align">Description</label>
+    <div className='col-md-8'>
+    <textarea
+
+    className="form-control"
+    value={Description}
+    onChange={(e)=>{setDescription(e.target.value)}}
+    />
+    </div>
+    </div>
+    <div className="col-md-6 col-sm-6">
+     <div className='col-md-4'></div>
+     <div className='col-md-6'>
+     
+     </div>
+   </div>
    
-     <span className="section mt-2">
+   </div>
+
+   
+     <span className="section mt-4">
      <div className="row px-2  ">
          <div className="col-8 ">
-         <i className="fa fa-edit"></i>&nbsp;Add Pair Packets
+         <i className="fa fa-edit"></i>&nbsp;Add Stock Packets
          </div>
      </div>
  </span>
- <div className="row ">
- {packets_detail.map((element,index)=>{
+ <div className='row'>
+ <div className="col-md-12 ">
+ <table className="table table-striped jambo_table bulk_action ">
+       <thead >
+         <tr className="headings">
+           <th className="column-title   ">Packet Name</th>
+           <th className="column-title   ">Pair Base unit</th>
+           <th className="column-title   ">&nbsp;</th>
+         
+         </tr>
+       </thead>
+<tbody>
+{packets_detail.map((element,index)=>{
 
   return(
 
      <>
- <div className="col-md-6 col-sm-6">
- <label className="col-form-label col-md-3 col-sm-3 label-align"> Packets Name <span className="required">*</span></label>
- <div className='col-md-8'>
- <input
- type="text"
- className="form-control"
- name='packet_name'
+<tr>
+<td>
+<input
+type="text"
+className="form-control"
+name='packet_name'
 
- value={element.packet_name} onChange={e => handleChange(index, e)}
- />
- {!isValidateAllStates && ( element.packet_name === "" ) && <span className="text-danger">First Select this </span>} 
- 
- </div>
+value={element.packet_name} onChange={e => handleChange(index, e)}
+/>
+{!isValidateAllStates && ( element.packet_name === "" ) && <span className="text-danger">First Select this </span>} 
 
- </div>
- <div className="col-md-6 col-sm-6">
- <label className="col-form-label col-md-1 col-sm-1 "> Value </label>
- <div className='col-md-6'>
- <input
+</td>
+<td>
+<input
  type="number"
  className="form-control"
  name='pair_base_unit'
@@ -704,33 +789,25 @@ axios(config)
  value={element.pair_base_unit} onChange={e => handleChange(index, e)}
  />
  {!isValidateAllStates && ( element.pair_base_unit === "" ) && <span className="text-danger">First Select this </span>} 
- </div>
- <div className="col-md-3 col-sm-3">
 
-          <i class="fa fa-times pt-2 text-danger" aria-hidden="true" onClick={() => removeFormFields(index)}></i> 
-      
-   
- 
- </div>
-
-
- </div> 
-
- 
-     
-     
-     
-     </>
+</td>
+<td>
+<i class="fa fa-times pt-2 text-danger" aria-hidden="true" onClick={() => removeFormFields(index)}></i> 
+</td>
+</tr>
+ </>
   )
 
 
  })}
 
 
-</div>
+</tbody>
 
-
-    <div className="row px-2 ">
+       </table>
+       </div>
+ </div>
+<div className="row px-2 ">
  <div className="col-md-12 d-flex justify-content-between x_footer mt-4"> 
  <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={() => addFormFields()}> Add more </button>
  {update ?
@@ -738,7 +815,7 @@ axios(config)
 (
 <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  
 onClick={() =>{UpdateStock(stockid)
-  navigation(-1)
+  // navigation(-1)
 
 } }> Update </button>
 ):
@@ -782,6 +859,71 @@ onClick={() =>{UpdateStock(stockid)
    
    
    </div>
+   <div className="x_panel  ">
+                        <div className="x_content">
+                            <span className="section pl-3">
+                                <div className="row   pt-3">
+                                    <div className="col-3">
+                                        <i className='fa fa-list'></i>&nbsp;Listing
+                                    </div>
+                                    <div className="col-9 text-right ">
+                                    </div>
+                                </div>
+                            </span>
+                            <div className="table-responsive px-3 pb-2" >
+                                <table className="table table-striped jambo_table bulk_action"  >
+                                    <thead>
+                                        <tr className="headings">
+                                        <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
+                                            <th className="column-title  right-border-1 text-center" width="20%"> Name </th>
+                                            <th className="column-title  right-border-1 text-center" width="20%">Code</th>
+                                            <th className="column-title  right-border-1 text-center" width="10%">Unit</th>
+                                            <th className="column-title text-center" width="10%">
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {Stockdata.map((item,index)=>{
+    
+                                        return(
+    
+                                            <>
+                                            <tr className="even pointer"  >
+                                            <td >{index+1}</td>
+                                            <td className="">{item.stock_account.stock_account_label}</td>
+                                            <td className="">{item.stock_account.stock_account_code} </td>
+                                            <td className="text-center">{item.stock_account.stock_unit_name} </td>
+                                            <td
+                                                className="a-right a-right     text-center"
+                                            >
+                                                <i
+                                                    className="fa fa-edit pl-3"
+                                                    // data-toggle="modal" data-target=".bd-example-modal-xl"
+                                                    onClick={()=>FetchDataforEdit(item.stock_info_id)}
+                                                    
+                                                ></i>
+                                                <i
+                                                    className="fa fa-trash-o pl-3"
+                                                ></i>
+                                            </td>
+                                        </tr>
+                                            
+                                            
+                                            </>
+                                        )
+    
+    
+                                    })}
+                                       
+                                       
+                                    </tbody>
+                                </table>
+                             </div>
+                           
+                          
+                        </div>
+                         </div>
    </div>
         </>
     );

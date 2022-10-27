@@ -7,6 +7,7 @@ import Creatable from "react-select/creatable";
 
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { Button, Modal } from 'react-bootstrap';
 
 const EmployeeFormView = (props) => {
     //console.log(props.selectEmployee, "______");
@@ -92,6 +93,18 @@ const EmployeeFormView = (props) => {
     const handleAddClickRoom = () => {
         setbenefitInputs([...benefitInputs, { value: "", label: "", amount: "" }]);
     };
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const [show1, setShow1] = useState(false);
+    const handleClose1 = () => setShow1(false);
+    const handleShow1 = () => setShow1(true);
+
+    const [show2, setShow2] = useState(false);
+    const handleClose2 = () => setShow2(false);
+    const handleShow2 = () => setShow2(true);
 
     useEffect(() => {
         props.setBenefitsRecordsValue(props.selectEmployee.benefits.map((eachBen) => {
@@ -372,6 +385,7 @@ const EmployeeFormView = (props) => {
 
                                             {props.benefitsRecordsValue.map(((eachBenValue, index) => {
                                                 return <Select
+                                                    className="col-md-11 col-sm-11 form-group" style={{ marginTop: "2px" }}
                                                     isDisabled
                                                     isSearchable={true}
                                                     name="Benefit amount"
@@ -430,7 +444,7 @@ const EmployeeFormView = (props) => {
 
                                             {props.benefitsRecordsValue.map(((eachBenValue, index) => {
                                                 return <input
-                                                    className="form-control"
+                                                    className="form-control" style={{ marginBottom: "2px" }}
                                                     name="Benefit amount"
                                                     placeholder=""
                                                     value={props.benefitsRecordsValue[index].amount}
@@ -693,7 +707,22 @@ const EmployeeFormView = (props) => {
                                         width="140"
                                         height="140"
                                         style={{ borderRadius: "7px" }}
+                                        onClick={handleShow}
                                     />
+                                    <Modal show={show} onHide={handleClose}
+                                        size="lg"
+                                        aria-labelledby="contained-modal-title-vcenter"
+                                        centered>
+                                        <Modal.Body>
+                                            <img
+                                                src={`${URL}${props.selectEmployee.profile_image?.slice(1, -1)}`}
+                                                alt="not found"
+                                                style={{ borderRadius: "7px" }}
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        </Modal.Body>
+                                    </Modal>
 
                                 </div>
 
@@ -713,7 +742,22 @@ const EmployeeFormView = (props) => {
                                         width="280"
                                         height="140"
                                         style={{ borderRadius: "7px" }}
+                                        onClick={handleShow1}
                                     />
+                                    <Modal show={show1} onHide={handleClose1}
+                                        size="lg"
+                                        aria-labelledby="contained-modal-title-vcenter"
+                                        centered>
+                                        <Modal.Body>
+                                            <img
+                                                src={`${URL}${props.selectEmployee.cnic_front?.slice(1, -1)}`}
+                                                alt="not found"
+                                                style={{ borderRadius: "7px" }}
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        </Modal.Body>
+                                    </Modal>
                                 </div>
                             </div>
 
@@ -729,7 +773,22 @@ const EmployeeFormView = (props) => {
                                         width="280"
                                         height="140"
                                         style={{ borderRadius: "7px" }}
+                                        onClick={handleShow2}
                                     />
+                                    <Modal show={show2} onHide={handleClose2}
+                                        size="lg"
+                                        aria-labelledby="contained-modal-title-vcenter"
+                                        centered>
+                                        <Modal.Body>
+                                            <img
+                                                src={`${URL}${props.selectEmployee.cnic_back?.slice(1, -1)}`}
+                                                alt="not found"
+                                                style={{ borderRadius: "7px" }}
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        </Modal.Body>
+                                    </Modal>
                                 </div>
                             </div>
                         </div>

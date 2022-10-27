@@ -131,24 +131,7 @@ useEffect(() => {
                                     </tbody>
                                 </table>
                              </div>
-                            {/* <Modal
-                             show={show}
-                             size="xl"
-                             aria-labelledby="contained-modal-title-vcenter"
-                             centered
-                             onHide={() => setShow(false)}
-                             dialogClassName="modal-100w"
-                           >
-                             <Modal.Header closeButton>
-                               <Modal.Title id="example-custom-modal-styling-title">
-                                 Stock Management
-                                 
-                               </Modal.Title>
-                             </Modal.Header>
-                             <Modal.Body>
-                              <Stockaccount  data={fetchdata} />
-                             </Modal.Body>
-                                  </Modal>*/}
+                           
                           
                         </div>
                          </div>

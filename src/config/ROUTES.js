@@ -41,6 +41,7 @@ import LoanPayementVoucher from "../Pages/HRM/LoanManagement/LoanVoucher/LoanPay
 import LoanSettlementVoucher from "../Pages/HRM/LoanManagement/LoanVoucher/LoanSettlementVoucher";
 import LoanHistory from "../Pages/HRM/LoanManagement/LoanHistory";
 import EmployeeProfile from "../Pages/HRM/EmployeeProfile";
+
 import EmployeeWiseAttendance from "../Pages/HRM/EmployeeWisrAttendance";
 import SalaryGeneration from "../Pages/HRM/SalaryGeneration";
 import DeptWiseAtten from "../Pages/HRM/DeptWiseAtten";
@@ -58,7 +59,7 @@ import AvailableProduction from "../Pages/Production/AvailableProduction";
 import StockLadger from "../Pages/Stock/StockReports/StockLadgerReport/StockLadger";
 import ShiftManagement from "../Pages/HRM/ShiftManagement";
 import ShiftRecordUpdate from "../Pages/HRM/ShiftRecordUpdate";
-import StockIssueShiftWise from "../Pages/Production/StockIssue/StockIssueShiftWise";
+// import StockIssueShiftWise from "../Pages/Production/StockIssue/StockIssueShiftWise";
 import CreateJob from "../Pages/Production/CreateJob";
 import JobRecord from "../Pages/Production/JobRecorde";
 import GatePassHistory from "../Pages/GatePass/GatePassHistory";
@@ -124,7 +125,7 @@ const ROUTES = {
   StockLadger:{id:"59", element:StockLadger, path:"StockLadgerReportAccess"},
   ShiftManagement:{id:"60", element:ShiftManagement, path: "ShiftManagementAccess"},
   ShiftRecordUpdate:{id:"61", element:ShiftRecordUpdate, path: "ShiftUpdateAccess"},
-  StockIssueShiftWise:{id:"62", element:StockIssueShiftWise , path:"StockIssueShiftWiseAccess"},
+  // StockIssueShiftWise:{id:"62", element:StockIssueShiftWise , path:"StockIssueShiftWiseAccess"},
   CreateJob:{id:"63",element:CreateJob,path:"CreateJobAccess"},
   JobRecord:{id:"63",element:JobRecord ,path:"JobRecordAccess"},
   GatePassHistory:{id:"63",element:GatePassHistory ,path:"GatePassInwardHistoryAccess"},

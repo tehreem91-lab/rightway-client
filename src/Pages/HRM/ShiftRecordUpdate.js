@@ -5,7 +5,7 @@ import Loader from '../../Layout/Loader/Loader';
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 
 const ShiftRecordUpdate = () => {
-    const [isLoading, setIsLoading]=useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -20,16 +20,16 @@ const ShiftRecordUpdate = () => {
             method: 'PUT',
             url: `http://rightway-api.genial365.com/api/EmployeeShiftsRecord/UpdateData?date_from=${date.dateFrom}&date_to=${date.dateTo}`,
             headers: {
-                'Authorization': 'Bearer wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig',
-                'Content-Type': 'application/json'
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+                'content-Type': 'application/json'
             },
             data: JSON.stringify({ shift_records_entries })
-            
+
         };
         var axios = require('axios');
         await axios(config)
             .then(function (response) {
-               
+                console.log(shift_records_entries);
                 toast.success(
                     "Shift has been " +
                     ("Updated" + " successfully!")
@@ -37,7 +37,7 @@ const ShiftRecordUpdate = () => {
                 fetchAllData();
             })
             .catch(function (error) {
-                
+                // console.log(shift_records_entries);
             });
 
     };
@@ -48,42 +48,32 @@ const ShiftRecordUpdate = () => {
             method: 'GET',
             url: `http://rightway-api.genial365.com/api/EmployeeShiftsRecord/GetData?date_from=09-01-2020`,
             headers: {
-                Authorization: "Bearer wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig"
-            },
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+            }
         };
 
         await axios(config)
             .then(function (response) {
                 if (response.status === 200) {
                     setIsLoading(false);
-                    setList((response.data));
-                  
+                    // console.log(response.data);
+                    setList(response.data);
+
 
                 }
 
             })
             .catch(function (error) {
-               
+
             });
 
     };
     //Radio button onChange
     const editData = (empId, e) => {
-        let shift;
-        if (e.target.value === '1') {
-            shift = 1;
-        }
-        else if (e.target.value === '2') {
-            shift = 2;
-        }
-        if (e.target.value === '3') {
-            shift = 3;
-        }
-        if (e.target.value === '4') {
-            shift = 4;
-        }
 
-        set_shift_records([...shift_records_entries, { shift_id: shift, employee_id: empId }]);
+
+
+        set_shift_records([...shift_records_entries, { shift_id: Number(e.target.value), employee_id: empId }]);
 
     }
 
@@ -92,7 +82,7 @@ const ShiftRecordUpdate = () => {
 
 
     }, [])
-    
+
 
 
 
@@ -101,128 +91,128 @@ const ShiftRecordUpdate = () => {
 
 
         <>
-        {isLoading ? (
-            <Loader />
-          ) : (<>
-          <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-            <CustomInnerHeader moduleName={"HR Management"} isShowSelector={true}/>
-        </div>
-            <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
-                "right_col-margin-remove" : " "} `}>
-                <div className="x_panel">
-                    <div className="x_content my-3">
-                        <span className="section pl-4">
-                            <i className="fa fa-edit"></i>&nbsp;Shift Details
-                        </span>
-                        <div className="row">
-                            <div className="field item form-group col-md-6 col-sm-6">
+            {isLoading ? (
+                <Loader />
+            ) : (<>
+                <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
+                    <CustomInnerHeader moduleName={"HR Management"} isShowSelector={true} />
+                </div>
+                <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
+                    "right_col-margin-remove" : " "} `}>
+                    <div className="x_panel">
+                        <div className="x_content my-3">
+                            <span className="section pl-4">
+                                <i className="fa fa-list"></i>&nbsp;Shift Details
+                            </span>
+                            <div className="row">
+                                <div className="field item form-group col-md-6 col-sm-6">
 
-                                <label className="col-form-label col-md-3 col-sm-3 label-align">Date from<span className="required">*</span></label>
-                                <div className="col-md-8 col-sm-8">
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Date from<span className="required">*</span></label>
+                                    <div className="col-md-8 col-sm-8">
 
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        data-validate-length-range={6}
-                                        data-validate-words={2}
-                                        value={date.dateFrom}
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            data-validate-length-range={6}
+                                            data-validate-words={2}
+                                            value={date.dateFrom}
 
 
-                                        onChange={((e) => {
-                                            setdate(
-                                                {
-                                                    ...date,
-                                                    dateFrom: e.target.value
-                                                }
-                                            )
-                                        })} />
+                                            onChange={((e) => {
+                                                setdate(
+                                                    {
+                                                        ...date,
+                                                        dateFrom: e.target.value
+                                                    }
+                                                )
+                                            })} />
+                                    </div>
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align">Date to<span className="required">*</span></label>
+                                    <div className="col-md-8 col-sm-8">
+
+                                        <input
+                                            type="date"
+                                            data-validate-length-range={6}
+                                            data-validate-words={2}
+                                            className="form-control" value={date.dateTo} onChange={((e) => {
+                                                setdate(
+                                                    {
+                                                        ...date,
+                                                        dateTo: e.target.value
+                                                    }
+                                                )
+                                            })}
+                                        />
+                                    </div>
                                 </div>
-                                <label className="col-form-label col-md-3 col-sm-3 label-align">Date to<span className="required">*</span></label>
-                                <div className="col-md-8 col-sm-8">
+                            </div>
 
-                                    <input
-                                        type="date"
-                                        data-validate-length-range={6}
-                                        data-validate-words={2}
-                                        className="form-control" value={date.dateTo} onChange={((e) => {
-                                            setdate(
-                                                {
-                                                    ...date,
-                                                    dateTo: e.target.value
-                                                }
+                        </div>
+
+                        <div className="col-md-12 text-right x_footer">
+                            <button className="btn btn-primary" type="submit" onClick={() => { updateData(); }} >
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                    <div className="x_panel  ">
+                        <div className="x_content">
+                            <span className="section pl-3">
+                                <div className="row   pt-3">
+                                    <div className="col-3">
+                                        <i className='fa fa-list'></i>&nbsp;Listing
+                                    </div>
+                                    <div className="col-9 text-right ">
+                                    </div>
+                                </div>
+                            </span>
+                            <div className="table-responsive px-3 pb-2">
+                                <table className="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                        <tr className="headings">
+                                            <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
+
+
+                                            <th className="column-title   right-border-1 text-center" >
+                                                EMP Name
+                                            </th>
+
+                                            <th className="column-title   right-border-1 text-center" >
+                                                A Shift
+                                            </th>
+                                            <th className="column-title   right-border-1 text-center" >
+                                                B Shift
+                                            </th>
+                                            <th className="column-title   right-border-1 text-center" >
+                                                C Shift
+                                            </th>
+                                            <th className="column-title   right-border-1 text-center" >
+                                                General Shift
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {List?.map((item, id) => {
+                                            return (
+
+                                                <tr key={id} className="even pointer text-center" >
+                                                    <td className=" ">{id + 1}</td>
+
+                                                    <td className=" ">{item.employee_name}</td>
+                                                    <td className=" ">{(item.shift_name == 'A Shift') ? <><input type="radio" name={id + 1} defaultChecked value="1" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="1" onChange={(e) => editData(item.employee_id, e)} />}</td>
+                                                    <td className=" ">{(item.shift_name == 'B Shift') ? <><input type="radio" name={id + 1} defaultChecked value="2" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="2" onChange={(e) => editData(item.employee_id, e)} />}</td>
+                                                    <td className=" ">{(item.shift_name == 'C Shift') ? <><input type="radio" name={id + 1} defaultChecked value="3" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="3" onChange={(e) => editData(item.employee_id, e)} />}</td>
+                                                    <td className=" ">{(item.shift_name == 'General Shift') ? <><input type="radio" name={id + 1} defaultChecked value="4" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="4" onChange={(e) => editData(item.employee_id, e)} />}</td>
+                                                </tr>
+
                                             )
                                         })}
-                                    />
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-
-                    </div>
-
-                    <div className="col-md-12 text-right x_footer">
-                        <button className="btn btn-primary" type="submit" onClick={() => { updateData(); }} >
-                            Update
-                        </button>
-                    </div>
-                </div>
-                <div className="x_panel  ">
-                    <div className="x_content">
-                        <span className="section pl-3">
-                            <div className="row   pt-3">
-                                <div className="col-3">
-                                    <i className='fa fa-list'></i>&nbsp;Listing
-                                </div>
-                                <div className="col-9 text-right ">
-                                </div>
-                            </div>
-                        </span>
-                        <div className="table-responsive px-3 pb-2">
-                            <table className="table table-striped jambo_table bulk_action">
-                                <thead>
-                                    <tr className="headings">
-                                        <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
-
-
-                                        <th className="column-title   right-border-1 text-center" >
-                                            EMP Name
-                                        </th>
-
-                                        <th className="column-title   right-border-1 text-center" >
-                                            A Shift
-                                        </th>
-                                        <th className="column-title   right-border-1 text-center" >
-                                            B Shift
-                                        </th>
-                                        <th className="column-title   right-border-1 text-center" >
-                                            C Shift
-                                        </th>
-                                        <th className="column-title   right-border-1 text-center" >
-                                            General Shift
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {List?.map((item, id) => {
-                                        return (
-
-                                            <tr key={id} className="even pointer text-center" >
-                                                <td className=" ">{id + 1}</td>
-
-                                                <td className=" ">{item.employee_name}</td>
-                                                <td className=" ">{(item.shift_name == 'A Shift') ? <><input type="radio" name={id + 1} defaultChecked value="1" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="1" onChange={(e) => editData(item.employee_id, e)} />}</td>
-                                                <td className=" ">{(item.shift_name == 'B Shift') ? <><input type="radio" name={id + 1} defaultChecked value="2" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="2" onChange={(e) => editData(item.employee_id, e)} />}</td>
-                                                <td className=" ">{(item.shift_name == 'C Shift') ? <><input type="radio" name={id + 1} defaultChecked value="3" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="3" onChange={(e) => editData(item.employee_id, e)} />}</td>
-                                                <td className=" ">{(item.shift_name == 'General Shift') ? <><input type="radio" name={id + 1} defaultChecked value="4" onChange={(e) => editData(item.employee_id, e)} /></> : <input type="radio" name={id + 1} value="4" onChange={(e) => editData(item.employee_id, e)} />}</td>
-                                            </tr>
-
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
             </>)}
         </>
     );

@@ -12,7 +12,7 @@ const AvailableProduction = () => {
     const Editform = (Recid) => {
         navigate('/CreateProduct', { state: { id: Recid, flag: true } })
     }
-    const fetchData = () => {
+    const tabledata = () => {
         var axios = require('axios');
 
         var config = {
@@ -36,7 +36,7 @@ const AvailableProduction = () => {
     useEffect(() => {
 
 
-        fetchData()
+        tabledata()
 
     }, [])
 

@@ -4,8 +4,8 @@ import CustomInnerHeader from '../../Components/CustomInnerHeader';
 import Loader from '../../Layout/Loader/Loader';
 
 const ShiftManagement = () => {
-    const [isLoading, setIsLoading]=useState(false)
-   
+    const [isLoading, setIsLoading] = useState(false)
+
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -13,7 +13,7 @@ const ShiftManagement = () => {
     const [List, setList] = useState()
     const [date, setdate] = useState(dateToday)
     const [showTable, setshowTable] = useState(false)
-   
+
     const showNavMenu = useSelector((state) => state.NavState);
     //GET
     const fetchAllData = async () => {
@@ -23,39 +23,37 @@ const ShiftManagement = () => {
             method: 'get',
             url: `http://rightway-api.genial365.com/api/EmployeeShiftsRecord/GetData?date_from=${date}`,
             headers: {
-                Authorization: "Bearer  wMxdleUk-ZhHC2QAxte0dLEyHUnUGoKHNOdRalFYVYvLlWTMMgGNYyJEpa3WiyVdOipdhCUHc6-7U_07tsd8RPYMfcMU3DgAMeYVtiJSkI9LMJlq-mT0lwg94tYRhdnX9Dd1ui_uN0iyglhAz4CTygiHcrQKH0lzEhPZCRGO4qSpJjVuhYmZbnV_jLiP6q3WzbWL_uB9AvLSiKDmNysYVKMTw-sM0SzaTZ0QsQchpw6EigJ4Aat5mqHOV8KyuueTBZTVWOpYBR6r7ul1RK0IBfc2g8TpXIr4EbyyddKEFC8eprWIzNMOA8s-7TQoGUUZk3qQCGG8UgHzyX_mjzr6KD14CXVgS7T_gbUi9ELHIoYfgccorQbUN9v5ann4kQXpwYWjRsRkQnnrQk6uJrwRYe_rTBo374jtmW5opg77FgBRVTbXeUCaaNTdLFKs4grYCNzCk43tCUhV6-q7uUkgxU-BqpQcPrrJTHrruJMOgufR9KTfPrvUPlMC984k7LovM8pHTs-Dy9MwptZPQopGig"
-            },
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+            }
         };
         await axios(config)
             .then(function (response) {
                 if (response.status === 200) {
                     setIsLoading(false)
                     setList((response.data));
-                  
+
                 }
             })
             .catch(function (error) {
-               
+
 
             });
     };
     return (
         <>
 
-{isLoading ? (
-        <Loader />
-      ) : (<>
-        
-         <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-         <CustomInnerHeader moduleName={"HR Management"} isShowSelector={true}/>
+
+
+            <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
+                <CustomInnerHeader moduleName={"HR Management"} isShowSelector={true} />
             </div>
-            
+
             <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
                 <div className="x_panel">
                     <div className="x_content my-3">
                         <span className="section pl-4">
-                            <i className="fa fa-edit"></i>&nbsp;Shift Details
+                            <i className="fa fa-list"></i>&nbsp;Shift Details
                         </span>
                         <div className="row">
                             <div className="field item form-group col-md-6 col-sm-6">
@@ -119,9 +117,9 @@ const ShiftManagement = () => {
 
                                     </tr>
                                 </thead>
-                               
+
                                 <tbody>
-                               
+
                                     {List?.map((item, id) => {
                                         return (
 
@@ -133,7 +131,7 @@ const ShiftManagement = () => {
                                                 <td className=" ">{(item.shift_name == 'B Shift') ? <><input type="radio" checked /></> : <input type="radio" disabled />}</td>
                                                 <td className=" ">{(item.shift_name == 'C Shift') ? <><input type="radio" checked /></> : <input type="radio" disabled />}</td>
                                                 <td className=" ">{(item.shift_name == 'General Shift') ? <><input type="radio" checked /></> : <input type="radio" disabled />}</td>
-                                          
+
                                             </tr>
 
                                         )
@@ -141,17 +139,16 @@ const ShiftManagement = () => {
                                 </tbody>
                             </table>
                             {List?.length == 0 && <div className="row mx-1 row-1  reportTableBody " style={{ cursor: "pointer" }}>
-                                            <div className="col-md-12  col-12  font-size-12 bold-6 m-0  py-1 pt-1   text-center ">
-                                                        <span className='text-center'> No Data Available</span>
-                                                    </div>
-                                                </div>}
+                                <div className="col-md-12  col-12  font-size-12 bold-6 m-0  py-1 pt-1   text-center ">
+                                    <span className='text-center'> No Data Available</span>
+                                </div>
+                            </div>}
                         </div>
                     </div>
                 </div>) : null}
             </div>
-            </>
-            )}
-            </>
+
+        </>
     );
 };
 

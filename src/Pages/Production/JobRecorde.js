@@ -14,7 +14,8 @@ const JobRecord = () => {
   var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
   const dateToday = `${year}-${month}-${day}`
   const componentRef = useRef();
-  const [data, setdata] = useState({ dateTo: dateToday, dateFrom: dateToday, Status: '' })
+  const [data, setdata] = useState({ dateTo: dateToday, dateFrom: dateToday, Status: 'all' })
+  let status=[{ label: "All", value: "all" }, { label: "Created", value: "created" }, { label: "Process", value: "process" }, { label: "Pending", value: "pending" }, { label: "Cancel", value: "cancel" }];
   const [isValidateAllStates, setIsValidateAllStates] = useState(true)
   const [ApiRes, setApiRes] = useState()
   const showNavMenu = useSelector((state) => state.NavState);
@@ -95,7 +96,8 @@ const JobRecord = () => {
                   <label className="col-form-label col-md-4 col-sm-4 label-align">Status<span className="required">*</span></label>
                   <div className="col-md-7 col-sm-6">
                     <Select
-                      options={[{ label: "All", value: "All" }, { label: "Created", value: "Created" }, { label: "Process", value: "Process" }, { label: "Pending", value: "Pending" }, { label: "Cancel", value: "Cancel" }]}
+                    value={status.find(e => e.value == data.Status) || ''}
+                      options={status}
 
                       onChange={(e) => { setdata({ ...data, Status: e.value }) }}
                     />

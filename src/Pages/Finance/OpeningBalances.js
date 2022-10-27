@@ -1,14 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../Layout/Loader/Loader.js";
 import { endPoint } from "../../config/Config.js";
 import axios from "axios";
-import ReactToPrint from "react-to-print";
 import Select from "react-select";
 import { preventMinus } from "../../config/preventMinus";
 import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import ReactToPrint from "react-to-print";
+import { useRef } from "react";
+
 import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 const customStyles = {
   control: (provided, state, base) => ({
@@ -48,11 +50,12 @@ const customStyles = {
 
 const OpeningBalances = () => {
   const showNavMenu = useSelector((state) => state.NavState);
-  const componentRef = useRef();
   const [isLoading, setisLoading] = useState(false);
   const [accountList, setAccountList] = useState([{}]);
   const [accountListCSV, setAccountListCSV] = useState([{}]);
   const [reRender, setreRender] = useState(false);
+  const componentRef = useRef();
+
 
   const [visableDiv, setVisableDiv] = useState("true");
   const setDivToVisable = (displayDiv) => {
@@ -73,13 +76,13 @@ const OpeningBalances = () => {
   };
 
   const fetchData = async () => {
+
     var config = {
       method: "get",
       url: `${endPoint}api/ChartOfAccounts/GetCategoriesByLevel?level=4`,
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("access_token")).access_token
-        }`,
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
       },
     };
     await axios(config)
@@ -96,13 +99,13 @@ const OpeningBalances = () => {
   };
 
   const fetchAllData = async (e) => {
+    setisLoading(true);
     var config = {
       method: "get",
       url: `${endPoint}api/OpeningBalane/GetData?fiscal_year_id=1&account=${e.category_id}`,
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("access_token")).access_token
-        }`,
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
       },
     };
 
@@ -135,21 +138,6 @@ const OpeningBalances = () => {
       });
   };
 
-  ////////////////////////////For Downloading CSV Files////////////////////////////
-
-  const headers = [
-    { label: "Code", key: "account_code" },
-    { label: "Account Name", key: "account_name" },
-    { label: "Debit", key: "debit" },
-    { label: "Credit", key: "credit" },
-  ];
-
-  const csvReport = {
-    filename: "OpeningBalance.csv",
-    headers: headers,
-    data: accountListCSV,
-  };
-
   const editBalance = () => {
     const updatedCode = accountList.map((item) => {
       return {
@@ -175,10 +163,24 @@ const OpeningBalances = () => {
     };
 
     axios(config)
-      .then(function (response) {})
+      .then(function (response) { })
       .catch(function (error) {
         console.log(error);
       });
+  };
+  ////////////////////////////For Downloading CSV Files////////////////////////////
+
+  const headers = [
+    { label: "Code", key: "account_code" },
+    { label: "Account Name", key: "account_name" },
+    { label: "Debit", key: "debit" },
+    { label: "Credit", key: "credit" },
+  ];
+
+  const csvReport = {
+    filename: "OpeningBalance.csv",
+    headers: headers,
+    data: accountListCSV,
   };
 
   ////////////////////////////For Downloading PDF Files////////////////////////////
@@ -226,25 +228,75 @@ const OpeningBalances = () => {
 
   return (
     <>
-      {isLoading ? (
-        <>
-          <Loader />
-        </>
-      ) : (
-        <>
-          <div
-            className={`container-fluid right_col  page-title-bar ${
-              showNavMenu == false ? "right_col-margin-remove" : ""
-            }   `}
-          >
-          <CustomInnerHeader moduleName="Manage Opening Balance" isShowSelector={true} />
-          </div>
-          <div
-            role="main"
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "right_col-margin-remove" : " "
-            } `}
-          >
+
+      <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}`}>
+        <CustomInnerHeader moduleName="Manage Opening Balance" isShowSelector={true} />
+      </div>
+
+      <div role="main" className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "} `} >
+        <div className="x_panel  ">
+          <div className="x_content">
+            <span className="section pl-3">
+              <div className="row   pt-3">
+                <div className="col-3">
+                  <i className="fa fa-filter"></i>&nbsp;Select Account
+                </div>
+                <div className="col-9 text-right "></div>
+              </div>
+            </span>
+            <div className="row">
+              <div className="field item form-group col-md-12 col-sm-12">
+                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                  Account Category <span className="required">*</span>
+                </label>
+                <div className="col-md-3 col-sm-3">
+                  <div>
+                    <Select
+                      getOptionLabel={(e) => e.category_name}
+                      getOptionValue={(e) => e.category_id}
+                      value={selectedValue}
+                      options={inputOptions}
+                      onChange={handleChange}
+                      styles={customStyles}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-7 col-sm-7" align="right">
+                  {visableDiv === "true" && (
+                    <button
+                      className="btn btn-dark fa fa-edit pl-3"
+                      type="button" style={{ backgroundColor: "#003A4D" }}
+                      onClick={(e) => {
+                        setDivToVisable("false");
+                        <input disabled="false" />;
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
+
+                  {visableDiv === "false" && (
+                    <button
+                      className="btn btn-primary fa fa-save pl-3"
+                      type="submit"
+                      onClick={() => {
+                        editBalance();
+                        setDivToVisable("true");
+                      }}
+                    >
+                      Update
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div></div>
+        </div>
+
+
+        {isLoading ? (
+          <> <Loader /> </>
+        ) : (
+          <>
             <div className="x_panel  ">
               <div className="x_content">
                 <span className="section pl-3">
@@ -256,76 +308,41 @@ const OpeningBalances = () => {
                   </div>
                 </span>
 
-                <div className="row">
-                  <div className="field item form-group col-md-12 col-sm-12">
-                    <label className="col-form-label col-md-2 col-sm-2 label-align">
-                      Account Category <span className="required">*</span>
-                    </label>
-                    <div className="col-md-3 col-sm-3">
-                      <div>
-                        <Select
-                          getOptionLabel={(e) => e.category_name}
-                          getOptionValue={(e) => e.category_id}
-                          value={selectedValue}
-                          options={inputOptions}
-                          onChange={handleChange}
-                          styles={customStyles}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-7 col-sm-7" align="right">
-                      {visableDiv === "true" && (
-                        <button
-                          className="btn btn-dark fa fa-edit pl-3 my-1"
-                          type="button"
-                          onClick={(e) => {
-                            setDivToVisable("false");
-                            <input disabled="false" />;
-                          }}
-                        >
-                          Edit
-                        </button>
-                      )}
 
-                      {visableDiv === "false" && (
-                        <button
-                          className="btn btn-primary fa fa-save pl-3"
-                          type="submit"
-                          onClick={() => {
-                            editBalance();
-                            setDivToVisable("true");
-                          }}
-                        >
-                          Update
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
 
                 {/* ///////////////////////For Downloadling Data/////////////////////////// */}
                 <div className="col-md-12 col-sm-12 pr-4" align="right">
                   <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                    <div className="form-group col-3">
-                    <ReactToPrint
-                    trigger={() => {
-                      return (
-                        <button className="btn btn-sm btn-primary borderRadiusRound">
-                          <i className="fa fa-print"></i>
-                        </button>
-                      );
-                    }}
-                    content={() => componentRef.current}
-                    
-                  />
+                    <div className="form-group col-md-3">
+
+                      <ReactToPrint className="form-group col-md-3"
+                        trigger={() => {
+                          return (
+                            <button className="btn btn-sm  borderRadiusRound" title="Print" style={{ backgroundColor: "#003A4D", color: "white" }}>
+                              <i className="fa fa-print"></i>
+                            </button>
+                          );
+                        }}
+                        content={() => componentRef.current}
+                        documentTitle="new docs"
+                        pageStyle="print"
+                      />
                     </div>
 
-                  
-                    <div className="form-group col-3">
+                    <div className="form-group col-md-3">
+                      <button
+                        className="btn btn-sm  borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
+                        onClick={downloadPdf}
+                        type="button"
+                      >
+                        <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <div className="form-group col-md-3">
                       <CSVLink {...csvReport}>
-                        <button className="btn btn-sm btn-success borderRadiusRound mx-2">
+                        <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
                           <i
-                            className="fa fa-file-pdf-o"
+                            className="fa fa-table"
                             aria-hidden="true"
                           ></i>
                         </button>
@@ -335,47 +352,43 @@ const OpeningBalances = () => {
                 </div>
 
                 {/* //////////////////////////Form Structure///////////////////////////////// */}
-                <div id="report"   >
-                  <div className="table-responsive px-3 pb-2 "  style={{ overflow: 'scroll' ,height: '400px'}} >
-                    <div className="table table-striped jambo_table bulk_action " ref={componentRef} >
+                <div id="report">
+                  <div className="table-responsive px-3 pb-2 " ref={componentRef}>
                     <div className="displayPropertyForPrint">
-                    <h2 className="text-dark text-center font-weight-bold  ">
-                      Opening Balance Sheet
-                    </h2>
+                      <h2 className="text-dark text-center font-weight-bold  ">
+                        Opening Balances
+                      </h2>
                     </div>
-                      <div>
-                        <div className=" row headings reportTableHead" >
-                          <div
-                            className="column-title col-md-3 col-3 p-1 right-border-1 text-center "
-                            width="20%"
-                          >
-                            
+
+                    <table className="table table-striped jambo_table bulk_action ">
+                      <thead>
+                        <tr className="headings reportTableHead bottom-border-1 ">
+                          <th className="column-title right-border-1 text-center" width="10%">
                             Code
-                          </div>
-                          <div className="column-title col-md-3 col-3 p-1 right-border-1 text-center">
+                          </th>
+                          <th className="column-title  right-border-1 text-center">
                             Account Name
-                          </div>
-                          <div 
-                            className="column-title col-md-3 col-3 p-1 right-border-1 text-center"
+                          </th>
+                          <th
+                            className="column-title right-border-1 text-center"
                             width="10%"
                           >
                             Debit
-                          </div>
-                          <div   className="column-title col-md-3 col-3 p-1 right-border-1 text-center"
-                          width="10%" >
+                          </th>
+                          <th className="column-title text-center" width="10%">
                             Credit
-                          </div>
-                        </div>
-                      </div>
+                          </th>
+                        </tr>
+                      </thead>
 
                       {/* //////////////////////////Form Entries///////////////////////////////// */}
-                      <div>
+                      <tbody>
                         {accountList.map((item, index) => {
                           return (
-                            <div className=" row even pointer" key={index}>
-                              <div className="col-md-3 col-3 p-1"> {item.account_code}</div>
-                              <div className="col-md-3 col-3 p-1"> {item.account_name} </div>
-                              <div className="col-md-3 col-3 p-1">
+                            <tr className="even pointer" key={index}>
+                              <td className=" "> {item.account_code}</td>
+                              <td className=" "> {item.account_name} </td>
+                              <td className="">
                                 {" "}
                                 <input
                                   type="number"
@@ -402,9 +415,9 @@ const OpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </div>
+                              </td>
 
-                              <div className="col-md-3 col-3 p-1 ">
+                              <td className=" ">
                                 {" "}
                                 <input
                                   type="number"
@@ -430,31 +443,54 @@ const OpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </div>
-                            </div>
+                              </td>
+                            </tr>
                           );
                         })}
-                      </div>
-                      <tfoot>
-                        <div className="row font-weight-bold">
-                          <div className="col-md-12 col-sm-12" >
+                        <tr className="font-weight-bold">
+                          <td></td>
+                          <td className="col-md-12 col-sm-12" align="right">
                             Total:
+                          </td>
+                          <td>
                             {accountList
                               .map((values) => {
                                 return Number(values.debit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                              {accountList
-                                .map((values) => {
-                                  return Number(values.credit);
-                                })
-                                .reduce((a, b) => a + b, 0)}
-                          </div>
-                         
-                         
-                        </div>
-                      </tfoot>
-                    </div>
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.credit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                        </tr>
+                      </tbody>
+                      {/* <tfoot>
+                        <tr className="font-weight-bold">
+                          <td></td>
+                          <td className="col-md-12 col-sm-12" align="right">
+                            Total:
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.debit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                          <td>
+                            {accountList
+                              .map((values) => {
+                                return Number(values.credit);
+                              })
+                              .reduce((a, b) => a + b, 0)}
+                          </td>
+                        </tr>
+                      </tfoot> */}
+                    </table>
                   </div>
                 </div>
               </div>
@@ -463,7 +499,7 @@ const OpeningBalances = () => {
                 {visableDiv === "true" && (
                   <button
                     className="btn btn-dark fa fa-edit pl-3"
-                    type="button"
+                    type="button" style={{ backgroundColor: "#003A4D" }}
                     onClick={(e) => {
                       setDivToVisable("false");
                       <input disabled="false" />;
@@ -487,9 +523,12 @@ const OpeningBalances = () => {
                 )}
               </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+
+
+      </div>
+
     </>
   );
 };

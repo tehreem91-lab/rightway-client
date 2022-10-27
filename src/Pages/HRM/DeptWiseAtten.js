@@ -10,6 +10,8 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import { toast } from "react-toastify";
+import ReactToPrint from "react-to-print";
+import { useRef } from "react";
 import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
 const DeptWiseAtten = () => {
 
@@ -19,6 +21,7 @@ const DeptWiseAtten = () => {
     const [isError, setisError] = useState(false);
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
+    const componentRef = useRef();
 
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -275,7 +278,7 @@ const DeptWiseAtten = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-            <CustomInnerHeader moduleName="Department Wise Attendance" isShowSelector={true} />
+                <CustomInnerHeader moduleName="Department Wise Attendance" isShowSelector={true} />
 
             </div>
             <div
@@ -399,8 +402,8 @@ const DeptWiseAtten = () => {
                                                     <div className="col-md-9 col-sm-9" align="right">
                                                         {visableDiv === "true" && (
                                                             <button
-                                                                className="btn btn-dark fa fa-edit pl-3"
-                                                                type="button"
+                                                                className="btn  fa fa-edit pl-3"
+                                                                type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                                 onClick={(e) => {
                                                                     setDivToVisable("false");
                                                                     <input disabled="false" />;
@@ -427,8 +430,8 @@ const DeptWiseAtten = () => {
                                                                     Update
                                                                 </button>
                                                                 <button
-                                                                    className="btn btn-dark fa fa-edit pl-3"
-                                                                    type="button"
+                                                                    className="btn  fa fa-edit pl-3"
+                                                                    type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                                     onClick={(e) => {
                                                                         setAttendenceData([{}]);
                                                                         setDivToVisable("true");
@@ -450,18 +453,29 @@ const DeptWiseAtten = () => {
                                             {/* ///////////////////////For Downloadling Data/////////////////////////// */}
                                             <div className="col-md-12 col-sm-12 pr-4" > Color Indicators:
                                                 <span class=" bg-danger text-white col-1 h-50 d-inline-block">Absent</span>
-                                                <span class=" bg-warning text-dark col-1 h-50 d-inline-block">Incomplete</span>
+                                                <span class=" btn-primary text-dark col-1 h-50 d-inline-block">Incomplete</span>
 
                                                 <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                                     <div className="form-group col-md-3">
-                                                        <button className="btn btn-sm btn-primary borderRadiusRound">
-                                                            <i className="fa fa-print"></i>
-                                                        </button>
+
+                                                        <ReactToPrint className="form-group col-md-3"
+                                                            trigger={() => {
+                                                                return (
+                                                                    <button className="btn btn-sm  borderRadiusRound" title="Print" style={{ backgroundColor: "#003A4D", color: "white" }}>
+
+                                                                        <i className="fa fa-print"></i>
+                                                                    </button>
+                                                                );
+                                                            }}
+                                                            content={() => componentRef.current}
+                                                            documentTitle="new docs"
+                                                            pageStyle="print"
+                                                        />
                                                     </div>
 
                                                     <div className="form-group col-md-3">
                                                         <button
-                                                            className="btn btn-sm btn-warning borderRadiusRound"
+                                                            className="btn btn-sm  borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                             onClick={downloadPdf}
                                                             type="button"
                                                         >
@@ -470,9 +484,9 @@ const DeptWiseAtten = () => {
                                                     </div>
                                                     <div className="form-group col-md-3">
                                                         <CSVLink {...csvReport}>
-                                                            <button className="btn btn-sm btn-success borderRadiusRound">
+                                                            <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
                                                                 <i
-                                                                    className="fa fa-file-pdf-o"
+                                                                    className="fa fa-table"
                                                                     aria-hidden="true"
                                                                 ></i>
                                                             </button>
@@ -483,7 +497,7 @@ const DeptWiseAtten = () => {
 
 
                                             {/* //////////////////////////Form Structure///////////////////////////////// */}
-                                            <div id="report">
+                                            <div id="report" ref={componentRef}>
                                                 <div className="table-responsive px-3 pb-2 ">
                                                     <table className="table ">
                                                         <thead>
@@ -540,13 +554,13 @@ const DeptWiseAtten = () => {
 
 
                                                                     <tr className="even pointer" key={index}>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_code}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.employee_name} </td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.designation_title}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.employee_code}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.employee_name} </td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.designation_title}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_title}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
                                                                             {" "}
                                                                             <input
                                                                                 type="datetime-local"
@@ -556,6 +570,11 @@ const DeptWiseAtten = () => {
                                                                                 min="0"
                                                                                 onKeyPress={(e) => preventMinus(e)}
                                                                                 onChange={(e) => {
+                                                                                    const limit = new Date(`${selectedDate}T00:00:00`)
+                                                                                    const setDate = new Date(e.target.value)
+                                                                                    if (setDate < limit) {
+                                                                                        e.target.value = `${selectedDate}T00:00:00`
+                                                                                    }
                                                                                     let arr = attendenceData;
                                                                                     let selected_index = arr.findIndex(
                                                                                         (obj) =>
@@ -580,7 +599,7 @@ const DeptWiseAtten = () => {
                                                                             {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
                                                                         </td>
 
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
                                                                             {" "}
                                                                             <input
                                                                                 type="datetime-local"
@@ -590,6 +609,11 @@ const DeptWiseAtten = () => {
                                                                                 min="0"
                                                                                 onKeyPress={(e) => preventMinus(e)}
                                                                                 onChange={(e) => {
+                                                                                    const limit = new Date(`${selectedDate}T00:00:00`)
+                                                                                    const setDate = new Date(e.target.value)
+                                                                                    if (setDate < limit) {
+                                                                                        e.target.value = `${selectedDate}T00:00:00`
+                                                                                    }
                                                                                     let arr = attendenceData;
                                                                                     let selected_index = arr.findIndex(
                                                                                         (obj) =>
@@ -614,8 +638,8 @@ const DeptWiseAtten = () => {
 
                                                                             {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""}
                                                                         </td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.total_hour}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.extra_hour}</td>
                                                                     </tr>
                                                                 );
                                                             })}
@@ -629,8 +653,8 @@ const DeptWiseAtten = () => {
 
                                                 {visableDiv === "true" && (
                                                     <button
-                                                        className="btn btn-dark fa fa-edit pl-3"
-                                                        type="button"
+                                                        className="btn  fa fa-edit pl-3"
+                                                        type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                         onClick={(e) => {
                                                             setDivToVisable("false");
                                                             <input disabled="false" />;
@@ -657,8 +681,8 @@ const DeptWiseAtten = () => {
                                                             Update
                                                         </button>
                                                         <button
-                                                            className="btn btn-dark fa fa-edit pl-3"
-                                                            type="button"
+                                                            className="btn  fa fa-edit pl-3"
+                                                            type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                             onClick={(e) => {
                                                                 setAttendenceData([{}]);
                                                                 setDivToVisable("true");

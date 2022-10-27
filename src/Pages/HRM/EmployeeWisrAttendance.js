@@ -11,6 +11,8 @@ import html2canvas from "html2canvas";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 import { toast } from "react-toastify";
 import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
+import { useRef } from "react";
+import ReactToPrint from "react-to-print";
 const EmployeeWiseAttendance = () => {
 
     const showNavMenu = useSelector((state) => state.NavState);
@@ -19,6 +21,7 @@ const EmployeeWiseAttendance = () => {
     const [attendenceData, setAttendenceData] = useState([{}]);
     const [attendenceDataCSV, setAttendenceDataCSV] = useState([{}]);
     const [reRender, setreRender] = useState(false);
+    const componentRef = useRef();
 
 
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -272,7 +275,7 @@ const EmployeeWiseAttendance = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-            <CustomInnerHeader moduleName="Employee Monthly Attendance" isShowSelector={true} />
+                <CustomInnerHeader moduleName="Employee Monthly Attendance" isShowSelector={true} />
 
             </div>
             <div
@@ -395,8 +398,8 @@ const EmployeeWiseAttendance = () => {
                                                     <div className="col-md-9 col-sm-9" align="right">
                                                         {visableDiv === "true" && (
                                                             <button
-                                                                className="btn btn-dark fa fa-edit pl-3"
-                                                                type="button"
+                                                                className="btn  fa fa-edit pl-3"
+                                                                type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                                 onClick={(e) => {
                                                                     setDivToVisable("false");
                                                                     <input disabled="false" />;
@@ -423,8 +426,8 @@ const EmployeeWiseAttendance = () => {
                                                                     Update
                                                                 </button>
                                                                 <button
-                                                                    className="btn btn-dark fa fa-edit pl-3"
-                                                                    type="button"
+                                                                    className="btn  fa fa-edit pl-3"
+                                                                    type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                                     onClick={(e) => {
                                                                         setAttendenceData([{}]);
                                                                         setDivToVisable("true");
@@ -446,18 +449,28 @@ const EmployeeWiseAttendance = () => {
                                             {/* ///////////////////////For Downloadling Data/////////////////////////// */}
                                             <div className="col-md-12 col-sm-12 pr-4" > Color Indicators:
                                                 <span class=" bg-danger text-white col-1 h-50 d-inline-block">Absent</span>
-                                                <span class=" bg-warning text-dark col-1 h-50 d-inline-block">Incomplete</span>
+                                                <span class=" btn-primary text-dark col-1 h-50 d-inline-block">Incomplete</span>
 
                                                 <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                                     <div className="form-group col-md-3">
-                                                        <button className="btn btn-sm btn-primary borderRadiusRound">
-                                                            <i className="fa fa-print"></i>
-                                                        </button>
+
+                                                        <ReactToPrint className="form-group col-md-3"
+                                                            trigger={() => {
+                                                                return (
+                                                                    <button className="btn btn-sm  borderRadiusRound" title="Print" style={{ backgroundColor: "#003A4D", color: "white" }}>
+                                                                        <i className="fa fa-print"></i>
+                                                                    </button>
+                                                                );
+                                                            }}
+                                                            content={() => componentRef.current}
+                                                            documentTitle="new docs"
+                                                            pageStyle="print"
+                                                        />
                                                     </div>
 
                                                     <div className="form-group col-md-3">
                                                         <button
-                                                            className="btn btn-sm btn-warning borderRadiusRound"
+                                                            className="btn btn-sm  borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                             onClick={downloadPdf}
                                                             type="button"
                                                         >
@@ -466,9 +479,9 @@ const EmployeeWiseAttendance = () => {
                                                     </div>
                                                     <div className="form-group col-md-3">
                                                         <CSVLink {...csvReport}>
-                                                            <button className="btn btn-sm btn-success borderRadiusRound">
+                                                            <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
                                                                 <i
-                                                                    className="fa fa-file-pdf-o"
+                                                                    className="fa fa-table"
                                                                     aria-hidden="true"
                                                                 ></i>
                                                             </button>
@@ -479,7 +492,7 @@ const EmployeeWiseAttendance = () => {
 
 
                                             {/* //////////////////////////Form Structure///////////////////////////////// */}
-                                            <div id="report">
+                                            <div id="report" ref={componentRef}>
                                                 <div className="table-responsive px-3 pb-2 ">
                                                     <table className="table ">
                                                         <thead>
@@ -527,11 +540,11 @@ const EmployeeWiseAttendance = () => {
                                                             {attendenceData.map((item, index) => {
                                                                 return (
                                                                     <tr className="even pointer" key={index}>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.Date?.slice(0, 10)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_title}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.Date?.slice(0, 10)}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_title}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
                                                                             {" "}
                                                                             <input
                                                                                 type="datetime-local"
@@ -570,7 +583,7 @@ const EmployeeWiseAttendance = () => {
 
                                                                         </td>
 
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} >
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
                                                                             {" "}
                                                                             <input
                                                                                 type="datetime-local"
@@ -614,8 +627,8 @@ const EmployeeWiseAttendance = () => {
 
 
                                                                         </td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.total_hour}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' bg-warning text-white' : '')} > {item.extra_hour}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.total_hour}</td>
+                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.extra_hour}</td>
                                                                     </tr>
                                                                 );
                                                             })}
@@ -629,8 +642,8 @@ const EmployeeWiseAttendance = () => {
 
                                                 {visableDiv === "true" && (
                                                     <button
-                                                        className="btn btn-dark fa fa-edit pl-3"
-                                                        type="button"
+                                                        className="btn  fa fa-edit pl-3"
+                                                        type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                         onClick={(e) => {
                                                             setDivToVisable("false");
                                                             <input disabled="false" />;
@@ -657,8 +670,8 @@ const EmployeeWiseAttendance = () => {
                                                             Update
                                                         </button>
                                                         <button
-                                                            className="btn btn-dark fa fa-edit pl-3"
-                                                            type="button"
+                                                            className="btn  fa fa-edit pl-3"
+                                                            type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                             onClick={(e) => {
                                                                 setAttendenceData([{}]);
                                                                 setDivToVisable("true");

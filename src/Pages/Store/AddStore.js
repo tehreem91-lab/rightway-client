@@ -32,6 +32,45 @@ const AddStore = () => {
      const [selectedimage, setSelectedImage] = useState("");
      const [imageEntity, setImageEntity] = useState([]);
      const [update, setupdate] = useState(false);
+     const [imgsrc, setImgsrc] = useState('')
+     const [imgPreview, setimgPreview] = useState(false)
+     const [imguploader, setimguploader] = useState(false)
+     const [StoreData, setStoreData] = useState([]);
+     const [isLoading, setisLoading] = useState(true);
+     
+     
+     
+     
+     const Get_StoreAccount = () =>{
+     var axios = require('axios');
+     var data = '';
+     
+     var config = {
+       method: 'get',
+       url: 'http://rightway-api.genial365.com/api/Store/GetStore',
+       headers: {
+         Authorization: `bearer ${
+           JSON.parse(localStorage.getItem("access_token")).access_token
+         }`,
+       },
+       data : data
+     };
+     
+     axios(config)
+     .then(function (response) {
+       setStoreData(response.data)
+       setisLoading(false)
+       
+     })
+    
+     
+     }
+     
+    //  const Navigation_id =(key)=>{
+     
+    //  navigation('/AddStoreAccess',{state:{id:key} })
+     
+    //  }
 
      const inputRef = useRef(null);
      const ref = useRef(null);
@@ -88,6 +127,7 @@ const AddStore = () => {
            setQuantity_grams("")
            setpackets_detail([ {packet_name: "", pair_base_unit: ""}])
            setFileEntity([])
+           Get_StoreAccount()
            toast.success("Your response has been submitted successfully")
         })
       
@@ -213,7 +253,8 @@ const AddStore = () => {
                  setQuantity_grams("")
                  setpackets_detail([ {packet_name: "", pair_base_unit: ""}])
                   setFileEntity([])
-                
+                  setupdate(false)
+                  Get_StoreAccount()
                  toast.success("Your response has been Updated successfully")
               })
               .catch(function (error) {
@@ -251,15 +292,25 @@ const AddStore = () => {
           })
       }
       
-        const UploadImage = async () => {
-          let data = new FormData();
-          data.append("UploadedImage", selectedimage);
-          await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedimage.name}`, data).then(res => {
-            setImageEntity([...imageEntity, res.data])
-              if (res.status === 200) {
-                  reset2()
-              }
-          })
+      const UploadImage = async () => {
+        setimguploader(true)
+        const options = {
+            onUploadProgerss: (progressEvent) => {
+                const { loaded, total } = progressEvent;
+                let percentage = Math.floor((loaded * 100) / total)
+                console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+            }
+        }
+        let data = new FormData();
+        data.append("UploadedImage", selectedimage);
+        await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${selectedimage.name}`,  data, options).then(res => {
+          setImageEntity([...imageEntity, res.data])
+            if (res.status === 200) {
+               setimgPreview(true)
+               setimguploader(false)
+                reset2()
+            }
+        })
       }
       
         let handleChange = (i, e) => {
@@ -408,10 +459,10 @@ axios(config)
         Getstore_type()
         Get_Consumption()
         Get_Unit("http://rightway-api.genial365.com/api/StockUnits/GetData")
-        if (location?.state?.id) {
-          FetchDataforEdit(location.state.id)
-        }
-     
+        // if (location?.state?.id) {
+        //   FetchDataforEdit(location.state.id)
+        // }
+        Get_StoreAccount()
        
 
     }, []);
@@ -562,7 +613,9 @@ axios(config)
     {
       isupload ? <div className="spinner-border  text-customOrange " role="status">
           <span className="sr-only">Loading...</span>
-      </div> : <button
+      </div> :
+      
+      <button
           disabled={ref?.current?.value === "" ? true : false}
           className="btn btn-sm btn-outline-success " onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
   }
@@ -573,7 +626,7 @@ axios(config)
 
     <div className="col-md-6 col-sm-6">
     <label className="col-form-label col-md-4 col-sm-4 label-align"> Select Image <span className="required">*</span></label>
-    <div className='col-md-6'>
+    <div className='col-md-4'>
     <input  
     type="file"
     className="form-control form-control-sm customStyleForInput"
@@ -585,6 +638,7 @@ axios(config)
     onChange={(e)=>
      
       {
+        setImgsrc(URL.createObjectURL(e.target.files[0]));
         setSelectedImage(e.target.files[0]);
 
       }
@@ -597,11 +651,24 @@ axios(config)
     </div>
     <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
 
-    <button
-   
-     className="btn btn-sm btn-outline-success" 
-    type="button" onClick={()=>UploadImage()} ><i className="fa fa-upload"></i></button>
+    {
+      imguploader ? <div className="spinner-border  text-customOrange " role="status">
+          <span className="sr-only">Loading...</span>
+      </div> : <button
+          disabled={inputRef?.current?.value === "" ? true : false}
+          className="btn btn-sm btn-outline-success " onClick={() => UploadImage()} type="button"><i className="fa fa-upload"></i></button>
+  }
 
+  </div>
+  <div className="col-md-2  " style={{ paddingTop: "1.5px" }}>
+    
+  {(imgPreview) ? (
+    
+    <img className="my-0" width="50" height="35"src={imgsrc} />
+  
+  
+    
+    ) : null}
   </div>
     
   
@@ -650,38 +717,44 @@ axios(config)
      </div>
 
    
-     <span className="section mt-2">
+     <span className="section mt-4">
      <div className="row px-2  ">
          <div className="col-8 ">
-         <i className="fa fa-edit"></i>&nbsp;Add Pair Packets
+         <i className="fa fa-edit"></i>&nbsp;Add Store Packets
          </div>
      </div>
  </span>
- <div className="row ">
- {packets_detail.map((element,index)=>{
+ <div className='row'>
+ <div className="col-md-12 ">
+ <table className="table table-striped jambo_table bulk_action ">
+       <thead >
+         <tr className="headings">
+           <th className="column-title   ">Packet Name</th>
+           <th className="column-title   ">Pair Base unit</th>
+           <th className="column-title   ">&nbsp;</th>
+         
+         </tr>
+       </thead>
+<tbody>
+{packets_detail.map((element,index)=>{
 
   return(
 
      <>
- <div className="col-md-6 col-sm-6">
- <label className="col-form-label col-md-3 col-sm-3 label-align"> Packets Name <span className="required">*</span></label>
- <div className='col-md-8'>
- <input
- type="text"
- className="form-control"
- name='packet_name'
+<tr>
+<td>
+<input
+type="text"
+className="form-control"
+name='packet_name'
 
- value={element.packet_name} onChange={e => handleChange(index, e)}
- />
- {!isValidateAllStates && ( element.packet_name === "" ) && <span className="text-danger">First Select this </span>} 
- 
- </div>
+value={element.packet_name} onChange={e => handleChange(index, e)}
+/>
+{!isValidateAllStates && ( element.packet_name === "" ) && <span className="text-danger">First Select this </span>} 
 
- </div>
- <div className="col-md-6 col-sm-6">
- <label className="col-form-label col-md-1 col-sm-1 "> Value </label>
- <div className='col-md-6'>
- <input
+</td>
+<td>
+<input
  type="number"
  className="form-control"
  name='pair_base_unit'
@@ -690,29 +763,23 @@ axios(config)
  />
  {!isValidateAllStates && ( element.pair_base_unit === "" ) && <span className="text-danger">First Select this </span>} 
 
- </div>
- <div className="col-md-3 col-sm-3">
-
+</td>
+<td>
 <i class="fa fa-times pt-2 text-danger" aria-hidden="true" onClick={() => removeFormFields(index)}></i> 
-
-
-
-</div>
-
- </div> 
-
- 
-     
-     
-     
-     </>
+</td>
+</tr>
+ </>
   )
 
 
  })}
 
 
-</div>
+</tbody>
+
+       </table>
+       </div>
+ </div>
 
     <div className="row px-2 text-right ">
    
@@ -723,7 +790,7 @@ axios(config)
   (
   <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  
   onClick={() =>{UpdateStore(storeid)
-    navigation(-1)
+    // navigation(-1)
   
   } }> Update </button>
   ):
@@ -756,16 +823,81 @@ axios(config)
 </div>
 </div>
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   </div>
+  </div>
+
+  {/*Available store */}
+  <div className="x_panel  ">
+  <div className="x_content">
+      <span className="section pl-3">
+          <div className="row   pt-3">
+              <div className="col-3">
+                  <i className='fa fa-list'></i>&nbsp;Listing
+              </div>
+              <div className="col-9 text-right ">
+              </div>
+          </div>
+      </span>
+      <div className="table-responsive px-3 pb-2" >
+          <table className="table table-striped jambo_table bulk_action">
+              <thead>
+                  <tr className="headings">
+                  <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
+                      <th className="column-title  right-border-1 text-center" width="14%"> Name </th>
+                      <th className="column-title  right-border-1 text-center" width="24%">Code</th>
+                      <th className="column-title  right-border-1 text-center" width="10%">Unit</th>
+                      <th className="column-title text-center" width="10%">
+                          Action
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+              {StoreData.map((item,index)=>{
+
+                  return(
+
+                      <>
+                      <tr className="even pointer"  >
+                      <td className="">{index+1}</td>
+                      <td className="">{item.store_account.store_account_label}</td>
+                      <td className="">{item.store_account.store_account_code} </td>
+                      <td className="text-center">{item.store_account.store_unit_name} </td>
+                      <td
+                          className="a-right a-right     text-center"
+                      >
+                          <i
+                              className="fa fa-edit pl-3"
+                              // data-toggle="modal" data-target=".bd-example-modal-xl"
+                              onClick={()=>FetchDataforEdit(item.store_info_id)}
+                              
+                          ></i>
+                          <i
+                              className="fa fa-trash-o pl-3"
+                          ></i>
+                      </td>
+                  </tr>
+                      
+                      
+                      </>
+                  )
+
+
+              })}
+                 
+                 
+              </tbody>
+          </table>
+       </div>
+     
+    
+  </div>
+  
+  
+
+
+
+</div>
+
+
    </div>
             
         </>
