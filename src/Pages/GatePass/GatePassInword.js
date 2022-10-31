@@ -660,7 +660,7 @@ console.log(error);
                   <div className="col-md-1 col-sm-2 p-0">{
                     isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
                       <span className="sr-only">Loading...</span>
-                    </div> : (<button className="btn btn-sm btn-outline-success" type="button" onClick={(e) => { uploadFile(e) }}><i className="fa fa-upload"></i></button>)}
+                    </div> : (<button className="btn btn-sm btn-outline-primary" type="button" onClick={(e) => { uploadFile(e) }}><i className="fa fa-upload"></i></button>)}
                   </div>
 
                 </div>

@@ -41,7 +41,6 @@ import LoanPayementVoucher from "../Pages/HRM/LoanManagement/LoanVoucher/LoanPay
 import LoanSettlementVoucher from "../Pages/HRM/LoanManagement/LoanVoucher/LoanSettlementVoucher";
 import LoanHistory from "../Pages/HRM/LoanManagement/LoanHistory";
 import EmployeeProfile from "../Pages/HRM/EmployeeProfile";
-
 import EmployeeWiseAttendance from "../Pages/HRM/EmployeeWisrAttendance";
 import SalaryGeneration from "../Pages/HRM/SalaryGeneration";
 import DeptWiseAtten from "../Pages/HRM/DeptWiseAtten";
@@ -59,11 +58,15 @@ import AvailableProduction from "../Pages/Production/AvailableProduction";
 import StockLadger from "../Pages/Stock/StockReports/StockLadgerReport/StockLadger";
 import ShiftManagement from "../Pages/HRM/ShiftManagement";
 import ShiftRecordUpdate from "../Pages/HRM/ShiftRecordUpdate";
-// import StockIssueShiftWise from "../Pages/Production/StockIssue/StockIssueShiftWise";
+import StockIssueShiftWise from "../Pages/Production/StockIssue/StockIssueShiftWise";
 import CreateJob from "../Pages/Production/CreateJob";
-import JobRecord from "../Pages/Production/JobRecorde";
+import JobRecord from "../Pages/Production/JobRecord";
 import GatePassHistory from "../Pages/GatePass/GatePassHistory";
 import GatePassInward from "../Pages/GatePass/GatePassInword";
+import Purchase from "../Pages/Purchase/Purchase";
+import BillInfo from "../Pages/Purchase/BillInfo";
+import CloseShift from "../Pages/Production/CloseShift";
+
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
@@ -114,24 +117,25 @@ const ROUTES = {
   SalaryReport: { id: "48", element: SalaryReport, path: "SalaryReportAccess" },
   InwardForm: { id: "49", element: InwardForm, path: "InwardFormAccess" },
   PartyInfo: { id: "50", element: PartyInfo, path: "PartyInfoAccess" },
-  DepartmentWiseSalary:{id:"51", element:DepartmentWiseSalary, path: "DepartmentWiseSalaryAccess"},
-  AddStock:{id:"52", element:AddStock, path: "StockAccountAccess"},
-  AvailableStock:{id:"53", element:AvailableStock, path: "StockTabelAccesss"},
-  AddStore:{id:"54", element:AddStore, path: "AddStoreAccess"},
-  AvailableStore:{id:"55", element:AvailableStore, path: "AvailableStoreAccess"},
-  Department:{id:"56", element:Department, path: "DepartmentAccess"},
-  AvailableProduction:{id:"57", element: AvailableProduction, path: "CreateProductTable"},
-  ProductionReciept:{id:'58', element:ProductionReciept, path:"CreateProduct"},
-  StockLadger:{id:"59", element:StockLadger, path:"StockLadgerReportAccess"},
-  ShiftManagement:{id:"60", element:ShiftManagement, path: "ShiftManagementAccess"},
-  ShiftRecordUpdate:{id:"61", element:ShiftRecordUpdate, path: "ShiftUpdateAccess"},
-  // StockIssueShiftWise:{id:"62", element:StockIssueShiftWise , path:"StockIssueShiftWiseAccess"},
-  CreateJob:{id:"63",element:CreateJob,path:"CreateJobAccess"},
-  JobRecord:{id:"63",element:JobRecord ,path:"JobRecordAccess"},
-  GatePassHistory:{id:"63",element:GatePassHistory ,path:"GatePassInwardHistoryAccess"},
-   GatePassInword:{id:"63",element: GatePassInward ,path:"GatePassInward"},
-
-
+  DepartmentWiseSalary: { id: "51", element: DepartmentWiseSalary, path: "DepartmentWiseSalaryAccess" },
+  AddStock: { id: "52", element: AddStock, path: "StockAccountAccess" },
+  AvailableStock: { id: "53", element: AvailableStock, path: "StockTabelAccesss" },
+  AddStore: { id: "54", element: AddStore, path: "AddStoreAccess" },
+  AvailableStore: { id: "55", element: AvailableStore, path: "AvailableStoreAccess" },
+  Department: { id: "56", element: Department, path: "DepartmentAccess" },
+  AvailableProduction: { id: "57", element: AvailableProduction, path: "CreateProductTable" },
+  ProductionReciept: { id: '58', element: ProductionReciept, path: "CreateProduct" },
+  StockLadger: { id: "59", element: StockLadger, path: "StockLadgerReportAccess" },
+  ShiftManagement: { id: "60", element: ShiftManagement, path: "ShiftManagementAccess" },
+  ShiftRecordUpdate: { id: "61", element: ShiftRecordUpdate, path: "ShiftUpdateAccess" },
+  StockIssueShiftWise: { id: "62", element: StockIssueShiftWise, path: "StockIssueShiftWiseAccess" },
+  CreateJob: { id: "63", element: CreateJob, path: "CreateJobAccess" },
+  JobRecord: { id: "64", element: JobRecord, path: "JobRecordAccess" },
+  GatePassHistory: { id: "65", element: GatePassHistory, path: "GatePassInwardHistoryAccess" },
+  GatePassInword: { id: "66", element: GatePassInward, path: "GatePassInward" },
+  Purchase: { id: '67', element: Purchase, path: "PurchaseAccess" },
+  BillInfo: { id: '68', element: BillInfo, path: "billinfoaccess" },
+  CloseShift: { id: '69', element: CloseShift, path: "CloseShiftAccess" }
 };
 export default ROUTES;
 

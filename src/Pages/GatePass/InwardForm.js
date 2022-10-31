@@ -466,6 +466,7 @@ function InwardForm() {
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
                                                         type="number"
+                                                        min="0"
                                                         className='form-control'
                                                         placeholder=""
                                                         value={ListOfParty.vehicle_no}
@@ -543,6 +544,7 @@ function InwardForm() {
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
                                                         type="number"
+                                                        min="0"
                                                         className='form-control'
                                                         placeholder=""
                                                         value={ListOfParty.rent_amount}
@@ -562,6 +564,7 @@ function InwardForm() {
                                                 <div className="col-md-8 col-sm-8">
                                                     <input required
                                                         type="number"
+                                                        min="0"
                                                         className='form-control'
                                                         placeholder=""
                                                         value={ListOfParty.bilty_no}
@@ -675,6 +678,7 @@ function InwardForm() {
                                                         <td>
                                                             <input required
                                                                 type="number"
+                                                                min="0"
                                                                 className='form-control'
                                                                 placeholder=""
                                                                 value={ListOfParty.total_stock_pieces}
@@ -689,6 +693,7 @@ function InwardForm() {
                                                         <td>
                                                             <input required
                                                                 type="number"
+                                                                min="0"
                                                                 className='form-control'
                                                                 placeholder=""
                                                                 value={ListOfParty.weight_per_piece}
@@ -703,6 +708,7 @@ function InwardForm() {
                                                         <td>
                                                             <input required
                                                                 type="number"
+                                                                min="0"
                                                                 className='form-control'
                                                                 placeholder=""
                                                                 value={ListOfParty.tatal_weight}

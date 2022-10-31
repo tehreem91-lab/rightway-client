@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from "react-redux";
 import Select from 'react-select'
 import { useLocation } from 'react-router-dom';
@@ -9,7 +9,7 @@ const CreateJob = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const ref = useRef();
-    const [isFileUploadingModeOn, setisFileUploadingModeOn]= useState(false)
+    const [isFileUploadingModeOn, setisFileUploadingModeOn] = useState(false)
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -28,7 +28,7 @@ const CreateJob = () => {
     const [isValidateAllStates, setIsValidateAllStates] = useState(true)
     const [proIdData, setproIdData] = useState([{
         item_name: "Item Name",
-     item_quantity: 0
+        item_quantity: 0
     }])
 
     const [JobData, setJobdata] = useState({
@@ -45,7 +45,7 @@ const CreateJob = () => {
         per_shift_production: 0,
         per_hour_production: 0,
         total_required_days: 0,
-        total_required_shift: 3,
+        total_required_shift: 0,
         total_required_hour: 24,
         attachments: "",
         machine_entries: []
@@ -64,7 +64,7 @@ const CreateJob = () => {
     }
     const PutData = () => {
         setIsValidateAllStates(true)
-     
+
         let isValidationOk = true;
 
         if (JobData.customer_chart_id == "") {
@@ -113,7 +113,7 @@ const CreateJob = () => {
         }
         setIsValidateAllStates(isValidationOk)
         if (isValidationOk === true && dataupdate) {
-           
+
             var data = JSON.stringify(JobData);
 
             var config = {
@@ -132,7 +132,7 @@ const CreateJob = () => {
                         "Record has been " +
                         ("Updated" + " successfully!")
                     );
-                    
+
                     // navigate('/CreateJobAccess', { state: {  } })
                     navigate(-1)
                     dataupdate = false;
@@ -160,7 +160,7 @@ const CreateJob = () => {
                     setproIdData([])
                 })
                 .catch(function (error) {
-                    
+
                 })
         }
     }
@@ -207,14 +207,15 @@ const CreateJob = () => {
                 ...JobData, per_day_production: machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24,
                 per_shift_production: machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24 / 3,
                 per_hour_production: machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0),
-                total_required_days: JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24), job_ending_date: current.toDateString()
+                total_required_days: JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24),
+                total_required_shift: (isFinite(JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24))) ? (<>{Math.round(JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24)) * 3}</>) : (<>0</>), job_ending_date: current.toDateString()
             });
             dataupdate = true
         }
         setIsValidateAllStates(isValidationOk)
-      
+
         if (isValidationOk === true && dataupdate) {
-          
+
             var data = JSON.stringify(JobData);
 
             var config = {
@@ -234,7 +235,7 @@ const CreateJob = () => {
                         ("Added" + " successfully!")
                     );
                     dataupdate = false;
-                   
+
                     setJobdata({
                         customer_chart_id: 0,
                         stock_type: "",
@@ -256,12 +257,12 @@ const CreateJob = () => {
                     })
                     setfilearray([]);
                     setmachine_ids([]);
-                    
-          setproIdData([])
+
+                    setproIdData([])
                     console.log(machine_ids);
                 })
                 .catch(function (error) {
-                   
+
                     console.log(data);
                 })
         }
@@ -306,9 +307,9 @@ const CreateJob = () => {
                 fetchData(`http://rightway-api.genial365.com/api/Jobs/GetProductById?product_chart_id= ${response.data[0].product_info?.product_chart_id}`);
                 setmachine_ids(response.data[0].machine_entires);
                 if (response.data[0]?.attachments)
-                setfilearray(response.data[0].attachments.split(','));
+                    setfilearray(response.data[0].attachments.split(','));
 
-                
+
             })
             .catch(function (error) {
 
@@ -416,29 +417,29 @@ const CreateJob = () => {
 
     }
     const uploadFile = async () => {
-        if(fileupload.name){
-        setisFileUploadingModeOn(true);
+        if (fileupload.name) {
+            setisFileUploadingModeOn(true);
 
-        let response_from_api = "";
-        let data = new FormData();
-        data.append("UploadedImage", fileupload);
+            let response_from_api = "";
+            let data = new FormData();
+            data.append("UploadedImage", fileupload);
 
-        await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${fileupload.name}`, data,).then(res => {
-            if (res.status === 200) {
-            setisFileUploadingModeOn(false);
-            ref.current.value = "";
-                response_from_api = res.data
-                setfilearray([...filearray,res.data])
-                setJobdata({ ...JobData, attachments: [...filearray, response_from_api].toString() })
-                setfileupload("")
-            }
+            await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${fileupload.name}`, data,).then(res => {
+                if (res.status === 200) {
+                    setisFileUploadingModeOn(false);
+                    ref.current.value = "";
+                    response_from_api = res.data
+                    setfilearray([...filearray, res.data])
+                    setJobdata({ ...JobData, attachments: [...filearray, response_from_api].toString() })
+                    setfileupload("")
+                }
 
 
-        })
+            })
+        }
+
     }
 
-    }
-   
     useEffect(() => {
 
         fetchData("http://rightway-api.genial365.com/api/Jobs/GetProductList")
@@ -477,7 +478,7 @@ const CreateJob = () => {
 
         <>
             <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-            <CustomInnerHeader moduleName={"Create Job"} isShowSelector={true}/>
+                <CustomInnerHeader moduleName={"Create Job"} isShowSelector={true} />
             </div>
             <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
@@ -491,7 +492,7 @@ const CreateJob = () => {
                                         <div className="col-11 ">
                                             <i className='fa fa-list'></i>&nbsp;Job Data
                                         </div>
-                                     </div>
+                                    </div>
                                 </span>
                                 <div className="field item form-group">
                                     <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
@@ -634,12 +635,12 @@ text/plain, application/pdf, image/*" onChange={(e) => {
 
 
                                     </div>
-                                  
+
                                     <div className="col-md-1 col-sm-2 p-0">{
-                  isFileUploadingModeOn?  <div className="spinner-border my-2 text-customOrange" role="status">
-                            <span className="sr-only">Loading...</span>
-                         </div> :(<button className="btn btn-sm btn-outline-success" type="button" onClick={() => {uploadFile()}}><i className="fa fa-upload"></i></button>)}
-                  </div>
+                                        isFileUploadingModeOn ? <div className="spinner-border my-2 text-customOrange" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div> : (<button className="btn btn-sm btn-outline-primary" type="button" onClick={() => { uploadFile() }}><i className="fa fa-upload"></i></button>)}
+                                    </div>
                                 </div>
                                 <div className="field item form-group">
                                     <div className="col-md-12 col-sm-6 text-center">
@@ -730,7 +731,7 @@ text/plain, application/pdf, image/*" onChange={(e) => {
                                                 <td>{(isFinite(JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24))) ? (<>{Math.round(JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24))}</>) : (<>0</>)}</td>
                                             </tr><tr>
                                                 <td>Total Shifts</td>
-                                                <td>3</td>
+                                                <td>{(isFinite(JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24))) ? (<>{Math.round(JobData.product_quantity / (machine_ids.map(data => data.machine_per_hour_capacity).reduce((prev, curr) => prev + curr, 0) * 24)) * 3}</>) : (<>0</>)}</td>
                                             </tr>
                                         </tbody>
                                     </table>

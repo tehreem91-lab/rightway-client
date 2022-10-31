@@ -406,7 +406,7 @@ const ProductionReciept = () => {
     return (
         <>
             <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-                <CustomInnerHeader moduleName={"Production"} isShowSelector={true} />
+                <CustomInnerHeader moduleName={"Product Recipe"} isShowSelector={true} />
             </div>
             <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
@@ -522,7 +522,7 @@ const ProductionReciept = () => {
                                         isFileUploadingModeOn ? <div className="spinner-border  text-customOrange" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </div> :
-                                            <button className="btn btn-sm btn-outline-warning" type="button" onClick={() => updateData()}><i className="fa fa-upload"></i></button>
+                                            <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => updateData()}><i className="fa fa-upload"></i></button>
                                     }
                                 </div>
 
@@ -582,7 +582,7 @@ const ProductionReciept = () => {
                                                     onChange={(e) => { handlePacketChange(id, e) }}
                                                 />
                                                 {!isValidateAllStates && (packets_details[id].pair_base_unit == "" || packets_details[id].pair_base_unit == 0) && <span className="text-danger">First Select this </span>}
-                                                <i style={{ cursor: 'pointer', fontSize: 17 }} className="fa fa-times btn text-danger  mx-0 p-1  " onClick={() => delPacketitem(id + 1)}></i>
+                                                {(id>0)&&<i style={{ cursor: 'pointer', fontSize: 17 }} className="fa fa-times btn text-danger  mx-0 p-1  " onClick={() => delPacketitem(id + 1)}></i>}
                                                 <i style={{ cursor: 'pointer', fontSize: 17 }} className="fa fa-plus btn text-success  mx-0 p-1  " onClick={() => setpackets_details([...packets_details, { packet_name: "", pair_base_unit: 0 }])}></i>
                                             </div>
 
@@ -670,7 +670,7 @@ const ProductionReciept = () => {
                                                     disabled
                                                 />
                                                 {/* {!isValidateAllStates && (stock_attachments[id].product_percentage === "" || stock_attachments.product_percentage === undefined) && <span className="text-danger">First Select this </span>} */}
-                                                <i style={{ cursor: 'pointer', fontSize: 17 }} className="fa fa-times btn text-danger  mx-0 p-1  " onClick={() => delStockitem(i + 1)}></i>
+                                                {(i>0)&&<i style={{ cursor: 'pointer', fontSize: 17 }} className="fa fa-times btn text-danger  mx-0 p-1  " onClick={() => delStockitem(i + 1)}></i>}
                                                 <i style={{ cursor: 'pointer', fontSize: 17 }} className="fa fa-plus btn text-success  mx-0 p-1  " onClick={() => setstock_attachments([...stock_attachments, { stock_id: 0, product_quantity: 0, product_percentage: " " }])}></i>
                                             </div>
 
@@ -765,67 +765,7 @@ const ProductionReciept = () => {
                                 </tbody>
                             </table>
                         </div>
-                            {/* <div className="col-md-12">
-                               
-                                <div className="row row-1 mx-1  reportTableHead mt-2">
-
-                                <div className="col-md-1 col-1 font-size-12  text-center  my-1  ">
-                                   Sr.<span className="required">*</span>
-                                    </div>
-                                    <div className="col-md-3 col-2 font-size-12  text-center  my-1  ">
-                                    Name<span className="required">*</span>
-                                    </div>
-                                    <div className="col-md-3  col-2 font-size-12  text-center  my-1  ">
-                                    Code<span className="required">*</span>
-                                    </div>
-                                    <div className="col-md-3  col-2 font-size-12  text-center  my-1 ">
-                                    Barcode
-                                    </div>
-                                    <div className="col-md-2  col-3 font-size-12  text-center  my-1 ">
-                                    Edit/Delete
-                                    </div>
-
-
-                                </div>
-
-                                {Prodata?.map((data, id)=> {
-                                    return <React.Fragment key={id}>
-                                        <div className="row mx-1 row-1  reportTableBody bottom-border-2">
-
-                                            <div className="col-md-1  col-1  font-size-12 bold-6   py-1 pt-1 right-border-2 left-border-2   d-flex justify-content-start align-items-center ">
-                                            
-                                     {id +1}
-                                           </div>
-                                            <div className="col-md-3 col-3  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">                                         
-                                               {data.product_account.product_account_label}
-                                                                                         
-                                               </div>
-                                            <div className="col-md-3  col-3  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
-                                            {data.product_account.product_account_code}
-                                               
-                                                </div>
-                                                <div className="col-md-3  col-3  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
-                                                {data.product_bare_code}
-                                               
-                                                </div>
-                                                <div className="col-md-2  col-2  font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
-                                               <i className="fa fa-trash-o btn " style={{ color: 'red' }}>
-                                                    </i>
-                                                    <i className="fa fa-edit" style={{ color: 'blue' }} variant="primary" onClick={() =>    fetchData(
-                `http://rightway-api.genial365.com/api/Product/GetProductById?product_id=${data.product_id}`)} ></i>
-                                               
-                                                </div>
-                                              
-
-
-
-                                        </div>
-
-
-                                    </React.Fragment>
-                                })}
-
-                            </div> */}
+                          
                            
                         </div>
                     </div>
