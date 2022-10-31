@@ -65,7 +65,7 @@ import GatePassHistory from "../Pages/GatePass/GatePassHistory";
 import GatePassInward from "../Pages/GatePass/GatePassInword";
 import Purchase from "../Pages/Purchase/Purchase";
 import BillInfo from "../Pages/Purchase/BillInfo";
-import CloseShift from "../Pages/Production/CloseShift";
+// import CloseShift from "../Pages/Production/CloseShift.js";
 
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
@@ -135,7 +135,7 @@ const ROUTES = {
   GatePassInword: { id: "66", element: GatePassInward, path: "GatePassInward" },
   Purchase: { id: '67', element: Purchase, path: "PurchaseAccess" },
   BillInfo: { id: '68', element: BillInfo, path: "billinfoaccess" },
-  CloseShift: { id: '69', element: CloseShift, path: "CloseShiftAccess" }
+  // CloseShift: { id: '69', element: CloseShift, path: "CloseShiftAccess" }
 };
 export default ROUTES;
 
