@@ -223,7 +223,7 @@ function CurrencyUnits({ pagePermission }) {
   const deleteMachineName = (currency_unit_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this city name!",
+      text: "You won't be able to revert this currency unit!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
