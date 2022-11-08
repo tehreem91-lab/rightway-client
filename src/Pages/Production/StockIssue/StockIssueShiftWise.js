@@ -277,9 +277,11 @@ const Issue_To_Selector = ()=>{
        url: `http://rightway-api.genial365.com/api/IssueStock/GetIssueStockRecord?date=${date}&shift_id=${e}
        
        `,
-      headers: { 
-    'Authorization': 'Bearer  2hHBT_I2CLG9nOBZgcwJzNQzUQsvTKqWOle1WXo-QP8_2BTDFZ-Xxw_ZpMOgVWGkiv2o9mXC4yB_hfp3Hy2eHWEVDhk5mU95kggJAJy_b5AClU_UAYFgAg0c5GNAueD4YKJNjU6J42hAai8iEG345JcCPDA-qY5v4zFQlrxxmZJy5yp_-J5Dh0KUNnTrW3FVM8GCylwFwlPF1M-L4jYW8O82r8kinVyE-SnQlfWlwwvGNcfmr0kz_arhP0smGrgnC_OTioYyIWA4nQYFT2eBidlCOVKlfkYxEPJqBsYtGaM5dLTnBB_zmmAyYNa-7UGk1RGw9x_UIJfl0PhXvudxKf4SM88fnrlbvIQ1nreh2CxbZnot-Qqmf0Uit_tEI-x3HKMZrPoF_asaS60PgTbmxW8E5KfNrttzFPw_-3N35x1P_Yb2NuhmGTMl-ZefiTbpyhrCgISLIO5-S4EwlistuqbKbucuWrdHk16oPs6N0XOTS7BqRUeVuRotvPuSOhy28VxL1_CPnoDV8Cp0Jtzzew'
-  },
+       headers: {
+        Authorization: `bearer ${
+          JSON.parse(localStorage.getItem("access_token")).access_token
+        }`,
+      },
   data : data
 };
         }
