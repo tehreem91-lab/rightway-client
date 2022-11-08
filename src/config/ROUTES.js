@@ -65,8 +65,7 @@ import GatePassHistory from "../Pages/GatePass/GatePassHistory";
 import GatePassInward from "../Pages/GatePass/GatePassInword";
 import Purchase from "../Pages/Purchase/Purchase";
 import BillInfo from "../Pages/Purchase/BillInfo";
-// import CloseShift from "../Pages/Production/CloseShift.js";
-
+// import CloseShift from "../Pages/Production/CloseShift.js"; 
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
