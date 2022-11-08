@@ -9,7 +9,7 @@ function Banknames({ pagePermission }) {
     Add: pagePermission.AddPermission,
     Delete: pagePermission.DelPermission,
     Edit: pagePermission.EditPermission,
-  }
+  };
   const URL = localStorage.getItem("authUser");
   const [isLoading, setIsLoading] = useState(true);
   const [updateMode, setUpdateMode] = useState(false);
@@ -155,12 +155,14 @@ function Banknames({ pagePermission }) {
           ]);
         });
 
-        setListingData([{
-          title: "Listing",
-          icon: "fa fa-list",
-          theadData,
-          tbodyData,
-        }]);
+        setListingData([
+          {
+            title: "Listing",
+            icon: "fa fa-list",
+            theadData,
+            tbodyData,
+          },
+        ]);
 
         setIsLoading(false);
       });
@@ -224,43 +226,44 @@ function Banknames({ pagePermission }) {
       });
   };
   const formSubmit = (data) => {
-    fetch(
-      URL +
-      (updateMode
-        ? "api/BankNames/PutData?id=" + initialValues.bank_id
-        : "api/BankNames/PostData"),
-      {
-        method: updateMode ? "PUT" : "POST",
-        headers: {
-          Authorization:
-            "Bearer " +
-            JSON.parse(localStorage.getItem("access_token")).access_token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          bank_name: data.bank_name,
-          branch_city: data.branch_city,
-        }),
-      }
-    ).then((response) => {
-      if (response.status === 200) {
-        toast.success(
-          "Bank Name has been " +
-          (updateMode ? "Updated" : "Added" + " successfully!")
-        );
-        clearFields();
-        fetchData();
-      } else {
-        response.json().then((json) => {
-        });
-      }
-    });
+    if (data.bank_name && data.branch_city) {
+      fetch(
+        URL +
+          (updateMode
+            ? "api/BankNames/PutData?id=" + initialValues.bank_id
+            : "api/BankNames/PostData"),
+        {
+          method: updateMode ? "PUT" : "POST",
+          headers: {
+            Authorization:
+              "Bearer " +
+              JSON.parse(localStorage.getItem("access_token")).access_token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            bank_name: data.bank_name,
+            branch_city: data.branch_city,
+          }),
+        }
+      ).then((response) => {
+        if (response.status === 200) {
+          toast.success(
+            "Bank Name has been " +
+              (updateMode ? "Updated" : "Added" + " successfully!")
+          );
+          clearFields();
+          fetchData();
+        } else {
+          response.json().then((json) => {});
+        }
+      });
+    }
   };
 
   const deleteBankName = (bank_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this city name!",
+      text: "You won't be able to revert this bank name!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -277,7 +280,7 @@ function Banknames({ pagePermission }) {
           },
         }).then((response) => {
           if (response.status === 200) {
-            toast.success("City Name has been Deleted successfully!");
+            toast.success("Bank has been Deleted successfully!");
             fetchData();
             clearFields();
           } else {

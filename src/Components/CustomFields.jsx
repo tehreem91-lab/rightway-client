@@ -4,6 +4,7 @@ import { useField } from "formik";
 import { toast } from "react-toastify";
 import { customStyles } from "./reactCustomSelectStyle";
 import { endPoint } from "../config/Config";
+import passwordValidation from "../Functions/Functions";
 
 export const MyTextInput = ({ label, ...props }) => {
   var required = props.required;
@@ -15,6 +16,13 @@ export const MyTextInput = ({ label, ...props }) => {
   delete props.changeFieldValue;
 
   const [field, meta] = useField(props);
+  const [passwordError, setPasswordError] = useState("");
+  const [isPassword, setIsPassword] = useState(true);
+  const validateAndsetValue = (e) => {
+    setFieldValue(props.name, e.target.value, false);
+    changeFieldValue(props.name, e.target.value);
+    passwordValidation(e, setPasswordError);
+  };
   return (
     <div className="field item form-group col-md-6 col-sm-6">
       <label className="col-form-label col-md-3 col-sm-3 label-align">
@@ -22,17 +30,53 @@ export const MyTextInput = ({ label, ...props }) => {
         {required && <span className="required">*</span>}
       </label>
       <div className="col-md-8 col-sm-8">
-        <input
-          className="form-control"
-          {...field}
-          {...props}
-          onChange={(e) => {
-            setFieldValue(props.name, e.target.value, false);
-            changeFieldValue(props.name, e.target.value);
-          }}
-        />
-        {meta.touched && meta.error && (
-          <span className="text-danger">{meta.error}</span>
+        {props.type === "password" ? (
+          <>
+            <input
+              className="form-control"
+              {...field}
+              {...props}
+              type={`${isPassword ? "password" : "text"}`}
+              // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              onChange={validateAndsetValue}
+            />
+            <span
+              onClick={() => setIsPassword(!isPassword)}
+              style={{
+                float: "right",
+                margin: "-24px 10px 0px 0px",
+                position: "relative",
+                zIndex: 1,
+                cursor: "pointer",
+              }}
+            >
+              <i
+                className={`${isPassword ? "fa fa-eye" : "fa fa-eye-slash"}`}
+                aria-hidden="true"
+              ></i>
+            </span>
+            {passwordError && (
+              <span className="text-danger">{passwordError}</span>
+            )}
+            {!passwordError && meta.touched && meta.error && (
+              <span className="text-danger">{meta.error} </span>
+            )}
+          </>
+        ) : (
+          <>
+            <input
+              className="form-control"
+              {...field}
+              {...props}
+              onChange={(e) => {
+                setFieldValue(props.name, e.target.value, false);
+                changeFieldValue(props.name, e.target.value);
+              }}
+            />
+            {meta.touched && meta.error && (
+              <span className="text-danger">{meta.error} </span>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -66,6 +110,8 @@ export const MySelect = ({ label, ...props }) => {
   const [choice, setChoice] = useState(props.defaultValue);
   useEffect(() => {
     setChoice(props.defaultValue);
+    setFieldValue(props.name, props.defaultValue.value, false);
+    changeFieldValue(props.name, props.defaultValue.value);
   }, [props.defaultValue]);
   return (
     <div className="field item form-group col-md-6 col-sm-6">
@@ -89,6 +135,7 @@ export const MySelect = ({ label, ...props }) => {
         {meta.touched && meta.error && (
           <span className="text-danger">{meta.error}</span>
         )}
+        {!choice && <span className="text-danger">This field is Required</span>}
       </div>
     </div>
   );

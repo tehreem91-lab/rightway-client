@@ -64,8 +64,9 @@ import JobRecord from "../Pages/Production/JobRecord";
 import GatePassHistory from "../Pages/GatePass/GatePassHistory";
 import GatePassInward from "../Pages/GatePass/GatePassInword";
 import Purchase from "../Pages/Purchase/Purchase";
-import BillInfo from "../Pages/Purchase/BillInfo";
-// import CloseShift from "../Pages/Production/CloseShift.js"; 
+import BillInfo from "../Pages/Purchase/BillInfo"; 
+import StockOpeningBalances from "../Pages/Stock/OpeningBalances";
+import StoreOpeningBalances from "../Pages/Store/OpeningBalances"; 
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
@@ -134,6 +135,9 @@ const ROUTES = {
   GatePassInword: { id: "66", element: GatePassInward, path: "GatePassInward" },
   Purchase: { id: '67', element: Purchase, path: "PurchaseAccess" },
   BillInfo: { id: '68', element: BillInfo, path: "billinfoaccess" },
+  StockOpeningBalances: { id: '69', element: StockOpeningBalances, path: "StockOpeningBalanceAccess" },
+  StoreOpeningBalances: { id: '69', element: StoreOpeningBalances, path: "StoreOpeningBalanceAccess" },
+
   // CloseShift: { id: '69', element: CloseShift, path: "CloseShiftAccess" }
 };
 export default ROUTES;

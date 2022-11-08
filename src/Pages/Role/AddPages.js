@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 const AddPages = ({ pagePermission }) => {
-  const accessToken  = localStorage.getItem("access_token");
+  const accessToken = localStorage.getItem("access_token");
   const rolePermissionTable = {
     Add: pagePermission.AddPermission,
     Delete: pagePermission.DelPermission,
@@ -246,7 +246,6 @@ const AddPages = ({ pagePermission }) => {
         // module_id: 0,
         // module_name: "",
 
-
         obj.page_id = json.page_id;
         obj.page_name = json.page_name;
         obj.page_url = json.page_link;
@@ -257,40 +256,43 @@ const AddPages = ({ pagePermission }) => {
         setUpdateMode(true);
       });
   };
-  const formSubmit = (data) => { 
-    fetch(
-      URL +
-        (updateMode
-          ? "api/Pages?page_name='Manage Pages'"
-          : "api/Pages?page_name='Manage Pages'"),
-      {
-        method: updateMode ? "PUT" : "POST",
-        headers: {
-          Authorization: "Bearer " + JSON.parse(accessToken).access_token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          page_id: data.page_id,
-          page_name: data.page_name,
-          page_link: data.page_url,
-          module_id: data.module_name,
-        }),
-      }
-    ).then((response) => {
-      console.log(response , "role"); 
-      if (response.status === 200 || response.status === 204 ) {
-        toast.success(
-         
-            (updateMode ?  "Page Name has been Updated" : "Page Name has been Added successfully!")
-        );
-        clearFields();
-        fetchData();
-      } else {
-        response.json().then((json) => {
-          // toast.error(json.Message);
-        });
-      }
-    });
+  const formSubmit = (data) => {
+    if (data.page_name && data.page_url && data.module_name) {
+      fetch(
+        URL +
+          (updateMode
+            ? "api/Pages?page_name='Manage Pages'"
+            : "api/Pages?page_name='Manage Pages'"),
+        {
+          method: updateMode ? "PUT" : "POST",
+          headers: {
+            Authorization: "Bearer " + JSON.parse(accessToken).access_token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            page_id: data.page_id,
+            page_name: data.page_name,
+            page_link: data.page_url,
+            module_id: data.module_name,
+          }),
+        }
+      ).then((response) => {
+        console.log(response, "role");
+        if (response.status === 200 || response.status === 204) {
+          toast.success(
+            updateMode
+              ? "Page Name has been Updated"
+              : "Page Name has been Added successfully!"
+          );
+          clearFields();
+          fetchData();
+        } else {
+          response.json().then((json) => {
+            // toast.error(json.Message);
+          });
+        }
+      });
+    }
   };
 
   const deleteBankName = (page_id) => {
