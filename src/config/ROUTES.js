@@ -55,7 +55,6 @@ import AvailableStore from "../Pages/Store/AvailableStore";
 import Department from "../Pages/General/Department";
 import ProductionReciept from "../Pages/Production/ProductionReciept";
 import AvailableProduction from "../Pages/Production/AvailableProduction";
-import StockLadger from "../Pages/Stock/StockReports/StockLadgerReport/StockLadger";
 import ShiftManagement from "../Pages/HRM/ShiftManagement";
 import ShiftRecordUpdate from "../Pages/HRM/ShiftRecordUpdate";
 import StockIssueShiftWise from "../Pages/Production/StockIssue/StockIssueShiftWise";
@@ -64,9 +63,22 @@ import JobRecord from "../Pages/Production/JobRecord";
 import GatePassHistory from "../Pages/GatePass/GatePassHistory";
 import GatePassInward from "../Pages/GatePass/GatePassInword";
 import Purchase from "../Pages/Purchase/Purchase";
-import BillInfo from "../Pages/Purchase/BillInfo"; 
+import BillInfo from "../Pages/Purchase/BillInfo";
 import StockOpeningBalances from "../Pages/Stock/OpeningBalances";
-import StoreOpeningBalances from "../Pages/Store/OpeningBalances"; 
+import StoreOpeningBalances from "../Pages/Store/OpeningBalances";
+import CloseShift from "../Pages/Production/CloseShift";
+import JobStatus from "../Pages/Production/JobStatus";
+import AvailableStockReport from "../Pages/Stock/StockReports/AvailableStockReport";
+import StockTransactionReport from "../Pages/Stock/StockReports/StockTransactionReport";
+import StockReport from "../Pages/Stock/StockReports/StockReport";
+import CMTStockInOut from "../Pages/Stock/StockReports/CMTStockInOut";
+import ProductionReport from "../Pages/Production/ProductionReport";
+import StockIssueHistory from "../Pages/Production/StockIssue/StockIssueHistory";
+import JobWiseStockIssueReport from "../Pages/Production/StockIssue/JobWiseStockIssueReport";
+import StoreTransactionReport from "../Pages/Store/StoreTransactionReport";
+
+
+
 // import LoanApprovalForm from "../Pages/HRM/LoanManagement/LoanApproval/LoanApproval";
 const ROUTES = {
   AddRole: { id: '1', element: AddRole, path: "RoleAccess" },
@@ -125,7 +137,6 @@ const ROUTES = {
   Department: { id: "56", element: Department, path: "DepartmentAccess" },
   AvailableProduction: { id: "57", element: AvailableProduction, path: "CreateProductTable" },
   ProductionReciept: { id: '58', element: ProductionReciept, path: "CreateProduct" },
-  StockLadger: { id: "59", element: StockLadger, path: "StockLadgerReportAccess" },
   ShiftManagement: { id: "60", element: ShiftManagement, path: "ShiftManagementAccess" },
   ShiftRecordUpdate: { id: "61", element: ShiftRecordUpdate, path: "ShiftUpdateAccess" },
   StockIssueShiftWise: { id: "62", element: StockIssueShiftWise, path: "StockIssueShiftWiseAccess" },
@@ -136,9 +147,19 @@ const ROUTES = {
   Purchase: { id: '67', element: Purchase, path: "PurchaseAccess" },
   BillInfo: { id: '68', element: BillInfo, path: "billinfoaccess" },
   StockOpeningBalances: { id: '69', element: StockOpeningBalances, path: "StockOpeningBalanceAccess" },
-  StoreOpeningBalances: { id: '69', element: StoreOpeningBalances, path: "StoreOpeningBalanceAccess" },
+  StoreOpeningBalances: { id: '70', element: StoreOpeningBalances, path: "StoreOpeningBalanceAccess" },
+  CloseShift: { id: '71', element: CloseShift, path: "CloseShiftAccess" },
+  JobStatus:{id:'72', element: JobStatus, path: "startjobstatus"},
+  AvailableStockReport: { id: '73', element:  AvailableStockReport, path: "AvailableStockAccess" },
+ StockTransactionReport:{id:"74", element:  StockTransactionReport, path:"StockTransactionReportAccess"},
+ StockReport:{id:"75", element:  StockReport, path:"StockReportAccess"},
+ CMTStockInOut:{id:"76", element:  CMTStockInOut, path:"CMTStockAccess"},
+ ProductionReport:{id:"77", element:  ProductionReport, path:"ProductionReportAccess"},
+ StockIssueHistory:{id:"78", element:   StockIssueHistory, path:"StockIssueHistoryReportAccess"},
+ JobWiseStockIssueReport:{id:"79", element:    JobWiseStockIssueReport, path:"JobStockRecordAccess"},
+ StoreTransactionReport:{id:"80", element:    StoreTransactionReport, path:"StoreTransactionReportAccess"}
 
-  // CloseShift: { id: '69', element: CloseShift, path: "CloseShiftAccess" }
+ 
 };
 export default ROUTES;
 

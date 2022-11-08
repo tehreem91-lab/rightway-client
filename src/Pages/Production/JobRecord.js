@@ -16,14 +16,16 @@ const JobRecord = () => {
   const dateToday = `${year}-${month}-${day}`
   const componentRef = useRef();
   const [data, setdata] = useState({ dateTo: dateToday, dateFrom: dateToday, Status: 'all' })
-  let status = [{ label: "All", value: "all" }, { label: "Created", value: "created" }, { label: "Process", value: "process" }, { label: "Pending", value: "pending" }, { label: "Cancel", value: "cancel" }];
+  let statusSearch = [{ label: "All", value: "all" }, { label: "Created", value: "created" }, { label: "Process", value: "process" }, { label: "Pending", value: "pending" }, { label: "Cancel", value: "cancel" }];
+  let status = [{ label: "Created", value: "created" }, { label: "Process", value: "process" }, { label: "Pending", value: "pending" }, { label: "Cancel", value: "cancel" }];
+  
   const [isValidateAllStates, setIsValidateAllStates] = useState(true)
   const [ApiRes, setApiRes] = useState()
   const showNavMenu = useSelector((state) => state.NavState);
   const [LadgerDataCSV, setLadgerDataCSV] = useState([{}]);
 
   const changeStatus = (id, value) => {
-    console.log(id, value);
+  
     var axios = require('axios');
 
     var config = {
@@ -37,11 +39,11 @@ const JobRecord = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+   
         Report()
       })
       .catch(function (error) {
-        console.log(error);
+    
       });
 
   }
@@ -83,9 +85,6 @@ const JobRecord = () => {
                 ProductName: item.product_info[0]?.product_name,
                 JobStartdate: item.job_starting_date,
                 JobEndDate: item.job_ending_date,
-                ProductionQuantity: item.product_quantity.toFixed(2),
-                AssignedPerson: item.job_incharge,
-                Description: item.job_description,
                 Status: item.job_status
 
               };
@@ -104,9 +103,6 @@ const JobRecord = () => {
     { label: "Product Name", key: "ProductName" },
     { label: "Job Start date", key: "JobStartdate" },
     { label: "Job End Date", key: "JobEndDate" },
-    { label: "Production Quantity", key: "ProductionQuantity" },
-    { label: "Assigned Person", key: "AssignedPerson" },
-    { label: "Description", key: "Description" },
     { label: "Status", key: "Status" },
 
   ];
@@ -155,8 +151,8 @@ const JobRecord = () => {
                 <label className="col-form-label col-md-4 col-sm-4 label-align">Status<span className="required">*</span></label>
                 <div className="col-md-7 col-sm-6">
                   <Select
-                    value={status.find(e => e.value == data.Status) || ''}
-                    options={status}
+                    value={statusSearch.find(e => e.value == data.Status) || ''}
+                    options={statusSearch}
 
                     onChange={(e) => { setdata({ ...data, Status: e.value }) }}
                   />
@@ -169,6 +165,10 @@ const JobRecord = () => {
                   <button className="btn bg-customBlue text-light" type="submit" onClick={Report}>Run Report</button>
                 </div>
               </div>
+            
+            </div>
+
+            {showTable &&<><div className="row">
               <div className="field form-group col-md-3 col-sm-6 col-md-offset-0 ml-auto text-right">
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
 
@@ -178,7 +178,7 @@ const JobRecord = () => {
                         return (
 
                           <button
-                            className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound" title="Print Doc"
+                            className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound" title="Print Doc"
                           >
                             <i className="fa fa-print"></i>
                           </button>
@@ -206,10 +206,7 @@ const JobRecord = () => {
                 </ul>
 
               </div>
-
-            </div>
-
-            {showTable &&
+</div>
               <div style={{ overflow: 'scroll', height: '400px' }} ref={componentRef}>    <div className="row row-1 mx-1  reportTableHead mt-2" >
 
                 <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
@@ -288,7 +285,7 @@ const JobRecord = () => {
                       </div>
                     </React.Fragment>
                   })
-                }</div>}
+                }</div></>}
 
           </div>
         </div>

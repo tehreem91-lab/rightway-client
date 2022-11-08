@@ -29,8 +29,7 @@ const BillInfo = () => {
   })
   const [data, setdata] = useState([])
   const publish = () => {
-    console.log(postData, 'hhh');
-    console.log(location.state.id);
+  
     var axios = require('axios');
     var data = JSON.stringify(postData);
 
@@ -46,7 +45,7 @@ const BillInfo = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+  
         toast.success(
           "Record has been " +
           ("Added" + " successfully!")
@@ -54,7 +53,7 @@ const BillInfo = () => {
        navigate(-1)
       })
       .catch(function (error) {
-        console.log(error);
+      
       });
 
   }
@@ -92,7 +91,7 @@ const BillInfo = () => {
     };
     axios(config)
       .then(function (response) {
-        console.log(response.data[0]);
+      
 
         setdata(response.data[0]);
         setentries(response.data[0].stock_entries)
@@ -373,7 +372,7 @@ const BillInfo = () => {
                             rec[id].amount = postData?.stock_entries[id]?.amount / item.total_stock_piece
 
                             setentries(rec)
-                            console.log(entries)
+                           
                           }}
 
 
@@ -391,7 +390,7 @@ const BillInfo = () => {
                             rec[id].amount = item.total_stock_piece * item.amount
 
                             setpostData({ ...postData, stock_entries: rec })
-                            console.log(postData)
+                    
 
                           }}
                         /></td>

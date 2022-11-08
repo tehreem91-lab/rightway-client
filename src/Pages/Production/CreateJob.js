@@ -259,11 +259,13 @@ const CreateJob = () => {
                     setmachine_ids([]);
 
                     setproIdData([])
-                    console.log(machine_ids);
+                   
+                    setTimeout( function() { window.location.reload() }, 6000);
+                   
                 })
                 .catch(function (error) {
 
-                    console.log(data);
+                  
                 })
         }
     }

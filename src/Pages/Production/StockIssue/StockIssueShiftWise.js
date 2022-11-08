@@ -10,11 +10,14 @@ import axios from 'axios';
 import { endPoint } from '../../../config/Config';
 // import Moment from 'react-moment';
 import { customStyles } from '../../../Components/reactCustomSelectStyle';
-const StockIssueShiftWise = () => {
+import { number } from 'yup';
+const StockIssueShiftWise= () => {
+ 
   const ref = useRef(null);
   const reset = () => {
   ref.current.value = "";
 };
+
     const showNavMenu = useSelector((state) => state.NavState);
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" })
 var month = new Date().toLocaleDateString(undefined, { month: "2-digit" })
@@ -31,29 +34,108 @@ const [date, setDate] = useState(dateToday );
  
    
     const [IsValidation, setIsValidation] = useState(true);
-  const [Item_name, setItem_name] = useState("");
-  const [stockUnit, setstockUnit] = useState("");
-  const [quantity, setquantity] = useState(1);
-  const [remarks, setremarks] = useState("");
-  const [weightPrice, setweightPrice] = useState("");
-
-  const [totalweight, settotalweight] = useState("");
- 
-    const [ShiftSelector, setShiftSelector] = useState("");
+  const [selectedshiftIncharge, setselectedshiftIncharge] = useState("");
+  const [Item_options, setItem_option] = useState([]);
+  
+  
+  const [Hidden, setHidden] = useState(true);
+    const [ShiftSelector, setShiftSelector] = useState([]);
     const [shiftvalue, setshiftvalue] = useState("")
+    const [isupload,setIsUpload] = useState(false);
+const [isloading, setisloading] = useState(true);
+const [Remarks, setRemarks] = useState("");
+const [Active, setActive] = useState("")
+const [reRenderState, setReRenderState] = useState(false)
 
-const [isloading, setisloading] = useState(false);
-const [stockissuedata, setstockissuedata] = useState([]);
-const [selectItem, setselectItem] = useState([]);
 
-const [stockEntries, setstockEntries] = useState([{
-  item_id:0,
-   stock_unit_name: "",
-    product_quantity: 0,
-    remarks: "",
-    weight_per_piece:0,
-     tatal_weight: 0
+const [stockissuedata, setstockissuedata] = useState([
+  {
+  shift_pass_no: "",
+  shift_inchage_name: "",
+  shift_incharge_id: 0,
+  is_post:true,
+  shift_status: "not_created",
+  }
+]);
+const [selectshift_incharge, setselectshift_incharge] = useState([]);
+const [status, setstatus] = useState("active")
+const [toggle, setToggle] = useState(null)
+const [isDisabled, setisDisabled] = useState(null)
+
+
+
+
+
+
+const [Entity , setEntity] = useState([{
+     job_number: "",
+      job_id: 0,
+      job_incharge: "",
+      product_name: "",
+      product_chart_id: 0,
+      stock_issue_status: "",
+    
+      stock_entries:[{
+          
+        product_chart_id: 0,
+        item_quantity: 0,
+        item_name: "",
+        item_code: 0,
+        item_id: 0,
+        stock_unit_name: "",
+        remarks: "",
+        weight_per_piece: 0,
+        total_weight:0
+
+
+      }]
+
 }])
+
+
+
+
+
+
+const [stock_entries, setstock_entries] = useState([{ 
+  
+        product_chart_id: 0,
+        item_quantity: 0,
+        item_name: "",
+        item_code: 0,
+        item_id: 0,
+        stock_unit_name: "",
+        remarks: "",
+        weight_per_piece: 0,
+        total_weight:0
+
+}])
+
+
+// const handleClick = (job_id) => {
+//   setstatus("close")
+//   Entity.map((val,ind) => {
+
+//         (job_id  ===  val?.job_id) && setToggle(1);
+
+   
+
+//       setToggle(toggle === 1 ? true : null)
+
+
+    
+  
+        
+    
+//   })
+       
+// };
+
+
+// const [ExtraEntity ,setExtraEntity] = useState([{
+
+  
+// }])
 
 const [fileEntity, setFileEntity] = useState([]);
 const [selectedFile, setSelectedFile] = useState("")
@@ -62,6 +144,41 @@ const [isLoader, setisLoader] = useState(true)
 
 
 // All selectors 
+
+const Issue_To_Selector = ()=>{
+  var axios = require('axios');
+  var config = {
+    method: 'get',
+    url: 'http://rightway-api.genial365.com/api/EmployeeDetails/GetActiveEmployee',
+    headers: {
+      Authorization: `bearer ${
+        JSON.parse(localStorage.getItem("access_token")).access_token
+      }`,
+    },
+  };
+  
+  axios(config)
+  .then(function (response) {
+  
+    setselectshift_incharge(
+       response.data.map((item)=>{
+          return{
+              value:item.value,
+              label:item.label
+          }
+
+          
+       })
+    
+  )
+
+  })
+  .catch(function (error) {
+    console.log(error);
+  
+  });
+
+}
 
 
 
@@ -79,12 +196,52 @@ const [isLoader, setisLoader] = useState(true)
       
       axios(config)
       .then(function (response) {
-      
+        setShiftSelector(response.data)
         setShiftSelector(
-           response.data.map((item)=>{
+          response.data.map((item)=>{
               return{
                   value:item.shift_id,
-                  label:item.shift_name
+                  label:item.shift_name,
+                 
+              }
+  
+              
+           })
+        
+      )
+    
+      // console.log(ShiftSelector)
+    
+      })
+      .catch(function (error) {
+        console.log(error);
+      
+      });
+
+    }
+
+    const Get_Item_Selector = ()=>{
+      var axios = require('axios');
+      var config = {
+        method: 'get',
+        url: 'http://rightway-api.genial365.com/api/IssueStock/GetItems',
+        headers: {
+          Authorization: `bearer ${
+            JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
+        },
+      };
+      
+      axios(config)
+      .then(function (response) {
+      // setItem_option(response.data)
+
+        setItem_option(
+           response.data.map((item)=>{
+              return{
+                  value:item.stock_account.item_chart_id,
+                  label:item.stock_account.item_name,
+                  unit:item.stock_account.stock_unit_name
               }
   
               
@@ -99,10 +256,20 @@ const [isLoader, setisLoader] = useState(true)
       });
 
     }
+
+   
+
+
    
       const Get_Stock_Issue = (e) =>
       {
         var axios = require('axios');
+        if( shiftvalue === "")
+        {
+          setIsValidation(false)
+        }else{
+
+        
        var data = '';
             setisLoader(false)
       var config = {
@@ -115,25 +282,21 @@ const [isLoader, setisLoader] = useState(true)
   },
   data : data
 };
-
+        }
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify(response.data));
-
+  console.log((response.data));
+   setisloading(false)
   setstockissuedata([response.data])
+  setEntity(response.data.entity)
+  console.log(response.data.entity)
+   console.log(stockissuedata)
   setisLoader(true)
-  setstockEntries(response.data[0].stock_entries)
-  setItem_name(response.data[0].stock_entries.map((item)=>{
-    return {
-
-      value:item.item_id,
-      label:item.item_name
-    }
-
-  })
-    
-    )
-    setquantity(response.data[0].stock_entries[0].product_quantity)
+  setHidden(true)
+  setIsValidation(true)
+ 
+ 
+ 
              
 })
 .catch(function (error) {
@@ -144,197 +307,170 @@ axios(config)
 
       }
     
-    // Extract All Data 
-    // const Get_Job_data =(e)=>{
-    //     var axios = require('axios');
-    //     var data = '';
-        
-    //     var config = {
-    //       method: 'get',
-    //       url: `http://rightway-api.genial365.com/api/IssueStock/GetProcessJobById?process_job_id=${e.value}`,
-    //       headers: {
-    //         Authorization: `bearer ${
-    //           JSON.parse(localStorage.getItem("access_token")).access_token
-    //         }`,
-    //       },
-    //       data : data
-    //     };
-        
-    //     axios(config)
-    //     .then(function (response) {
-    //       setJobdata([response.data])
-    //       setisloading(false)
-          
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-        
-    //         }
-        
-    //         const Shift_Number = ()=> {
-    //      var axios = require('axios');
-    //     var data = '';
-        
-    //     var config = {
-    //       method: 'get',
-    //       url: 'http://rightway-api.genial365.com/api/IssueStock/GetShiftNumber',
-    //       headers: {
-    //         Authorization: `bearer ${
-    //           JSON.parse(localStorage.getItem("access_token")).access_token
-    //         }`,
-    //       },
-    //       data : data
-    //     };
-        
-    //     axios(config)
-    //     .then(function (response) {
-    //       setnumber(response.data)
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-    //         }
-
-    //         const Stock_Data = (e)=>
-    //          {
-    //           var axios = require('axios');
-    //           var data = '';
-              
-    //           var config = {
-    //             method: 'get',
-    //             url:(aftersubmit ? `http://rightway-api.genial365.com/api/IssueStock/GetJobStockIssueDetails?job_id=${e.value}`:
-    //             `http://rightway-api.genial365.com/api/IssueStock/GetJobStockIssueDetails?job_id=${jobvalue.value}`),
-    //             headers: {
-    //               Authorization: `bearer ${
-    //                 JSON.parse(localStorage.getItem("access_token")).access_token
-    //               }`,
-    //             },
-    //             data : data
-    //           };
-              
-    //           axios(config)
-    //           .then(function (response) {
-    //             console.log(JSON.stringify(response.data));
-    //            setstockdata(response.data.job_stock_shift_entries)
-             
-    //           })
-              
-    //           .catch(function (error) {
-    //             console.log(error);
-    //           });
-              
-    //          } 
-
-
-            //  Submit Both form Recordes
-
-           
-            
-          
-            //  Delete Record
-
-// Post Issue Stock
-//  const POST_ISSUE_STOCK =(id) =>{
-// var axios = require('axios');
-// if(issueto === ""  )
-//   {
-//     setIsValidation(false)
-//   }
-//   else{
-// var data = JSON.stringify({
-//   "date": formDate,
-//   "issue_to": issueto.value,
-//   "remarks": remarks,
-//   "attachments": fileEntity.join(",").toString(),
-//   "quantity":quantity ,
-//   "job_shift_entries":job_shift_entries 
-// });
-// var config = {
-//   method: 'POST',
-//   url: `http://rightway-api.genial365.com/api/IssueStock/PostStockIssue?job_id=${jobvalue.value}&job_stock_shift_issues_entries_id=${id}`,
-//   headers: {
-//     Authorization: `bearer ${
-//       JSON.parse(localStorage.getItem("access_token")).access_token
-//     }`,
-//     'Content-Type': 'application/json'
-//   },
-//   data : data
-// };
-// }
-
-// axios(config)
-// .then(function (response) {
-//   console.log(JSON.stringify(response.data));
-//     console.log(data)
-//    setissueto("")
-//    setRemarks("")
-//   setFileEntity([])
-//   setquantity(0)
-
-//   setjob_shift_entries([{
-//     item_chart_id:0, quantity_credit: 0, credit: 0,average_rate: 0,stock_type:""
-//   }])
-//   setIsValidation(true)
-// })
-// .catch(function (error) {
-//   console.log(error);
-//   console.log(data)
-// });
-
-//             }
+      let removeAttchments = (i) => {
+        let newAttachValues = [...fileEntity];
+        // at position i remove 1 element
+        newAttachValues.splice(i, 1); 
+        setFileEntity(newAttachValues)
+    }
                
-            let removeFormFields = (i) => {
-              let newFormValues = [...stockEntries];
+           
+
+      const AttachmentFileHandler = (event) => {
+        setSelectedFile(event.target.files[0]);
+        setIsUpload(false)
+      };
+      const UploadFile = async (e) => {
+        setIsUpload(true)
+          const options = {
+              onUploadProgerss: (progressEvent) => {
+                  const { loaded, total } = progressEvent;
+                  let percentage = Math.floor((loaded * 100) / total)
+                  console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
+              }
+          }
+          let data = new FormData();
+          data.append("UploadedImage", selectedFile);
+          await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedFile.name}`, data, options).then(res => {
+              setFileEntity([...fileEntity, res.data])
+              if (res.status === 200) {
+                  setIsUpload(false)
+                  reset()
+              }
+          })
+      }
+
       
-               // at position i remove 1 element 
-              newFormValues.splice(i, 1);
-              setstockEntries(newFormValues)
+            function handleChange(i, id, event) {
+              const values = [...Entity];
+              values[i].stock_entries[id][event.target.name] = event.target.value;
+              setEntity(values);
+              console.log(Entity)
           }
 
-          const AttachmentFileHandler = (event) => {
-            setSelectedFile(event.target.files[0]);
-            // setIsUpload(false)
-          };
-          const UploadFile = async (e) => {
-          // setIsUpload(true)
-            const options = {
-                onUploadProgerss: (progressEvent) => {
-                    const { loaded, total } = progressEvent;
-                    let percentage = Math.floor((loaded * 100) / total)
-                    console.log(`${loaded}bytes of ${total}bytes | ${percentage}%`);
-                }
-            }
-            let data = new FormData();
-            data.append("UploadedImage", selectedFile);
-            await axios.post(`${endPoint}/api/FileUpload?file_name=${selectedFile.name}`, data, options).then(res => {
-                setFileEntity([...fileEntity, res.data])
-                if (res.status === 200) {
-                    // setIsUpload(false)
-                    reset()
-                }
-            })
-        }
-        let removeAttchments = (i) => {
-          let newAttachValues = [...fileEntity];
-          // at position i remove 1 element
-          newAttachValues.splice(i, 1); 
-          setFileEntity(newAttachValues)
-      }
-      let handleEntries = (i, e) => {
-        const list = [...stockEntries];
-      
-        setstockEntries(list);
+          const handleAdd = (i)=>{
+            setEntity(prev => {
+              console.log( prev[i],"check data");
+              const updatedSection = {
+                  ...prev[i],
+                  stock_entries: [
+                      ...prev[i].stock_entries,
+                      { 
+                        product_chart_id: 0,
+                        item_quantity: 0,
+                        item_name: "",
+                        item_code: 0,
+                        item_id: 0,
+                        stock_unit_name: "",
+                        remarks: "",
+                        weight_per_piece: 0,
+                        total_weight:0
+                      },
+                  ],
+              };
+              return prev.map((section, index) => {
+                  return index === i ? updatedSection : section;
+              });
+          })
           }
+
+
+          //handle button toggle
+         
+          const handleRemove = (i, id) => {
+            const values = [...Entity];
+            values[i].stock_entries.splice(id, 1)
+            setEntity(values)
+        }
+
+        const[arrdata,setArrdata] = useState([])
+
+        const dataInput =()=>{
+          setArrdata((id)=>{
+            return[
+              {
+                  type:"number",
+                  value:""
+              },
+            
+            ]
+          });
+        }
+
+
+ const Submit_Issue_Stock =(e)=>{
+
+ var axios = require('axios');
+ if(selectedshiftIncharge === "" || Entity.stock_entries === "")
+ {
+    setIsValidation(false)
+ }else{
+var data = JSON.stringify({
+  "shift_incharge_id": selectedshiftIncharge.value,
+  "remarks": Remarks,
+  "attachments": fileEntity.join(",").toString(),
+  "entity": [
+    Entity.map((main ,i)=>{
+          return{
+            "job_id": main.job_id,
+            "job_stock_status": main.stock_issue_status,
+            "remarks": Remarks,
+            "stock_entries":main?.stock_entries?.map((data,id)=>{
+              return{
+                "item_id":data.item_id,
+                "item_quantity_issued":data.item_quantity
+              
+              }
+            }),
+          }
+
+    })
+
+      
+     
+    
+     
+    
+  ]
+});
+
+var config = {
+  method: 'post',
+  url: `http://rightway-api.genial365.com/api/IssueStock/PostIssueStockRecord?date=${date}&shift_id=${e}`,
+  headers: {
+    Authorization: `bearer ${
+      JSON.parse(localStorage.getItem("access_token")).access_token
+    }`,
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+ }
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+  console.log(data)
+  toast.success("Your Response has been added successfully")
+  setselectedshiftIncharge("")
+  setstockissuedata([])
+  setEntity([])
+  setFileEntity([])
+  setHidden(false)
+  setRemarks("")
+})
+.catch(function (error) {
+  console.log(error);
+});
+
+        }
+
+     
 useEffect(() => {
  
-    // Get_Job_Selector()
      Get_Shift_Selector()
-    //  Get_Stock_Issue()
-    // Shift_Number()
-    // Issue_To_Selector()
+     Get_Item_Selector()
+     Issue_To_Selector()
   
-    // GetItems()
  }, []);
  
     return (
@@ -355,11 +491,11 @@ useEffect(() => {
                          <div className="x_panel  px-0 ">
                              <div className="x_content ">
                                  <span className="section  px-2 ">
-                                     <i className="fa fa-edit pl-2"></i>&nbsp;Stock Issue
-                                 </span>
+                                     <i className="fa fa-edit pl-2"></i>&nbsp; Issue Stock
+                                  </span>
                                  <div className="row">
                                  <div className=" col-md-12 col-sm-12">
-                                         <label className="col-form-label col-md-2 col-sm-2 text-right">
+                                         <label className="col-form-label col-md-2 col-sm-2 label-align">
                                              {" "}
                                               Date <span className="required">*</span>
                                          </label>
@@ -378,7 +514,7 @@ useEffect(() => {
    
                                              {/* // its show fiscal year initial value */}
                                          </div>
-                                     <label className="col-form-label col-md-2 col-sm-2 text-right ">
+                                     <label className="col-form-label col-md-2 col-sm-2 label-align ">
                                          {" "}
                                          Select Shift <span className="required">*</span>
                                      </label>
@@ -393,24 +529,29 @@ useEffect(() => {
                                               setshiftvalue(e)
                                             }}
                                          />
-                                        
+                                         {!IsValidation && (shiftvalue  === "") && <span className="text-danger">First Select this </span>} 
+                                     </div>
+                                     <div className='col-md-2'>
+                                     <button
+                                     className="btn btn-primary "
+                                     type="submit"
+                                     onClick={()=>{ Get_Stock_Issue(shiftvalue.value)
+                                    
+                                    
+                                    }}
+                                     
+                                          >
+                                      Show Report
+                                      {!isLoader && 
+                                        (
+                                         <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                                        )
+                                     }
+                                      </button>
                                      </div>
                                  </div>
                                  </div>
-                                 <div className="col-md-12 text-right ">
-                                 <button
-                                 className="btn btn-primary my-2"
-                                 type="submit"
-                                 onClick={()=> Get_Stock_Issue(shiftvalue.value)}
-                                      >
-                                  Show Report
-                                  {!isLoader && 
-                                    (
-                                     <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
-                                    )
-                                 }
-                                  </button>
-                                 </div>
+                               
                                
                                  <div className="col-md-12 text-right x_footer"></div>
                                  {/*<div className="col-md-12 text-right x_footer">
@@ -423,176 +564,554 @@ useEffect(() => {
 
               {!isloading && (
                 <>
-              
-                { stockissuedata.map((item,i)=>{
+                {stockissuedata.map((item,index)=>{
                   return(
-                  
                     <>
                     <div className="row">
                     <div className="field item form-group col-md-12 col-sm-12">
+                    <label className="col-form-label col-md-2 col-sm-2 label-align">
+                    {" "}
+                     Shift Pass no: 
+                     </label>
                      <div className="col-md-3 col-sm-3">
                       <input
                       className="form-control"
-                      value={item.job_number}
+                      value={item.shift_pass_no}
                        disabled
                       styles={customStyles}
+                      onChange={((e) => {
+
+                        const list = [...stockissuedata];
+                        list[index].item.shift_pass_no = e.value;
+                        setstockissuedata(list);
+                    })
+
+                    }
+                     
                      
                      
                                 />
-                     {/* // its show fiscal year initial value */}
                         </div>
+                        <label className="col-form-label col-md-2 col-sm-2 label-align">
+                        {" "}
+                         Shift Incharge: 
+                         </label>
                         <div className="col-md-3 col-sm-3">
-                        <input
-                        className="form-control"
-                        value={item.product_name}
+                      
+                         
+                        <Select
+                        options={selectshift_incharge}
+                        value={selectedshiftIncharge}
+                        // value={selectshift_incharge.find(e => e.value === stockissuedata[index].shift_incharge_id) || ''}
                         styles={customStyles}
-                        disabled
+                        onChange={((e) => {
+                         
+                          setselectedshiftIncharge(e)
+                          const list = [...stockissuedata];
+                          list[index].shift_incharge_id = e.value;
+                          list[index].shift_inchage_name = e.label;
+                          setstockissuedata(list);
+                        
+                          })
+  
+                      }
                        
                     />
+                    {!IsValidation && (selectedshiftIncharge === "") && <span className="text-danger">First Select this </span>}
                           
                         </div>
-                        <div className="col-md-3 col-sm-3"></div>
-                        <div className="col-md-3 col-sm-3 text-right">
-                      
-                          
-                        </div>
-                    </div>
-                    </div>
-                    <div className="col-md-12 mt-3">
-                    <table className="table table-striped jambo_table bulk_action ">
-                          <thead >
-                            <tr className="headings">
-                              <th className="column-title   text-center" width="18%">Item Name</th>
-                              <th className="column-title   text-center" width="16%">Stock Unit</th>
-                              <th className="column-title   text-center" width="15%">Quantity</th>
-                             
-                              <th className="column-title   text-center" width="13%">Remarks</th>
-                              <th className="column-title   text-center" width="18%">Weight Price</th>
-                              <th className="column-title   text-center" width="18%">Total Weight </th>
-                              <th className="column-title   text-center" width="2%">&nbsp;</th>
-                            </tr>
-                          </thead>
-        
-                          <tbody>
-                          {stockEntries?.map((data, id)=>{
-                            return(
-                              <>
-                              <tr>
-                          <td>
-                          <Select
-                          isSearchable={true}
-                          placeholder={"Select Item"}
-                           styles={customStyles}
-                           value={Item_name.find(e => e.value == data.item_id) || ''}
-                           onChange={(e) => { handleEntries(id, e) }}
-                      />  
-                     
-                          </td>
-                          <td>
-                          <input
-                          type='text'
-                           className="form-control"
-                           value={stockEntries.stock_unit_name}
-                           disabled
-                           onChange={(e) => { handleEntries(id, e) }}
-                          
-                        
-                          />
-                          
-                          </td>
-                          <td>
-                          <input
-                          type='number'
-                          min="0"
-                           className="form-control"
-                           value={stockEntries.product_quantity}
-                          onChange={(e) => {
-                            const list = [...stockEntries];
-                            list[id].product_quantity = e.target.value
-                            setstockEntries(list);
-                          }}/>
-                        
-                          </td>
-                          <td>
-                          <input
-                          type='text'
-                           className="form-control"
-                           value={stockEntries.remarks}
-                           onChange={(e) => { handleEntries(id, e) }}
-                           />
-                          </td>
-                          <td >
-                          <input
-                          type='number'
-                          min="0"
-                           className="form-control"
-                           disabled
-                           value={stockEntries.weight_per_piece}
-                           onChange={(e) => {
-                             const list = [...stockEntries];
-                             list[id].weight_per_piece = e.target.value
-                             setstockEntries(list);
-                           }}
-                          />
-                          </td>
-                          <td >
-                          <input
-                          type='number'
-                          min="0"
-                           className="form-control"
-                           value={stockEntries[id].tatal_weight}
-                           onChange={(e) => {
-                             const list = [...stockEntries];
-                             list[id].tatal_weight = e.target.value
-                             setstockEntries(list);
-                           }}
-                          />
-                          </td>
-                          <td>
-                          <i class="fa fa-times pt-2 text-danger font-size-18" aria-hidden="true" onClick={()=>removeFormFields(i)}  ></i>
-                          </td>
-                         
-                          
-                          
-                          </tr>
-                          
-                              </>
-                            )
-                          })}
-                         <tr>
-                         <td>
-                         Total Item :
-                         </td>
-                         <td></td>
-                         <td>Total quantity:</td>
-                         <td></td>
-                         <td>Total:</td>
-                         <td>Total Weight:</td>
-                         <td></td>
                        
-                         </tr>
-                          </tbody>
-                          </table>
-                          <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}}
-                          onClick={(i)=> {setstockEntries([...stockEntries, {
+                    </div>
+                    </div>
+                  
+                    {Entity?.map((item,i)=>{
+                      return(
+                      
+                        <>
+                        <div key ={i}>
+                        <div className="row mt-2">
+                        <div className="field item form-group col-md-12 col-sm-12">
+                        {/*...<label className="col-form-label col-md-2 col-sm-2 label-align">
+                        {" "}
+                         Job Number: 
+                         </label>
+                      ...*/}
+                         <div className="col-md-3 col-sm-3 mt-3 ">
+                          <input
+                          className="form-control mt-3"
+                          value={item?.job_number}
+                           disabled
+                          styles={customStyles}
+                          onChange={((e) => {
 
-                            item_id:0, stock_unit_name: "", product_quantity: 0,remarks: "",weight_per_piece:0
-                          }])}}
+                            const list = [...Entity];
+                            list[i].job_number = e.value;
+                            setEntity(list);
+                            console.log( list[i].job_number)
+                        })}
+                         />
+                            </div>
+                            {/*...
+                            <label className="col-form-label col-md-2 col-sm-2 label-align">
+                            {" "}
+                             Product Name: 
+                             </label>
+                            ...*/}
+                            <div className="col-md-3 col-sm-3  text-left mt-3">
+                            <input
+                            className="form-control mt-3"
+                            value={item?.product_name}
+                            styles={customStyles}
+                            disabled
+                            onChange={((e) => {
+
+                              const list = [...Entity];
+                              list[i].product_name = e.value;
+                              setEntity(list);
+                          })
+      
+                          }
+                           
+                           
+                        />
+                              
+                            </div>
+                            <div className="col-md-4 col-sm-3 mt-3"></div>
+                            <div className="col-md-2 col-sm-3 text-right mt-3">
+                           {/*...
+                           <input
+                            className="form-control mt-3"
+                            value={item?.stock_issue_status}
+                            onChange={((e) => {
+
+                             const list = [...Entity];
+                             list[i].stock_issue_status = e.target.value;
+                             setEntity(list);
+                         })
+     
+                         }
+                             />
+                          ...*/}
+
+
                           
-                          >
-                          Add more
-                          </button>
-                          </div>
+                       
+                            <button className="btn-sm bg-danger btn  mt-3 text-white "
+                            onClick={()=>{
+                              let a = Entity
+                              if( a[i].stock_issue_status ==="close"){
+                               a[i].stock_issue_status="active"
+                              }
+                              else{
+                                a[i].stock_issue_status="close"
+                              }
+                              console.log(a[i] ,i)
+          
+                               setEntity(a)
+                               setReRenderState(!reRenderState)
+          
+                              
+                            }}
+                            >
+                          {item.stock_issue_status}
+                            </button>
+                          
+                    
+                            
+                            </div>
+                           
+                        </div>
+
+                        </div>
+                        <div  >
+                        <div className="col-md-12  "   >
+                        <table className="table table-striped jambo_table bulk_action ">
+                              <thead >
+                                <tr className="headings">
+                                  <th className="column-title   text-center" width="18%">Item Name <span className="text-danger" >*</span>
+                                  
+                                  </th>
+                                  <th className="column-title   text-center" width="16%">Stock Unit  <span className="text-danger" >*</span> </th>
+                                  <th className="column-title   text-center" width="15%">Quantity   <span className="text-danger" >*</span></th>
+                                  <th className="column-title   text-center" width="18%">Weight Price  <span className="text-danger" >*</span></th>
+                                  <th className="column-title   text-center" width="18%">Total Weight  <span className="text-danger" >*</span> </th>
+                                  <th className="column-title   text-center" width="13%">Remarks</th>
+
+                                  <th className="column-title   text-center" width="2%">&nbsp;</th>
+                                </tr>
+                              </thead>
+            
+                              <tbody>
+                              {/*Extra row .....
+                              {stock_entries.map((Val)=>{
+                                return(
+                                  <>
+                                  <tr>
+                                  <td>
+                                 
+                                    <Select
+                                    isSearchable={true}
+                                    disabled={false}
+                                    // isDisabled = {true}
+                                    placeholder={"Select Item"}
+                                     styles={customStyles}
+                                     options={Item_options}
+                                     value ={Item_options.find(e => e.value === Val.item_id)}
+                                     onChange={(e) => { setstock_entries({ ...stock_entries, stock_entries: e.target.value }) }}
+                                   
+                                     />  
+                                    </td>
+                                    <td>
+                                    <input
+                                    type='text'
+                                     className="form-control"
+                                     disabled
+                                  
+                                    
+                                    />
+                                   
+                                    </td>
+                                    <td>
+                                    <input
+                                    type='number'
+                                    // disabled={toggle===null?"true":"false"}
+                                    // disabled={toggle === 1 ? "true":"false"}
+                                 disabled = {toggle}
+                                    min="0"
+                                    // name="item_quantity"
+                                     className="form-control"
+                                   
+                                     />
+                                    </td>
+                                  
+                                    <td >
+                                    <input
+                                    type='number'
+                                    disabled= {false}
+    
+                                    min="0"
+                                    // name="weight_per_piece"
+                                     className="form-control"
+                                   
+                                   
+                                   
+                                    />
+                                    </td>
+                                    <td >
+                                    <input
+                                    type='number'
+                                    disabled= {false}
+    
+                                    min="0"
+                                     className="form-control"
+                                   
+                                   
+                                    />
+                                    </td>
+                                    <td>
+                                    <input
+                                    type='text'
+                                   disabled= {false}
+                                    name="remarks"
+                                     className="form-control"
+                                  
+                                     />
+                                    </td>
+                                    <td>
+                                    <i class="fa fa-times pt-2 text-danger font-size-18" aria-hidden="true" onClick={()=>handleRemove()}  ></i>
+                                    </td>
+                                  
+                                  </tr> 
+                                  
+                                  </>
+                                )
+                              })}
+                             
+                               */}
+                                {item?.stock_entries?.map((data, id)=>{
+                                  return(
+                                    <>
+                                <tr key={id}>
+                                <td>
+                                <Select
+                                isSearchable={true}
+                                disabled={false}
+                                // isDisabled = {true}
+                                placeholder={"Select Item"}
+                                 styles={customStyles}
+                                 value ={Item_options.find(e => e.value === data.item_id)}
+                                 options={Item_options}
+                                //  onChange={event => handleChange(i, id, event)}
+                                 onChange={(e)=>{
+                                 
+                                  const values = [...Entity];
+                                  values[i].stock_entries[id].item_id = e.value;
+                                  values[i].stock_entries[id].item_name = e.label;
+                                  values[i].stock_entries[id].stock_unit_name = e.unit;
+
+                                  setEntity(values)
+
+                                  //set stock unit
+                                  const value = [...Entity];
+                                  value[i].stock_entries[id].stock_unit_name= e.unit;
+                                  setEntity(value);
+
+                                  // set job id
+                                 const list = [...Entity];
+                                 list[i].job_id = item?.job_id;
+                                 setEntity(list);
+                         
+                              }}
+                                 />  
+                                 {!IsValidation && (Entity[i].stock_entries[id].item_id  === 0) && <span className="text-danger">First Select this </span>}
+                                </td>
+                                <td>
+                                <input
+                                type='text'
+                                 className="form-control"
+                                 disabled
+                                value = {data.stock_unit_name}
+                                onChange={(e)=>{
+                                 
+                                  const values = [...Entity];
+                                  values[i].stock_entries[id].stock_unit_name= e.target.value;
+                                  setEntity(values);
+                                  console.log(Entity)
+                                  console.log("gggg")
+                              }}
+                                
+                                />
+                               
+                                </td>
+                                <td>
+                                <input
+                                type='number'
+                                // disabled={toggle===null?"true":"false"}
+                                // disabled={toggle === 1 ? "true":"false"}
+                             disabled = {toggle}
+                                min="0"
+                                // name="item_quantity"
+                                 className="form-control"
+                                 value={data.item_quantity}
+                                //  onChange={event => handleChange(i, id, event)}
+                                onChange={(e)=>{
+                                 
+                                    const values = [...Entity];
+                                    values[i].stock_entries[id].item_quantity = Number(e.target.value);
+                                    values[i].stock_entries[id].total_weight = values[i].stock_entries[id].item_quantity *values[i].stock_entries[id].weight_per_piece
+                                    setEntity(values);
+                                    console.log(Entity)
+                                }}
+                                 />
+                                 {!IsValidation && (Entity[i].stock_entries[id].item_quantity  === 0) && <span className="text-danger">First Select this </span>}
+                                </td>
+                              
+                                <td >
+                                <input
+                                type='number'
+                                disabled= {false}
+
+                                min="0"
+                                // name="weight_per_piece"
+                                 className="form-control"
+                                 value={data.weight_per_piece}
+                                //  onChange={event => handleChange(i, id, event)}
+                                 onChange={(e)=>{
+
+                                  const values = [...Entity];
+                                  values[i].stock_entries[id].weight_per_piece = Number(e.target.value) ;
+                                  values[i].stock_entries[id].total_weight = values[i].stock_entries[id].weight_per_piece *values[i].stock_entries[id].item_quantity
+                                  
+                                  setEntity(values);
+                                 }}
+                               
+                               
+                                />
+                                {!IsValidation && (Entity[i].stock_entries[id].weight_per_piece === 0) && <span className="text-danger">First Select this </span>}
+                                </td>
+                                <td >
+                                <input
+                                type='number'
+                                disabled= {false}
+
+                                min="0"
+                                 className="form-control"
+                                 value={data.item_quantity* data.weight_per_piece}
+                                //  value={item[i]?.stock_entries[id]?.Item_quantity * item[i]?.stock_entries[id]?.weight_per_piece}
+                                //  onChange={event => handleChange(i, id, event)}
+                                onchange={(e)=>{
+
+                                  const values = [...Entity];
+                                  values[i].stock_entries[id].total_weight = Number(e.target.value);
+                                  
+                                  setEntity(values);
+                                 }}
+                               
+                                />
+                                </td>
+                                <td>
+                                <input
+                                type='text'
+                               disabled= {false}
+                                name="remarks"
+                                 className="form-control"
+                                 value={data.remarks}
+                                 onChange={event => handleChange(i, id, event)}
+                                 />
+                                </td>
+                                <td>
+                                <i class="fa fa-times pt-2 text-danger font-size-18" aria-hidden="true" onClick={()=>handleRemove(i,id)}  ></i>
+                                </td>
+                               
+                                
+                                
+                               </tr>
+                                
+                                    </>
+                                  )
+                                })}
+                                
+                                
+                               
+                          
+                             <tr>
+                             <td>
+                             </td>
+                             <td></td>
+                             <td><b>Total quantity: </b> {item?.stock_entries?.map(data => data.item_quantity).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) } </td>
+                             <td><b>Total Weight Price:</b> {item?.stock_entries?.map(data => data.weight_per_piece).reduce((prev, curr) => Number(prev) + Number(curr), 0)} </td>
+                             <td><b>Total Weight :</b> {item?.stock_entries?.map(data => data.total_weight).reduce((prev, curr) => Number(prev) + Number(curr), 0)}</td>
+                             <td> </td>
+
+                             <td></td>
+                           
+                             </tr>
+                              </tbody>
+                              </table>
+                             
+                              </div>
+                              </div>
+                              </div>
+                              <button className='btn  mx-2 text-white text-right my-1' style={{backgroundColor:"#f79c74"}}
+                              onClick={() =>  handleAdd(i)}
+                               
+                               
+                             
+   
+                             
+                             >
+                             Add Line
+                             </button>
+
+                        
+                        </>
+                      )
+                    })}
+                    
+                  {Hidden ? (
+                    <>
+                      <div className="row mt-3">
+                   <div className="field item form-group col-md-12 col-sm-12">
+                    <label className="col-form-label col-md-1 col-sm-1 label-align">
+                    {" "}
+                      Attachments: 
+                       </label>
+                      <div className="col-md-3 col-sm-3 text-left ">
+                      <input
+                        className="form-control"
+                           type="file"
+                           ref={ref}
+                            styles={customStyles}
+                          onChange={(e) => {
+                          AttachmentFileHandler(e)
+                             }}
+                         />
+                        </div>
+                       <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+                      {
+                       isupload ? <div className="spinner-border  text-customOrange " role="status">
+                           <span className="sr-only">Loading...</span>
+                           </div> : <button
+                           disabled={ref?.current?.value === "" ? true : false}
+                           className="btn btn-sm btn-outline-success " onClick={() => UploadFile()} type="button"><i className="fa fa-upload"></i></button>
+                           }
+                         </div> 
+                   
+                     <label className="col-form-label col-md-1 col-sm-1 label-align  ">
+                     {" "}
+                      Remarks: 
+                      </label>
+                     <div className="col-md-3 col-sm-3 text-left  ">
+                     <input
+                     className="form-control"
+                     styles={customStyles}
+                     value={Remarks}
+                     onChange={(e)=>{setRemarks(e.target.value)}}
+                   
+                   
+                    
+                    
+                 />
+                       
+                     </div>
+                   
+                     
+                    
+                 </div>
+                 </div>  
+                 
+                 <div className="row mt-2">
+                {fileEntity.length !== 0 && 
+                <div className="field item form-group col-md-6 col-sm-6 ">
+               <label className="col-form-label col-md-3 col-sm-3 label-align">
+                {" "}
+                  Selected Attachments: 
+                 </label>
+                 <div className="col-md-8 col-sm-8  ">
+                    {fileEntity.map((each_file, index) => {
+                return <button className="btn btn-sm  bg-info  text-light"
+                  >
+                 <a href={`${endPoint + each_file}`} target="_blank" rel="noopener noreferrer" className='text-light'>
+                 {((each_file.split("_"))[0]).slice(15)} {index + 1}</a>
+                  <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
+                     onClick={() => removeAttchments(index)}
+                     ></i>
+                 </button>
+                 })
+
+                    }
+    
+                 </div>
+                  </div>}
+                      </div>
                     
                     </>
-                  )
-                })}
-               
-               
-                  
-    
+                  ):null}  
+                
                  
-    
+                  {stockissuedata.is_post === true && (
+                  
+                    <div className="col-md-12   x_footer mt-4 text-right"> 
+               
+                    <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={(e)=>Submit_Issue_Stock(shiftvalue.value)} > Update </button>
+                    </div>
+                    )
+                  } 
+               
+                  {Hidden ?(
+                  
+                 <>
+                 <div className="col-md-12   x_footer mt-4 text-right"> 
+               
+                 <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={(e)=>Submit_Issue_Stock(shiftvalue.value)} > Issue Stock </button>
+                 </div>
+                
+                 </>
+
+               ):null}
+               </>
+               )
+             })}
                 </>
                 )}
             </div>

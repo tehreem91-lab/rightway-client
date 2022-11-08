@@ -29,7 +29,7 @@ const ShiftRecordUpdate = () => {
         var axios = require('axios');
         await axios(config)
             .then(function (response) {
-                console.log(shift_records_entries);
+              
                 toast.success(
                     "Shift has been " +
                     ("Updated" + " successfully!")
@@ -37,7 +37,7 @@ const ShiftRecordUpdate = () => {
                 fetchAllData();
             })
             .catch(function (error) {
-                // console.log(shift_records_entries);
+             
             });
 
     };
@@ -56,7 +56,7 @@ const ShiftRecordUpdate = () => {
             .then(function (response) {
                 if (response.status === 200) {
                     setIsLoading(false);
-                    // console.log(response.data);
+                   
                     setList(response.data);
 
 

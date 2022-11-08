@@ -343,7 +343,7 @@ const GatePassInward = () => {
             weight_per_piece: 0,
             total_weight: 0
           }])
-          console.log(data);
+        
 
 
         })
@@ -426,7 +426,7 @@ const GatePassInward = () => {
     axios(config)
       .then(function (response) {
 
-        console.log(response.data);
+      
         setGatePass({
           party_chart_id: response.data.party_chart_id,
           date: response.data.voucher_date.slice(0, 10),
@@ -451,10 +451,10 @@ const GatePassInward = () => {
             label: data.pair_unit_id?.packet_title,
             value: data.pair_unit_id?.stock_packet_id,
           }]
-          console.log(packetOptions);
+        
           let item = packetsDetails;
           item[id] = packetOptions
-          console.log(item[id],'options'+id)
+         
           setpacketsDetails(item)          
           let record =stockEntries
           record[id]={
@@ -466,7 +466,7 @@ const GatePassInward = () => {
               total_weight: data.total_weight,
               stock_chart_id: data.stock_chart_id
             }
-            console.log(record[id],'recrd'+id);
+       
             setstockEntries(record)
          
             
@@ -476,12 +476,12 @@ const GatePassInward = () => {
         
         )
       
-        console.log(stockEntries,packetsDetails,'ajh');
+      
        
       })
 
       .catch(function (error) {
-console.log(error);
+
       })
 
 
@@ -560,7 +560,7 @@ console.log(error);
       setPartyInfo(PartyApi.filter(data => data.chart_id == GatePass.party_chart_id));
 
     }
-    console.log(stockEntries);
+
   }, [GatePass])
 
   return (
@@ -796,8 +796,8 @@ console.log(error);
                             value={stockEntries[id].total_stock_pieces}
                             onChange={(e) => {
                               const list = [...stockEntries];
-                              list[id].total_stock_pieces = Number(e.target.value);
-                              list[id].total_weight = stockEntries[id].total_stock_pieces * stockEntries[id].weight_per_piece * stockEntries[id].pair_unit_id
+                              list[id].total_stock_pieces = Number(e.target.value) ;
+                              list[id].total_weight = Number(e.target.value) * stockEntries[id].weight_per_piece * stockEntries[id].pair_unit_id
                               setstockEntries(list);
                             }}
                           />
@@ -813,17 +813,18 @@ console.log(error);
                             list[id].weight_per_piece = Number(e.target.value)
                             list[id].total_weight = stockEntries[id].total_stock_pieces * stockEntries[id].weight_per_piece * stockEntries[id].pair_unit_id
 
-                            console.log(stockEntries)
+                      
                             setstockEntries(list);
                           }} />{!isValidateAllStates && (stockEntries[id].weight_per_piece == "") && <span className="text-danger">First Select this </span>}</td>
-                        <td><input className="form-control" type="number" disabled
-                          value={stockEntries[id].total_stock_pieces * stockEntries[id].weight_per_piece * stockEntries[id].pair_unit_id}
+                        <td><input className="form-control" type="number"
+                          value={stockEntries[id].total_weight}
                           onChange={(e) => {
 
                             const list = [...stockEntries];
-                            list[id].total_weight = e.target.value;
+                            list[id].total_weight = Number(e.target.value);
+                            list[id].total_stock_pieces=Number(e.target.value)/(list[id].weight_per_piece*list[id].pair_unit_id)
                             setstockEntries(list);
-                            console.log(stockEntries)
+                       
 
                           }}
                         />
@@ -840,9 +841,9 @@ console.log(error);
                     )}
                     <tr><td></td>
                       <td></td>
-                      <td><b>Total Pieces: {stockEntries?.map(data => data.total_stock_pieces).reduce((prev, curr) => Number(prev) + Number(curr), 0)}</b></td>
+                      <td><b>Total Pieces: {stockEntries?.map(data => data.total_stock_pieces).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)}</b></td>
                       <td></td>
-                      <td><b>Total Weight:{stockEntries?.map(data => data.total_weight).reduce((prev, curr) => Number(prev) + Number(curr), 0)}</b></td></tr>
+                      <td><b>Total Weight:{stockEntries?.map(data => data.total_weight).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)}</b></td></tr>
                   </tbody>
                 </table>
 

@@ -47,7 +47,7 @@ const Purchase = () => {
         }
         setIsValidateOK(ValidationOk)
         if (ValidationOk === true) {
-console.log('hello');
+
             var config = {
                 method: 'get',
                 // http://rightway-api.genial365.com/api/PurchaseVoucher/PurchaseHistory?dateFrom=09-09-2022&dateTo=02-10-2029&purchase_status=pending
@@ -59,7 +59,7 @@ console.log('hello');
 
             axios(config)
                 .then(function (response) {
-                    console.log(response.data);
+                 
                     setisShowInv(true)
                     setGatepassInv(response.data)
                     setSearchInv(response.data)

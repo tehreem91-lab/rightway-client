@@ -16,7 +16,7 @@ const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable, }, ref
                     {" "}
 
                   
-                    <Tab eventKey="profile" title="Receiveable" >
+                    <Tab eventKey="profile" title="Receivable" >
                         <div ref={ref} style={{ overflow: 'scroll' ,height: '400px'}}>
                         <div className="displayPropertyForPrint">
                         <h2 className="text-dark text-center font-weight-bold ">

@@ -466,6 +466,20 @@ axios(config)
 
     }
 
+    const cancel = ()=>{
+      setAccountvalue("") 
+      setStockValue("")
+      setConsumptionValue("")
+       setUnit("")
+       setDescription("")
+       setOpening_quantity("")
+       setQuantity_grams("")
+       setpackets_detail([ {packet_name: "", pair_base_unit: ""}])
+       setFileEntity([])
+       Get_Stockaccount()
+
+    }
+
 
     useEffect(() => {
         
@@ -613,7 +627,7 @@ axios(config)
 
      <div className="row px-4 mt-2">
      <div className="col-md-6 col-sm-6">
-    <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Attactments <span className="required">*</span></label>
+    <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Attachments <span className="required">*</span></label>
     <div className='col-md-8'>
     <input 
     ref={ref}
@@ -810,18 +824,32 @@ value={element.packet_name} onChange={e => handleChange(index, e)}
 <div className="row px-2 ">
  <div className="col-md-12 d-flex justify-content-between x_footer mt-4"> 
  <button className='btn  ms-4 text-white text-right' style={{backgroundColor:"#f79c74"}} onClick={() => addFormFields()}> Add more </button>
+
  {update ?
 
 (
-<button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  
+  <>
+  <div>
+  <button className='btn  ms-4 text-white text-right bg-customBlue '  onClick={() =>cancel()}> Cancel </button>
+  <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  
 onClick={() =>{UpdateStock(stockid)
   // navigation(-1)
 
 } }> Update </button>
+  </div>
+  </>
+
 ):
 
 (
+<>
+<div>
+<button className='btn  ms-4 text-white text-right bg-customBlue '  onClick={() =>cancel()}> Cancel </button>
+
 <button className='btn  ms-4 text-white text-right ' style={{backgroundColor:"#f79c74"}}  onClick={() =>UploadStock()}> Submit </button>
+</div>
+
+</>
 
 )
 

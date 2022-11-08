@@ -60,7 +60,7 @@ const PayableReceivableReport = () => {
                         className={`container-fluid right_col  page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                    <CustomInnerHeader moduleName="Payable Recievable Report" isShowSelector={true} />
+                    <CustomInnerHeader moduleName="Payable Receivable Report" isShowSelector={true} />
                     </div>
                     <div
                         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "

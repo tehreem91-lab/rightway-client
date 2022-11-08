@@ -73,7 +73,7 @@ const GatePassHistory = () => {
 
             axios(config)
                 .then(function (response) {
-                    console.log(response.data);
+              
                     setisShowInv(true)
                     setGatepassInv(response.data)
                     setSearchInv(response.data)

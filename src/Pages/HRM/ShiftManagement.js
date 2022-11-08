@@ -45,7 +45,7 @@ const ShiftManagement = () => {
 
 
             <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-                <CustomInnerHeader moduleName={"HR Management"} isShowSelector={true} />
+                <CustomInnerHeader moduleName={"Shift Management"} isShowSelector={true} />
             </div>
 
             <div role="main" className={`right_col  h-100  ${showNavMenu === false ?

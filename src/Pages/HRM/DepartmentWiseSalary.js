@@ -404,7 +404,7 @@ const DepartmentWiseSalary = () => {
      return(
          <>
          <div className="row   reportTableBody bottom-border-2  ">
-         <div className="col-md-2   col-2  right-border-2   py-1 px-2">
+         <div className="col-md-2   col-2  right-border-2 left-border-2  py-1 px-2">
          {item.employee_name}
          </div>
          <div className="col-md-2 col-2    font-size-12 right-border-2    py-1 px-2 ">
@@ -429,15 +429,46 @@ const DepartmentWiseSalary = () => {
      <div className="col-md-1 col-1   font-size-12  right-border-2  text-right   px-0 p-2 ">
       {item.total_deduction}
      </div>
-     <div className="col-md-1  col-1   font-size-12  text-right   px-0 p-2">
+     <div className="col-md-1  col-1   font-size-12 right-border-2  text-right   px-0 p-2">
      {item.net_salary}
      </div>
      </div>
+    {/*... total... */}
+   
+
     </>
        )
      
      
      })}
+
+     <div className="row   reportTableBody bottom-border-2  ">
+     <div className="col-md-2   col-2  left-border-2   py-1 px-2">
+     </div>
+     <div className="col-md-2 col-2    font-size-12     p-1">
+     </div>
+  <div className="col-md-1 col-1   font-size-12  text-left  p-1  ">
+ </div>
+  <div className="col-md-1   col-1 text-right  font-size-12  right-border-2   p-1 ">
+  <b>Total: </b>
+  </div>
+  <div className="col-md-1   col-1   font-size-12  right-border-2 text-right  py-1 px-2">
+  {department_salary.map(data => data.over_time).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+  </div>
+  <div className="col-md-1 col-1   font-size-12  right-border-2  text-right  p-1 px-2 ">
+  {department_salary.map(data => data.total_working_hour).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+  </div>
+ 
+ <div className="col-md-2  col-2   font-size-12  right-border-2 text-right    p-1">
+ {department_salary.map(data => data.pm_salary).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+ </div>
+ <div className="col-md-1 col-1   font-size-12  right-border-2  text-right   p-1 ">
+  {department_salary.map(data => data.total_deduction).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+ </div>
+ <div className="col-md-1  col-1   font-size-12 right-border-2 text-right   p-1">
+ {department_salary.map(data => data.net_salary).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+ </div>
+ </div>
      </>
      
      )}
