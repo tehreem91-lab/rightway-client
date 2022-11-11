@@ -50,7 +50,7 @@ const BillInfo = () => {
           "Record has been " +
           ("Added" + " successfully!")
       );
-       navigate(-1)
+      navigate('/PurchaseAccess', { state: { id: location.state.id, flag: true } })
       })
       .catch(function (error) {
       

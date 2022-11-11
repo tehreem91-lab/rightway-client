@@ -1,4 +1,4 @@
-import React,{useState , useRef} from 'react'
+import React,{useState , useRef, useEffect} from 'react'
 import { useSelector } from "react-redux";
 // import ReactToPrint from 'react-to-print'
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,10 @@ import Select from 'react-select'
 import ReactToPrint from 'react-to-print'
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { useLocation } from 'react-router-dom';
 const Purchase = () => {
     const showNavMenu = useSelector((state) => state.NavState);
+    const location = useLocation();
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -139,7 +141,15 @@ const Purchase = () => {
                 });
 
         }
+        
     }
+    useEffect(() => {
+
+        if ((location?.state?.id) && (location?.state?.flag)) {
+            PurchaseReport(location?.state?.id)
+        }
+
+    }, [])
   return (
     <>
                <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
