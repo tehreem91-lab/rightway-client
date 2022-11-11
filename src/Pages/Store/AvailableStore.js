@@ -13,15 +13,16 @@ const AvailableStore = () => {
 const [FilterStoreData, setFilterStoreData] = useState([]);
 const [reRender, setreRender] = useState(true);
 const searchItem = (e) => {
-        
+        console.log(e);
     var allData = FilterStoreData;
     
     setStoreData(FilterStoreData);
     var filteredData = allData.filter((obj) => {
-        var data = Object.keys(obj)
-            .filter((key) => obj[key]?.toString()?.toLowerCase()?.includes(e))
+        
+        var data = Object.keys(obj.store_account)
+            .filter((key) => obj.store_account[key]?.toString()?.toLowerCase()?.includes(e))
             .reduce((cur, key) => {
-                return Object.assign(cur, { [key]: obj[key] });
+                return Object.assign(cur, { [key]: obj.store_account[key] });
             }, {});
         if (Object.keys(data).length !== 0) {
             return obj;
@@ -53,7 +54,7 @@ const searchItem = (e) => {
       setStoreData(response.data)
       setFilterStoreData(response.data)
       
-      console.log(FilterStoreData)
+      console.log(response.data)
       setisLoading(false)
       
     })
@@ -111,7 +112,7 @@ const searchItem = (e) => {
                                   className="form-control"
                                   type="text"
                                   placeholder='seach ...'
-                                  onChange={(e) => searchItem(e.target.value)}
+                                  onChange={(e) => searchItem((e.target.value).toLowerCase())}
                                   />
                                   </div>
                                    
