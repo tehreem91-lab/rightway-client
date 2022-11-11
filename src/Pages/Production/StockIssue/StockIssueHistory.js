@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import CustomInnerHeader from "../../../Components/CustomInnerHeader";
 import { customStyles } from "../../../Components/reactCustomSelectStyle";
 import ReactToPrint from "react-to-print";
+import  {CSVLink}  from "react-csv";
 
 const StockIssueHistory = () => {
   let componentRef = useRef();
@@ -25,7 +26,29 @@ const StockIssueHistory = () => {
   const [AvailableReport, setAvailableReport] = useState([1]);
   const [isLoading, setisLoading] = useState(true);
   const [isLoader, setisLoader] = useState(true);
+  const [Exceldata, setExceldata] = useState([]);
+
   const showNavMenu = useSelector((state) => state.NavState);
+
+  const headers = [
+    { label: "Date", key: "voucher_date" },
+    { label: "Invoice No", key: "voucher_inv" },
+  
+    { label: "Purchase QTY", key: "stock_in" },
+    { label: "Product Name", key: "stock_out" },
+    { label: "Job No", key: "amount" },
+    { label: "Shift Name", key: "amount" },
+    { label: "Total Quantity", key: "amount" },
+    { label: "Discription", key: "amount" },
+    { label: "Action", key: "amount" },
+
+   
+  ];
+  const csvReport = {
+    filename: "StockIssuehistory.csv",
+    headers: headers,
+    data: Exceldata
+  };
   return (
     <>
       <div
@@ -169,12 +192,14 @@ const StockIssueHistory = () => {
 
                         
                           <div className="form-group col-4">
-                              <button className="btn btn-sm btn-success borderRadiusRound">
-                                <i
-                                  className="fa fa-file-pdf-o"
-                                  aria-hidden="true"
-                                ></i>
-                              </button>
+                          <CSVLink {...csvReport}>
+                          <button className="btn btn-sm btn-success borderRadiusRound">
+                            <i
+                              className="fa fa-file-pdf-o"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                          </CSVLink>
                           </div>
                         </ul>
                       </div>

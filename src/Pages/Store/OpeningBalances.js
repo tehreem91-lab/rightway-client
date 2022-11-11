@@ -294,7 +294,7 @@ const StoreOpeningBalances = () => {
                 <span className="section pl-3">
                   <div className="row   pt-3">
                     <div className="col-3">
-                      <i className="fa fa-list"></i>&nbsp;Listing
+                      <i className="fa fa-list mt-3"></i>&nbsp;Listing
                     </div>
 
                     <div className="col-9 col-md-9 col-sm-9" align="right">
@@ -366,7 +366,7 @@ const StoreOpeningBalances = () => {
                       <CSVLink {...csvReport}>
                         <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
                           <i
-                            className="fa fa-table"
+                            className="fa fa-file-excel-o"
                             aria-hidden="true"
                           ></i>
                         </button>
@@ -384,47 +384,46 @@ const StoreOpeningBalances = () => {
                       </h2>
                     </div>
 
-                    <table className="table table-striped jambo_table bulk_action ">
-                      <thead>
-                        <tr className="headings reportTableHead bottom-border-1 ">
-                          <th className="column-title right-border-1 text-center" width="10%">
+                    <div className="table table-striped jambo_table bulk_action ">
+                      <div>
+                        <div className=" row headings reportTableHead bottom-border-1 ">
+                          <div className="col-md-2 col-2 p-2 right-border-1 text-center" width="10%">
                             Code
-                          </th>
-                          <th className="column-title  right-border-1 text-left">
+                          </div>
+                          <div className="col-md-2 col-2 p-2 right-border-1 text-center">
                             Account Name
-                          </th>
-                          <th
-                            className="column-title right-border-1 text-center"
+                          </div>
+                          <div
+                            className="col-md-2 col-2 p-2 right-border-1 text-center"
                             width="15%"
                           >
                             Quantity Debit
-                          </th>
-                          <th
-                            className="column-title right-border-1 text-center"
+                          </div>
+                          <div
+                            className="col-md-2 col-2 p-2 right-border-1 text-center"
                             width="15%"
                           >
                             Quantity Credit
-                          </th>
-                          <th
-                            className="column-title right-border-1 text-center"
-                            width="10%"
+                          </div>
+                          <div
+                            className=" col-md-2 col-2 p-2 right-border-1 text-center"
                           >
                             Debit
-                          </th>
-                          <th className="column-title text-center" width="10%">
+                          </div>
+                          <div className="col-md-2 col-2 p-2 text-center" width="10%">
                             Credit
-                          </th>
-                        </tr>
-                      </thead>
+                          </div>
+                        </div>
+                      </div>
 
                       {/* //////////////////////////Form Entries///////////////////////////////// */}
-                      <tbody>
+                      <div>
                         {accountList.map((item, index) => {
                           return (
-                            <tr className="even pointer" key={index}>
-                              <td className=" "> {item.account_code}</td>
-                              <td className=" "> {item.account_name} </td>
-                              <td className="">
+                            <div className="row  reportTableBody" key={index}>
+                              <div className="col-md-2 col-2 p-2 "> {item.account_code}</div>
+                              <div className="col-md-2 col-2 p-2 "> {item.account_name} </div>
+                              <div className="col-md-2 col-2 p-2">
                                 {" "}
                                 <input
                                   type="number"
@@ -451,8 +450,8 @@ const StoreOpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </td>
-                              <td className="">
+                              </div>
+                              <div className="col-md-2 col-2 p-2">
                                 {" "}
                                 <input
                                   type="number"
@@ -479,8 +478,8 @@ const StoreOpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </td>
-                              <td className="">
+                              </div>
+                              <div className="col-md-2 col-2 p-2">
                                 {" "}
                                 <input
                                   type="number"
@@ -507,9 +506,9 @@ const StoreOpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </td>
+                              </div>
 
-                              <td className=" ">
+                              <div className="col-md-2 col-2 p-2 ">
                                 {" "}
                                 <input
                                   type="number"
@@ -535,54 +534,54 @@ const StoreOpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </td>
-                            </tr>
+                              </div>
+                            </div>
                           );
                         })}
                         <tr className="font-weight-bold">
-                          <td></td>
-                          <td className="col-md-12 col-sm-12" align="right">
+                          <div></div>
+                          <div className="col-md-12 col-sm-12" align="right">
                             Total:
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.debit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.credit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
+                          </div>
                         </tr>
-                      </tbody>
+                      </div>
                       {/* <tfoot>
                         <tr className="font-weight-bold">
-                          <td></td>
-                          <td className="col-md-12 col-sm-12" align="right">
+                          <div></div>
+                          <div className="col-md-12 col-sm-12" align="right">
                             Total:
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.debit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.credit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
+                          </div>
                         </tr>
                       </tfoot> */}
-                    </table>
+                    </div>
                   </div>
                 </div>
               </div>

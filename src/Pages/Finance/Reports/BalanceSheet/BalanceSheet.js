@@ -8,6 +8,9 @@ import { endPoint } from "../../../../config/Config.js";
 import CustomInnerHeader from '../../../../Components/CustomInnerHeader'
 import BalanceSheetReciept from "./BalanceSheetReciept.js";
 import Spinner from 'react-bootstrap/Spinner'
+import { CSVLink } from "react-csv";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const Balance = () => {
   const [isLoader, setisLoader] = useState(true);
@@ -22,6 +25,44 @@ const Balance = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [reportDataAssets, setReportDataAssets] = useState([])
   const [reportDataLiabilities, setReportDataLiabilities] = useState([])
+  const [Exceldata, setExceldata] = useState([])
+
+  const downloadPdf = async () => {
+    var data = document.getElementById("report");
+    //$("pdfOpenHide").attr("hidden", true);
+    // To disable the scroll
+    document.getElementById("report").style.overflow = "inherit";
+    document.getElementById("report").style.maxHeight = "inherit";
+
+    await html2canvas(data).then((canvas) => {
+      const contentDataURL = canvas.toDataURL("image/png", 1.0);
+      // enabling the scroll
+      //document.getElementById("report").style.overflow = "scroll";
+      //document.getElementById("report").style.maxHeight = "150px";
+
+      let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+
+      let imgWidth = 300;
+      let pageHeight = pdf.internal.pageSize.height;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      window.open(
+        pdf.output("bloburl", { filename: "new-file.pdf" }),
+        "_blank"
+      );
+    });
+  };
 
   const level_options = [{ label: "Level 1", value: 1 }, { label: "Level 2", value: 2 }, { label: "Level 3", value: 3 }, { label: "Level 4", value: 4 }, { label: "Level 5", value: 5 }]
   const [levelValue, setLevelValue] = useState({ label: "Level 5", value: 5 })
@@ -136,6 +177,7 @@ const Balance = () => {
           }
           setReportDataAssets([filtralized_data[1]])
           setReportDataLiabilities([filtralized_data[0]])
+          setExceldata([filtralized_data[1]])
           setIsLoading(false)
         }
       })
@@ -146,6 +188,17 @@ const Balance = () => {
 
 
   }
+  const headers = [
+    { label: "Account Title", key: "category_name" },
+    { label: "Amount", key: "calculated_credit" },
+  
+  ];
+
+  const csvReport = {
+    filename: "BalanceSheet.csv",
+    headers: headers,
+    data: Exceldata,
+  };
 
 
   return (
@@ -260,30 +313,46 @@ const Balance = () => {
                         <div className="col-5 ">
                           <i className='fa fa-list'></i>&nbsp;Report Data
                         </div>
-                        <div className="col-7 text-right px-0 ">
+                        <div className="col-7 text-right px-0">
                           <div className="col-md-5"> </div>
                           <div className="col-md-4  text-left "> </div>
-                          <div className="col-md-3 pr-4">
-                            <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                              <li>
-                              <ReactToPrint
-                              trigger={() =>  
-                              <button className="btn btn-sm btn-success borderRadiusRound">
-                              <i className="fa fa-print"></i>
-                              </button>}
+                          <div className="col-md-3 p-2">
+                          <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end ">
+                          <div className="form-group col-md-3">
+      
+                            <ReactToPrint className="form-group col-md-3"
+                              trigger={() => {
+                                return (
+                                  <button className="btn btn-sm  borderRadiusRound" title="Print" style={{ backgroundColor: "#003A4D", color: "white" }}>
+                                    <i className="fa fa-print"></i>
+                                  </button>
+                                );
+                              }}
                               content={() => componentRef.current}
                               documentTitle='new docs'
                             />
-                              </li>
-                              <li>
-                                <button
-                                  className="btn btn-sm btn-primary borderRadiusRound"
-                                  onClick={() => console.log("print")}
-                                >
-                                  <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                </button>
-                              </li>
-                            </ul>
+                          </div>
+      
+                          <div className="form-group col-md-3">
+                            <button
+                              className="btn btn-sm  borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
+                              onClick={downloadPdf}
+                              type="button"
+                            >
+                              <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                          <div className="form-group col-md-3">
+                            <CSVLink {...csvReport}>
+                              <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
+                                <i
+                                  className="fa fa-file-excel-o"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                            </CSVLink>
+                          </div>
+                        </ul>
                           </div>
                         </div>
 

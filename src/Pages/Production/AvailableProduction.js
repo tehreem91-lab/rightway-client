@@ -63,7 +63,7 @@ const AvailableProduction = () => {
                             </span>
                             <div className="table-responsive px-3 pb-2" style={{ height: '400px' }}>
                                 <table className="table table-striped jambo_table bulk_action ">
-                                    <thead>
+                                    <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                         <tr className="headings">
                                             <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
 

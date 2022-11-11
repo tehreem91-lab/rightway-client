@@ -8,8 +8,23 @@ const AvailableStock = () => {
 const navigation = useNavigate();
 const [Stockdata, setStockdata] = useState([]);
 const [isLoading, setisLoading] = useState(true);
+const [FilterStockData, setFilterStockData] = useState([]);
 
-
+const searchItem = (e) => {
+    var allData = FilterStockData;
+    setStockdata(FilterStockData);
+    var filteredData = allData.filter((obj) => {
+        var data = Object.keys(obj)
+            .filter((key) => obj[key].toString().toLowerCase().includes(e))
+            .reduce((cur, key) => {
+                return Object.assign(cur, { [key]: obj[key] });
+            }, {});
+        if (Object.keys(data).length !== 0) {
+            return obj;
+        }
+    });
+    setStockdata(filteredData);
+};
 
 
 const Get_Stockaccount = () =>{
@@ -30,6 +45,7 @@ var config = {
 axios(config)
 .then(function (response) {
   setStockdata(response.data)
+  setFilterStockData(response.data)
   setisLoading(false)
   
 })
@@ -61,7 +77,7 @@ useEffect(() => {
             className={`right_col container-fluid  page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
                 }   `}
         >
-        <CustomInnerHeader moduleName="Stock Managment" isShowSelector={true} />
+        <CustomInnerHeader moduleName="Stock Management" isShowSelector={true} />
            </div>
            
            <div
@@ -74,16 +90,30 @@ useEffect(() => {
                         <div className="x_content">
                             <span className="section pl-3">
                                 <div className="row   pt-3">
-                                    <div className="col-3">
+                                    <div className="col-md-6">
                                         <i className='fa fa-list'></i>&nbsp;Listing
                                     </div>
-                                    <div className="col-9 text-right ">
+                                    <div className="col-md-6 ">
+                                    <div className='col-md-6 text-right'>
+                                    <label>search:</label>
+                                    </div>
+                                    <div className='col-md-6 text-right'>
+                                    <input
+                                    className="form-control"
+                                    type="text"
+                                    placeholder='seach ...'
+                                    onChange={(e) => searchItem(e.target.value)}
+                                    />
+                                    </div>
+                                     
+                                      
+                                  
                                     </div>
                                 </div>
                             </span>
                             <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll' ,height: '400px'}}>
                                 <table className="table table-striped jambo_table bulk_action"  >
-                                    <thead>
+                                    <thead   style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                         <tr className="headings">
                                         <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
                                             <th className="column-title  right-border-1 text-center" width="20%"> Name </th>

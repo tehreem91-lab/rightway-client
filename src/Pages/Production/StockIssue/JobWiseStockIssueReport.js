@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import CustomInnerHeader from "../../../Components/CustomInnerHeader";
 import { customStyles } from "../../../Components/reactCustomSelectStyle";
 import ReactToPrint from "react-to-print";
+import  {CSVLink}  from "react-csv";
 
 const JobWiseStockIssueReport = () => {
   let componentRef = useRef();
@@ -26,6 +27,25 @@ const JobWiseStockIssueReport = () => {
   const [isLoading, setisLoading] = useState(true);
   const [isLoader, setisLoader] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
+  const [Exceldata, setExceldata] = useState([]);
+
+  const headers = [
+    { label: "Product Name", key: "voucher_date" },
+    { label: "Job No", key: "voucher_inv" },
+  
+    { label: "Stock Issue Date", key: "stock_in" },
+    { label: "Assigned Person", key: "stock_out" },
+    { label: "Decription", key: "amount" },
+    { label: "Action", key: "amount" },
+  
+
+   
+  ];
+  const csvReport = {
+    filename: "JobStockIssueReport.csv",
+    headers: headers,
+    data: Exceldata
+  };
   return (
     <>
       <div
@@ -169,12 +189,14 @@ const JobWiseStockIssueReport = () => {
 
                           
                             <div className="form-group col-4">
-                                <button className="btn btn-sm btn-success borderRadiusRound">
-                                  <i
-                                    className="fa fa-file-pdf-o"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
+                            <CSVLink {...csvReport}>
+                            <button className="btn btn-sm btn-success borderRadiusRound">
+                              <i
+                                className="fa fa-file-pdf-o"
+                                aria-hidden="true"
+                              ></i>
+                            </button>
+                            </CSVLink>
                             </div>
                           </ul>
                         </div>

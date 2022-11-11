@@ -40,6 +40,25 @@ const AddStore = () => {
   const [StoreData, setStoreData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
 
+  const [FilterStockData, setFilterStockData] = useState([]);
+
+    
+    const searchItem = (e) => {
+        var allData = FilterStockData;
+        setStoreData(FilterStockData);
+        var filteredData = allData.filter((obj) => {
+            var data = Object.keys(obj)
+                .filter((key) => obj[key].toString().toLowerCase().includes(e))
+                .reduce((cur, key) => {
+                    return Object.assign(cur, { [key]: obj[key] });
+                }, {});
+            if (Object.keys(data).length !== 0) {
+                return obj;
+            }
+        });
+        setStoreData(filteredData);
+    };
+    
   const Get_StoreAccount = () => {
     var axios = require("axios");
     var data = "";
@@ -56,7 +75,8 @@ const AddStore = () => {
     };
 
     axios(config).then(function (response) {
-      setStoreData(response.data);
+      setStoreData(response.data)
+      setFilterStockData(response.data);
       setisLoading(false);
     });
   };
@@ -772,7 +792,7 @@ const AddStore = () => {
                     <div className="col-md-12 ">
                       <table className="table table-striped jambo_table bulk_action ">
                         <thead>
-                          <tr className="headings">
+                          <tr className="headings reportTableHead">
                             <th className="column-title   ">Packet Name</th>
                             <th className="column-title   ">Pair Base unit</th>
                             <th className="column-title   ">&nbsp;</th>
@@ -900,16 +920,31 @@ const AddStore = () => {
           <div className="x_content">
             <span className="section pl-3">
               <div className="row   pt-3">
-                <div className="col-3">
+                <div className="col-6">
                   <i className="fa fa-list"></i>&nbsp;Listing
                 </div>
-                <div className="col-9 text-right "></div>
+                <div className="col-6 ">
+                <div className='col-6 text-right'>
+                <label>search:</label>
+                </div>
+                <div className='col-6 text-right'>
+                <input
+                className="form-control"
+                type="text"
+                placeholder='seach ...'
+                onChange={(e) => searchItem(e.target.value)}
+                />
+                </div>
+                 
+                  
+              
+                </div>
               </div>
             </span>
-            <div className="table-responsive px-3 pb-2">
+            <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll' ,height: '400px'}}>
               <table className="table table-striped jambo_table bulk_action">
-                <thead>
-                  <tr className="headings">
+                <thead style={{position: 'sticky', top: '0',zIndex: '1'}}>
+                  <tr className="headings reportTableHead">
                     <th
                       className="column-title  right-border-1 text-center"
                       width="10%"

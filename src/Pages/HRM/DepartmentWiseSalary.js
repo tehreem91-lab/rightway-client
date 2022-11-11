@@ -31,11 +31,12 @@ const DepartmentWiseSalary = () => {
     const [department_salaryCSV , setDepartment_salaryCSV] = useState([])
 
     const downloadPdf = async () => {
-      var data = document.getElementById("table");
+   
+      var data = document.getElementById("report");
       //$("pdfOpenHide").attr("hidden", true);
       // To disable the scroll
-      document.getElementById("table").style.overflow = "inherit";
-      document.getElementById("table").style.maxHeight = "inherit";
+      document.getElementById("report").style.overflow = "inherit";
+      document.getElementById("report").style.maxHeight = "inherit";
   
       await html2canvas(data).then((canvas) => {
         const contentDataURL = canvas.toDataURL("image/png", 1.0);
@@ -182,23 +183,8 @@ const DepartmentWiseSalary = () => {
   
     }
   
-    // const PDF = ((e) => {
+   
   
-    //   var pdfsize = ''
-    //   var pdf = new jsPDF('1','pt', pdfsize)
-  
-    //   pdf.autoTable({
-    //       html:'#table',
-    //       stylesY : '60',
-    //       styles:{
-    //           fontsize :40,
-    //           cellwidth :'wrap'
-    //       },
-    //   })
-    //   pdf.save("output.pdf")
-  
-    // })
-
     return (
         <>
       
@@ -211,7 +197,7 @@ const DepartmentWiseSalary = () => {
                  className={`container-fluid right_col  page-title-bar ${showNavMenu === false ? "right_col-margin-remove" : ""
                      }   `}
              >
-             <CustomInnerHeader moduleName='Department Salary Management' isShowSelector={true} />
+             <CustomInnerHeader moduleName='Department Wise Salary' isShowSelector={true} />
                  
              </div>
    
@@ -269,9 +255,7 @@ const DepartmentWiseSalary = () => {
                                              <span className="text-danger">First Select this </span>
                                          )}
                                      </div>
-                                 </div>
-                                 </div>
-                                 <div className="col-md-12 text-right x_footer">
+                                     <div className=" col-md-2 col-sm-2 text-right">
                                  <button
                                 className="btn btn-primary"
                                 type="submit"
@@ -288,6 +272,9 @@ const DepartmentWiseSalary = () => {
              
               </button>
                           </div> 
+                                 </div>
+                                 </div>
+                               
                              </div>
                           </div>
    
@@ -310,7 +297,7 @@ const DepartmentWiseSalary = () => {
                                                      <div className="col-4">
                                                      <ReactToPrint
                                                      trigger={() =>  
-                                                     <button className="btn btn-sm btn-primary borderRadiusRound">
+                                                     <button className="btn btn-sm   borderRadiusRound" title='Print' style={{backgroundColor:'#003A4D', color:'white'}}>
                                                      <i className="fa fa-print"></i>
                                                      </button>}
                                                      content={() => componentRef.current}
@@ -319,7 +306,7 @@ const DepartmentWiseSalary = () => {
                                                     </div>
                                                    <div className="col-4">
                                                              <CSVLink {...csvReport}>
-                                                             <button className="btn btn-sm btn-success borderRadiusRound ms-4" >
+                                                             <button className="btn btn-sm  borderRadiusRound ms-4" title="PDF" style={{backgroundColor:'#003A4D', color:'white'}} >
                                                                  <i
                                                                      className="fa fa-file-pdf-o "
                                                                      aria-hidden="true"
@@ -327,7 +314,16 @@ const DepartmentWiseSalary = () => {
                                                              </button>
                                                              </CSVLink>
                                                          </div>
+                                                         <div className="col-4">
                                                             
+                                                             <button  onClick={downloadPdf} className="btn btn-sm  borderRadiusRound ms-4" title="Excel" style={{backgroundColor:'#003A4D', color:'white'}} >
+                                                                 <i
+                                                                     className="fa fa-file-excel-o "
+                                                                     aria-hidden="true"
+                                                                  ></i>
+                                                             </button>
+                                                           
+                                                         </div>
                                                  </ul>
                                                  
                                                  

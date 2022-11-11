@@ -71,15 +71,21 @@ const ShiftManagement = () => {
                                 </div>
 
                             </div>
+                            <div className="col-md-6 text-right ">
+                        <button className="btn btn-primary" type="submit" onClick={() => { fetchAllData(); setshowTable(true) }}  >
+                            Submit
+                            {isLoading && 
+                  (
+                   <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                  )
+               }
+                        </button>
+                    </div>
                         </div>
 
                     </div>
 
-                    <div className="col-md-12 text-right x_footer">
-                        <button className="btn btn-primary" type="submit" onClick={() => { fetchAllData(); setshowTable(true) }}  >
-                            Submit
-                        </button>
-                    </div>   </div>
+                      </div>
                 {showTable ? (<div className="x_panel  ">
                     <div className="x_content">
                         <span className="section pl-3">
@@ -91,9 +97,9 @@ const ShiftManagement = () => {
                                 </div>
                             </div>
                         </span>
-                        <div className="table-responsive px-3 pb-2">
-                            <table className="table table-striped jambo_table bulk_action">
-                                <thead>
+                        <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll', height: '400px',  }}>
+                            <table    className="table table-striped jambo_table bulk_action">
+                                <thead style={{position: 'sticky', top: '0',zIndex: '1'}} >
                                     <tr className="headings">
                                         <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
 

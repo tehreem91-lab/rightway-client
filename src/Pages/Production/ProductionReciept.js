@@ -38,10 +38,17 @@ const ProductionReciept = () => {
     }
     const handlePacketChange = (index, e) => {
 
-        const { name, value } = e.target;
-        const list = [...packets_details];
-        list[index][name] = value;
-        setpackets_details(list);
+        let { name, value } = e.target;
+        console.log(name );
+        let list = [...packets_details];
+        if(name=="pair_base_unit"){
+            list[index][name] = Number(value);
+            setpackets_details(list);
+        }
+        if(name=="packet_name"){
+            list[index][name] = value;
+            setpackets_details(list);
+        }
 
     }
     const delStockitem = (delindex) => {
@@ -51,24 +58,26 @@ const ProductionReciept = () => {
     const handleProductChange = (e) => {
         e.preventDefault();
 
-        const { name, value } = e.target;
+        let { name, value } = e.target;
 
         setProDetails({ ...proDetails, [name]: value })
 
     }
     const handleStockChange = (index, e) => {
-        const { name, value } = e.target;
-        const list = [...stock_attachments];
-        list[index][name] = value;
-
-
+        let { name, value } = e.target;
+        let list = [...stock_attachments];
+        if(name=="product_quantity"){
+            list[index][name] = Number(value);
+            setstock_attachments(list);
+        }
+        else{
+            list[index][name] = value;
         setstock_attachments(list);
+    }
 
 
     }
-    // const Editform = (Recid) => {
-    //     navigate('/CreateProduct', { state: { id: Recid, flag: true } })
-    // }
+  
     const tabledata = () => {
         var axios = require('axios');
 
@@ -242,6 +251,7 @@ const ProductionReciept = () => {
         setIsValidateAllStates(isValidationOk)
 
         if (isValidationOk === true) {
+           
             var data = JSON.stringify({
                 product_name: proDetails.product_name,
                 product_barcode: proDetails.product_barcode,
@@ -270,7 +280,7 @@ const ProductionReciept = () => {
                         "Record has been " +
                         ("Updated" + " successfully!")
                     );
-                    // navigate(-1)
+                    
                     setIsLoading(false)
                     tabledata()
                     setProDetails({
@@ -336,15 +346,17 @@ const ProductionReciept = () => {
             //     isValidationOk = false
             // }
         })
+        console.log(isValidationOk);
         setIsValidateAllStates(isValidationOk)
 
-        if (isValidationOk === true) {
+        if (isValidationOk == true) {
+            console.log('dsjf');
             var data = JSON.stringify({
                 product_name: proDetails.product_name,
                 product_barcode: proDetails.product_barcode,
                 stock_unit_id: proDetails.stock_unit_id,
                 consumption_chart_id: proDetails.consumption_chart_id,
-                quantity_in_grams: proDetails.quantity_in_grams,
+                quantity_in_grams: Number(proDetails.quantity_in_grams),
                 image: proDetails.image,
                 packets_details: packets_details,
                 stock_attachments: stock_attachments
@@ -362,6 +374,7 @@ const ProductionReciept = () => {
 
             axios(config)
                 .then(function (response) {
+                    console.log(data);
                     toast.success(
                         "Record has been " +
                         ("Added" + " successfully!")
@@ -380,7 +393,7 @@ const ProductionReciept = () => {
 
                 })
                 .catch(function (error) {
-
+                 console.log(error,data)
 
                 });
         }
@@ -553,7 +566,7 @@ const ProductionReciept = () => {
                                 <div className="row row-1 mx-1  reportTableHead mt-2">
 
                                     <div className="col-md-4 col-4 font-size-12  text-center  my-1  ">
-                                        Stock Name<span className="required">*</span>
+                                        Item Name<span className="required">*</span>
                                     </div>
                                     <div className="col-md-4  col-4 font-size-12  text-center  my-1  ">
                                         Quantity<span className="required">*</span>
@@ -729,7 +742,7 @@ const ProductionReciept = () => {
                             </span>
                             <div className="table-responsive " style={{ height: '350px', overflowY: 'scroll' }}>
                                 <table className="table table-striped jambo_table bulk_action">
-                                    <thead>
+                                    <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                         <tr className="headings">
                                             <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
                                             <th className="column-title  right-border-1 text-center" > Name</th>

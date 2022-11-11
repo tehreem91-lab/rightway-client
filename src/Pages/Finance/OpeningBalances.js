@@ -264,8 +264,8 @@ const OpeningBalances = () => {
                 <div className="col-md-7 col-sm-7" align="right">
                   {visableDiv === "true" && (
                     <button
-                      className="btn btn-dark fa fa-edit pl-3"
-                      type="button" style={{ backgroundColor: "#003A4D" }}
+                      className="btn  btn-primary fa fa-edit pl-3"
+                      type="button"
                       onClick={(e) => {
                         setDivToVisable("false");
                         <input disabled="false" />;
@@ -301,18 +301,13 @@ const OpeningBalances = () => {
               <div className="x_content">
                 <span className="section pl-3">
                   <div className="row   pt-3">
-                    <div className="col-3">
-                      <i className="fa fa-list"></i>&nbsp;Listing
+                    <div className="col-3 mt-4">
+                      <i className="fa fa-list "></i>&nbsp;Listing
                     </div>
-                    <div className="col-9 text-right "></div>
-                  </div>
-                </span>
-
-
-
                 {/* ///////////////////////For Downloadling Data/////////////////////////// */}
-                <div className="col-md-12 col-sm-12 pr-4" align="right">
-                  <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+
+                    <div className="col-9 mt-3 ">
+                    <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                     <div className="form-group col-md-3">
 
                       <ReactToPrint className="form-group col-md-3"
@@ -324,8 +319,7 @@ const OpeningBalances = () => {
                           );
                         }}
                         content={() => componentRef.current}
-                        documentTitle="new docs"
-                        pageStyle="print"
+                        documentTitle='new docs'
                       />
                     </div>
 
@@ -349,7 +343,13 @@ const OpeningBalances = () => {
                       </CSVLink>
                     </div>
                   </ul>
-                </div>
+                    </div>
+                  </div>
+                </span>
+
+
+
+               
 
                 {/* //////////////////////////Form Structure///////////////////////////////// */}
                 <div id="report">
@@ -358,37 +358,47 @@ const OpeningBalances = () => {
                       <h2 className="text-dark text-center font-weight-bold  ">
                         Opening Balances
                       </h2>
+                      <div className="row pb-2">
+                      <div className="col-md-6 col-6 text-dark text-center ">
+                        {" "}
+                        <strong className="text-dark  font-weight-bold ">
+                          {selectedValue}
+                        </strong>{" "}
+                      </div>
+                    
+                    </div>
                     </div>
 
-                    <table className="table table-striped jambo_table bulk_action ">
-                      <thead>
-                        <tr className="headings reportTableHead bottom-border-1 ">
-                          <th className="column-title right-border-1 text-center" width="10%">
+
+                    <div className="table table-striped jambo_table bulk_action " >
+                      <div>
+                        <div className=" row headings reportTableHead bottom-border-1 ">
+                          <div className="col-md-2 col-2 p-1 right-border-1 text-center" width="10%">
                             Code
-                          </th>
-                          <th className="column-title  right-border-1 text-center">
+                          </div>
+                          <div className="col-md-4 col-4 p-1  right-border-1 text-center">
                             Account Name
-                          </th>
-                          <th
-                            className="column-title right-border-1 text-center"
+                          </div>
+                          <div
+                            className=" col-md-3 col-3 p-1 right-border-1 text-center"
                             width="10%"
                           >
                             Debit
-                          </th>
-                          <th className="column-title text-center" width="10%">
+                          </div>
+                          <div className="col-md-3 col-3 p-1 text-center" width="10%">
                             Credit
-                          </th>
-                        </tr>
-                      </thead>
+                          </div>
+                        </div>
+                      </div>
 
                       {/* //////////////////////////Form Entries///////////////////////////////// */}
-                      <tbody>
+                      <div>
                         {accountList.map((item, index) => {
                           return (
-                            <tr className="even pointer" key={index}>
-                              <td className=" "> {item.account_code}</td>
-                              <td className=" "> {item.account_name} </td>
-                              <td className="">
+                            <div className="row even pointer reportTableBody" key={index}>
+                              <div className="col-md-2 col-2 p-1 "> {item.account_code}</div>
+                              <div className="col-md-4 col-4  p-1"> {item.account_name} </div>
+                              <div className="col-md-3 col-3 p-1 ">
                                 {" "}
                                 <input
                                   type="number"
@@ -415,9 +425,9 @@ const OpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </td>
+                              </div>
 
-                              <td className=" ">
+                              <div className="col-md-3 col-3 p-1 ">
                                 {" "}
                                 <input
                                   type="number"
@@ -443,54 +453,54 @@ const OpeningBalances = () => {
                                     setreRender(!reRender);
                                   }}
                                 />
-                              </td>
-                            </tr>
+                              </div>
+                            </div>
                           );
                         })}
                         <tr className="font-weight-bold">
-                          <td></td>
-                          <td className="col-md-12 col-sm-12" align="right">
+                          <div></div>
+                          <div className="col-md-12 col-sm-12" align="right">
                             Total:
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.debit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.credit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
+                          </div>
                         </tr>
-                      </tbody>
+                      </div>
                       {/* <tfoot>
                         <tr className="font-weight-bold">
-                          <td></td>
-                          <td className="col-md-12 col-sm-12" align="right">
+                          <div></div>
+                          <div className="col-md-12 col-sm-12" align="right">
                             Total:
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.debit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
-                          <td>
+                          </div>
+                          <div>
                             {accountList
                               .map((values) => {
                                 return Number(values.credit);
                               })
                               .reduce((a, b) => a + b, 0)}
-                          </td>
+                          </div>
                         </tr>
                       </tfoot> */}
-                    </table>
+                    </div>
                   </div>
                 </div>
               </div>

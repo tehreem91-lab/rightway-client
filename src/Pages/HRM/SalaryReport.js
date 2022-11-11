@@ -97,6 +97,7 @@ const SalaryReport = () => {
     };
 
     const fetchAllData = async (e) => {
+        setisLoading(true);
         var config = {
             method: "get",
             // url: `${endPoint}api/Attendence/GetSalaryDepartmentWiseFormData?date=${selectedDate}-01&sal_dept_id=${selectedValue.salary_value}`,
@@ -225,11 +226,7 @@ const SalaryReport = () => {
 
     return (
         <>
-            {isLoading ? (
-                <>
-                    <Loader />
-                </>
-            ) : isError ? <div> <div className="x_panel text-center"><div className="">No record for this date</div></div></div> : (
+            { isError ? <div> <div className="x_panel text-center"><div className="">No record for this date</div></div></div> : (
 
                 <>
                     <div
@@ -334,7 +331,7 @@ const SalaryReport = () => {
                                                     fetchAllData();
                                                     setShow(true);
                                                     setAttendenceData = attendenceData
-                                                    setisLoading(true);
+                                                   
                                                 }
                                                 // setfromDate(dateFrom);
                                                 // settoDate(dateTo);
@@ -345,6 +342,11 @@ const SalaryReport = () => {
                                             }}
                                         >
                                             Show Report
+                                            {isLoading && 
+                  (
+                   <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                  )
+               }
                                         </button>
                                     </div>
                                 </div>

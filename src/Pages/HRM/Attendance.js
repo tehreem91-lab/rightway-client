@@ -42,7 +42,7 @@ const Attendance = () => {
 
     const [inputOptions, setInputOptions] = useState("");
 
-
+ 
     const updateFunct = (e) => {
 
         e.preventDefault();
@@ -278,7 +278,7 @@ const Attendance = () => {
                 className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                     }   `}
             >
-                <CustomInnerHeader moduleName="Manage Attendance" isShowSelector={true} />
+                <CustomInnerHeader moduleName="Daily Attendance" isShowSelector={true} />
 
             </div>
             <div
@@ -298,7 +298,7 @@ const Attendance = () => {
                         </span>
 
                         <div className="row">
-                            <div className="field item form-group col-md-12 col-sm-12">
+                            <div className="field item form-group col-md-9 col-sm-12">
 
 
                                 <label className="col-form-label col-md-2 col-sm-2 label-align">
@@ -347,10 +347,9 @@ const Attendance = () => {
 
 
                             </div>
-                        </div>
-                        <div className="col-md-12 text-right x_footer">
+                            <div className="col-md-3 text-right ">
                             <button
-                                className="btn btn-primary"
+                                className="btn bg-customBlue text-light"
                                 type="submit"
                                 onClick={() => {
                                     // setSelectedValue(selectedValue);
@@ -364,15 +363,22 @@ const Attendance = () => {
                                 }}
                             >
                                 Show Report
+                                {isLoading && 
+                  (
+                   <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                  )
+               }
                             </button>
                         </div>
+                        </div>
+                       
                     </div>
                 </div>
 
                 <>
                     {isLoading ? (
                         <>
-                            <Loader />
+                            
                         </>
                     ) : isError ? <div> <div className="x_panel text-center"><div className="x_content">No Employee record for this date</div></div></div> : (
 
@@ -642,54 +648,7 @@ const Attendance = () => {
                                             </div>
 
 
-                                            <div className="col-md-12 col-sm-12" align="right">
-
-                                                {visableDiv === "true" && (
-                                                    <button
-                                                        className="btn  fa fa-edit pl-3"
-                                                        type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
-                                                        onClick={(e) => {
-                                                            setDivToVisable("false");
-                                                            <input disabled="false" />;
-                                                        }}
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                )}
-
-                                                {visableDiv === "false" && (
-                                                    <div>
-
-                                                        <button
-                                                            className="btn btn-primary fa fa-save pl-3"
-                                                            type="submit"
-                                                            // onClick={() => {
-                                                            //     editBalance();
-                                                            //     setDivToVisable("true");
-                                                            // }}
-                                                            onClick={(e) => {
-                                                                updateFunct(e)
-                                                            }}
-                                                        >
-                                                            Update
-                                                        </button>
-                                                        <button
-                                                            className="btn btn-dark fa fa-edit pl-3"
-                                                            type="button" style={{ backgroundColor: "#003A4D" }}
-                                                            onClick={(e) => {
-                                                                setAttendenceData([{}]);
-                                                                setDivToVisable("true");
-                                                                fetchAllData();
-                                                                setisLoading(true);
-                                                                setIsValidateValue(true);
-                                                                // <input disabled="false" />;
-                                                            }}
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>
+                                     
                                         </div>
                                     </div>
                                 </> : null

@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 import Select from 'react-select'
 import { useLocation } from 'react-router-dom';
-
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 const GatePassHistory = () => {
     const location = useLocation();
     const [isValidateOK, setIsValidateOK] = useState(true)
@@ -27,6 +28,43 @@ const GatePassHistory = () => {
     const [ReportData, setReportData] = useState({})
     const [SearchInv, setSearchInv] = useState([])
     const [filearray, setfilearray] = useState([])
+    const downloadPdf = async () => {
+   
+        var data = document.getElementById("report");
+        //$("pdfOpenHide").attr("hidden", true);
+        // To disable the scroll
+        document.getElementById("report").style.overflow = "inherit";
+        document.getElementById("report").style.maxHeight = "inherit";
+    
+        await html2canvas(data).then((canvas) => {
+          const contentDataURL = canvas.toDataURL("image/png", 1.0);
+          // enabling the scroll
+          //document.getElementById("report").style.overflow = "scroll";
+          //document.getElementById("report").style.maxHeight = "150px";
+    
+          let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+    
+          let imgWidth = 300;
+          let pageHeight = pdf.internal.pageSize.height;
+          let imgHeight = (canvas.height * imgWidth) / canvas.width;
+          let heightLeft = imgHeight;
+          let position = 0;
+    
+          pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+    
+          while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+          }
+          window.open(
+            pdf.output("bloburl", { filename: "new-file.pdf" }),
+            "_blank"
+          );
+        });
+      };
     const GatePassReport = (id) => {
         var config = {
             method: 'get',
@@ -132,7 +170,7 @@ const GatePassHistory = () => {
                                             min="2022-07-27"
                                             className="form-control"
                                             type="date"
-                                            onChange={(e) => setDateFrom(e.target.value)}
+                                            onChange={(e) => (e.target.value.slice(0,4)) >= 2022 ?  setDateFrom(e.target.value) :null}
 
                                         />
                                     </div>
@@ -228,7 +266,7 @@ const GatePassHistory = () => {
                                                     <li>
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                                                            data-toggle="tooltip" data-placement="top"
+                                                            data-toggle="tooltip" data-placement="top" onClick={downloadPdf}
                                                         ><i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                         </button>
                                                     </li>
@@ -262,7 +300,7 @@ const GatePassHistory = () => {
                                             </div>
                                         </div>
                                     </span>
-                                    <div className="x_content my-3" ref={componentRef}>
+                                    <div className="x_content my-3" id='report' ref={componentRef}>
                                         <h2> GatePass Report </h2>
                                         <div className="row">
                                             <div className="col-md-12 px-5 bold-7 text-dark ">
@@ -354,7 +392,7 @@ const GatePassHistory = () => {
                             <div className="x_content  ">
                                 <div className="table-responsive" style={{ height: '400px', overflow: 'scroll' }}>
                                     <table className="table table-striped jambo_table bulk_action">
-                                        <thead>
+                                        <thead style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                             <tr className="headings positionFixed">
                                                 <th className="column-title   text-left" width="50%">GatePass Inv</th>
                                                 <th className="column-title     text-right " width="50%"></th>

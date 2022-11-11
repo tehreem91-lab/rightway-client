@@ -55,6 +55,7 @@ const ShiftRecordUpdate = () => {
         await axios(config)
             .then(function (response) {
                 if (response.status === 200) {
+                  
                     setIsLoading(false);
                    
                     setList(response.data);
@@ -105,7 +106,7 @@ const ShiftRecordUpdate = () => {
                                 <i className="fa fa-list"></i>&nbsp;Shift Details
                             </span>
                             <div className="row">
-                                <div className="field item form-group col-md-6 col-sm-6">
+                                <div className="field item form-group col-md-5 col-sm-6">
 
                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Date from<span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
@@ -127,6 +128,8 @@ const ShiftRecordUpdate = () => {
                                                 )
                                             })} />
                                     </div>
+                                    </div>
+                                    <div className="field item form-group col-md-5 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Date to<span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
 
@@ -145,15 +148,16 @@ const ShiftRecordUpdate = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
-
-                        </div>
-
-                        <div className="col-md-12 text-right x_footer">
+                                <div className="col-md-2 text-right ">
                             <button className="btn btn-primary" type="submit" onClick={() => { updateData(); }} >
                                 Update
                             </button>
                         </div>
+                            </div>
+                           
+                        </div>
+
+                       
                     </div>
                     <div className="x_panel  ">
                         <div className="x_content">
@@ -166,9 +170,9 @@ const ShiftRecordUpdate = () => {
                                     </div>
                                 </div>
                             </span>
-                            <div className="table-responsive px-3 pb-2">
+                            <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll', height: '400px',  }}>
                                 <table className="table table-striped jambo_table bulk_action">
-                                    <thead>
+                                    <thead style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                         <tr className="headings">
                                             <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
 

@@ -8,7 +8,7 @@ const TransReportGlobalCompReciept = React.forwardRef(
    
     return (
       <div>
-        <div id="report" className="x_content mb-3" ref={ref} style={{ overflow: 'scroll' ,height: '400px'}} >
+        <div id="report" className="x_content mb-3" ref={ref} >
           <div className="displayPropertyForPrint">
             <h2 className="text-dark text-center font-weight-bold  ">
               Transaction Report

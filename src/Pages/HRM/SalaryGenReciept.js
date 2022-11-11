@@ -129,14 +129,14 @@ const SalaryGenReciept = React.forwardRef(
 
                             <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                                 <div className="form-group col-md-3">
-                                    <button className="btn btn-sm btn-primary borderRadiusRound">
+                                    <button className="btn btn-sm bg-customBlue text-light borderRadiusRound">
                                         <i className="fa fa-print"></i>
                                     </button>
                                 </div>
 
                                 <div className="form-group col-md-3">
                                     <button
-                                        className="btn btn-sm btn-warning borderRadiusRound"
+                                        className="btn btn-sm bg-customBlue text-light borderRadiusRound"
                                         onClick={downloadPdf}
                                         type="button"
                                     >
@@ -145,9 +145,9 @@ const SalaryGenReciept = React.forwardRef(
                                 </div>
                                 <div className="form-group col-md-3">
                                     <CSVLink {...csvReport}>
-                                        <button className="btn btn-sm btn-success borderRadiusRound">
+                                        <button className="btn btn-sm bg-customBlue text-light borderRadiusRound">
                                             <i
-                                                className="fa fa-file-pdf-o"
+                                                className="fa fa-file-excel-o"
                                                 aria-hidden="true"
                                             ></i>
                                         </button>

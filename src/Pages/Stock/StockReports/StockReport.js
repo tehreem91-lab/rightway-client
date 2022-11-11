@@ -8,6 +8,46 @@ import { toast } from "react-toastify";
 import CustomInnerHeader from "../../../Components/CustomInnerHeader";
 import { customStyles } from "../../../Components/reactCustomSelectStyle";
 import ReactToPrint from "react-to-print";
+import  {CSVLink}  from "react-csv";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+const downloadPdf = async () => {
+  var data = document.getElementById("report");
+  //$("pdfOpenHide").attr("hidden", true);
+  // To disable the scroll
+  document.getElementById("report").style.overflow = "inherit";
+  document.getElementById("report").style.maxHeight = "inherit";
+
+  await html2canvas(data).then((canvas) => {
+    const contentDataURL = canvas.toDataURL("image/png", 1.0);
+    // enabling the scroll
+    //document.getElementById("report").style.overflow = "scroll";
+    //document.getElementById("report").style.maxHeight = "150px";
+
+    let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+
+    let imgWidth = 300;
+    let pageHeight = pdf.internal.pageSize.height;
+    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    window.open(
+      pdf.output("bloburl", { filename: "new-file.pdf" }),
+      "_blank"
+    );
+  });
+};
 
 const StockReport = () => {
   let componentRef = useRef();
@@ -25,6 +65,25 @@ const StockReport = () => {
   const [isLoading, setisLoading] = useState(true);
   const [isLoader, setisLoader] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
+
+  const [Exceldata, setExceldata] = useState([]);
+  const headers = [
+    { label: "Shift No", key: "voucher_date" },
+    { label: "Shift Name", key: "voucher_inv" },
+  
+    { label: "Product Name", key: "stock_in" },
+    { label: "Job No", key: "stock_out" },
+    { label: "Total Quality", key: "amount" },
+    { label: "Description", key: "amount" },
+   
+  ];
+  
+  const csvReport = {
+    filename: "StockReport.csv",
+    headers: headers,
+    data: Exceldata
+  };
+
   return (
     <>
       <div
@@ -143,10 +202,10 @@ const StockReport = () => {
                         <div className="col-md-4  text-left "> </div>
                         <div className="col-md-3 pr-4">
                           <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                            <div className="form-group col-4">
+                            <div className="form-group col-4" >
                             <ReactToPrint
                             trigger={() =>  
-                            <button className="btn btn-sm btn-primary borderRadiusRound">
+                            <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
                             <i className="fa fa-print"></i>
                             </button>}
                             content={() => componentRef.current}
@@ -154,14 +213,26 @@ const StockReport = () => {
                           />
                             </div>
 
-                          
                             <div className="form-group col-4">
-                                <button className="btn btn-sm btn-success borderRadiusRound">
-                                  <i
-                                    className="fa fa-file-pdf-o"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
+                                  <button className="btn btn-sm  borderRadiusRound text-white" 
+                                  onClick={downloadPdf}
+                                  type="button"
+                                  style={{ backgroundColor: "#003A4D" }}>
+                                    <i
+                                      className="fa fa-file-pdf-o"
+                                      aria-hidden="true"
+                                    ></i>
+                                  </button>
+                            </div>
+                            <div className="form-group col-4">
+                            <CSVLink {...csvReport}>
+                                  <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
+                                    <i
+                                      className="fa fa-file-excel-o"
+                                      aria-hidden="true"
+                                    ></i>
+                                  </button>
+                                  </CSVLink>
                             </div>
                           </ul>
                         </div>

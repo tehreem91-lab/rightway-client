@@ -2,17 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 import axios from "axios";
+import { endPoint } from "../../../config/Config";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import CustomInnerHeader from "../../Components/CustomInnerHeader";
-import { customStyles } from "../../Components/reactCustomSelectStyle";
+import CustomInnerHeader from "../../../Components/CustomInnerHeader";
+import { customStyles } from "../../../Components/reactCustomSelectStyle";
 import ReactToPrint from "react-to-print";
 import  {CSVLink}  from "react-csv";
-import { endPoint } from "../../config/Config";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 
-const StoreTransactionReport = () => {
+const StockLedgerReport = () => {
   let componentRef = useRef();
 
   var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
@@ -28,49 +26,13 @@ const StoreTransactionReport = () => {
   const [ReportData, setReportData] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [isLoader, setisLoader] = useState(true);
-  const [StoreAccountOption, setStoreAccountOption] = useState([]);
+  const [StockAccountOption, setStockAccountOption] = useState([]);
   const [PartyAccountOption, setPartyOption] = useState([]);
-  const [StoreAccountvalue, setStoreAccountvalue] = useState("");
+  const [StockAccountvalue, setStockAccountvalue] = useState("");
   const [PartAccountvalue, setPartvalue] = useState("");
   const [Stock_typevalue, setStock_typevalue] = useState("")
-  const [Exceldata, setExceldata] = useState([])
-   ////////////////////////////For Downloading PDF Files////////////////////////////
-   const downloadPdf = async () => {
-    var data = document.getElementById("report");
-    //$("pdfOpenHide").attr("hidden", true);
-    // To disable the scroll
-    document.getElementById("report").style.overflow = "inherit";
-    document.getElementById("report").style.maxHeight = "inherit";
-
-    await html2canvas(data).then((canvas) => {
-      const contentDataURL = canvas.toDataURL("image/png", 1.0);
-      // enabling the scroll
-      //document.getElementById("report").style.overflow = "scroll";
-      //document.getElementById("report").style.maxHeight = "150px";
-
-      let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
-
-      let imgWidth = 300;
-      let pageHeight = pdf.internal.pageSize.height;
-      let imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      window.open(
-        pdf.output("bloburl", { filename: "new-file.pdf" }),
-        "_blank"
-      );
-    });
-  };
+  const [Exceldata, setExceldata] = useState([]);
+  const [innerledgerReport, setInnerLedgerReport ] = useState([])
   const options = [
     { value: 'CMT', label: 'CMT' },
     { value: 'Purchase', label: 'Purchase' },
@@ -78,13 +40,13 @@ const StoreTransactionReport = () => {
 
   const showNavMenu = useSelector((state) => state.NavState);
 // Account selector
-  const StoreAccount = () => {
+  const StockAccount = () => {
     var axios = require("axios");
     var data = "";
 
     var config = {
       method: "get",
-      url: "http://rightway-api.genial365.com/api/Stock/GetStoreAccounts",
+      url: "http://rightway-api.genial365.com/api/Stock/GetStockAccounts",
       headers: {
         Authorization: `bearer ${
           JSON.parse(localStorage.getItem("access_token")).access_token
@@ -94,19 +56,24 @@ const StoreTransactionReport = () => {
     };
 
     axios(config).then(function (response) {
+  
+      //  setStockAccountOption(response.data.unshift()
+      
+       
       let res=response.data.map((item,i) => {
-        return {
-        
-          value: item.item_id,
-          label: item.item_name,
-        };
-      })
-      setStoreAccountOption([{
-             value:-1,
-             label:"All"
-         },...res,]
-    
-    )
+          return {
+          
+            value: item.item_id,
+            label: item.item_name,
+          };
+        })
+        setStockAccountOption([{
+               value:-1,
+               label:"All"
+           },...res,]
+      
+      )
+      
     });
   };
 
@@ -138,20 +105,20 @@ const PartyAccount = ()=>{
     });
 }
 
-const Get_Transaction_Report =(e)=>{
+const Get_Ledger_Report =(e)=>{
 
     var axios = require('axios');
     var data = '';
-    if ( StoreAccountvalue === ""|| PartAccountvalue === "" || Stock_typevalue === "" || dateFrom === "" || dateto === "") {
+    if ( StockAccountvalue=== ""|| PartAccountvalue === "" || Stock_typevalue ==="" || dateFrom === "" || dateto === "") {
         setValidationState(false);
     }else{
 
-
     setisLoader(false)
+    
 
     var config = {
     method: "get",
-    url: `http://rightway-api.genial365.com/api/Stock/GetStoreTransactionReport?item_id=${StoreAccountvalue.value}&party_id=${PartAccountvalue.value}&stock_type=${Stock_typevalue.value}&date_from=${dateFrom}&date_to=${dateto}`,
+    url: `http://rightway-api.genial365.com/api/Stock/GetStockLadgerReport?dateFrom=2022-09-09&dateTo=2026-09-09&chart_id=1252`,
     headers: {
       Authorization: `bearer ${
         JSON.parse(localStorage.getItem("access_token")).access_token
@@ -162,12 +129,14 @@ const Get_Transaction_Report =(e)=>{
     }
   axios(config)
   .then(function (response) {
-   
-    setReportData(response.data)
+    console.log(response.data)
+    setReportData([response.data])
+    setInnerLedgerReport(response.data.ladger_detail_general)
+    console.log(innerledgerReport)
     setisLoader(true)
     setisLoading(false)
     setExceldata(response.data.map((val) =>{
-      
+   
       return{
           
         voucher_date : val.voucher_date,
@@ -178,7 +147,6 @@ const Get_Transaction_Report =(e)=>{
         stock_out:val.stock_out,
         rate: val.amount,
         amount: val.amount,
-        
   
   
       }
@@ -186,6 +154,7 @@ const Get_Transaction_Report =(e)=>{
     }))
   })
   .catch(function (error) {
+    setisLoader(true)
   });
 }
 
@@ -202,13 +171,13 @@ const headers = [
 ];
 
 const csvReport = {
-  filename: "StoreTransactionReport.csv",
+  filename: "StockLedgerReport.csv",
   headers: headers,
   data: Exceldata
 };
 
   useEffect(() => {
-    StoreAccount()
+    StockAccount()
     PartyAccount()
   }, []);
 
@@ -223,7 +192,7 @@ const csvReport = {
         }   `}
       >
         <CustomInnerHeader
-          moduleName="Store Transaction Report"
+          moduleName="Ledger Report"
           isShowSelector={true}
         />
       </div>
@@ -261,13 +230,16 @@ const csvReport = {
                         isSearchable={true}
                         styles={customStyles}
                         placeholder={"Select Accounts"}
-                        options={StoreAccountOption}
-                        value={StoreAccountvalue}
-                        onChange={(e)=>setStoreAccountvalue(e) }
+                        options={StockAccountOption}
+                        value={StockAccountvalue}
+                        onChange={(e)=>{setStockAccountvalue(e)
+                          }
+                        }
+                       
                       />
-                      {validationState === false && StoreAccountOption === "" && (
+                      {validationState === false && StockAccountvalue === "" && (
                         <span className="text-danger">First Select this </span>
-                      )}
+                    )}
                     </div>
                   </div>
                 </div>
@@ -292,7 +264,7 @@ const csvReport = {
                       />
                       {validationState === false && PartAccountvalue === "" && (
                         <span className="text-danger">First Select this </span>
-                      )}
+                    )}
                     </div>
                   </div>
                 </div>
@@ -314,10 +286,10 @@ const csvReport = {
                         onChange={(e)=>{
                             setStock_typevalue(e)
                         }}
-                      />
-                      {validationState === false && Stock_typevalue === "" && (
+                      /> 
+                       {validationState === false && Stock_typevalue === "" && (
                         <span className="text-danger">First Select this </span>
-                      )}
+                    )}
                     </div>
                   </div>
                 </div>
@@ -384,7 +356,7 @@ const csvReport = {
                         className="btn bg-customBlue text-light mt-2"
                         type="submit"
                         onClick={() => {
-                          Get_Transaction_Report()
+                            Get_Ledger_Report()
                         }}
                       >
                         Run Report
@@ -401,60 +373,60 @@ const csvReport = {
 
             {!isLoading && (
               <>
+              <span> 
+              <div className="row mx-4 mt-4">
+              {ReportData.map((item,i)=>{
+                return(
+                  <>
+                <b>Opening Quantity As on Date: {dateFrom} :No {item.opening_values.opening_Quantity1}: Total Amount:</b> 
+
+                  </>
+                )
+              })}
+          
+              </div>
+              </span>
               <span className="section mb-0 pb-1 mt-4 ">
               <div className="row">
                 <div className="col-5 ">
-                  <i className="fa fa-list mx-1 mt-4"></i>&nbsp;Report Data
+                  <i className="fa fa-list mx-1 mt-2"></i>&nbsp;Report Data
                 </div>
                 <div className="col-7 text-right px-0 ">
                       <div className="col-md-5"> </div>
                       <div className="col-md-4  text-left "> </div>
-                      <div className="col-md-3 p-2">
-                      <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                      <div className="form-group col-md-3">
-  
-                        <ReactToPrint className="form-group col-md-3"
-                          trigger={() => {
-                            return (
-                              <button className="btn btn-sm  borderRadiusRound" title="Print" style={{ backgroundColor: "#003A4D", color: "white" }}>
-                                <i className="fa fa-print"></i>
-                              </button>
-                            );
-                          }}
+                      <div className="col-md-3 pr-4">
+                        <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                          <div className="form-group col-4">
+                          <ReactToPrint
+                          trigger={() =>  
+                          <button className="btn btn-sm btn-primary borderRadiusRound">
+                          <i className="fa fa-print"></i>
+                          </button>}
                           content={() => componentRef.current}
-                          documentTitle="new docs"
-                          pageStyle="print"
+                          documentTitle='new docs'
                         />
-                      </div>
-  
-                      <div className="form-group col-md-3">
-                        <button
-                          className="btn btn-sm  borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
-                          onClick={downloadPdf}
-                          type="button"
-                        >
-                          <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                        </button>
-                      </div>
-                      <div className="form-group col-md-3">
-                        <CSVLink {...csvReport}>
-                          <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
-                            <i
-                              className="fa fa-file-excel-o"
-                              aria-hidden="true"
-                            ></i>
-                          </button>
-                        </CSVLink>
-                      </div>
-                    </ul>
+                          </div>
+
+                        
+                          <div className="form-group col-4">
+                          <CSVLink {...csvReport}>
+                              <button className="btn btn-sm btn-success borderRadiusRound">
+                                <i
+                                  className="fa fa-file-pdf-o"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                              </CSVLink>
+                          </div>
+                        </ul>
                       </div>
                     </div>
               </div>
             </span>
-                <div id="report" className="x_content mt-3 " ref={componentRef}>
+                <div id="report" className="x_content mt-2 " ref={componentRef} style={{ overflow: 'scroll' ,height: '400px'}}>
                   <div className="displayPropertyForPrint">
                     <h2 className="text-dark text-center font-weight-bold  ">
-                      Store Transaction Report
+                      Ledger Report
                     </h2>
                     <div className="row pb-2">
                       <div className="col-md-6 col-6 text-dark ">
@@ -475,40 +447,47 @@ const csvReport = {
                       </div>
                     </div>
                   </div>
-                  <div className="container p-2">
+                 <div className="container p-2">
                   <div
                     className=" row   reportTableHead bottom-border-1   "
-                    style={{ fontSize: 11 }}
+                      style={{fontSize: 12,position: 'sticky', top: '0',zIndex: '1'}}
                   >
                     <div className="col-md-1 col-1  p-1 right-border-1 my-1">
                       DATE
                     </div>
-                    <div className="col-md-2 col-2  text-center p-1  right-border-1 my-1 ">
+                    <div className="col-md-1 col-1  text-center p-1  right-border-1 my-1 ">
                       INVOICE NO
                     </div>
-                    <div className="col-md-3 col-3 text-center p-1  right-border-1 my-1  ">
-                      ACCOUNT TITLE
-                    </div>
+                  
                     <div className="col-md-2 col-2   text-center  p-1 right-border-1 my-1   ">
                       NARRATION
                     </div>
                     <div className="col-md-1 col-1 text-center p-1  right-border-1 my-1   ">
-                      STORE IN
+                      STOCK IN
                     </div>
                     <div className="col-md-1 col-1 text-center p-1 right-border-1 my-1   ">
-                      STORE OUT
+                      STOCK OUT
                     </div>
 
                     <div className="col-md-1 col-1 text-center p-1  right-border-1 my-1   ">
                       RATE
                     </div>
 
-                    <div className="col-md-1 col-1 text-center p-1    my-1 ">
+                    <div className="col-md-1 col-1 text-center p-1 right-border-1    my-1 ">
                       AMOUNT
                     </div>
+                    <div className="col-md-2 col-2 text-center p-1  right-border-1 my-1  ">
+                    AVAILABLE STOCK 
+                  </div>
+                  <div className="col-md-1 col-1 text-center p-1  right-border-1 my-1  ">
+                  STOCK AMOUNT 
+                </div>
+                <div className="col-md-1 col-1 text-center p-1   my-1  ">
+                AVG.RATE
+              </div>
                   </div>
 
-                  {ReportData.length === 0 ? (
+                  {innerledgerReport.length === 0 ? (
                     <div
                       className="row   reportTableBody bottom-border-2"
                       style={{ fontSize: 11 }}
@@ -519,87 +498,59 @@ const csvReport = {
                     </div>
                   ) : (
                     <>
-                    {ReportData.map((data,i)=>{
+                    {innerledgerReport.map((data,i)=>{
                         return(
                           <>
                           <div
                           className=" row   reportTableBody bottom-border-2  "
-                          style={{ fontSize: 12, border: "black" }}
+                      
                         >
-                          <div className="col-md-1 col-1  p-1 left-border-2 text-left right-border  ">
-                            {`${data.voucher_date.slice(
-                              8,
-                              10
-                            )}-${data.voucher_date.slice(
-                              5,
-                              7
-                            )}-${data.voucher_date.slice(0, 4)}`}
+                         
+                          <div className="col-md-1 col-1   p-1  left-border-2 text-left  right-border-2  ">
+                          {`${data.voucher_date.slice(
+                            8,
+                            10
+                          )}-${data.voucher_date.slice(
+                            5,
+                            7
+                          )}-${data.voucher_date.slice(0, 4)}`}
                           </div>
-                          <div className="col-md-2 col-2   p-1  left-border-2 text-left  right-border-2  ">
-                            {data.voucher_inv}
+                          <div className="col-md-1 col-1   p-1  text-left  right-border-2  ">
                           </div>
-                          <div className="col-md-3 col-3  p-1  right-border-2  ">
-                            {data.item_name}
+                          <div className="col-md-2 col-2   p-1  text-left  right-border-2  ">
                           </div>
-                          <div className="col-md-2 col-2     p-1 text-right  right-border-2    ">
-                             Naration
+                          <div className="col-md-1 col-1   p-1  text-left  right-border-2  ">
                           </div>
-                          <div className="col-md-1 col-1   p-1 text-right  right-border-2    ">
-                            {data.stock_in}
+                          <div className="col-md-1 col-1   p-1  text-left  right-border-2  ">
                           </div>
-                          <div className="col-md-1 col-1    p-1 text-right  right-border-2    ">
-                            {data.stock_out}
+                          <div className="col-md-1 col-1   p-1  text-left  right-border-2  ">
                           </div>
-  
-                          <div className="col-md-1 col-1  p-1 text-right   right-border-2    ">
-                            Rate
+                          <div className="col-md-1 col-1   p-1  text-left  right-border-2  ">
                           </div>
-  
-                          <div className="col-md-1 col-1  p-1 text-right   right-border-2   ">
-                            {data.amount}
+                          <div className="col-md-2 col-2   p-1  text-left  right-border-2  ">
+                          </div>
+                          <div className="col-md-1 col-1   p-1  text-left  right-border-2  ">
+                          </div>
+                          <div className="col-md-1 col-1   p-1  text-left  right-border-2  ">
                           </div>
                         </div>
 
                       
                           
+                          
                           </>
                         )
                       
                     })}
-                    <div
-                    className=" row   reportTableBody bottom-border-2  "
-                    style={{ fontSize: 12 }}
-                  >
-                    <div className="col-md-1 col-1  p-2 left-border-2  ">
-                  
-                    </div>
-                    <div className="col-md-2 col-2   p-1 left-border-2  right-border-2  ">
-                    </div>
-                    <div className="col-md-3 col-3    p-1  right-border-2  ">
-                    </div>
-                    <div className="col-md-2 col-2    p-1  text-right right-border-2    ">
-                      Grand Total:
-                    </div>
-                    <div className="col-md-1 col-1  p-1  text-right   right-border-2    ">
-                      {ReportData.map(data => data.stock_in).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
-                    </div>
-                    <div className="col-md-1 col-1  p-1  text-right  right-border-2    ">
-                      {ReportData.map(data => data.stock_out).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
-                    </div>
 
-                    <div className="col-md-1 col-1 text-right p-1  text-right  right-border-2    ">
-                      Rate
-                    </div>
+                    
 
-                    <div className="col-md-1 col-1 text-right p-1  right-border-2   ">
-                      {ReportData.map(data => data.amount).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
-                    </div>
-                  </div>
                       
                     </>
                   )}
-                  </div>
                 </div>
+               </div>
+
               </>
             )}
             {/* ---------- */}
@@ -610,4 +561,4 @@ const csvReport = {
   );
 };
 
-export default StoreTransactionReport;
+export default StockLedgerReport;

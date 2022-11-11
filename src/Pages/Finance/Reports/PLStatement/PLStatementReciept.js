@@ -19,7 +19,7 @@ const PLStatementReciept = React.forwardRef(
           >
             {" "}
             <Tab eventKey="profile" title="Income" disabled>
-              <div className="row" ref={ref}>
+              <div className="row" id="report" ref={ref}>
                 <div className="col-md-6 px-0">
                   <div className="div_to_print_income">
                     <div className="displayPropertyForPrint">

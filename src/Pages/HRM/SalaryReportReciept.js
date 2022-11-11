@@ -182,53 +182,53 @@ const SalaryReportReciept = React.forwardRef(
                             <div className="table-responsive px-3 pb-2 ">
 
                                 <div className="row  mx-3 ">
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5 bold-5   text-dark ">   Main Voucher No: </div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.main_voucher_inv} </div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5 bold-5  col-5  text-dark ">   Main Voucher No: </div>
+                                            <div className="col-md-5  bold-6 col-5 text-dark "> {attendenceData?.main_voucher_inv} </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5  bold-5  text-dark ">Single Voucher No:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.single_voucher_inv} </div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5  bold-5 col-5 text-dark ">Single Voucher No:</div>
+                                            <div className="col-md-5  bold-6 col-5 text-dark "> {attendenceData?.single_voucher_inv} </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5  bold-5  text-dark ">Employee Code:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.employee_code}</div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5  bold-5 col-5 text-dark ">Employee Code:</div>
+                                            <div className="col-md-5  bold-6 col-5 text-dark "> {attendenceData?.employee_code}</div>
                                         </div>
                                     </div>
 
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5  bold-5  text-dark ">Status:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.status} </div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5  bold-5 col-5 text-dark ">Status:</div>
+                                            <div className="col-md-5  bold-6 col-5 text-dark "> {attendenceData?.status} </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5  bold-5  text-dark ">Employee Name:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.employee_name}</div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5  bold-5  text-dark col-5 ">Employee Name:</div>
+                                            <div className="col-md-5  bold-6  text-dark col-5"> {attendenceData?.employee_name}</div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5  bold-5  text-dark ">User Name:</div>
-                                            <div className="col-md-5  bold-6  text-dark "> {attendenceData?.created_by?.UserName}</div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5  bold-5 col-5 text-dark ">User Name:</div>
+                                            <div className="col-md-5  bold-6 col-5 text-dark "> {attendenceData?.created_by?.UserName}</div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5 bold-5     text-dark ">Salary Type: </div>
-                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData?.salary_type} </div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5 bold-5  col-5   text-dark ">Salary Type: </div>
+                                            <div className="col-md-5  bold-6 col-5  text-dark ">{attendenceData?.salary_type} </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="row">
-                                            <div className="col-md-5 bold-5     text-dark "> Date: </div>
-                                            <div className="col-md-5  bold-6   text-dark ">{attendenceData?.date} </div>
+                                    <div className="col-md-6 col-6">
+                                        <div className="row row-1">
+                                            <div className="col-md-5 bold-5  col-5   text-dark "> Date: </div>
+                                            <div className="col-md-5  bold-6 col-5  text-dark ">{attendenceData?.date} </div>
                                             {/* <div className="col-md-9  bold-6   text-dark " style={{ marginLeft: "-8px" }}>{attendenceData.date} </div> */}
                                         </div>
                                     </div>
@@ -414,79 +414,79 @@ const SalaryReportReciept = React.forwardRef(
                             </div>
                             <div className="row mx-3  reportTableHead mt-2">
 
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
                                     Overtime
                                 </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
                                     Working Hours
                                 </div>
 
-                                <div className="col-md-2 font-size-12  text-center  my-1 ">
+                                <div className="col-md-2 col-2 font-size-12  text-center  my-1 ">
                                     Primary Salary
                                 </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
                                     Allowence Amount
                                 </div>
-                                <div className="col-md-2 font-size-12  text-center  my-1 ">
+                                <div className="col-md-2 col-2 font-size-12  text-center  my-1 ">
                                     Gross Salary
                                 </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
                                     Loan Deductions
                                 </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
                                     Advance Deductions
                                 </div>
-                                <div className="col-md-1 font-size-12  text-center  my-1 ">
+                                <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
                                     Total Deductions
                                 </div>
-                                <div className="col-md-2 font-size-12  text-center  my-1 ">
+                                <div className="col-md-2 col-2 font-size-12  text-center  my-1 ">
                                     Net Salary
                                 </div>
 
                             </div>
 
                             <div className="row mx-3  reportTableBody bottom-border-2">
-                                <div className="col-md-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                <div className="col-md-1 col-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
                                     {attendenceData?.over_time}
                                 </div>
-                                <div className="col-md-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
+                                <div className="col-md-1 col-1    font-size-12    py-1  right-border-2 pt-1  d-flex justify-content-center align-items-center ">
                                     {attendenceData?.total_working_hour}
                                 </div>
 
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                <div className="col-md-2 col-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
                                     {attendenceData?.pm_salary}
                                 </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
                                     {attendenceData?.allowence_amount}
                                 </div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                <div className="col-md-2 col-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
                                     {attendenceData?.gross_salary}
                                 </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
                                     {attendenceData?.loan_deduction}
                                 </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
                                     {attendenceData?.advance_deduction}
                                 </div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
                                     {attendenceData?.total_deduction}
                                 </div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
+                                <div className="col-md-2 col-2    font-size-12  text-left  py-1 pt-1 right-border-2   d-flex justify-content-start align-items-center ">
                                     {attendenceData?.net_salary}
                                 </div>
                             </div>
 
                             <div className="row mx-3  reportTableBody bottom-border-2">
 
-                                <div className="col-md-1    font-size-12   bold-6   py-1 pt-1     d-flex justify-content-start align-items-center ">  </div>
-                                <div className="col-md-1    font-size-12    py-1    pt-1  d-flex justify-content-center align-items-center "> </div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
-                                <div className="col-md-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1 col-1    font-size-12   bold-6   py-1 pt-1     d-flex justify-content-start align-items-center ">  </div>
+                                <div className="col-md-1 col-1    font-size-12    py-1    pt-1  d-flex justify-content-center align-items-center "> </div>
+                                <div className="col-md-2 col-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-2 col-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-1 col-1    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
+                                <div className="col-md-2 col-2    font-size-12  text-left  py-1 pt-1     d-flex justify-content-start align-items-center "></div>
 
                             </div>
                         </div>

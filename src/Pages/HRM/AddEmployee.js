@@ -15,13 +15,13 @@ import CustomInnerHeader from '../../Components/CustomInnerHeader';
 function AddEmployee() {
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(true);
-
+    const Statuses = [{ label: 'All', value: 2 }, { label: 'Active', value: 0 }, { label: 'Left', value: 1 }]
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [lgShow, setLgShow] = useState(false);
-
-
+    const [rerender, setrerender] = useState(true)
+    const [filterEmp, setfilterEmp] = useState([])
     const [ListOfEmployee, setListOfEmployee] = useState([]);
     const [employeeToUpdate, setEmployeeToUpdate] = useState({});
     const [allEmpListConst, setAllEmpListConst] = useState([]);
@@ -145,6 +145,26 @@ function AddEmployee() {
             })
             .catch((error) => console.log("error", error));
     };
+    const changeStatus = (e, id) => {
+        var axios = require('axios');
+
+        var config = {
+            method: 'put',
+            url: `http://rightway-api.genial365.com/api/UpdateEmpStatus?id=${id}`,
+            headers: {
+                'Authorization': 'Bearer kpoicqzOCmJiRaaNjxETBxNCsn3tvz5fyxnDvNZUIl03grOCKnWCLibjYCCSVX6jRBrVT3Q6tLpz3WYdZY-LcLQdy8fNTIrnpd7zCyI2a-lMT9rCCZmJC6QkxkOsUc1J1hzoXwJZW1hbQAP-m1WdXUIQ1gpdi-NiVrIEe50wxJoJ77XhW2rFYbHq2jmVt70Z3SEd7pvW9Swx01LFDLhcz115vwhnP0Q1ru0MWVlFevKk0b4R6nAZSQQLYV0ttSsERjcUfV3XTLSRHHxWX7rQ4ZkcX7_F3WjxhnUUpQt6vcjyGhe5BpQgvljwUlNgqqTIs7hTDC7zh9jdQ8oCiEqT0EfNvb5DyOK1HrI3TQ5Mn7pLZQNth7WARppCHItlLRyIfFLgcOnDZRf7wU_65tYix_tnNLkZE-Lf0MfUMgNIsCbGQtyhs81MUWSeRcKl7KoqVI9ezDLZWxiVJL03fF8H2gE1uiyCm8Eh4KAdS45tS9YVwy6kXG68UoCeG71DwUQYqKzMjfJ7HJ8AX1jwDNOuZg'
+            }
+        };
+
+        axios(config)
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+
+            });
+
+    }
 
     const fileHandle3ForUpdate = (e) => {
         setdisableSubmitForUpdatePhoto(true);
@@ -203,9 +223,12 @@ function AddEmployee() {
         fetch(URL + "api/EmployeeDetails/GetData", requestOptions)
             .then((response) => {
                 response.json().then((data) => {
-                    setListOfEmployee(data);
                     setAllEmpListConst(data);
                     setEmployeeStatusState(data)
+                    const numAscending = ([...data]).sort((a, b) => { return a?.employee_code?.localeCompare(b?.employee_code) });
+
+                    setListOfEmployee(numAscending);
+                    setfilterEmp(data)
                     //setFileEntity(data.attachments.split(","))
                     // if (response.data.attachments !== "") {
                     //     setFileEntity(response.data.attachments.split(","));
@@ -551,7 +574,7 @@ function AddEmployee() {
                     //     amount: ""
                     // }])
 
-                    //setStatusFilterValue(statusFilterOptions[0])
+                    // setStatusFilterValue(statusFilterOptions[0])
                     toast.success(
                         "Employee updated successfully")
                 } else {
@@ -600,6 +623,24 @@ function AddEmployee() {
 
 
     };
+    const searchItem = (e) => {
+
+        var allData = filterEmp;
+
+        setListOfEmployee(filterEmp);
+        // eslint-disable-next-line array-callback-return
+        var filteredData = allData.filter((obj) => {
+            var data = Object.keys(obj)
+                .filter((key) => obj[key]?.toString()?.toLowerCase()?.includes(e))
+                .reduce((cur, key) => {
+                    return Object.assign(cur, { [key]: obj[key] });
+                }, {});
+            if (Object.keys(data).length !== 0) {
+                return obj;
+            }
+        });
+        setListOfEmployee(([...filteredData]).sort((a, b) => { return a?.employee_code?.localeCompare(b?.employee_code) }));
+    };
 
     useEffect(() => {
         fetchAllData();
@@ -618,7 +659,7 @@ function AddEmployee() {
                         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
                             }   `}
                     >
-                       <CustomInnerHeader moduleName="Employee Managment" isShowSelector={true} />
+                        <CustomInnerHeader moduleName="Employee Details" isShowSelector={true} />
                     </div>
                     <div
                         role="main"
@@ -821,26 +862,45 @@ function AddEmployee() {
                                         <div className="col-5 ">
                                             <i className='fa fa-list'></i>&nbsp;Listing
                                         </div>
-                                        {/* <div className="col-7 text-right px-0 ">
+
+                                        <div className="col-7 text-right px-0 ">
                                             <div className="col-md-5"> <input
                                                 type="text"
                                                 placeholder="Search Filter"
                                                 className="form-control height-button   "
-                                            // onChange={(e) => searchItem((e.target.value).toLowerCase())}
+                                                onChange={(e) =>
+
+                                                    searchItem((e.target.value).toLowerCase())
+                                                }
                                             /></div>
                                             <div className="col-md-4  text-left ">
                                                 <Select
+                                                    menuPortalTarget={document.body}
+                                                    style={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                                                     className="basic-single"
                                                     classNamePrefix="select"
-                                                    defaultValue={"Active"}
-                                                    // value={statusFilterValue}
-                                                    // onChange={(value) => {
-                                                    //     setStatusFilterValue(value)
-                                                    //     updateEmployeeStatusBase(value)
-                                                    // }}
-                                                    // isSearchable={true}
-                                                    // name="color"
-                                                    // options={statusFilterOptions}
+                                                    onChange={(e) => {
+
+                                                        if (e.value == 2) {
+
+
+                                                            let data=filterEmp.filter((item) =>
+                                                                ((item?.status == 1) || (item?.status == 0))
+
+                                                            );
+                                                            setListOfEmployee(([...data]).sort((a, b) => { return a?.employee_code?.localeCompare(b?.employee_code) }));
+                                                            setrerender(!rerender)
+                                                        }
+                                                        else {
+                                                           let filteredData= filterEmp.filter((item) =>
+                                                                (item?.status == e.value)
+
+                                                            );
+                                                            setListOfEmployee(([...filteredData]).sort((a, b) => { return a?.employee_code?.localeCompare(b?.employee_code) }));
+                                                        }
+
+                                                    }}
+                                                    options={Statuses}
                                                     styles={customStyles}
                                                 /></div>
                                             <div className="col-md-3 pr-4">
@@ -848,7 +908,7 @@ function AddEmployee() {
                                                     Add New <i className="ml-2 fa fa-plus-square"></i>
                                                 </Button>
                                             </div>
-                                        </div> */}
+                                        </div>
 
 
 
@@ -856,9 +916,9 @@ function AddEmployee() {
                                     </div>
                                 </span>
 
-                                <div className="table-responsive px-3 pb-2">
-                                    <table className="table table-striped jambo_table bulk_action">
-                                        <thead>
+                                <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll', height: '400px' }}>
+                                    <table className="table table-striped jambo_table bulk_action"   >
+                                        <thead style={{ position: 'sticky', top: '0', zIndex: '1' }}>
                                             <tr className="headings  ">
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="7%"> Emp.Code</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Emp.Name</th>
@@ -890,7 +950,7 @@ function AddEmployee() {
                                         <tbody>
                                             {ListOfEmployee.map((item, index) => {
                                                 return (
-                                                    <tr className="even pointer" key={item.empCode}>
+                                                    <tr className="even pointer" key={index}>
                                                         <td className=" ">{item.employee_code}</td>
                                                         <td className=" ">{item.employee_name}</td>
                                                         <td className=" ">{item.sur_name}</td>
@@ -912,12 +972,20 @@ function AddEmployee() {
                                                         <td className="text-left "> {item.allowed_holidays}</td>
                                                         <td className="text-left "> {item.holiday_assigned}</td>
                                                         <td className="text-left "> {item.shift?.shift_name}</td> */}
-                                                        <td className="text-left ">  {
-                                                            item.status == 0
-                                                                ? 'Left'
-                                                                : 'Active'
-                                                        }</td>
-                                                        {/* <td className="text-left "> {item.benefits.benefit_title}</td> */}
+                                                        {/* // */}
+                                                        <td ><input type="checkbox" checked={item.status == 0 ? true : false} onChange={(e) => {
+                                                            let rec = [...ListOfEmployee];
+
+                                                            if (rec[index].status == 1) {
+                                                                rec[index].status = 0;
+                                                            }
+                                                            else {
+                                                                rec[index].status = 1
+                                                            }
+                                                            setListOfEmployee(rec)
+                                                            changeStatus(e, item.employee_id)
+                                                        }} /></td>
+
                                                         <td className=" text-center   ">
                                                             <i className="fa fa-edit mr-2" onClick={() => {
 

@@ -181,7 +181,7 @@ const EmployeeProfile = () => {
                         </span>
 
                         <div className="row">
-                            <div className="field item form-group col-md-12 col-sm-12">
+                            <div className="field item form-group col-md-10 col-sm-12">
 
 
                                 <label className="col-form-label col-md-2 col-sm-2 label-align">
@@ -209,8 +209,7 @@ const EmployeeProfile = () => {
 
 
                             </div>
-                        </div>
-                        <div className="col-md-12 text-right x_footer">
+                            <div className="col-md-2 text-right ">
                             <button
                                 className="btn btn-primary"
                                 type="submit"
@@ -235,16 +234,21 @@ const EmployeeProfile = () => {
                                 }}
                             >
                                 Show Report
+                                {isLoading && 
+                  (
+                   <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                  )
+               }
                             </button>
                         </div>
+                        </div>
+                       
                     </div>
                 </div>
 
                 <>
                     {isLoading ? (
-                        <>
-                            <Loader />
-                        </>
+                       <> </>
                     ) : (
 
                         <div className="">

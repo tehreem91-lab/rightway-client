@@ -47,7 +47,6 @@ const Purchase = () => {
         }
         setIsValidateOK(ValidationOk)
         if (ValidationOk === true) {
-
             var config = {
                 method: 'get',
                 // http://rightway-api.genial365.com/api/PurchaseVoucher/PurchaseHistory?dateFrom=09-09-2022&dateTo=02-10-2029&purchase_status=pending
@@ -76,7 +75,7 @@ const Purchase = () => {
                <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
                 <CustomInnerHeader moduleName={"Purchase"} isShowSelector={true} />
             </div>
-            <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  ${showNavMenu === false ?
+            <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  heightFixForFAult${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
                 <div className="row">
                     <div className="col-md-5 ">
@@ -166,7 +165,7 @@ const Purchase = () => {
                             <div className="x_content  ">
                                 <div className="table-responsive" style={{ height: '400px', overflow: 'scroll' }}>
                                     <table className="table table-striped jambo_table bulk_action">
-                                        <thead>
+                                        <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                             <tr className="headings positionFixed">
                                                 <th className="column-title   text-left" width="50%">Purchase Inv</th>
                                                 <th className="column-title     text-right " width="50%"></th>

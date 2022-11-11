@@ -14,6 +14,7 @@ const CreateJob = () => {
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
     const dateToday = `${year}-${month}-${day}`
+
     const [fileupload, setfileupload] = useState('')
     const [filearray, setfilearray] = useState([])
     const [proName, setproName] = useState([])
@@ -88,9 +89,9 @@ const CreateJob = () => {
         if (JobData.job_incharge_id == "") {
             isValidationOk = false
         }
-        if (JobData.job_description == "") {
-            isValidationOk = false
-        }
+        // if (JobData.job_description == "") {
+        //     isValidationOk = false
+        // }
         // if ( JobData.attachments == "") {
         //     isValidationOk = false
         // }
@@ -188,9 +189,9 @@ const CreateJob = () => {
         if (JobData.job_incharge_id == "") {
             isValidationOk = false
         }
-        if (JobData.job_description == "") {
-            isValidationOk = false
-        }
+        // if (JobData.job_description == "") {
+        //     isValidationOk = false
+        // }
         // if ( JobData.attachments == "") {
         //     isValidationOk = false
         // }
@@ -235,7 +236,7 @@ const CreateJob = () => {
                         ("Added" + " successfully!")
                     );
                     dataupdate = false;
-
+                 
                     setJobdata({
                         customer_chart_id: 0,
                         stock_type: "",
@@ -255,12 +256,13 @@ const CreateJob = () => {
                         attachments: "",
                         machine_entries: []
                     })
+                  
                     setfilearray([]);
-                    setmachine_ids([]);
-
-                    setproIdData([])
                    
-                    setTimeout( function() { window.location.reload() }, 6000);
+                    setmachine_ids([]);
+                 
+                    setproIdData([])
+                  
                    
                 })
                 .catch(function (error) {
@@ -604,7 +606,7 @@ const CreateJob = () => {
                                 </div>
                                 <div className="field item form-group">
                                     <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
-                                        Description<span className="required">*</span>
+                                        Description
                                     </label>
                                     <div className="col-md-8 col-sm-6">
                                         <input required
@@ -619,7 +621,7 @@ const CreateJob = () => {
                                 </div>
                                 <div className="field item form-group">
                                     <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
-                                        Attachments<span className="required">*</span>
+                                        Attachments
                                     </label>
                                     <div className="col-md-7 col-sm-6">
                                         <input required
@@ -656,7 +658,7 @@ text/plain, application/pdf, image/*" onChange={(e) => {
                                     <div className="col-md-8 col-sm-6">
 
                                         {machineId.map((data, i) => (<div><input className="form-check-input" style={{ width: '15px', height: '15px' }} type="checkbox" name="machines"
-                                            checked={location?.state?.flag && valChecked(data.machine_id)}
+                                            checked={location?.state?.flag && valChecked(data.machine_id) || valChecked(data.machine_id) }
                                             value={data.machine_id}
                                             onChange={(e) => checkboxUpdate(data, e)} /><label className="form-check-label m-1" >{data.machine_model_name}</label></div>))}
                                         {!isValidateAllStates && (JobData.machine_entries == "") && <span className="text-danger">First Select this </span>}

@@ -12,6 +12,43 @@ import { CSVLink } from "react-csv";
 import Pdf from "react-to-pdf";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+
+const downloadPdf = async () => {
+  var data = document.getElementById("report");
+  //$("pdfOpenHide").attr("hidden", true);
+  // To disable the scroll
+  document.getElementById("report").style.overflow = "inherit";
+  document.getElementById("report").style.maxHeight = "inherit";
+
+  await html2canvas(data).then((canvas) => {
+    const contentDataURL = canvas.toDataURL("image/png", 1.0);
+    // enabling the scroll
+    //document.getElementById("report").style.overflow = "scroll";
+    //document.getElementById("report").style.maxHeight = "150px";
+
+    let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+
+    let imgWidth = 300;
+    let pageHeight = pdf.internal.pageSize.height;
+    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    window.open(
+      pdf.output("bloburl", { filename: "new-file.pdf" }),
+      "_blank"
+    );
+  });
+};
 const TransReportGlobalComp = ({ account_type, page_name }) => {
   const componentRef = useRef();
 
@@ -256,20 +293,30 @@ const [isLoader, setisLoader] = useState(true);
                               <div className="form-group col-4">
                               <ReactToPrint
                               trigger={() =>  
-                              <button className="btn btn-sm btn-primary borderRadiusRound">
+                              <button className="btn btn-sm text-white borderRadiusRound"  style={{ backgroundColor: "#003A4D" }}>
                               <i className="fa fa-print"></i>
                               </button>}
                               content={() => componentRef.current}
                               documentTitle='new docs'
                             />
                               </div>
-
+                              <div className="form-group col-4">
+                                <button className="btn btn-sm text-white  borderRadiusRound"
+                                onClick={downloadPdf}
+                                type="button"
+                                style={{ backgroundColor: "#003A4D" }}>
+                                  <i
+                                    className="fa fa-file-pdf-o"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                            </div>
                             
                               <div className="form-group col-4">
                                 <CSVLink {...csvReport}>
-                                  <button className="btn btn-sm btn-success borderRadiusRound">
+                                  <button className="btn btn-sm text-white borderRadiusRound"  style={{ backgroundColor: "#003A4D" }}>
                                     <i
-                                      className="fa fa-file-pdf-o"
+                                      className="fa fa-file-excel-o"
                                       aria-hidden="true"
                                     ></i>
                                   </button>

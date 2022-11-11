@@ -6,7 +6,7 @@ const TrialSheetReciept = React.forwardRef(
 
 
             <div>
-                <div className="x_content px-0  mb-3 " ref={ref} style={{backgroundColor: 'white',}} >
+                <div className="x_content px-0  mb-3 " id="report" ref={ref} style={{backgroundColor: 'white',}} >
                     <div className="displayPropertyForPrint">
 
                         <h2 className="text-dark text-center font-weight-bold  ">Trial Sheet Report</h2>

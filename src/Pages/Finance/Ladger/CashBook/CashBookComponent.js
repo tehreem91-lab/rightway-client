@@ -116,7 +116,7 @@ const CashBookComponent = ({ account_type, page_name }) => {
   ];
 
   const csvReport = {
-    filename: "LedgerReport.csv",
+    filename: "CashBookReport.csv",
     headers: headers,
     data: LadgerDataCSV,
   };
@@ -290,28 +290,40 @@ const CashBookComponent = ({ account_type, page_name }) => {
                           <div className="col-md-5"> </div>
                           <div className="col-md-4  text-left "> </div>
                           <div className="col-md-3 pr-4">
-                            <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                              <div className="form-group col-4">
-                              <ReactToPrint
-                              trigger={() =>  
-                              <button className="btn btn-sm btn-primary borderRadiusRound">
-                              <i className="fa fa-print"></i>
-                              </button>}
-                              content={() => componentRef.current}
-                            />
-                              </div>
-                            
-                              <div className="form-group col-4">
-                                <CSVLink {...csvReport}>
-                                  <button className="btn btn-sm btn-success borderRadiusRound mx-1">
-                                    <i
-                                      className="fa fa-file-pdf-o"
-                                      aria-hidden="true"
-                                    ></i>
-                                  </button>
-                                </CSVLink>
-                              </div>
-                            </ul>
+                          <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                          <div className="form-group col-4">
+                          <ReactToPrint
+                          trigger={() =>  
+                          <button className="btn btn-sm text-white borderRadiusRound"  style={{ backgroundColor: "#003A4D" }}>
+                          <i className="fa fa-print"></i>
+                          </button>}
+                          content={() => componentRef.current}
+                          documentTitle='new docs'
+                        />
+                          </div>
+                          <div className="form-group col-4">
+                            <button className="btn btn-sm text-white  borderRadiusRound"
+                            onClick={downloadPdf}
+                            type="button"
+                            style={{ backgroundColor: "#003A4D" }}>
+                              <i
+                                className="fa fa-file-pdf-o"
+                                aria-hidden="true"
+                              ></i>
+                            </button>
+                        </div>
+                        
+                          <div className="form-group col-4">
+                            <CSVLink {...csvReport}>
+                              <button className="btn btn-sm text-white borderRadiusRound"  style={{ backgroundColor: "#003A4D" }}>
+                                <i
+                                  className="fa fa-file-excel-o"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                            </CSVLink>
+                          </div>
+                        </ul>
                           </div>
                         </div>
                       </div>

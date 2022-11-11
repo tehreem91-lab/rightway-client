@@ -52,7 +52,6 @@ const CloseShift = () => {
             let response_from_api = "";
             let data = new FormData();
             data.append("UploadedImage", fileupload);
-            // console.log(data, "jhjhhgh");
             await axios.post(`http://rightway-api.genial365.com/api/FileUpload?file_name=${fileupload.name}`, data,).then(res => {
                 if (res.status === 200) {
                     setisFileUploadingModeOn(false);
@@ -62,8 +61,6 @@ const CloseShift = () => {
                     setcloseRec({ ...closeRec, attachments: [...filearray, response_from_api].toString() })
                     setfileupload("")
                 }
-
-
             })
         }
 
@@ -71,11 +68,11 @@ const CloseShift = () => {
     const postData = () => {
         // console.log(closeRec);
         var data = JSON.stringify({
-            "shift_id": 0,
-            "quality_incharge_id": 0,
-            "date": "2022-11-07T04:30:43.239Z",
-            "remarks": "string",
-            "attachments": "string",
+            "shift_id": closeRec.shift_id,
+            "quality_incharge_id": closeRec.quality_incharge_id,
+            "date": closeRec.date,
+            "remarks": closeRec.remarks,
+            "attachments": closeRec.attachments,
             "job_entity": closeRec.job_entity.map((data, i) => {
                 return {
                     "job_id": data.job_pass_no,
@@ -99,52 +96,36 @@ const CloseShift = () => {
                     })
 
                 }
-            })
-            //   {
-            //     "job_id": 0,
-            //     "machine_info": [
-            //       {
-            //         "machine_id": 0,
-            //         "status": "string",
-            //         "total_product": 0,
-            //         "total_a_grade_pieces": 0,
-            //         "total_b_grade_pieces": 0,
-            //         "total_wasted": 0,
-            //         "remarks": "string"
-            //       }
-            //     ],
-            //     "stock_info": [
-            //       {
-            //         "item_id": 0,
-            //         "remaing_quantity": 0
-            //       }
-            //     ]
-            //   }
-            // ],
-            ,
-            "over_time_info": [
-                {
-                    "employee_id": 0,
-                    "prouduct_id": 0,
-                    "overtime": 0,
-                    "machine_ids": [
-                        {
-                            "machine_id": 0
-                        }
-                    ]
+            }),
+            "over_time_info": Overtime.map(over => {
+                return {
+                    "employee_id": over.employee_id,
+                    "product_id": over.product_id,
+                    "overtime": over.overtime,
+                    "machine_ids": over.machine_ids
+
                 }
-            ],
+            }),
             "total_record": [
                 {
-                    "total_a_grade_pieces": 0,
-                    "total_b_grade_pieces": 0,
-                    "total_wasted": 0,
-                    "total_remaing_stock_products": 0,
-                    "total_activated_machines": 0
+                    "total_a_grade_pieces": closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_a_grade_pieces))))).toString().split(',')
+                        .map(Number)
+                        .reduce((a, b) => a + b),
+                    "total_b_grade_pieces": closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_b_grade_pieces))))).toString().split(',')
+                        .map(Number)
+                        .reduce((a, b) => a + b),
+                    "total_wasted": closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_wasted))))).toString().split(',')
+                        .map(Number)
+                        .reduce((a, b) => a + b),
+                    "total_remaing_stock_products": closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_product))))).toString().split(',')
+                        .map(Number)
+                        .reduce((a, b) => a + b),
+                    "total_activated_machines": closeRec.job_entity.map((data, i) => (data?.machine_info.filter(((item, id) => (item.status == 'true')))).length).toString().split(',').map(Number)
+                        .reduce((a, b) => a + b)
                 }
             ]
         });
-        // console.log(data);
+        console.log(data);
 
         //   var config = {
         //     method: 'post',
@@ -231,9 +212,7 @@ const CloseShift = () => {
                                 }
 
                             })
-
                             setproduct_name(Pro);
-
                         })
                         .catch(function (error) {
 
@@ -269,7 +248,7 @@ const CloseShift = () => {
             <div className={`container-fluid right_col page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
                 <CustomInnerHeader moduleName={"Close Shift"} isShowSelector={true} />
             </div>
-            <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
+            <div role="main" className={`right_col  h-100 heightFixForFAult  ${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
                 <div className="row">
                     <div className="col-md-8 ">
@@ -330,7 +309,9 @@ const CloseShift = () => {
                                         </div> */}
 
                                 {/* } */}
-                                {showtables && closeRec.job_entity.map((data, i) => (<div className="row">
+                                {showtables && closeRec.job_entity.map((data, i) => (<div className="row"
+                                // style={{height:'300px', overflow: 'scroll'}}
+                                >
                                     <div className="col-md-12 col-sm-12 ">
                                         <div className="x_panel">
                                             <div className="x_content">
@@ -571,15 +552,15 @@ const CloseShift = () => {
                                                                 </thead>
                                                                 <tbody>
                                                                     {Overtime.map((item, id) => (<tr>
-                                                                        <td><Select styles={customStyles} options={empSel} value={empSel.find(e => e.value == item.emloyee_id) || ''} onChange={(e) => {
+                                                                        <td><Select styles={customStyles} options={empSel} value={empSel.find(e => e.value == item.employee_id) || ''} onChange={(e) => {
                                                                             let m = [...Overtime]
-                                                                            m[id].emloyee_id = e.value;
+                                                                            m[id].employee_id = e.value;
                                                                             setovertime(m)
                                                                         }} /></td>
-                                                                        <td><Select options={product_name} styles={customStyles} value={product_name.find(e => e.value == item.prouduct_id) || ''} onChange={(e) => {
+                                                                        <td><Select options={product_name} styles={customStyles} value={product_name.find(e => e.value == item.product_id) || ''} onChange={(e) => {
                                                                             let m = [...Overtime]
-                                                                            m[id].prouduct_id = e.value;
-                                                                            m[id].prouduct_name = e.label;
+                                                                            m[id].product_id = e.value;
+                                                                            m[id].product_name = e.label;
                                                                             setovertime(m)
                                                                         }} /></td>
                                                                         <td><Select styles={customStyles} options={machSel} isMulti onChange={(e) => {
@@ -646,9 +627,8 @@ const CloseShift = () => {
                                                 data-validate-words={2}
                                                 value={closeRec.remarks}
                                                 onChange={(e) => {
-                                                    let incharge = closeRec
-                                                    incharge.remarks = e.terget.value;
-                                                    setcloseRec(incharge)
+
+                                                    setcloseRec({ ...closeRec, remarks: e.target.value })
 
                                                 }}
 
@@ -732,7 +712,7 @@ const CloseShift = () => {
                                         <div className="col-md-7 col-sm-8">
                                             <Select options={inchargeSel}
                                                 // value={console.log(inchargeSel?.find(e => e.value == closeRec?.quality_incharge?.quality_incharge_id) || '')}
-                                                 styles={customStyles}
+                                                styles={customStyles}
                                                 onChange={(e) => {
                                                     let incharge = closeRec
                                                     incharge.quality_incharge.quality_incharge_id = e.value;
@@ -745,7 +725,9 @@ const CloseShift = () => {
 
 
 
-                                {closeRec.job_entity.map((data, i) => (<div className="row">
+                                {closeRec.job_entity.map((data, i) => (<div className="row"
+                                // style={{height:'300px', overflow: 'scroll'}}
+                                >
                                     <div className="col-md-12 col-sm-12 ">
                                         <div className="x_panel">
                                             <div className="x_content">
@@ -764,14 +746,15 @@ const CloseShift = () => {
                                                                         <th className='right-border-1'>
                                                                             Item List
                                                                         </th>
+                                                                        <th className='right-border-1'>Total Stock</th>
                                                                         <th className='right-border-1'>Remaining Stock</th>
                                                                         <th > (UioM) </th>
 
 
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-                                                                    {data?.stock_info?.map((item, id) => (<tr>
+                                                                <tbody  >
+                                                                    {data?.stock_info?.map((item, id) => (<tr >
                                                                         <td><input type='text' value={item.account_name} className='form-control' onChange={(e) => {
 
                                                                             let Rec1 = [...closeRec.job_entity]
@@ -785,11 +768,15 @@ const CloseShift = () => {
 
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].stock_info[id].remaing_quantity = e.target.value
+                                                                            // Rec1[i].single_product_info[id].item_quantity = e.target.value- Rec1[i].single_product_info[id].remaing_quantity
                                                                             setcloseRec({ ...closeRec, job_entity: Rec1 })
 
 
 
                                                                         }} className='form-control' /></td>
+                                                                        <td><input type='number' value={item.remaing_quantity - data?.single_product_info[id]?.item_quantity}
+                                                                            
+                                                                            className='form-control' disabled /></td>
                                                                         <td><input type='text' value={item.stock_unit_name} onChange={(e) => {
 
                                                                             let Rec1 = [...closeRec.job_entity]

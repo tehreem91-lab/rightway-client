@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from "react-redux";
 import Select from 'react-select'
+import { customStyles } from '../../Components/reactCustomSelectStyle';
 import { useLocation } from 'react-router-dom';
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 import { toast } from "react-toastify";
@@ -536,7 +537,7 @@ const GatePassInward = () => {
   const handlePacket = (id, e) => {
 
     info.map((each_voucher) => {
-      if (each_voucher.packets_details[0].chart_id == e.value) {
+      if (each_voucher.packets_details[0]?.chart_id == e.value) {
 
         let packetOptions = each_voucher.packets_details.map((data) => {
           return {
@@ -758,7 +759,7 @@ const GatePassInward = () => {
         <div className="row">
           <div className="col-md-12 "><div className="x_panel px-0">
             <div className="x_content  ">
-              <div className="field item form-group" style={{ overflow: 'scroll', height: '270px' }}  >
+              <div className="field item form-group"  >
                 <table className="table table-striped"   >
                   <thead >
                     <tr className="bg-customBlue text-light">
@@ -778,11 +779,11 @@ const GatePassInward = () => {
                     {stockEntries?.map((data, id) => (
                       <tr key={id}>
 
-                        <td><Select options={stockAccount} value={stockAccount.find(e => e.value == data.stock_chart_id) || ''}
+                        <td><Select isSearchable={true} options={stockAccount} styles={customStyles} value={stockAccount.find(e => e.value == data.stock_chart_id) || ''}
                           onChange={(e) => { handlePacket(id, e) }} />
                           {!isValidateAllStates && (stockEntries[id].stock_chart_id == 0) && <span className="text-danger">First Select this </span>}
                         </td>
-                        <td style={{ width: '20%' }}><Select options={packetsDetails[id]} value={packetsDetails[id]?.find(e => e.value == data.pair_unit_id) || ''} onChange={(e) => {
+                        <td style={{ width: '20%' }}><Select styles={customStyles} options={packetsDetails[id]} value={packetsDetails[id]?.find(e => e.value == data.pair_unit_id) || ''} onChange={(e) => {
                           const list = [...stockEntries];
                           list[id].pair_unit_id = e.value
                           setstockEntries(list);

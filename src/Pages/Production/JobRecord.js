@@ -4,7 +4,10 @@ import Select from 'react-select'
 import ReactToPrint from "react-to-print";
 import { useNavigate } from "react-router-dom";
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
+import { customStyles } from '../../Components/reactCustomSelectStyle';
 import { CSVLink } from "react-csv";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 const JobRecord = () => {
   const [showTable, setshowTable] = useState(false)
 
@@ -23,7 +26,43 @@ const JobRecord = () => {
   const [ApiRes, setApiRes] = useState()
   const showNavMenu = useSelector((state) => state.NavState);
   const [LadgerDataCSV, setLadgerDataCSV] = useState([{}]);
+  const downloadPdf = async () => {
+   
+    var data = document.getElementById("report");
+    //$("pdfOpenHide").attr("hidden", true);
+    // To disable the scroll
+    document.getElementById("report").style.overflow = "inherit";
+    document.getElementById("report").style.maxHeight = "inherit";
 
+    await html2canvas(data).then((canvas) => {
+      const contentDataURL = canvas.toDataURL("image/png", 1.0);
+      // enabling the scroll
+      //document.getElementById("report").style.overflow = "scroll";
+      //document.getElementById("report").style.maxHeight = "150px";
+
+      let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+
+      let imgWidth = 300;
+      let pageHeight = pdf.internal.pageSize.height;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      window.open(
+        pdf.output("bloburl", { filename: "new-file.pdf" }),
+        "_blank"
+      );
+    });
+  };
   const changeStatus = (id, value) => {
   
     var axios = require('axios');
@@ -119,7 +158,7 @@ const JobRecord = () => {
       <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
         <CustomInnerHeader moduleName={"Job Record"} isShowSelector={true} />
       </div>
-      <div role="main" className={`right_col  h-100  ${showNavMenu === false ?
+      <div role="main" className={`right_col  h-100 heightFixForFAult ${showNavMenu === false ?
         "right_col-margin-remove" : " "} `}>
         <div className="x_panel  ">
           <div className="x_content mt-3">
@@ -151,6 +190,10 @@ const JobRecord = () => {
                 <label className="col-form-label col-md-4 col-sm-4 label-align">Status<span className="required">*</span></label>
                 <div className="col-md-7 col-sm-6">
                   <Select
+                  
+                  styles={customStyles}
+                  menuPortalTarget={document.body} 
+    style={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                     value={statusSearch.find(e => e.value == data.Status) || ''}
                     options={statusSearch}
 
@@ -169,7 +212,7 @@ const JobRecord = () => {
             </div>
 
             {showTable &&<><div className="row">
-              <div className="field form-group col-md-3 col-sm-6 col-md-offset-0 ml-auto text-right">
+              <div className="field form-group col-md-6 col-sm-6 col-md-offset-0 ml-auto text-right">
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
 
                   <li>
@@ -178,7 +221,7 @@ const JobRecord = () => {
                         return (
 
                           <button
-                            className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound" title="Print Doc"
+                            className="btn btn-sm  my-2 pt-1 borderRadiusRound" title="Print " style={{backgroundColor:'#003A4D', color:'white'}}
                           >
                             <i className="fa fa-print"></i>
                           </button>
@@ -191,23 +234,36 @@ const JobRecord = () => {
                     />
                   </li>
 
-
+                  <li>
+                
+                                                            
+                <button  onClick={downloadPdf} className="btn btn-sm  borderRadiusRound  my-2 pt-1" title="Pdf" style={{backgroundColor:'#003A4D', color:'white'}} >
+                    <i
+                        className="fa fa-file-pdf-o "
+                        aria-hidden="true"
+                     ></i>
+                </button>
+              
+           
+</li>
                   <li><CSVLink {...csvReport}>
-                    <button className="btn btn-sm btn-success borderRadiusRound my-1 pt-1">
-                      <i
-                        className="fa fa-file-pdf-o"
+                    <button className="btn btn-sm  borderRadiusRound my-1 pt-1"  title="Excel" style={{backgroundColor:'#003A4D', color:'white'}}>
+                     
+                     <i
+                        className="fa fa-file-excel-o"
                         aria-hidden="true"
                       ></i>
                     </button>
                   </CSVLink>
 
                   </li>
+                 
 
                 </ul>
 
               </div>
 </div>
-              <div style={{ overflow: 'scroll', height: '400px' }} ref={componentRef}>    <div className="row row-1 mx-1  reportTableHead mt-2" >
+              <div id="report" style={{ overflow: 'scroll', height: '400px',  }} ref={componentRef}>    <div style={{position: 'sticky', top: '0',zIndex: '1'}} className="row row-1 mx-1  reportTableHead mt-2" >
 
                 <div className="col-md-1 col-1 font-size-12  text-center  my-1 ">
                   SR.

@@ -8,8 +8,12 @@ import { endPoint } from "../../../../config/Config.js";
 import { preventLowerDate } from "../../../../config/preventMinus.js";
 import CustomInnerHeader from '../../../../Components/CustomInnerHeader'
 import TrialSheetReciept from "./TrialSheetReciept.js";
-import Spinner from 'react-bootstrap/Spinner'
+import Spinner from 'react-bootstrap/Spinner';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { CSVLink } from "react-csv";
 const TrialSheet = () => {
+
 
     const componentRef = useRef();
     const showNavMenu = useSelector((state) => state.NavState);
@@ -23,9 +27,49 @@ const TrialSheet = () => {
     const [grandsTotals, setGrandsTotals] = useState({})
     const [reportData, setReportData] = useState([])
     const [isLoader, setisLoader] = useState(true);
+    
 
     const level_options = [{ label: "Level 1", value: 1 }, { label: "Level 2", value: 2 }, { label: "Level 3", value: 3 }, { label: "Level 4", value: 4 }, { label: "Level 5", value: 5 }]
     const [levelValue, setLevelValue] = useState({ label: "Level 5", value: 5 })
+
+ 
+
+const downloadPdf = async () => {
+  var data = document.getElementById("report");
+  //$("pdfOpenHide").attr("hidden", true);
+  // To disable the scroll
+  document.getElementById("report").style.overflow = "inherit";
+  document.getElementById("report").style.maxHeight = "inherit";
+
+  await html2canvas(data).then((canvas) => {
+    const contentDataURL = canvas.toDataURL("image/png", 1.0);
+    // enabling the scroll
+    //document.getElementById("report").style.overflow = "scroll";
+    //document.getElementById("report").style.maxHeight = "150px";
+
+    let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+
+    let imgWidth = 300;
+    let pageHeight = pdf.internal.pageSize.height;
+    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    window.open(
+      pdf.output("bloburl", { filename: "new-file.pdf" }),
+      "_blank"
+    );
+  });
+};
 
     const fetchTrialBalanceReport = () => {
         setisLoader(false)
@@ -228,7 +272,24 @@ const TrialSheet = () => {
 
 
     }
-
+    const headers = [
+        { label: "Account Title", key: "category_name" },
+        { label: "Debit", key: "calculated_opening_debit" },
+        { label: "Credit", key: "calculated_opening_credit" },
+        { label: "Debit", key: "calculated_debit" },
+        { label: "Credit", key: "calculated_credit" },
+        { label: "Debit", key: "calculated_closing_credit" },
+        { label: "Credit", key: "calculated_closing_debit" },
+      
+      
+      ];
+    
+      const csvReport = {
+        filename: "TrialSheet.csv",
+        headers: headers,
+        data: reportData,
+      };
+    
 
     return (
         <>
@@ -355,29 +416,40 @@ const TrialSheet = () => {
                                                     <div className="col-md-5"> </div>
                                                     <div className="col-md-4  text-left "> </div>
                                                     <div className="col-md-3 pr-4">
-                                                        <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                                                            <li>
-                                                                <ReactToPrint
-                                                                    trigger={() => {
-                                                                        return (
-                                                                            <button className="btn btn-sm btn-success borderRadiusRound">
-                                                                                <i className="fa fa-print"></i>
-                                                                            </button>
-                                                                        );
-                                                                    }}
-                                                                    content={() => componentRef.current}
-                                                                  
-                                                                />
-                                                            </li>
-                                                            <li>
-                                                                <button
-                                                                    className="btn btn-sm btn-primary borderRadiusRound"
-                                                                    onClick={() => console.log("print")}
-                                                                >
-                                                                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                                                </button>
-                                                            </li>
-                                                        </ul>
+                                                    <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                                                    <div className="form-group col-4">
+                                                    <ReactToPrint
+                                                    trigger={() =>  
+                                                    <button className="btn btn-sm text-white borderRadiusRound"  style={{ backgroundColor: "#003A4D" }}>
+                                                    <i className="fa fa-print"></i>
+                                                    </button>}
+                                                    content={() => componentRef.current}
+                                                    documentTitle='new docs'
+                                                  />
+                                                    </div>
+                                                    <div className="form-group col-4">
+                                                      <button className="btn btn-sm text-white  borderRadiusRound"
+                                                      onClick={downloadPdf}
+                                                      type="button"
+                                                      style={{ backgroundColor: "#003A4D" }}>
+                                                        <i
+                                                          className="fa fa-file-pdf-o"
+                                                          aria-hidden="true"
+                                                        ></i>
+                                                      </button>
+                                                  </div>
+                                                  
+                                                    <div className="form-group col-4">
+                                                      <CSVLink {...csvReport}>
+                                                        <button className="btn btn-sm text-white borderRadiusRound"  style={{ backgroundColor: "#003A4D" }}>
+                                                          <i
+                                                            className="fa fa-file-excel-o"
+                                                            aria-hidden="true"
+                                                          ></i>
+                                                        </button>
+                                                      </CSVLink>
+                                                    </div>
+                                                  </ul>
                                                     </div>
                                                 </div>
 
