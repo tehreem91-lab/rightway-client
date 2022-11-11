@@ -79,11 +79,11 @@ const EmployeeProfile = () => {
                 if (response.status === 200) {
                     setListOfEmployee((response.data));
                     setisLoading(false);
-                    console.log({ ListOfEmployee });
+                  
                 }
             })
             .catch(function (error) {
-                console.log(error);
+               
             });
 
     };
