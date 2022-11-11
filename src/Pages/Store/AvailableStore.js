@@ -105,13 +105,13 @@ const searchItem = (e) => {
                                   </div>
                                   <div className="col-6 ">
                                   <div className='col-md-6 text-right'>
-                                  <label>search:</label>
+                                  <label></label>
                                   </div>
                                   <div className='col-md-6 text-right'>
                                   <input
                                   className="form-control"
                                   type="text"
-                                  placeholder='seach ...'
+                                  placeholder='Search ...'
                                   onChange={(e) => searchItem((e.target.value).toLowerCase())}
                                   />
                                   </div>
