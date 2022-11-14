@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { useSelector } from "react-redux";
 import { customStyles } from "../../Components/reactCustomSelectStyle.jsx";
 const CloseShift = () => {
+    
     const ref = useRef();
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -91,7 +92,7 @@ const CloseShift = () => {
                     "stock_info": data.stock_info.map((stock, index) => {
                         return {
                             "item_id": stock.item_id,
-                            "remaing_quantity": stock.remaing_quantity
+                              "remaing_quantity":  stock.remaing_quantity - data.machine_info[index].total_product -data.machine_info[index].total_wasted
                         }
                     })
 
@@ -117,7 +118,7 @@ const CloseShift = () => {
                     "total_wasted": closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_wasted))))).toString().split(',')
                         .map(Number)
                         .reduce((a, b) => a + b),
-                    "total_remaing_stock_products": closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_product))))).toString().split(',')
+                    "total_remaing_stock_products": closeRec.job_entity.map((data, i) => (data?.stock_info.map(((item, id) => (item.remaing_quantity))))).toString().split(',')
                         .map(Number)
                         .reduce((a, b) => a + b),
                     "total_activated_machines": closeRec.job_entity.map((data, i) => (data?.machine_info.filter(((item, id) => (item.status == 'true')))).length).toString().split(',').map(Number)
@@ -379,9 +380,11 @@ const CloseShift = () => {
 
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].machine_info[id].total_product = Number(e.target.value)
+                                                                            Rec1[i].stock_info[id].remaing_quantity =Rec1[i].stock_info[id].issue_quantity -  Number(e.target.value)-Number(Rec1[i].machine_info[id].total_wasted)
+
                                                                             setcloseRec({ ...closeRec, job_entity: Rec1 })
                                                                             let Rec2 = [...closeRec.job_entity]
-                                                                            Rec2[i].machine_info[id].total_a_grade_pieces = Number(e.target.value) - Number(Rec2[i].machine_info[id].total_b_grade_pieces);
+                                                                            Rec2[i].machine_info[id].total_a_grade_pieces = Number(e.target.value) - Number(Rec2[i].machine_info[id].total_b_grade_pieces) ;
                                                                             setcloseRec({ ...closeRec, job_entity: Rec2 })
                                                                             let Rec3 = [...closeRec.job_entity]
                                                                             Rec3[i].machine_info[id].total_b_grade_pieces = Number(e.target.value) - Number(Rec3[i].machine_info[id].total_a_grade_pieces);
@@ -394,6 +397,7 @@ const CloseShift = () => {
                                                                             // console.log(closeRec.job_entity)
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].machine_info[id].total_product = Number(Rec1[i].machine_info[id].total_b_grade_pieces) + Number(e.target.value);
+                                                                            // Rec1[i].stock_info[id].remaing_quantity =Rec1[i].stock_info[id].issue_quantity -  Number(e.target.value)-Number(Rec1[i].machine_info[id].total_wasted)
                                                                             setcloseRec({ ...closeRec, job_entity: Rec1 })
                                                                             let Rec2 = [...closeRec.job_entity]
                                                                             Rec2[i].machine_info[id].total_a_grade_pieces = Number(e.target.value);
@@ -422,6 +426,7 @@ const CloseShift = () => {
 
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].machine_info[id].total_wasted = Number(e.target.value)
+                                                                            Rec1[i].stock_info[id].remaing_quantity =Rec1[i].stock_info[id].issue_quantity -  Number(e.target.value)-Number(Rec1[i].machine_info[id].total_product)
                                                                             setcloseRec({ ...closeRec, job_entity: Rec1 })
 
 
@@ -497,9 +502,7 @@ const CloseShift = () => {
 
 
 
-                                                                        <td>{closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_product))))).toString().split(',')
-                                                                            .map(Number)
-                                                                            .reduce((a, b) => a + b)}</td>
+                                                                       
                                                                         <td>{closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_a_grade_pieces))))).toString().split(',')
                                                                             .map(Number)
                                                                             .reduce((a, b) => a + b)}</td>
@@ -507,6 +510,9 @@ const CloseShift = () => {
                                                                             .map(Number)
                                                                             .reduce((a, b) => a + b)}</td>
                                                                         <td>{closeRec.job_entity.map((data, i) => (data?.machine_info.map(((item, id) => (item.total_wasted))))).toString().split(',')
+                                                                            .map(Number)
+                                                                            .reduce((a, b) => a + b)}</td>
+                                                                            <td>{closeRec.job_entity.map((data, i) => (data?.stock_info.map(((item, id) => (item.remaing_quantity))))).toString().split(',')
                                                                             .map(Number)
                                                                             .reduce((a, b) => a + b)}</td>
                                                                         <td>{closeRec.job_entity.map((data, i) => (data?.machine_info.filter(((item, id) => (item.status == 'true')))).length).toString().split(',').map(Number)
@@ -566,7 +572,7 @@ const CloseShift = () => {
                                                                         <td><Select styles={customStyles} options={machSel} isMulti onChange={(e) => {
                                                                             let m = [...Overtime]
                                                                             m[id].machine_ids = []
-                                                                            let mach = e.map((data, i) => {
+                                                                           e.map((data, i) => {
 
 
                                                                                 m[id].machine_ids[i] = { machine_id: data.value }
@@ -576,7 +582,7 @@ const CloseShift = () => {
 
                                                                             })
 
-                                                                            // console.log(Overtime, mach, 'jdhk')
+                                                                           
                                                                         }} /></td>
                                                                         <td><input className="form-control" type="number" value={item.overtime} onChange={(e) => {
                                                                             let m = [...Overtime]
@@ -748,44 +754,31 @@ const CloseShift = () => {
                                                                         </th>
                                                                         <th className='right-border-1'>Total Stock</th>
                                                                         <th className='right-border-1'>Remaining Stock</th>
-                                                                        <th > (UioM) </th>
+                                                                       
 
 
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody  >
                                                                     {data?.stock_info?.map((item, id) => (<tr >
-                                                                        <td><input type='text' value={item.account_name} className='form-control' onChange={(e) => {
+                                                                        <td><input type='text' value={item.account_name} className='form-control'  disabled onChange={(e) => {
 
-                                                                            let Rec1 = [...closeRec.job_entity]
-                                                                            Rec1[i].stock_info[id].account_name = e.target.value
-                                                                            setcloseRec({ ...closeRec, job_entity: Rec1 })
+                                                                          
 
 
 
                                                                         }} /></td>
-                                                                        <td><input type='number' value={item.remaing_quantity} onChange={(e) => {
+                                                                        <td><input type='number' value={item.issue_quantity} disabled onChange={(e) => {
 
-                                                                            let Rec1 = [...closeRec.job_entity]
-                                                                            Rec1[i].stock_info[id].remaing_quantity = e.target.value
-                                                                            // Rec1[i].single_product_info[id].item_quantity = e.target.value- Rec1[i].single_product_info[id].remaing_quantity
-                                                                            setcloseRec({ ...closeRec, job_entity: Rec1 })
+                                                                           
 
 
 
                                                                         }} className='form-control' /></td>
-                                                                        <td><input type='number' value={item.remaing_quantity - data?.single_product_info[id]?.item_quantity}
+                                                                        <td><input type='number'  step="0" value={item.remaing_quantity -data.machine_info[id].total_product -data.machine_info[id].total_wasted}
                                                                             
-                                                                            className='form-control' disabled /></td>
-                                                                        <td><input type='text' value={item.stock_unit_name} onChange={(e) => {
-
-                                                                            let Rec1 = [...closeRec.job_entity]
-                                                                            Rec1[i].stock_info[id].stock_unit_name = e.target.value
-                                                                            setcloseRec({ ...closeRec, job_entity: Rec1 })
-
-
-
-                                                                        }} className='form-control' /></td>
+                                                                            className='form-control'  onChange={(e)=>{console.log(e.target.value)}} /></td>
+                                                                        
 
 
                                                                     </tr>))}
