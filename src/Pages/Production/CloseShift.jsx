@@ -67,11 +67,11 @@ const CloseShift = () => {
 
     }
     const postData = () => {
-        // console.log(closeRec);
+       
         var data = JSON.stringify({
-            "shift_id": closeRec.shift_id,
-            "quality_incharge_id": closeRec.quality_incharge_id,
-            "date": closeRec.date,
+            "shift_id": closeRec.shift_incharge_id,
+            "quality_incharge_id": closeRec.quality_incharge.quality_incharge_id,
+            "date": ApiParam.date,
             "remarks": closeRec.remarks,
             "attachments": closeRec.attachments,
             "job_entity": closeRec.job_entity.map((data, i) => {
@@ -92,7 +92,9 @@ const CloseShift = () => {
                     "stock_info": data.stock_info.map((stock, index) => {
                         return {
                             "item_id": stock.item_id,
-                              "remaing_quantity":  stock.remaing_quantity - data.machine_info[index].total_product -data.machine_info[index].total_wasted
+                              "remaing_quantity":  stock.remaing_quantity ,
+                              "issue_quantity": stock.issue_quantity,
+                               "per_item_rate": data?.single_product_info[index]?.per_item_rate
                         }
                     })
 
@@ -103,7 +105,9 @@ const CloseShift = () => {
                     "employee_id": over.employee_id,
                     "product_id": over.product_id,
                     "overtime": over.overtime,
-                    "machine_ids": over.machine_ids
+                    "description": over.remarks,
+                    "machine_ids": over.machine_ids,
+                   
 
                 }
             }),
@@ -126,26 +130,25 @@ const CloseShift = () => {
                 }
             ]
         });
-        console.log(data);
+    
+          var config = {
+            method: 'post',
+            url: `http://rightway-api.genial365.com/api/CloseShift/PostCloseShiftRecord?date=${ApiParam.date}&shift_id=${ApiParam.id}`,
+            headers: { 
+                'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`, 
+              'Content-Type': 'application/json'
+            },
+            data : data
+          };
 
-        //   var config = {
-        //     method: 'post',
-        //     url: `http://rightway-api.genial365.com/api/CloseShift/PostCloseShiftRecord?date=${ApiParam.date}&shift_id=${ApiParam.id}`,
-        //     headers: { 
-        //         'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`, 
-        //       'Content-Type': 'application/json'
-        //     },
-        //     data : data
-        //   };
-
-        //   axios(config)
-        //   .then(function (response) {
-        //     console.log(JSON.stringify(response.data));
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //     console.log(data);
-        //   });
+          axios(config)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data),'success');
+          })
+          .catch(function (error) {
+            console.log(error);
+            console.log(data, 'error');
+          });
     }
     const fetchData = (url) => {
         var axios = require('axios');
@@ -380,7 +383,8 @@ const CloseShift = () => {
 
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].machine_info[id].total_product = Number(e.target.value)
-                                                                            Rec1[i].stock_info[id].remaing_quantity =Rec1[i].stock_info[id].issue_quantity -  Number(e.target.value)-Number(Rec1[i].machine_info[id].total_wasted)
+                                                                            Rec1[i].stock_info.map((rq)=>{ rq.remaing_quantity = rq.issue_quantity - closeRec.job_entity[i].machine_info.map(data => data.total_product).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)-closeRec.job_entity[i].machine_info.map(data => data.total_wasted).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)})
+                                                                          
 
                                                                             setcloseRec({ ...closeRec, job_entity: Rec1 })
                                                                             let Rec2 = [...closeRec.job_entity]
@@ -397,8 +401,8 @@ const CloseShift = () => {
                                                                             // console.log(closeRec.job_entity)
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].machine_info[id].total_product = Number(Rec1[i].machine_info[id].total_b_grade_pieces) + Number(e.target.value);
-                                                                            // Rec1[i].stock_info[id].remaing_quantity =Rec1[i].stock_info[id].issue_quantity -  Number(e.target.value)-Number(Rec1[i].machine_info[id].total_wasted)
-                                                                            setcloseRec({ ...closeRec, job_entity: Rec1 })
+                                                                            Rec1[i].stock_info.map((rq)=>{ rq.remaing_quantity = rq.issue_quantity - closeRec.job_entity[i].machine_info.map(data => data.total_product).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)-closeRec.job_entity[i].machine_info.map(data => data.total_wasted).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)})
+                                                                          setcloseRec({ ...closeRec, job_entity: Rec1 })
                                                                             let Rec2 = [...closeRec.job_entity]
                                                                             Rec2[i].machine_info[id].total_a_grade_pieces = Number(e.target.value);
                                                                             setcloseRec({ ...closeRec, job_entity: Rec2 })
@@ -412,7 +416,8 @@ const CloseShift = () => {
 
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].machine_info[id].total_product = Number(e.target.value) + Number(Rec1[i].machine_info[id].total_a_grade_pieces)
-                                                                            setcloseRec({ ...closeRec, job_entity: Rec1 })
+                                                                            Rec1[i].stock_info.map((rq)=>{ rq.remaing_quantity = rq.issue_quantity - closeRec.job_entity[i].machine_info.map(data => data.total_product).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)-closeRec.job_entity[i].machine_info.map(data => data.total_wasted).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)})
+                                                                           setcloseRec({ ...closeRec, job_entity: Rec1 })
                                                                             let Rec2 = [...closeRec.job_entity]
                                                                             Rec2[i].machine_info[id].total_a_grade_pieces = Number(Rec2[i].machine_info[id].total_product) - Number(e.target.value);
                                                                             setcloseRec({ ...closeRec, job_entity: Rec2 })
@@ -426,8 +431,8 @@ const CloseShift = () => {
 
                                                                             let Rec1 = [...closeRec.job_entity]
                                                                             Rec1[i].machine_info[id].total_wasted = Number(e.target.value)
-                                                                            Rec1[i].stock_info[id].remaing_quantity =Rec1[i].stock_info[id].issue_quantity -  Number(e.target.value)-Number(Rec1[i].machine_info[id].total_product)
-                                                                            setcloseRec({ ...closeRec, job_entity: Rec1 })
+                                                                            Rec1[i].stock_info.map((rq)=>{ rq.remaing_quantity = rq.issue_quantity - closeRec.job_entity[i].machine_info.map(data => data.total_product).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)-closeRec.job_entity[i].machine_info.map(data => data.total_wasted).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)})
+                                                                          setcloseRec({ ...closeRec, job_entity: Rec1 })
 
 
 
@@ -775,7 +780,7 @@ const CloseShift = () => {
 
 
                                                                         }} className='form-control' /></td>
-                                                                        <td><input type='number'  step="0" value={item.remaing_quantity -data.machine_info[id].total_product -data.machine_info[id].total_wasted}
+                                                                        <td><input type='number'  step="0" value={item.remaing_quantity}
                                                                             
                                                                             className='form-control'  onChange={(e)=>{console.log(e.target.value)}} /></td>
                                                                         
