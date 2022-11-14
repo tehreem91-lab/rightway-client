@@ -197,9 +197,10 @@ const [isLoader, setisLoader] = useState(true);
                         value={dateFrom}
                         min="2022-07-27"
                         onKeyPress={async (e) => await preventLowerDate(e)} //not working yet
-                        onChange={(e) => {
-                          setdateFrom(e.target.value);
-                        }}
+                        onChange={(e) => 
+                          (e.target.value.slice(0,4))>= 2022 ?  
+                          setdateFrom(e.target.value):null
+                        }
                       />
 
                       {validationState === false && dateFrom === "" && (

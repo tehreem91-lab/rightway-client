@@ -7,11 +7,13 @@ import Select from 'react-select'
 import { useLocation } from 'react-router-dom';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { CSVLink } from "react-csv";
 const GatePassHistory = () => {
     const location = useLocation();
     const [isValidateOK, setIsValidateOK] = useState(true)
     const navigate = useNavigate();
     const [flag, setflag] = useState(false);
+    const [LadgerDataCSV, setLadgerDataCSV] = useState([{}]);
     const InvType = [{ label: 'All', value: 'all' }, { label: 'Cmt', value: 'cmt' }, { label: 'Purchase', value: 'purchase' }]
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
@@ -76,10 +78,25 @@ const GatePassHistory = () => {
 
         axios(config)
             .then(function (response) {
+               
                 setReportData(response.data)
                 if (response.data?.attachments)
                     setfilearray(response.data.attachments.split(','))
                 setisShowVoucher(true)
+                setLadgerDataCSV(
+                    ReportData.stock_entries
+                    .map((item, id) => {
+                      return {
+                        AccountName: item.account_name,
+                        AccountCode: item.account_code,
+                        StockUnitname: item.stock_unit_name,
+                        StockPiece: item.total_stock_piece,
+                        TotalWeight: item.total_weight,
+                        WeightPerPiece: item.weight_per_piece
+        
+                      };
+                    })
+                  );
 
 
             })
@@ -88,6 +105,21 @@ const GatePassHistory = () => {
             });
 
     }
+ 
+    const headers = [
+        { label: "  Account Name", key: "AccountName" },
+        { label: "Account Code", key: "AccountCode" },
+        { label: "Stock Unit name", key: "StockUnitname" },
+        { label: "Stock Piece", key: "StockPiece" },
+        { label: "Total Weight", key: "TotalWeight" },
+        { label: "Weight Per Piece", key: "WeightPerPiece" },
+    
+      ];
+      const csvReport = {
+        filename: "LedgerReport.csv",
+        headers: headers,
+        data: LadgerDataCSV,
+      };
     var axios = require('axios');
     const showInv = () => {
         let ValidationOk = true;
@@ -270,6 +302,17 @@ const GatePassHistory = () => {
                                                         ><i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                         </button>
                                                     </li>
+                                                    <li><CSVLink {...csvReport}>
+                    <button className="btn btn-sm  borderRadiusRound my-1 pt-1"  title="Excel" style={{backgroundColor:'#003A4D', color:'white'}}>
+                     
+                     <i
+                        className="fa fa-file-excel-o"
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                  </CSVLink>
+
+                  </li>
                                                     <li>
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"

@@ -1,4 +1,4 @@
-farooq bhai code for trialBalance
+// farooq bhai code for trialBalance
 
 
     // const filtralized_data = categories_all_data.filter((each_item1) => {
