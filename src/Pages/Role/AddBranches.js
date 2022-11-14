@@ -214,7 +214,7 @@ function AddBranches({ pagePermission }) {
     return (
         <PageTemplate
             pagePermission={rolePermissionTable}
-            moduleName="Manage Branches/Department Names"
+            moduleName="Add Branches"
             formTitle="Add/Edit Branch Name"
             formFields={formFields}
             initialValues={initialValues}

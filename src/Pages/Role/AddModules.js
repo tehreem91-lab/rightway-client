@@ -282,7 +282,7 @@ const AddModules = ({pagePermission}) => {
     <>
  <PageTemplate
       pagePermission={rolePermissionTable}
-      moduleName="Manage Modules"
+      moduleName="Add Modules"
       formTitle="Add/Edit Modules"
       formFields={formFields}
       initialValues={initialValues}

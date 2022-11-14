@@ -28,6 +28,7 @@ const RolePermission = () => {
       },
     }).then((response) => {
       response.json().then((data) => {
+        // console.log(data);
         var arr = [];
         data.map((item) => {
           arr.push({ label: item.Name, value: item.Id });
@@ -149,7 +150,7 @@ const RolePermission = () => {
             className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
               }   `}
           >
-          <CustomInnerHeader moduleName="Role Permission" isShowSelector={true} />
+          <CustomInnerHeader moduleName="Page Permission" isShowSelector={true} />
           </div>
 
           <div

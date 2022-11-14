@@ -144,7 +144,7 @@ const BranchesPermission = () => {
         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
           }   `}
       >
-      <CustomInnerHeader moduleName="Branch Management" isShowSelector={true} />
+      <CustomInnerHeader moduleName="Branch Permission" isShowSelector={true} />
       </div>
       {isLoading ? (
         <Loader />
