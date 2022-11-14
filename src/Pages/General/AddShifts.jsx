@@ -292,7 +292,8 @@ function AddShifts({ pagePermission }) {
               "Bearer " +
               JSON.parse(localStorage.getItem("access_token")).access_token,
           },
-        }).then((response) => {
+        })
+        .then((response) => {
           if (response.status === 200) {
             toast.success("Shift Name has been Deleted successfully!");
             fetchData();
@@ -310,7 +311,7 @@ function AddShifts({ pagePermission }) {
   return (
     <PageTemplate
       pagePermission={rolePermissionTable} 
-      moduleName="Manage Shifts Names"
+      moduleName="Shifts "
       formTitle="Add/Edit Shifts Name"
       formFields={formFields}
       initialValues={initialValues}

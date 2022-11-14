@@ -237,7 +237,7 @@ function EmployeeDesignations({ pagePermission }) {
   return (
     <PageTemplate
       pagePermission={rolePermissionTable}
-      moduleName="Manage  Designation Names"
+      moduleName="Employee Designations"
       formTitle="Add/Edit Designation Name"
       formFields={formFields}
       initialValues={initialValues}

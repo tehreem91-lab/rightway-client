@@ -296,7 +296,7 @@ function Banknames({ pagePermission }) {
   return (
     <PageTemplate
       pagePermission={rolePermissionTable}
-      moduleName="Manage Bank Names"
+      moduleName="Bank Names"
       formTitle="Add/Edit Bank Name"
       formFields={formFields}
       initialValues={initialValues}

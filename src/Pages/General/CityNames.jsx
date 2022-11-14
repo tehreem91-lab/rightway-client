@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 function CityNames({ pagePermission }) {
-  const page_name = "Manage City Names";
+  const page_name = "City Names";
   const rolePermissionTable = {
     Add: pagePermission.AddPermission,
     Delete: pagePermission.DelPermission,
@@ -231,7 +231,7 @@ function CityNames({ pagePermission }) {
   return (
     <PageTemplate
       pagePermission={rolePermissionTable}
-      moduleName="Manage City Names"
+      moduleName="City Names"
       formTitle="Add/Edit City Name"
       formFields={formFields}
       initialValues={initialValues}

@@ -260,7 +260,7 @@ function AddMachines({ pagePermission }) {
   return (
     <PageTemplate
       pagePermission={rolePermissionTable}
-      moduleName="Manage Machines Names"
+      moduleName="Machines "
       formTitle="Add/Edit Machines Name"
       formFields={formFields}
       initialValues={initialValues}
