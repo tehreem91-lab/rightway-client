@@ -170,7 +170,7 @@ function AddBranches({ pagePermission }) {
                 clearFields();
                 fetchData();
             }
-            else{
+            else {
                 (response).json().then((json) => {
                     toast.error(json.Message);
                 })

@@ -1,13 +1,16 @@
 import PageTemplate from "../../Components/PageTemplate";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
-import Select from "react-select";
+import Select from 'react-select'
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
+import Swal from "sweetalert2"; 
 import { Modal } from "react-bootstrap";
 import { customStyles } from "../../Components/reactCustomSelectStyle";
 import { endPoint } from "../../config/Config";
-import passwordValidation from "../../Functions/Functions";
+
+
+
+
 
 const AddUser = ({ pagePermission }) => {
   const accessToken = localStorage.getItem("access_token");
@@ -30,16 +33,18 @@ const AddUser = ({ pagePermission }) => {
     user_role_id: 0,
     user_role_name: "",
   });
-  const [roleOptions, setRoleOptions] = useState([]);
-  const [roleValue, setRoleValue] = useState({ label: "", value: "" });
+  const [roleOptions, setRoleOptions] = useState([])
+  const [roleValue, setRoleValue] = useState({ label: "", value: "" })
 
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    setRoleValue({ label: "", value: "" });
-    setShow(false);
+    setRoleValue({ label: "", value: "" })
+    setShow(false)
   };
   const handleShow = () => setShow(true);
+
+
 
   const [formFields, setFormFields] = useState([
     {
@@ -105,10 +110,12 @@ const AddUser = ({ pagePermission }) => {
       user_password: "",
       user_role: "",
       user_role_id: 0,
-      user_role_name: [""],
+      user_role_name: "",
     });
     setUpdateMode(false);
   };
+
+
 
   const changeFieldValue = (field, value) => {
     var obj = initialValues;
@@ -242,7 +249,7 @@ const AddUser = ({ pagePermission }) => {
         arrFields[3].defaultValue = arr[0];
         arrFields[3].options = arr;
         setFormFields(arrFields);
-        setRoleOptions(arr.slice(1));
+        setRoleOptions(arr.slice(1))
       });
   };
   //     .then((json) => {
@@ -250,7 +257,7 @@ const AddUser = ({ pagePermission }) => {
   //       // arr.push({ label: "--- Select Role ---", value: "" });
   //       json.map((item) => {
   //         arr.push({ label: item.Name, value: item.Id });
-  //       });
+  //       }); 
   //     setRoleOptions(arr)
   //     });
   // };
@@ -265,81 +272,78 @@ const AddUser = ({ pagePermission }) => {
       .then((response) => response.json())
       .then((json) => {
         const roleId = json[0].RoleId;
-        const fetchingRoleLabel = formFields[3].options.filter(
-          (EachRoleValue) => {
-            return EachRoleValue.value === roleId;
-          }
-        );
-        setRoleValue(fetchingRoleLabel[0]);
+        const fetchingRoleLabel = formFields[3].options.filter((EachRoleValue) => {
+          return EachRoleValue.value === roleId
+        })
+        setRoleValue(fetchingRoleLabel[0])
         console.log(fetchingRoleLabel, "----------");
+
       });
 
-    handleShow();
+
+    handleShow()
   };
   const formSubmit = (data) => {
-    const obj = {
-      target: {
-        value: data.user_password,
-        name: "password",
-      },
-    };
-    if (data.user_name && !passwordValidation(obj) && data.user_email) {
-      fetch(
-        URL +
-          (updateMode
-            ? "api/BankNames/PutData?id=" + initialValues.bank_id
-            : "api/Users"),
-        {
-          method: updateMode ? "PUT" : "POST",
-          headers: {
-            Authorization: "Bearer " + JSON.parse(accessToken).access_token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userName: data.user_name,
-            password: data.user_password,
-            email: data.user_email,
-          }),
+    fetch(
+      URL +
+      (updateMode
+        ? "api/BankNames/PutData?id=" + initialValues.bank_id
+        : "api/Users"),
+      {
+        method: updateMode ? "PUT" : "POST",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(accessToken).access_token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userName: data.user_name,
+          password: data.user_password,
+          email: data.user_email,
+        }),
+      }
+    ).then((response) => {
+
+      response.json().then((json) => {
+console.log(json);
+        if (response.status === 200) {
+          const requestOptionsForRole = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              UserId: json,
+              RoleId: data.user_role,
+            }),
+          };
+          fetch(URL + "/api/UserRoles", requestOptionsForRole)
+            .then((response) => {
+              if (response.status === 200) {
+                toast.success(
+                  "User has been " +
+                  (updateMode ? "Updated" : "Added" + " successfully!")
+                );
+                clearFields();
+                fetchCityNames();
+                fetchData();
+              } else {
+
+              }
+              response.json();
+            })
+
+            .catch((err) => {
+              console.log("err", err);
+            });
+        } else {
+          toast.error(json)
         }
-      ).then((response) => {
-        response.json().then((json) => {
-          console.log(json);
-          if (response.status === 200) {
-            const requestOptionsForRole = {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                UserId: json,
-                RoleId: data.user_role,
-              }),
-            };
-            fetch(URL + "/api/UserRoles", requestOptionsForRole)
-              .then((response) => {
-                if (response.status === 200) {
-                  toast.success(
-                    "User has been " +
-                      (updateMode ? "Updated" : "Added" + " successfully!")
-                  );
-                  clearFields();
-                  fetchCityNames();
-                  fetchData();
-                } else {
-                }
-                response.json();
-              })
 
-              .catch((err) => {
-                console.log("err", err);
-              });
-          } else {
-            toast.error(json);
-          }
+        toast.error(json.Message)
 
-          // calling another api to set role against this user id
-        });
-        //   }
+        // calling another api to set role against this user id
+
       });
-    }
+      //   }
+    });
   };
 
   const deleteBankName = (user_id) => {
@@ -362,7 +366,7 @@ const AddUser = ({ pagePermission }) => {
           },
         }).then((response) => {
           if (response.status === 200) {
-            toast.success("User has been deleted successfully!");
+            toast.success("City Name has been Deleted successfully!");
             fetchData();
             clearFields();
           } else {
@@ -393,48 +397,58 @@ const AddUser = ({ pagePermission }) => {
               Type Role Name<span className="required">*</span>
             </label>
             <div className="col-md-8 col-sm-8">
+
+
+
               <Select
                 className="basic-single"
                 classNamePrefix="select"
                 value={roleValue}
                 onChange={(e) => {
-                  setRoleValue(e);
-                }}
+                  setRoleValue(e)
+                }
+                }
                 options={roleOptions}
+
                 isSearchable={true}
                 name="color"
                 styles={customStyles}
               />
+
+
+
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <div className="row mr-3">
-            <button
-              className="btn btn-dark"
-              type="button"
-              onClick={() => handleClose()}
-            >
-              Cancel
-            </button>
-            <button
-              className="btn "
-              style={{
-                backgroundColor: " #f79c74 ",
-                color: "white",
-                borderColor: "#f79c74 ",
-              }}
-              type="button"
-              onClick={() => {
-                toast.success("Updated Successfully");
-                handleClose();
-              }}
-            >
-              Update
-            </button>
-          </div>
+        <div className="row mr-3">
+             <button
+            className="btn btn-dark"
+            type="button"
+            onClick={() => handleClose()}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn "
+            style={{
+              backgroundColor: " #f79c74 ",
+              color: "white",
+              borderColor: "#f79c74 "
+
+            }}
+            type="button"
+            onClick={() =>{
+              toast.success("Updated Successfully")
+              handleClose()}}
+          >
+            Update
+          </button>
+        </div>
+       
         </Modal.Footer>
       </Modal>
+
 
       <PageTemplate
         pagePermission={rolePermissionTable}
@@ -453,8 +467,7 @@ const AddUser = ({ pagePermission }) => {
         changeFieldValue={changeFieldValue}
         showButtons={true}
         isShowSelector={true}
-      />
-    </>
+      /></>
   );
 };
 

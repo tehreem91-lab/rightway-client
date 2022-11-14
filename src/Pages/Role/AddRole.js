@@ -196,7 +196,7 @@ const AddRole = ({pagePermission}) => {
           if (response.status === 204 ||response.status === 200 ) {
             toast.success(
               "Role has been " +
-                (updateMode ? "Updated" : "Added" + " successfully!"),
+                (updateMode ? "Updated" : "Added" + " successfully!")
             );
             fetchData();
             clearFields();

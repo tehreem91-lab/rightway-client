@@ -5,8 +5,6 @@ import { useSelector } from "react-redux";
 import Select from "react-select";
 import { customStyles } from "../../Components/reactCustomSelectStyle";
 import { endPoint } from "../../config/Config";
-import Loader from "../../Layout/Loader/Loader";
-import CustomInnerHeader  from "../../Components/CustomInnerHeader"
 const BranchesPermission = () => {
   const [branchesOptions, setBranchesOptions] = useState([]);
   const [branchesValues, setBranchesValues] = useState("");
@@ -117,7 +115,7 @@ const BranchesPermission = () => {
           fetch(`${endPoint}/api/UserBranches/GetData`, requestOptions2)
             .then((response) => response.json())
             .then((result) => {
-              console.log(result, 'fethc after');
+              console.log(result , 'fethc after');
               setUserBranchesMainState(result);
               // setisLoading(false);
             })
@@ -144,10 +142,10 @@ const BranchesPermission = () => {
         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
           }   `}
       >
-      <CustomInnerHeader moduleName="Branch Permission" isShowSelector={true} />
+        <span>&nbsp; Branches Permission</span>
       </div>
       {isLoading ? (
-        <Loader />
+        <>loading</>
       ) : (
         <>
           {" "}
@@ -157,94 +155,94 @@ const BranchesPermission = () => {
               } `}
           >
             {
-              isEditModeOn && <div className="x_panel">
-                <div className="x_content my-3">
-                  <span className="section pl-4">
-                    <i className="fa fa-edit"></i>&nbsp;Add Branches Permission
-                  </span>
-                  <div className="row">
-                    <div className="field item form-group col-md-6 col-sm-6">
-                      <label className="col-form-label col-md-3 col-sm-3 label-align">
-                        {" "}
-                        Select User <span className="required">*</span>
-                      </label>
-                      <div className="col-md-8 col-sm-8">
-                        <Select
-                          className="basic-single"
-                          classNamePrefix="select"
-                          value={userValue}
-                          isDisabled={true}
-                          onChange={(e) => {
-                            setUserValue(e);
-                          }}
-                          styles={customStyles}
-                          isSearchable={true}
-                          name="branches"
-                          options={userOptions}
-                        />
-                      </div>
+              isEditModeOn &&    <div className="x_panel">
+              <div className="x_content my-3">
+                <span className="section pl-4">
+                  <i className="fa fa-edit"></i>&nbsp;Add Branches Permission
+                </span>
+                <div className="row">
+                  <div className="field item form-group col-md-6 col-sm-6">
+                    <label className="col-form-label col-md-3 col-sm-3 label-align">
+                      {" "}
+                      Select User <span className="required">*</span>
+                    </label>
+                    <div className="col-md-8 col-sm-8">
+                      <Select
+                        className="basic-single"
+                        classNamePrefix="select"
+                        value={userValue}
+                        isDisabled={true}
+                        onChange={(e) => {
+                          setUserValue(e);
+                        }}
+                        styles={customStyles}
+                        isSearchable={true}
+                        name="branches"
+                        options={userOptions}
+                      />
                     </div>
-                    <div className="field item form-group col-md-6 col-sm-6">
-                      <label className="col-form-label col-md-3 col-sm-3 label-align">
-                        {" "}
-                        Select Branches <span className="required">*</span>
-                      </label>
-                      <div className="col-md-8 col-sm-8">
-                        <Select
-                          className="basic-single"
-                          classNamePrefix="select"
-                          isMulti
-                          isDisabled={!isEditModeOn}
-                          value={branchesValues}
-                          onChange={(e) => {
-                            setBranchesValues(e);
-                          }}
+                  </div>
+                  <div className="field item form-group col-md-6 col-sm-6">
+                    <label className="col-form-label col-md-3 col-sm-3 label-align">
+                      {" "}
+                      Select Branches <span className="required">*</span>
+                    </label>
+                    <div className="col-md-8 col-sm-8">
+                      <Select
+                        className="basic-single"
+                        classNamePrefix="select"
+                        isMulti
+                        isDisabled={!isEditModeOn}
+                        value={branchesValues}
+                        onChange={(e) => {
+                          setBranchesValues(e);
+                        }}
 
-                          styles={customStyles}
-                          isSearchable={true}
-                          name="branches"
-                          options={branchesOptions}
-                        />
-                      </div>
+                        styles={customStyles}
+                        isSearchable={true}
+                        name="branches"
+                        options={branchesOptions}
+                      />
                     </div>
                   </div>
                 </div>
-
-                <div className="col-md-12 text-right x_footer">
-
-
-                  <button
-                    className="btn btn-dark"
-                    type="button"
-                    onClick={() => setIsEditModeOn(false)}
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-
-                    className="btn "
-                    type="button"
-                    onClick={() => updateBranchesPermission()}
-                    style={{
-                      backgroundColor: " #f79c74 ",
-                      color: "white",
-                      borderColor: "#f79c74 "
-
-                    }}
-                  >
-
-                    Update
-                  </button>
-
-
-
-
-
-                </div>
               </div>
-            }
 
+              <div className="col-md-12 text-right x_footer">
+           
+ 
+                    <button
+                      className="btn btn-dark"
+                      type="button"
+            onClick={()=>setIsEditModeOn(false)}
+                    >
+                      Cancel
+                    </button>
+ 
+                    <button
+                  
+                      className="btn "
+                      type="button"
+                      onClick={() => updateBranchesPermission()}
+                      style={{
+                        backgroundColor: " #f79c74 ",
+                        color: "white",
+                        borderColor:"#f79c74 "
+                      
+                      }}
+                      >
+               
+                      Update
+                    </button>
+
+
+
+
+
+              </div>
+            </div>
+            }
+          
 
             <div className="x_panel  ">
               <div className="x_content">
@@ -321,10 +319,9 @@ const BranchesPermission = () => {
                                     });
                                   });
                                   setBranchesValues(branchesOpt);
-                                  setIsEditModeOn(true)
+                                  setIsEditModeOn(true) 
                                   //==========================================================
                                   //Add here function to go to top of screen window.scrol
-                                  // simillarly add it in page permission 
                                   //==========================================================
                                 }}
                               ></i>
