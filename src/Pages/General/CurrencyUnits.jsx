@@ -231,7 +231,8 @@ function CurrencyUnits({ pagePermission }) {
       confirmButtonText: "Yes, Do it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(URL + "api/CurrencyUnits/DeleteData?id=" + currency_unit_id, {
+        &page_name=currnecy_unit
+        fetch(URL + "api/CurrencyUnits/DeleteData?id=" + currency_unit_id+"&page_name=currnecy_unit", {
           method: "DELETE",
           headers: {
             Authorization:
