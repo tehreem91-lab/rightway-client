@@ -306,7 +306,7 @@ const Purchase = () => {
                                         </div>
                                     </span>
                                     <div className="x_content my-3" id='report' ref={componentRef}>
-                                        <h2> GatePass Report </h2>
+                                        <h2> Purchase Report </h2>
                                         <div className="row">
                                             <div className="col-md-12 px-5 bold-7 text-dark ">
                                                 {flag && <h6>Attachment: {ReportData.attachments ? (filearray?.map((file, i) => (<a key={i} target="_blank" className=" bg-customBlue text-light m-1 p-1">{i + 1}.   {file?.substring(file.indexOf("s") + 2, file.indexOf("_"))}</a>))) : "Not Available"}</h6>}
