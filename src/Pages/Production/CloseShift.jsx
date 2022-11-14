@@ -67,7 +67,7 @@ const CloseShift = () => {
 
     }
     const postData = () => {
-       
+       console.log("postData")
         var data = JSON.stringify({
             "shift_id": closeRec.shift_incharge_id,
             "quality_incharge_id": closeRec.quality_incharge.quality_incharge_id,
