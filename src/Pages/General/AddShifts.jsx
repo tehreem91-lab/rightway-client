@@ -231,8 +231,8 @@ function AddShifts({ pagePermission }) {
         let obj = initialValues;
         obj.shift_id = json.shift_id;
         obj.shift_name = json.shift_name;
-        obj.shift_start_time = json.shift_start_time;
-        obj.shift_end_time = json.shift_end_time;
+        obj.shift_start_time = json.shift_start_time.slice(11,19);
+        obj.shift_end_time = json.shift_end_time.slice(11,19);
 
         setInitialValues(obj);
         setUpdateMode(true);
