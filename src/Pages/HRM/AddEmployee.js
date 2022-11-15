@@ -858,7 +858,7 @@ function AddEmployee() {
                         <div className="x_panel  ">
                             <div className="x_content ">
                                 <span className="section">
-                                    <div className="row px-2  pt-3">
+                                    <div className="row px-2  pt-1">
                                         <div className="col-5 ">
                                             <i className='fa fa-list'></i>&nbsp;Listing
                                         </div>
@@ -916,7 +916,7 @@ function AddEmployee() {
                                     </div>
                                 </span>
 
-                                <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll', height: '400px' }}>
+                                <div className="table-responsive px-3 pb-2" style={{ overflowY : 'scroll', height: '400px' }}>
                                     <table className="table table-striped jambo_table bulk_action"   >
                                         <thead style={{ position: 'sticky', top: '0', zIndex: '1' }}>
                                             <tr className="headings  ">
