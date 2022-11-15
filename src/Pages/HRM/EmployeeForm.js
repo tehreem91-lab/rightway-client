@@ -1082,9 +1082,7 @@ const EmployeeForm = (props) => {
 
 
                                 </div>
-                            </div>
-
-                            <div className="row">
+                           
                                 <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
                                     <label htmlFor="exampleFormControlFile1" className="col-form-label col-md-3 col-sm-3 label-align">CNIC Front<span className="required">*</span></label>
 
@@ -1225,10 +1223,7 @@ const EmployeeForm = (props) => {
 
 
                                 </div>
-                            </div>
-
-
-                            <div className="row">
+                            
                                 <div className="field item form-group col-md-6 col-sm-6 w-50 p-3">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Select Attachment</label>
                                     <div className=" ">
