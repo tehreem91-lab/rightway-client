@@ -22,6 +22,7 @@ function App() {  const [isLogin, setisLogin] = useState(null);
   const dispatch = useDispatch();
   const showNavResukt = useSelector((state) => state.NavReducer.data);
 
+  const dateToday = new Date().toISOString().slice(0, 10)
   let allPagesData = [1];
   if (showNavResukt !== undefined) {
     showNavResukt.navigationResult.map((eachModule) => {
@@ -31,15 +32,36 @@ function App() {  const [isLogin, setisLogin] = useState(null);
     });
   }
 
+
+
+  function convertToSimple(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+
   useEffect(() => {
-    localStorage.setItem("authUser", endPoint);
+   // localStorage.setItem("authUser", endPoint);
     var newRetrived = localStorage.getItem("access_token");
     if (newRetrived) {
-      setisLogin(true);
-    } else {
-      setisLogin(false);
+      var authObject = JSON.parse(newRetrived)
+
+
+
+      if (convertToSimple(authObject[".expires"]) <= dateToday || convertToSimple(authObject[".expires"]) === dateToday) {
+        setisLogin(false);
+
+      } else {
+        setisLogin(true);
+      }
     }
-    dispatch(doGetNavigation(setShowMainLoader));
+    dispatch(doGetNavigation(setShowMainLoader))
+    let Connected = window.navigator.onLine;
+    if (!Connected) {
+      alert('Connection not available');
+    }
   }, []);
   return (
     <>

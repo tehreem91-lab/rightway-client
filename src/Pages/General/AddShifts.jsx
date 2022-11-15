@@ -168,13 +168,13 @@ function AddShifts({ pagePermission }) {
             },
             {
               name: "shift_start_time",
-              value: formatStartDate(value.shift_start_time),
+              value: (value.shift_start_time.slice(11,19)),
               className: "",
               style: {},
             },
             {
               name: "shift_end_time",
-              value: formatEndDate(value.shift_end_time),
+              value: (value.shift_end_time.slice(11,19)),
               className: "",
               style: {},
             },
