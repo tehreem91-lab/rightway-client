@@ -142,6 +142,8 @@ const AddStore = () => {
       setpackets_detail([{ packet_name: "", pair_base_unit: "" }]);
       setFileEntity([]);
       Get_StoreAccount();
+      setImageEntity([])
+      setimgPreview(false)
       toast.success("Your response has been submitted successfully");
     });
   };
@@ -250,6 +252,7 @@ const AddStore = () => {
         setFileEntity([]);
         setupdate(false);
         Get_StoreAccount();
+        setimgPreview(false)
         toast.success("Your response has been Updated successfully");
       })
       .catch(function (error) {
@@ -496,9 +499,9 @@ const AddStore = () => {
                           isSearchable={true}
                           options={storeoption}
                           value={storevalue}
-                          style={customStyles}
+                          styles={customStyles}
                           isDisabled={location?.state?.id ? true : false}
-                          styles={{ minHeight: "29px", height: "29px" }}
+                          style={{ minHeight: "29px", height: "29px" }}
                           onChange={(e) => {
                             setstorevalue(e);
                           }}
@@ -520,8 +523,7 @@ const AddStore = () => {
                           isSearchable={true}
                           options={consumptionoption}
                           value={consumptionvalue}
-                          style={customStyles}
-                          styles={{ minHeight: "29px", height: "29px" }}
+                          styles={customStyles}
                           onChange={(e) => {
                             setConsumptionValue(e);
                           }}
@@ -591,6 +593,7 @@ const AddStore = () => {
                           isSearchable={true}
                           options={unitoption}
                           value={unit}
+                          styles={customStyles}
                           onChange={(e) => {
                             setUnit(e);
                           }}
@@ -858,7 +861,7 @@ const AddStore = () => {
                         onClick={() => addFormFields()}
                       >
                         {" "}
-                        Add more{" "}
+                        Add line{" "}
                       </button>
                       {update ? (
                         <>

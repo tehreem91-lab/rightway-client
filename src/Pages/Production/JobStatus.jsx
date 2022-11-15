@@ -122,11 +122,7 @@ const JobStatus = () => {
                                 SR: id + 1,
                                 ProductName: item.product_info[0]?.product_name,
                                 JobStartdate: item.job_starting_date,
-                                JobEndDate: item.job_ending_date,
-                                ProductionQuantity: item.product_quantity.toFixed(2),
-                                AssignedPerson: item.job_incharge,
-                                Description: item.job_description,
-                                Status: item.job_status
+                                JobEndDate: item.job_ending_date,  Status: item.job_status
 
                             };
                         })

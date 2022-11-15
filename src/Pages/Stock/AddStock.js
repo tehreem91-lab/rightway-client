@@ -282,7 +282,9 @@ const UploadStock = ()=>{
      setQuantity_grams("")
      setpackets_detail([ {packet_name: "", pair_base_unit: ""}])
      setFileEntity([])
+     setImageEntity([])
      Get_Stockaccount()
+     setimgPreview(false)
      toast.success("Your response has been submitted successfully")
   })
  
@@ -496,6 +498,9 @@ axios(config)
        setpackets_detail([ {packet_name: "", pair_base_unit: ""}])
        setFileEntity([])
        Get_Stockaccount()
+     setImageEntity([])
+     setimgPreview(false)
+
 
     }
 
