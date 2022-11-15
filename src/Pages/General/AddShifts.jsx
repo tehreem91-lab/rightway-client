@@ -122,7 +122,7 @@ function AddShifts({ pagePermission }) {
       },
     })
       .then((response) => response.json())
-      .then((json) => {
+      .then((json) => { 
         var theadData = [
           {
             heading: "SR #",
@@ -168,13 +168,13 @@ function AddShifts({ pagePermission }) {
             },
             {
               name: "shift_start_time",
-              value: formatStartDate(value.shift_start_time),
+              value: (value.shift_start_time.slice(11,19)),
               className: "",
               style: {},
             },
             {
               name: "shift_end_time",
-              value: formatEndDate(value.shift_end_time),
+              value: (value.shift_end_time.slice(11,19)),
               className: "",
               style: {},
             },
@@ -232,8 +232,7 @@ function AddShifts({ pagePermission }) {
         obj.shift_id = json.shift_id;
         obj.shift_name = json.shift_name;
         obj.shift_start_time = json.shift_start_time.slice(11,19);
-        obj.shift_end_time = json.shift_end_time.slice(11,19);
-
+        obj.shift_end_time = json.shift_end_time.slice(11,19); 
         setInitialValues(obj);
         setUpdateMode(true);
       });
