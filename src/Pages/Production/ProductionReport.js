@@ -19,11 +19,43 @@ const ProductionReport = () => {
   const dateToday = `${year}-${month}-${day}`;
 
   const [validationState, setValidationState] = useState(true);
-  const [dateFrom, setdateFrom] = useState(dateToday);
+  const [Pro, setPro] = useState(dateToday);
   const [AvailableReport, setAvailableReport] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [isLoader, setisLoader] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
+  const fetchData=()=>{
+    var axios = require('axios');
+
+var config = {
+  method: 'get',
+  url: 'http://rightway-api.genial365.com/api/Product/GetProduct',
+  headers: { 
+    'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`, }
+};
+
+axios(config)
+.then(function (response) {
+  const Products = response.data.map((each_voucher) => {
+    return {
+        label: each_voucher.product_account.product_account_label,
+        value: each_voucher.product_account.product_account_value,
+
+    }
+
+})
+setPro(Products);
+})
+.catch(function (error) {
+  console.log(error);
+});
+
+     }
+  useEffect(() => {
+
+    fetchData("http://rightway-api.genial365.com/api/Jobs/GetProductList")
+   
+}, [])
   return (
     <>
       <div
@@ -64,6 +96,7 @@ const ProductionReport = () => {
                     isSearchable={true}
                     styles={customStyles}
                     placeholder={"Select Product"}
+                    options={Pro}
                   />
                 </div>
                 <div className="col-md-3 col-sm-3 mt-1">

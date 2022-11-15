@@ -663,6 +663,8 @@ function PartyInfo() {
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="13%">Party Name</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="8%">Cell</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="9%">Address</th>
+                                                <th className="column-title fontWeight300   right-border-1 text-center" width="5%">GST Number</th>
+                                                <th className="column-title fontWeight300   right-border-1 text-center" width="5%">NTN Number</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="12%">Attachments</th>
                                                 <th className="column-title fontWeight300   right-border-1 text-center" width="2%">Actions</th>
                                             </tr>
@@ -676,6 +678,8 @@ function PartyInfo() {
                                                         <td className=" ">{item.party_name}</td>
                                                         <td className=" ">{item.cell}</td>
                                                         <td className=" ">{item.address}</td>
+                                                        <td className=" ">{item?.gst}</td>
+                                                        <td className=" ">{item?.ntn}</td>
                                                         <td className=" ">
                                                             {<div className="row">
                                                                 <div className="col-md-12 px-5 bold-7 text-dark ">
@@ -706,7 +710,7 @@ function PartyInfo() {
                                                                 }
                                                             >
                                                             </i>
-                                                            <i className="fa fa-trash-o ml-1"></i>
+                                                            
                                                         </td>
                                                     </tr>
                                                 );

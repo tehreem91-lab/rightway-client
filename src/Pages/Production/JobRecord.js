@@ -9,7 +9,7 @@ import { CSVLink } from "react-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 const JobRecord = () => {
-  const [showTable, setshowTable] = useState(false)
+  const [showTable, setshowTable] = useState(false) 
 
 
   const navigate = useNavigate();
