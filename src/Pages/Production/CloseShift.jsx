@@ -69,7 +69,7 @@ const CloseShift = () => {
     const postData = () => {
        console.log("postData")
         var data = JSON.stringify({
-            "shift_id": closeRec.shift_incharge_id,
+            "shift_id": ApiParam.id,
             "quality_incharge_id": closeRec.quality_incharge.quality_incharge_id,
             "date": ApiParam.date,
             "remarks": closeRec.remarks,
@@ -144,6 +144,7 @@ const CloseShift = () => {
           axios(config)
           .then(function (response) {
             console.log(JSON.stringify(response.data),'success');
+            console.log(data)
           })
           .catch(function (error) {
             console.log(error);
