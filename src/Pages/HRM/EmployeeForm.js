@@ -425,8 +425,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {/* {(isFilled && (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined) ? <span className="text-danger">*Required Field</span > : "")} */}
-                                        {isValidateValue === false && Number(props.selectEmployee.salary_type) === 0 && <span className="text-danger">First Select this </span>}
+                                        {(isFilled && (props.selectEmployee.salary_type === "" || props.selectEmployee.salary_type === undefined) ? <span className="text-danger">*Required Field</span > : "")}
+                                        {isValidateValue === false && Number(props.selectEmployee.salary_type) == 0 && <span className="text-danger">First Select this </span>}
                                         {/* {isValidateValue === false && props.selectEmployee.salary_type === 0 && <span className="text-danger">First Select this </span>} */}
 
 
@@ -455,7 +455,7 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {isValidateValue === false && Number(props.selectEmployee.salary_department) === 0 && <span className="text-danger">First Select this </span>}
+                                        {isValidateValue === false && props.selectEmployee.salary_department === undefined && <span className="text-danger">First Select this </span>}
 
                                     </div>
                                 </div>
@@ -481,6 +481,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                        {isValidateValue === false && Number(props.selectEmployee.advance_percentage) === 0 && <span className="text-danger">First Select this </span>}
+
                                     </div>
                                 </div>
 
@@ -510,7 +512,7 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {isValidateValue === false && Number(props.selectEmployee.advance_department) === 0 && <span className="text-danger">First Select this </span>}
+                                        {isValidateValue === false && props.selectEmployee.advance_department === undefined && <span className="text-danger">First Select this </span>}
 
 
                                     </div>
@@ -566,7 +568,7 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {isValidateValue === false && Number(props.selectEmployee.expense_department) === 0 && <span className="text-danger">First Select this </span>}
+                                        {isValidateValue === false && props.selectEmployee.expense_department === undefined && <span className="text-danger">First Select this </span>}
 
 
                                     </div>
@@ -594,7 +596,7 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                        {isValidateValue === false && Number(props.selectEmployee.loan_department) === 0 && <span className="text-danger">First Select this </span>}
+                                        {isValidateValue === false && props.selectEmployee.loan_department === undefined && <span className="text-danger">First Select this </span>}
 
 
                                     </div>
@@ -657,9 +659,9 @@ const EmployeeForm = (props) => {
                                                                 ></i>
                                                             </div>
                                                         }
-                                                    </>
-                                                }))}
-                                                {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">First Select Benefit </span>}
+                                                    </> 
+                                                }))}<br/><br/>
+                                                {isValidateValue === false && props.benefitsRecordsValue[index]?.label === undefined && <span className="text-danger">First Select this </span>}
 
 
                                             </div>
@@ -707,7 +709,8 @@ const EmployeeForm = (props) => {
                                                         }} />
                                                 }))}
 
-                                                {isValidateValue === false && Number(props.benefitsRecordsValue[index]?.amount) === 0 && <span className="text-danger">Must enter benefit amount </span>}
+                                                {isValidateValue === false && (props.benefitsRecordsValue[index]?.amount == undefined  || (props.benefitsRecordsValue[index]?.amount =='0') )&& <span className="text-danger">Must enter benefit amount </span>}
+                                          
                                             </div>
                                         </div>
                                     </div>
@@ -750,6 +753,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                                {/* {isValidateValue === false && (props.selectEmployee.reference_name === " " || props.reference_name === undefined)&& <span className="text-danger">First Select this </span>} */}
+                                        
                                     </div>
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">

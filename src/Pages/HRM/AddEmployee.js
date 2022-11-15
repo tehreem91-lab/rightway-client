@@ -884,7 +884,7 @@ function AddEmployee() {
                                                         if (e.value == 2) {
 
 
-                                                            let data=filterEmp.filter((item) =>
+                                                            let data = filterEmp.filter((item) =>
                                                                 ((item?.status == 1) || (item?.status == 0))
 
                                                             );
@@ -892,7 +892,7 @@ function AddEmployee() {
                                                             setrerender(!rerender)
                                                         }
                                                         else {
-                                                           let filteredData= filterEmp.filter((item) =>
+                                                            let filteredData = filterEmp.filter((item) =>
                                                                 (item?.status == e.value)
 
                                                             );
@@ -904,42 +904,46 @@ function AddEmployee() {
                                                     styles={customStyles}
                                                 /></div>
                                             <div className="col-md-3 pr-4">
-                                                <Button variant="primary" onClick={()=>{setEmployeeToUpdate(
-                                                    {
-  employee_name: " ",
-  sur_name: " ",
-  cell: " ",
-  cnic: " ",
-  profile_image: " ",
-  cnic_front: " ",
-  cnic_back: " ",
-  address: " ",
-  reference_name: " ",
-  reference_cell: " ",
-  reference_cnic: " ",
-  salary_type: " ",
-  salary: 0,
-  is_overtime_allow: 0,
-  over_time: 0,
-  designation_id: 0,
-  advance_percentage: 0,
-  allowed_holidays: 0,
-  holiday_assigned: 0,
-  shift_id: 0,
-  attachments: " ",
-  status: 0,
-  expense_department_id: 0,
-  salary_department_id: 0,
-  advance_department_id: 0,
-  loan_department_id: 0,
-  benefits: [
-    {
-      benefit_id: 0,
-      amount: 0
-    }
-  ]
-}
-                                                ); handleShow()}}>
+                                                <Button variant="primary" onClick={() => {
+                                                    setPicture("");
+                                                    setPictureName(''); setFileEntity([]);
+                                                    setEmployeeToUpdate(
+                                                        {
+                                                            employee_name: " ",
+                                                            sur_name: " ",
+                                                            cell: " ",
+                                                            cnic: " ",
+                                                            profile_image: " ",
+                                                            cnic_front: " ",
+                                                            cnic_back: " ",
+                                                            address: " ",
+                                                            reference_name: " ",
+                                                            reference_cell: " ",
+                                                            reference_cnic: " ",
+                                                            salary_type: " ",
+                                                            salary: 0,
+                                                            is_overtime_allow: 0,
+                                                            over_time: 0,
+                                                            designation_id: 0,
+                                                            advance_percentage: 0,
+                                                            allowed_holidays: 0,
+                                                            holiday_assigned: 0,
+                                                            shift_id: 0,
+                                                            attachments: " ",
+                                                            status: 0,
+                                                            expense_department_id: 0,
+                                                            salary_department_id: 0,
+                                                            advance_department_id: 0,
+                                                            loan_department_id: 0,
+                                                            benefits: [
+                                                                {
+                                                                    benefit_id: 0,
+                                                                    amount: 0
+                                                                }
+                                                            ]
+                                                        }
+                                                    ); handleShow()
+                                                }}>
                                                     Add New <i className="ml-2 fa fa-plus-square"></i>
                                                 </Button>
                                             </div>
@@ -951,7 +955,7 @@ function AddEmployee() {
                                     </div>
                                 </span>
 
-                                <div className="table-responsive px-3 pb-2" style={{ overflowY : 'scroll', height: '400px' }}>
+                                <div className="table-responsive px-3 pb-2" style={{ overflowY: 'scroll', height: '400px' }}>
                                     <table className="table table-striped jambo_table bulk_action"   >
                                         <thead style={{ position: 'sticky', top: '0', zIndex: '1' }}>
                                             <tr className="headings  ">
@@ -1023,7 +1027,7 @@ function AddEmployee() {
 
                                                         <td className=" text-center   ">
                                                             <i className="fa fa-edit mr-2" onClick={() => {
-        console.log(item)
+                                                                console.log(item)
                                                                 setEmployeeToUpdate({
                                                                     ...item,
                                                                     designationUpdate: { value: item.designation_id, label: item.designationName },
