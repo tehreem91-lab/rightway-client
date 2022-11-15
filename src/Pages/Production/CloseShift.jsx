@@ -76,10 +76,10 @@ const CloseShift = () => {
             "attachments": closeRec.attachments,
             "job_entity": closeRec.job_entity.map((data, i) => {
                 return {
-                    "job_id": data.job_pass_no,
+                    "job_id": data.job_id,
                     "machine_info": data.machine_info.map((item, id) => {
                         return {
-                            "machine_id": 0,
+                            "machine_id": item.machine_id,
                             "status": item.status,
                             "total_product": item.total_product,
                             "total_a_grade_pieces": item.total_a_grade_pieces,
@@ -104,7 +104,7 @@ const CloseShift = () => {
                 return {
                     "employee_id": over.employee_id,
                     "product_id": over.product_id,
-                    "overtime": over.overtime,
+                    "overtime": Number(over.overtime),
                     "description": over.remarks,
                     "machine_ids": over.machine_ids,
                    
