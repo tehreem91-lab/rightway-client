@@ -6,8 +6,8 @@ import { customStyles } from '../../Components/reactCustomSelectStyle';
 import Creatable from "react-select/creatable";
 
 
-const EmployeeForm = (props) => {
-
+const AddEmp = (props) => {
+console.log(props);
     // useEffect(() => {
     //     console.log("df",);
     //     props.setFileEntity(props.selectEmployee.attachments.split(","))
@@ -122,7 +122,7 @@ const EmployeeForm = (props) => {
 
 
         if (is_form_validated === true) {
-            props.updateEmployeeClouds();
+            props.postEmployeeClouds();
             props.fetchAllData();
         }
 
@@ -1355,4 +1355,4 @@ const EmployeeForm = (props) => {
     );
 };
 
-export default EmployeeForm;
+export default AddEmp;

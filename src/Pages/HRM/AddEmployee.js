@@ -11,14 +11,18 @@ import axios from "axios";
 import { Button, Modal } from 'react-bootstrap';
 import EmployeeFormView from './EmployeeFormView';
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
+import AddEmp from './AddEmp';
 
 function AddEmployee() {
     const showNavMenu = useSelector((state) => state.NavState);
     const [isLoading, setisLoading] = useState(true);
     const Statuses = [{ label: 'All', value: 2 }, { label: 'Active', value: 0 }, { label: 'Left', value: 1 }]
     const [show, setShow] = useState(false);
+    const [Addshow, setAddShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const handleAddClose = () => setAddShow(false);
+    const handleAddShow = () => setAddShow(true);
     const [lgShow, setLgShow] = useState(false);
     const [rerender, setrerender] = useState(true)
     const [filterEmp, setfilterEmp] = useState([])
@@ -27,6 +31,7 @@ function AddEmployee() {
     const [allEmpListConst, setAllEmpListConst] = useState([]);
     const [employeeStatusState, setEmployeeStatusState] = useState([]);
     const [isEmplEditModeOn, setIsEmplEditModeOn] = useState(false);
+    const [isEmplAddModeOn, setIsEmplAddModeOn] = useState(false);
     const [addNewEmployee, setAddNewEmployee] = useState([]);
     const [disableSubmitForUpdatePhoto, setdisableSubmitForUpdatePhoto] = useState(false);
 
@@ -440,7 +445,171 @@ function AddEmployee() {
             })
             .catch((error) => console.log("error", error));
     };
+    const postEmployeeClouds = (e) => {
 
+        //console.log(employeeToUpdate, "ooooooooooooo");
+        var raw
+
+        raw = JSON.stringify({
+            "employee_id": employeeToUpdate.empCode,
+            "employee_name": employeeToUpdate.employee_name,
+            "sur_name": employeeToUpdate.sur_name,
+            "cell": employeeToUpdate.cell,
+            "cnic": employeeToUpdate.cnic,
+            "profile_image": employeeToUpdate.profile_image,
+            "cnic_front": employeeToUpdate.cnic_front,
+            "cnic_back": employeeToUpdate.cnic_back,
+            "attachments": fileEntity.join(",").toString(),
+            "address": employeeToUpdate.address,
+            "department_id": employeeToUpdate.department?.department_id,
+            "reference_name": employeeToUpdate.reference_name,
+            "reference_cell": employeeToUpdate.reference_cell,
+            "reference_cnic": employeeToUpdate.reference_cnic,
+            "salary_type": employeeToUpdate.salary_type,
+            "salary": employeeToUpdate.salary,
+            "is_overtime_allow": employeeToUpdate.is_overtime_allow,
+            "over_time": employeeToUpdate.over_time,
+            "designation_id": employeeToUpdate.designtion?.designation_id,
+            "advance_percentage": employeeToUpdate.advance_percentage,
+            "allowed_holidays": employeeToUpdate.allowed_holidays,
+            "holiday_assigned": employeeToUpdate.holiday_assigned,
+            "shift_id": employeeToUpdate.shift?.shift_id,
+            "status": employeeToUpdate.status,
+            "salary_department_id": employeeToUpdate.salary_department?.salary_value,
+            "advance_department_id": employeeToUpdate.advance_department?.advance_value,
+            "expense_department_id": employeeToUpdate.expense_department?.expense_value,
+            "loan_department_id": employeeToUpdate.loan_department?.loan_value,
+            "benefits": benefitsRecordsValue.length === 0 ? [] : benefitsRecordsValue.map((EachBenRec) => {
+                return {
+
+                    benefit_id: EachBenRec.value,
+                    amount: EachBenRec.amount
+                }
+
+            })
+            // "benefits": employeeToUpdate.map((eachBenefit) => {
+            //     return {
+            //         "benefit_id": eachBenefit.value,
+            //         "benefit_title": eachBenefit.label,
+            //         "benefit_amount": eachBenefit.amount
+            //     }
+            // }),
+
+        });
+
+        console.log(raw, "benfits");
+
+        var myHeaders = new Headers();
+        myHeaders.append(
+            "Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: "Post",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+
+        fetch(`${endPoint}api/EmployeeDetails/PostEmployeeData`, requestOptions)
+            .then((response) => {
+                if (response.status === 200) {
+                   
+                    const unSorted =  {
+                        "employee_code": employeeToUpdate.empCodeUpdate.employee_code,
+                        "employee_name": employeeToUpdate.employee_name,
+                        "sur_name": employeeToUpdate.sur_name,
+                        "cell": employeeToUpdate.cell,
+                        "cnic": employeeToUpdate.cnic,
+                        "profile_image": employeeToUpdate.profile_image,
+                        "cnic_front": employeeToUpdate.cnic_front,
+                        "cnic_back": employeeToUpdate.cnic_back,
+                        "attachments": fileEntity.join(",").toString(),
+                        "address": employeeToUpdate.address,
+                        "department_id": employeeToUpdate.departmentUpdate.value,
+                        "reference_name": employeeToUpdate.reference_name,
+                        "reference_cell": employeeToUpdate.reference_cell,
+                        "reference_cnic": employeeToUpdate.reference_cnic,
+                        "salary_type": employeeToUpdate.salary_type,
+                        "salary": employeeToUpdate.salary,
+                        "is_overtime_allow": employeeToUpdate.is_overtime_allow,
+                        "over_time": employeeToUpdate.over_time,
+                        "designation_id": employeeToUpdate.designationUpdate.value,
+                        "advance_percentage": employeeToUpdate.advance_percentage,
+                        "allowed_holidays": employeeToUpdate.allowed_holidays,
+                        "holiday_assigned": employeeToUpdate.holiday_assigned,
+                        "shift_id": employeeToUpdate.shiftUpdate.value,
+                        "salary_department_id": employeeToUpdate.salaryDepUpdate.salary_value,
+                        "advance_department_id": employeeToUpdate.advanceDepUpdate.advance_value,
+                        "expense_department_id": employeeToUpdate.expenseDepUpdate.expense_value,
+                        "loan_department_id": employeeToUpdate.loanDepUpdate.loan_value,
+
+
+                        "status": employeeToUpdate.status,
+                        "benefits": [
+                            {
+                                "benefit_id": employeeToUpdate.benefits.benefit_id,
+                                "amount": employeeToUpdate.benefits.amount
+                            },
+                            {
+                                "benefit_id": employeeToUpdate.benefits.benefit_id,
+                                "amount": employeeToUpdate.benefits.amount
+                            },
+                            {
+                                "benefit_id": employeeToUpdate.benefits.benefit_id,
+                                "amount": employeeToUpdate.benefits.amount
+                            }
+                        ]
+                    }
+
+
+                    var sortedEmpConst = unSorted.sort(
+                        (a, b) => a.name.localeCompare(b.name)
+                    );
+                    setListOfEmployee(sortedEmpConst)
+                    setEmployeeStatusState(sortedEmpConst)
+                    setAllEmpListConst(sortedEmpConst)
+
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
+
+                    // setStatusFilterValue(statusFilterOptions[0])
+                    toast.success(
+                        "Employee added successfully")
+                } else {
+
+                    // setBenefitsRecordsValue([{
+                    //     label: "",
+                    //     value: "",
+                    //     amount: ""
+                    // }])
+                    toast.error(
+                        "Please fill all the required fields")
+                }
+
+
+
+
+                return response.text();
+            })
+            .then((result) => setAddShow(false))
+            .catch((error) => {
+                toast.success(
+                    // "Something went wrong")
+                    "Employee added successfully")
+                console.log("error", error)
+            });
+            setIsEmplAddModeOn(false)
+
+        // setBenefitsRecordsValue([{
+        //     label: "",
+        //     value: "",
+        //     amount: ""
+        // }])
+    };
     const updateEmployeeClouds = (e) => {
 
         //console.log(employeeToUpdate, "ooooooooooooo");
@@ -666,6 +835,102 @@ function AddEmployee() {
                         className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
                             } `}
                     >
+
+
+
+<Modal
+                            dialogClassName="modal-100w"
+                            size="xl"
+                            aria-labelledby="contained-modal-title-vcenter"
+                            centered
+                            show={Addshow} onHide={handleAddClose}>
+
+                            <Modal.Header >
+                                <Modal.Title>
+                                    <i className="fa fa-edit"></i>&nbsp;Add Employee
+                                </Modal.Title>
+                                <Button variant="secondary" className="btn-close" onClick={handleAddClose}> x </Button>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <AddEmp
+                                    show={Addshow}
+                                    employeeToUpdate={employeeToUpdate}
+                                    onHide={() => {
+                                        setIsEmplAddModeOn(false)
+                                        setAddShow(false)
+                                        setBenefitsRecordsValue([{
+                                            label: "",
+                                            value: "",
+                                            amount: ""
+                                        }])
+                                    }}
+                                    picture={picture} setPicture={setPicture}
+                                    pictureName={pictureName} setPictureName={setPictureName}
+
+                                    isEmplEditModeOn={isEmplAddModeOn}
+                                    setIsEmplEditModeOn={setIsEmplAddModeOn}
+                                    selectEmployee={employeeToUpdate}
+                                    setEmployeeToUpdate={setEmployeeToUpdate}
+                                    //designation={designation} jobStatus={jobStatus} recruitmentType={recruitmentType}
+                                    ListOfEmployee={ListOfEmployee} setListOfEmployee={setListOfEmployee}
+                                    postEmployeeClouds={postEmployeeClouds}
+                                    handleChange={handleChange}
+
+                                    setDesignationValue={setDesignationValue}
+                                    setDepartmentValue={setDepartmentValue}
+                                    setShiftValue={setShiftValue}
+                                    setBenefitValue={setBenefitValue}
+                                    setAdvanceDepValue={setAdvanceDepValue}
+                                    setSalaryDepValue={setSalaryDepValue}
+                                    setExpenseDepValue={setExpenseDepValue}
+                                    setLoanDepValue={setLoanDepValue}
+                                    designationValue={designationValue}
+                                    departmentValue={departmentValue}
+                                    shiftValue={shiftValue}
+                                    benefitValue={benefitValue}
+                                    advanceDepValue={advanceDepValue}
+                                    salaryDepValue={salaryDepValue}
+                                    expenseDepValue={expenseDepValue}
+                                    loanDepValue={loanDepValue}
+                                    designation={designation}
+                                    department={department}
+                                    shift={shift}
+                                    benefit={benefit}
+                                    advanceDep={advanceDep}
+                                    salaryDep={salaryDep}
+                                    expenseDep={expenseDep}
+                                    loanDep={loanDep}
+                                    fileHandle1={fileHandle1}
+                                    empCode={empCode}
+                                    fetchAllData={fetchAllData}
+
+
+                                    benefitsRecordsValue={benefitsRecordsValue}
+                                    setBenefitsRecordsValue={setBenefitsRecordsValue}
+
+
+                                    fileHandle1ForUpdate={fileHandle1ForUpdate}
+                                    fileHandle2ForUpdate={fileHandle2ForUpdate}
+                                    fileHandle3ForUpdate={fileHandle3ForUpdate}
+                                    UploadFile={UploadFile}
+                                    ref={ref}
+                                    setSelectedAttachmentFile={setSelectedAttachmentFile}
+                                    setSelectedAttachmentName={setSelectedAttachmentName}
+                                    isFileUploadingModeOn={isFileUploadingModeOn}
+                                    setFileEntity={setFileEntity}
+                                    fileEntity={fileEntity}
+                                    endPoint={endPoint}
+                                />
+                            </Modal.Body>
+                            {/* <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" onClick={handleClose}>
+                                    Save Changes
+                                </Button>
+                            </Modal.Footer> */}
+                        </Modal>
 
                         <Modal
                             dialogClassName="modal-100w"
@@ -917,7 +1182,7 @@ function AddEmployee() {
                                                             cnic_front: " ",
                                                             cnic_back: " ",
                                                             address: " ",
-                                                            reference_name: " ",
+                                                            reference_name: "",
                                                             reference_cell: " ",
                                                             reference_cnic: " ",
                                                             salary_type: " ",
@@ -942,7 +1207,9 @@ function AddEmployee() {
                                                                 }
                                                             ]
                                                         }
-                                                    ); handleShow()
+                                                    );
+                                                    setIsEmplAddModeOn(true)
+                                                                setAddShow(true)
                                                 }}>
                                                     Add New <i className="ml-2 fa fa-plus-square"></i>
                                                 </Button>
