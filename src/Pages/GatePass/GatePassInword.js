@@ -567,7 +567,7 @@ const GatePassInward = () => {
   return (
     <>
       <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-        <CustomInnerHeader moduleName={"Gate Inward"} isShowSelector={true} />
+        <CustomInnerHeader moduleName={"Gate Pass Inward"} isShowSelector={true} />
       </div>
       <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  ${showNavMenu === false ?
         "right_col-margin-remove" : " "} `}>

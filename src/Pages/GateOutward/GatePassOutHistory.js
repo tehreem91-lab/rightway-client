@@ -181,7 +181,7 @@ const GatePassOutHistory = () => {
     return (
         <>
             <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-                <CustomInnerHeader moduleName={"Gate Inward History"} isShowSelector={true} />
+                <CustomInnerHeader moduleName={"Gate Pass Outward History"} isShowSelector={true} />
             </div>
             <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  ${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
@@ -284,7 +284,7 @@ const GatePassOutHistory = () => {
                                                             trigger={() => {
                                                                 return (
                                                                     <button
-                                                                        className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound" title="Print Doc"
+                                                                        className="btn btn-sm btn-success my-2 pt-1   borderRadiusRound" title="Print Doc"
                                                                     >
                                                                         <i className="fa fa-print"></i>
                                                                     </button>
@@ -297,13 +297,13 @@ const GatePassOutHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm btn-customOrange my-2 pt-1 mr-0 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" onClick={downloadPdf}
                                                         ><i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                         </button>
                                                     </li>
                                                     <li><CSVLink {...csvReport}>
-                    <button className="btn btn-sm  borderRadiusRound my-1 pt-1"  title="Excel" style={{backgroundColor:'#003A4D', color:'white'}}>
+                    <button className="btn btn-sm  borderRadiusRound my-1 pt-1 mr-0 ml-0"  title="Excel" style={{backgroundColor:'#003A4D', color:'white'}}>
                      
                      <i
                         className="fa fa-file-excel-o"
@@ -334,7 +334,7 @@ const GatePassOutHistory = () => {
                                                     <li>
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound" title="Edit Record"
-                                                            onClick={() => { navigate('/GatePassInward', { state: { id: ReportData.inward_gatepass_main_id, flag: true } }) }}
+                                                            onClick={() => { navigate('/GatePassOutwardAccess', { state: { id: ReportData.inward_gatepass_main_id, flag: true } }) }}
                                                         >
                                                             <i className="fa fa-edit" ></i>
                                                         </button>
@@ -463,7 +463,7 @@ const GatePassOutHistory = () => {
                                                         <div> <strong style={{ fontSize: '12px' }} onClick={() => GatePassReport(each_voucher_record.inward_gatepass_main_id)}><span className="badge bg-warning">{each_voucher_record.status || each_voucher_record.purchase_status}</span> {each_voucher_record.party_name}</strong> </div>
                                                         <div className='py-0'>
                                                             <span className='text-customOrange'>
-                                                                <u onClick={() => { navigate('/GatePassInward', { state: { id: each_voucher_record.inward_gatepass_main_id, flag: true } }) }
+                                                                <u onClick={() => { navigate('/GatePassOutwardAccess', { state: { id: each_voucher_record.inward_gatepass_main_id, flag: true } }) }
                                                                 }
                                                                 > Edit</u>
                                                             </span>

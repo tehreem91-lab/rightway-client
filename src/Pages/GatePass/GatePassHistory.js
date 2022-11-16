@@ -181,7 +181,7 @@ const GatePassHistory = () => {
     return (
         <>
             <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-                <CustomInnerHeader moduleName={"Gate Inward History"} isShowSelector={true} />
+                <CustomInnerHeader moduleName={"Gate Pass Inward History"} isShowSelector={true} />
             </div>
             <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  ${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
@@ -297,13 +297,13 @@ const GatePassHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm btn-customOrange my-2 pt-1  mr-0 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" onClick={downloadPdf}
                                                         ><i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                         </button>
                                                     </li>
                                                     <li><CSVLink {...csvReport}>
-                    <button className="btn btn-sm  borderRadiusRound my-1 pt-1"  title="Excel" style={{backgroundColor:'#003A4D', color:'white'}}>
+                    <button className="btn btn-sm  borderRadiusRound my-1 pt-1 mr-0"  title="Excel" style={{backgroundColor:'#003A4D', color:'white'}}>
                      
                      <i
                         className="fa fa-file-excel-o"

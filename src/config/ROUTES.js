@@ -162,7 +162,7 @@ const ROUTES = {
  StoreTransactionReport:{id:"80", element:    StoreTransactionReport, path:"StoreTransactionReportAccess"},
 
  GatePassOutHistory: { id: "81", element: GatePassOutHistory, path: "GatePassOutwardHistoryAccess" },
-  GatePassOutward: { id: "82", element: GatePassOutward, path: "GatePassOutward" },
+  GatePassOutward: { id: "82", element: GatePassOutward, path: "GatePassOutwardAccess" },
 };
 export default ROUTES;
 

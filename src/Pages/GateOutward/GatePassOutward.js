@@ -162,7 +162,7 @@ const GatePassOutward= () => {
 
       axios(config)
         .then(function (response) {
-          navigate('/GatePassInwardHistoryAccess', { state: { id: location.state.id, flag: true } })
+          navigate('/GatePassOutwardHistoryAccess', { state: { id: location.state.id, flag: true } })
           toast.success(
             "Record has been " +
             ("updated" + " successfully!")
@@ -567,7 +567,7 @@ const GatePassOutward= () => {
   return (
     <>
       <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
-        <CustomInnerHeader moduleName={"Gate Inward"} isShowSelector={true} />
+        <CustomInnerHeader moduleName={"Gate Pass Outward"} isShowSelector={true} />
       </div>
       <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  ${showNavMenu === false ?
         "right_col-margin-remove" : " "} `}>
@@ -582,8 +582,7 @@ const GatePassOutward= () => {
                 </div>
                 <div className="field item form-group">
                   <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
-                    Gate Pass Inward
-                    {/* <span className="required">*</span> */}
+                    Gate Pass Outward                    {/* <span className="required">*</span> */}
                   </label>
                   <div className="col-md-8 col-sm-6">
                     <input type="text" value={GatePassInward} disabled className="form-control" />
