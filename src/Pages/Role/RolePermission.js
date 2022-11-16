@@ -22,7 +22,7 @@ const RolePermission = () => {
     fetch(url + "api/Roles", {
       method: "GET",
       headers: {
-        // Authorization: "bearer" + " " + e,
+        'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
     }).then((response) => {
@@ -39,12 +39,13 @@ const RolePermission = () => {
     fetch(url + `api/PagePermissions?roleId=${e}`, {
       method: "GET",
       headers: {
-        // Authorization: "bearer" + " " + e,
+        'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
     })
       .then((response) => {
         response.json().then((data) => {
+       
           var sorted = data.sort((a, b) =>
             a.module_name.localeCompare(b.module_name)
           );
