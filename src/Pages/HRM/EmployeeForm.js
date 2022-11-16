@@ -709,7 +709,7 @@ const EmployeeForm = (props) => {
                                                         }} />
                                                 }))}
 
-                                                {isValidateValue === false && (props.benefitsRecordsValue[index]?.amount == undefined  || (props.benefitsRecordsValue[index]?.amount =='0') )&& <span className="text-danger">Must enter benefit amount </span>}
+                                                {isValidateValue === false && ((props.benefitsRecordsValue[index]?.amount == undefined ) || (props.benefitsRecordsValue[index]?.amount =='0' )|| (props.benefitsRecordsValue[index]?.amount =='' ))&& <span className="text-danger">Must enter benefit amount </span>}
                                           
                                             </div>
                                         </div>
@@ -753,8 +753,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
-                                                {/* {isValidateValue === false && (props.selectEmployee.reference_name === " " || props.reference_name === undefined)&& <span className="text-danger">First Select this </span>} */}
-                                        
+                                                {isValidateValue === false && (props?.selectEmployee?.reference_name === "" || props?.selectEmployee?.reference_name === undefined)&& <span className="text-danger">First Select this </span>}
+                                       {console.log(props?.selectEmployee)}
                                     </div>
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">
@@ -778,6 +778,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                                {isValidateValue === false && (props?.EmployeeToUpdate?.reference_cell === " " || props?.EmployeeToUpdate?.reference_cell === undefined)&& <span className="text-danger">First Select this </span>}
+
                                     </div>
                                 </div>
                             </div>
@@ -810,6 +812,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                                {isValidateValue === false && (props?.EmployeeToUpdate?.reference_cnic === " " || props?.EmployeeToUpdate?.reference_cnic === undefined)&& <span className="text-danger">First Select this </span>}
+
                                     </div>
                                 </div>
 
@@ -842,6 +846,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                                {isValidateValue === false && (props?.EmployeeToUpdate?.allowed_holidays === " " || props?.EmployeeToUpdate?.allowed_holidays === undefined)&& <span className="text-danger">First Select this </span>}
+
                                     </div>
                                 </div>
 
@@ -860,6 +866,8 @@ const EmployeeForm = (props) => {
                                                 });
                                             }}
                                         />
+                                                {isValidateValue === false && (props?.EmployeeToUpdate?.holiday_assigned === " " || props?.EmployeeToUpdate?.holiday_assigned === undefined)&& <span className="text-danger">First Select this </span>}
+                                 {console.log(props?.EmployeeToUpdate)}
                                     </div>
                                 </div>
                             </div>

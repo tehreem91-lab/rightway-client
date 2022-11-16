@@ -17,7 +17,7 @@ const GatePassOutward= () => {
   const [packetsDetails, setpacketsDetails] = useState([])
   const [info, setinfo] = useState([])
   const [GatePassInward, setgatePassInward] = useState()
-  const [InwardType, setInwardType] = useState([{ label: 'Cmt', value: 'cmt' }, { label: 'Purchase', value: 'purchase' }])
+  const [InwardType, setInwardType] = useState([{ label: 'Sale', value: 'sale' }, { label: 'Purchase Return', value: 'purchase return' }])
   const [PartyInfo, setPartyInfo] = useState({})
   const [Partyname, setPartyname] = useState([])
   const [fileupload, setfileupload] = useState('')
@@ -40,10 +40,10 @@ const GatePassOutward= () => {
     rent_type: "",
     rent_amount: 0,
     bilty_no: "",
-    inward_type: "",
+    outward_type: "",
     remarks: "string",
     attachments: "",
-    stock_entries: stockEntries
+    items_entries: stockEntries
   })
 
   const delPacketitem = (idx) => {
@@ -60,7 +60,7 @@ const GatePassOutward= () => {
       isValidationOk = false
 
     }
-    if (GatePass.inward_type == "") {
+    if (GatePass.outward_type == "") {
 
       isValidationOk = false
 
@@ -87,7 +87,7 @@ const GatePassOutward= () => {
 
       isValidationOk = false
     }
-    if (GatePass.inward_type == "") {
+    if (GatePass.outward_type == "") {
 
       isValidationOk = false
     }
@@ -96,11 +96,11 @@ const GatePassOutward= () => {
     //   isValidationOk = false
     // }
     // Stock Entry Validation
-    if (stockEntries.stock_chart_id == 0) {
+    if (stockEntries.item_chart_id == 0) {
 
       isValidationOk = false
     }
-    if (stockEntries.stock_unit_id == 0) {
+    if (stockEntries.item_unit_id == 0) {
 
       isValidationOk = false
     }
@@ -128,7 +128,7 @@ const GatePassOutward= () => {
         data.total_stock_pieces = data.total_stock_pieces * data.pair_unit_id;
         data.total_weight = data.total_weight * data.weight_per_piece;
       }))
-      setGatePass({ ...GatePass, stock_entries: stockEntries })
+      setGatePass({ ...GatePass, items_entries: stockEntries })
     }
 
 
@@ -142,10 +142,10 @@ const GatePassOutward= () => {
         "rent_type": GatePass.rent_type,
         "rent_amount": GatePass.rent_amount,
         "bilty_no": GatePass.bilty_no,
-        "inward_type": GatePass.inward_type,
+        "outward_type": GatePass.outward_type,
         "remarks": GatePass.remarks,
         "attachments": GatePass.attachments,
-        "stock_entries":
+        "items_entries":
           stockEntries
 
       });
@@ -177,16 +177,16 @@ const GatePassOutward= () => {
             rent_type: "",
             rent_amount: 0,
             bilty_no: "",
-            inward_type: "",
+            outward_type: "",
             remarks: "",
             attachments: "",
-            stock_entries: []
+            items_entries: []
           })
           setfilearray([]);
           setPartyInfo([{ cell: '', address: '' }])
           setstockEntries([{
-            stock_chart_id: 0,
-            stock_unit_id: 0,
+            item_chart_id: 0,
+            item_unit_id: 0,
             pair_unit_id: 0,
             total_stock_pieces: 0,
             weight_per_piece: 0,
@@ -211,7 +211,7 @@ const GatePassOutward= () => {
       isValidationOk = false
 
     }
-    if (GatePass.inward_type == "") {
+    if (GatePass.outward_type == "") {
 
       isValidationOk = false
 
@@ -238,7 +238,7 @@ const GatePassOutward= () => {
 
       isValidationOk = false
     }
-    if (GatePass.inward_type == "") {
+    if (GatePass.outward_type == "") {
 
       isValidationOk = false
     }
@@ -247,11 +247,11 @@ const GatePassOutward= () => {
     //   isValidationOk = false
     // }
     // Stock Entry Validation
-    if (stockEntries.stock_chart_id == 0) {
+    if (stockEntries.item_chart_id == 0) {
 
       isValidationOk = false
     }
-    if (stockEntries.stock_unit_id == 0) {
+    if (stockEntries.item_unit_id == 0) {
 
       isValidationOk = false
     }
@@ -294,10 +294,10 @@ const GatePassOutward= () => {
         "rent_type": GatePass.rent_type,
         "rent_amount": GatePass.rent_amount,
         "bilty_no": GatePass.bilty_no,
-        "inward_type": GatePass.inward_type,
+        "outward_type": GatePass.outward_type,
         "remarks": GatePass.remarks,
         "attachments": GatePass.attachments,
-        "stock_entries":
+        "items_entries":
           stockEntries
 
 
@@ -329,16 +329,16 @@ const GatePassOutward= () => {
             rent_type: "",
             rent_amount: 0,
             bilty_no: "",
-            inward_type: "",
+            outward_type: "",
             remarks: "",
             attachments: "",
-            stock_entries: []
+            items_entries: []
           })
           setfilearray([]);
           setPartyInfo([{ cell: '', address: '' }])
           setstockEntries([{
-            stock_chart_id: 0,
-            stock_unit_id: 0,
+            item_chart_id: 0,
+            item_unit_id: 0,
             pair_unit_id: 0,
             total_stock_pieces: 0,
             weight_per_piece: 0,
@@ -437,16 +437,16 @@ const GatePassOutward= () => {
           rent_type: response.data.rent_type,
           rent_amount: response.data.rent_amount,
           bilty_no: response.data.bilty_no,
-          inward_type: response.data.inward_type,
+          outward_type: response.data.outward_type,
           remarks: response.data.description,
           attachments: response.data.attachments,
-          // stock_entries: []
+          // items_entries: []
 
         })
         setgatePassInward(response.data.voucher_inv);
         if (response.data?.attachments)
           setfilearray(response.data?.attachments?.split(','));
-       let a = response.data.stock_entries.map((data, id) => {
+       let a = response.data.items_entries.map((data, id) => {
  
           let packetOptions = [{
             label: data.pair_unit_id?.packet_title,
@@ -460,12 +460,12 @@ const GatePassOutward= () => {
           let record =stockEntries
           record[id]={
            
-              stock_unit_id: data.stock_unit_id,
+              item_unit_id: data.item_unit_id,
               pair_unit_id: data.pair_unit_id?.stock_packet_id,
               total_stock_pieces: data.total_stock_pieces / data.pair_unit_id?.stock_packet_id,
               weight_per_piece: data.weight_per_piece,
               total_weight: data.total_weight,
-              stock_chart_id: data.stock_chart_id
+              item_chart_id: data.item_chart_id
             }
        
             setstockEntries(record)
@@ -518,8 +518,8 @@ const GatePassOutward= () => {
     fetchData('http://rightway-api.genial365.com/api/GatePassOutward/GetStockOptions')
     if ((location?.state?.id == undefined) && (location?.state?.flag == undefined)) {
       setstockEntries([{
-        stock_chart_id: 0,
-        stock_unit_id: 0,
+        item_chart_id: 0,
+        item_unit_id: 0,
         pair_unit_id: 0,
         total_stock_pieces: 0,
         weight_per_piece: 0,
@@ -550,8 +550,8 @@ const GatePassOutward= () => {
         data[id] = packetOptions
         setpacketsDetails(data)
         const list = [...stockEntries];
-        list[id].stock_chart_id = e.value;
-        list[id].stock_unit_id = e.unit
+        list[id].item_chart_id = e.value;
+        list[id].item_unit_id = e.unit
         setstockEntries(list);
       }
     })
@@ -595,7 +595,7 @@ const GatePassOutward= () => {
                     <span className="required">*</span>
                   </label>
                   <div className="col-md-8 col-sm-6">
-                    <Select options={InwardType} value={InwardType.find(e => e.value.toLowerCase() == GatePass.inward_type) || ''} onChange={(e) => { setGatePass({ ...GatePass, inward_type: e.value }) }} />
+                    <Select options={InwardType} value={InwardType.find(e => e.value.toLowerCase() == GatePass.outward_type) || ''} onChange={(e) => { setGatePass({ ...GatePass, outward_type: e.value }) }} />
                     {!isValidateAllStates && (GatePass.InwardType == "") && <span className="text-danger">First Select this </span>}
                   </div>
                 </div>
@@ -778,9 +778,9 @@ const GatePassOutward= () => {
                     {stockEntries?.map((data, id) => (
                       <tr key={id}>
 
-                        <td><Select isSearchable={true} options={stockAccount} styles={customStyles} value={stockAccount.find(e => e.value == data.stock_chart_id) || ''}
+                        <td><Select isSearchable={true} options={stockAccount} styles={customStyles} value={stockAccount.find(e => e.value == data.item_chart_id) || ''}
                           onChange={(e) => { handlePacket(id, e) }} />
-                          {!isValidateAllStates && (stockEntries[id].stock_chart_id == 0) && <span className="text-danger">First Select this </span>}
+                          {!isValidateAllStates && (stockEntries[id].item_chart_id == 0) && <span className="text-danger">First Select this </span>}
                         </td>
                         <td style={{ width: '20%' }}><Select styles={customStyles} options={packetsDetails[id]} value={packetsDetails[id]?.find(e => e.value == data.pair_unit_id) || ''} onChange={(e) => {
                           const list = [...stockEntries];
@@ -852,8 +852,8 @@ const GatePassOutward= () => {
 
                 <button className="btn btn-primary  x_footer" onClick={() => {
                   setstockEntries([...stockEntries, {
-                    stock_chart_id: 0,
-                    stock_unit_id: 0,
+                    item_chart_id: 0,
+                    item_unit_id: 0,
                     pair_unit_id: 0,
                     total_stock_pieces: 0,
                     weight_per_piece: 0,
