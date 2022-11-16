@@ -317,7 +317,7 @@ const GatePassInward = () => {
         .then(function (response) {
 
           toast.success(
-            "Shift has been " +
+            "Record has been " +
             ("Added" + " successfully!")
           );
           setGatePass({
