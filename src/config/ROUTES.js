@@ -76,6 +76,8 @@ import ProductionReport from "../Pages/Production/ProductionReport";
 import StockIssueHistory from "../Pages/Production/StockIssue/StockIssueHistory";
 import JobWiseStockIssueReport from "../Pages/Production/StockIssue/JobWiseStockIssueReport";
 import StoreTransactionReport from "../Pages/Store/StoreTransactionReport";
+import GatePassOutward from "../Pages/GateOutward/GatePassOutward";
+import GatePassOutHistory from "../Pages/GateOutward/GatePassOutHistory";
 
 
 
@@ -157,9 +159,10 @@ const ROUTES = {
  ProductionReport:{id:"77", element:  ProductionReport, path:"ProductionReportAccess"},
  StockIssueHistory:{id:"78", element:   StockIssueHistory, path:"StockIssueHistoryReportAccess"},
  JobWiseStockIssueReport:{id:"79", element:    JobWiseStockIssueReport, path:"JobStockRecordAccess"},
- StoreTransactionReport:{id:"80", element:    StoreTransactionReport, path:"StoreTransactionReportAccess"}
+ StoreTransactionReport:{id:"80", element:    StoreTransactionReport, path:"StoreTransactionReportAccess"},
 
- 
+ GatePassOutHistory: { id: "81", element: GatePassOutHistory, path: "GatePassOutwardHistoryAccess" },
+  GatePassOutward: { id: "82", element: GatePassOutward, path: "GatePassOutward" },
 };
 export default ROUTES;
 
