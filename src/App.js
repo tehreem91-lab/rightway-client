@@ -77,8 +77,11 @@ function App() {  const [isLogin, setisLogin] = useState(null);
         draggable
         pauseOnHover
       />
-      {isLogin === null ? (
-        <div className="lds-dual-ring-ForMain-Page "></div>
+      {isLogin === null ? (<Login
+        setisLogin={setisLogin}
+        isLogin={isLogin}
+        setShowMainLoader={setShowMainLoader}
+      />
       ) : !isLogin ? (<Login
         setisLogin={setisLogin}
         isLogin={isLogin}
