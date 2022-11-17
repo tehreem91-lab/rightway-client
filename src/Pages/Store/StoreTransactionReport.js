@@ -246,16 +246,13 @@ const csvReport = {
 
             <div className="row  mx-3">
               <div className="field item form-group col-md-12 col-sm-12">
-                <div className="col-md-2">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
+                <div className="col-md-6">
+                  
+                   
+                      <label className=" col-md-3 col-form-label">
                         Accounts <span className="required">*</span>
                       </label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
+                       <div className="col-md-8">
                       <Select
                         className=""
                         isSearchable={true}
@@ -265,22 +262,21 @@ const csvReport = {
                         value={StoreAccountvalue}
                         onChange={(e)=>setStoreAccountvalue(e) }
                       />
-                      {validationState === false && StoreAccountOption === "" && (
+                      {validationState === false && Number(StoreAccountvalue) === 0 && (
                         <span className="text-danger">First Select this </span>
                       )}
                     </div>
-                  </div>
+                 
                 </div>
-                <div className="col-md-2">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
+                <div className="col-md-6">
+                  
+                      <label className=" col-md-4 col-form-label">
                         Party Accounts <span className="required">*</span>
                       </label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
+                    
+                  
+                  
+                    <div className="col-md-8">
                       <Select
                         className=""
                         isSearchable={true}
@@ -294,19 +290,18 @@ const csvReport = {
                         <span className="text-danger">First Select this </span>
                       )}
                     </div>
-                  </div>
-                </div>
-                <div className="col-md-2">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
-                        Select Stock Type <span className="required">*</span>
-                      </label>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <Select
+                    </div>
+                  
+                    <div className="field item form-group col-md-12 col-sm-12">
+                <div className="col-md-6">
+                  
+                   
+                      <label className=" col-md-3 col-form-label">
+                      Stock Type <span className="required">*</span>
+                      </label>
+                       <div className="col-md-8">
+                       <Select
                         isSearchable={true}
                         styles={customStyles}
                         options={options}
@@ -319,20 +314,18 @@ const csvReport = {
                         <span className="text-danger">First Select this </span>
                       )}
                     </div>
-                  </div>
+                 
                 </div>
-
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
-                        From Date <span className="required">*</span>
+                <div className="col-md-6">
+                  
+                      <label className=" col-md-4 col-form-label">
+                      From Date <span className="required">*</span>
                       </label>
-                    </div>
-                  </div>
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <input
+                    
+                  
+                  
+                    <div className="col-md-8">
+                    <input
                         className="form-control"
                         type="date"
                         value={dateFrom}
@@ -346,19 +339,18 @@ const csvReport = {
                         <span className="text-danger">First Select this </span>
                       )}
                     </div>
-                  </div>
-                </div>
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
-                        Date To : <span className="required">*</span>
-                      </label>
                     </div>
-                  </div>
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <input
+                    </div>
+                   
+                    <div className="field item form-group col-md-12 col-sm-12">
+                <div className="col-md-6">
+                  
+                   
+                      <label className=" col-md-3 col-form-label">
+                      Date To : <span className="required">*</span>
+                      </label>
+                       <div className="col-md-8">
+                       <input
                         className="form-control"
                         type="date"
                         value={dateto}
@@ -372,30 +364,35 @@ const csvReport = {
                         <span className="text-danger">First Select this </span>
                       )}
                     </div>
-                  </div>
+                 
                 </div>
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12"></div>
-                  </div>
-                  <div className="row mt-4">
-                    <div className="col-md-12">
-                      <button
-                        className="btn bg-customBlue text-light mt-2"
+                <div className="col-md-6 text-right mr-3">
+                  
+                <button
+                        className="btn bg-customBlue text-light mt-2 "
                         type="submit"
                         onClick={() => {
                           Get_Transaction_Report()
                         }}
                       >
-                        Run Report
+                       Submit
                         {!isLoader && (
                           <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
                         )}
                       </button>
+                    
+                  
+                  
+                    
                     </div>
-                  </div>
-                </div>
-              </div>
+                    </div>
+                 
+             
+                  
+
+                
+              
+            
             </div>
            
 

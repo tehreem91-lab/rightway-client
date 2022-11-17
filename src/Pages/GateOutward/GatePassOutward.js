@@ -17,6 +17,7 @@ const GatePassOutward= () => {
   const [packetsDetails, setpacketsDetails] = useState([])
   const [info, setinfo] = useState([])
   const [GatePassInward, setgatePassInward] = useState()
+  const StockType=[{ label:'Cmt', value:'cmt' },{ label:'Purchase', value:'purchase'}]
   const [InwardType, setInwardType] = useState([{ label: 'Sale', value: 'sale' }, { label: 'Purchase Return', value: 'purchase return' }])
   const [PartyInfo, setPartyInfo] = useState({})
   const [Partyname, setPartyname] = useState([])
@@ -591,11 +592,24 @@ const GatePassOutward= () => {
                 </div>
                 <div className="field item form-group">
                   <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
-                    Select Inward Type
+                    Select Outward Type
                     <span className="required">*</span>
                   </label>
                   <div className="col-md-8 col-sm-6">
                     <Select options={InwardType} value={InwardType.find(e => e.value.toLowerCase() == GatePass.outward_type) || ''} onChange={(e) => { setGatePass({ ...GatePass, outward_type: e.value }) }} />
+                    {!isValidateAllStates && (GatePass.InwardType == "") && <span className="text-danger">First Select this </span>}
+                  </div>
+                </div>
+                <div className="field item form-group">
+                  <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
+                    Select Stock Type
+                    <span className="required">*</span>
+                  </label>
+                  <div className="col-md-8 col-sm-6">
+                    <Select options={StockType} 
+                    // value={InwardType.find(e => e.value.toLowerCase() == GatePass.outward_type) || ''} 
+                    // onChange={(e) => { setGatePass({ ...GatePass, outward_type: e.value }) }}
+                     />
                     {!isValidateAllStates && (GatePass.InwardType == "") && <span className="text-danger">First Select this </span>}
                   </div>
                 </div>

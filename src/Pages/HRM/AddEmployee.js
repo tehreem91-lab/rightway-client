@@ -513,61 +513,63 @@ function AddEmployee() {
         fetch(`${endPoint}api/EmployeeDetails/PostEmployeeData`, requestOptions)
             .then((response) => {
                 if (response.status === 200) {
+                    setListOfEmployee([...ListOfEmployee]).sort((a, b) => { return a?.employee_code?.localeCompare(b?.employee_code) });
+
                    
-                    const unSorted =  {
-                        "employee_code": employeeToUpdate.empCodeUpdate.employee_code,
-                        "employee_name": employeeToUpdate.employee_name,
-                        "sur_name": employeeToUpdate.sur_name,
-                        "cell": employeeToUpdate.cell,
-                        "cnic": employeeToUpdate.cnic,
-                        "profile_image": employeeToUpdate.profile_image,
-                        "cnic_front": employeeToUpdate.cnic_front,
-                        "cnic_back": employeeToUpdate.cnic_back,
-                        "attachments": fileEntity.join(",").toString(),
-                        "address": employeeToUpdate.address,
-                        "department_id": employeeToUpdate.departmentUpdate.value,
-                        "reference_name": employeeToUpdate.reference_name,
-                        "reference_cell": employeeToUpdate.reference_cell,
-                        "reference_cnic": employeeToUpdate.reference_cnic,
-                        "salary_type": employeeToUpdate.salary_type,
-                        "salary": employeeToUpdate.salary,
-                        "is_overtime_allow": employeeToUpdate.is_overtime_allow,
-                        "over_time": employeeToUpdate.over_time,
-                        "designation_id": employeeToUpdate.designationUpdate.value,
-                        "advance_percentage": employeeToUpdate.advance_percentage,
-                        "allowed_holidays": employeeToUpdate.allowed_holidays,
-                        "holiday_assigned": employeeToUpdate.holiday_assigned,
-                        "shift_id": employeeToUpdate.shiftUpdate.value,
-                        "salary_department_id": employeeToUpdate.salaryDepUpdate.salary_value,
-                        "advance_department_id": employeeToUpdate.advanceDepUpdate.advance_value,
-                        "expense_department_id": employeeToUpdate.expenseDepUpdate.expense_value,
-                        "loan_department_id": employeeToUpdate.loanDepUpdate.loan_value,
+                    // const unSorted =  {
+                    //     "employee_code": employeeToUpdate.empCodeUpdate.employee_code,
+                    //     "employee_name": employeeToUpdate.employee_name,
+                    //     "sur_name": employeeToUpdate.sur_name,
+                    //     "cell": employeeToUpdate.cell,
+                    //     "cnic": employeeToUpdate.cnic,
+                    //     "profile_image": employeeToUpdate.profile_image,
+                    //     "cnic_front": employeeToUpdate.cnic_front,
+                    //     "cnic_back": employeeToUpdate.cnic_back,
+                    //     "attachments": fileEntity.join(",").toString(),
+                    //     "address": employeeToUpdate.address,
+                    //     "department_id": employeeToUpdate.departmentUpdate.value,
+                    //     "reference_name": employeeToUpdate.reference_name,
+                    //     "reference_cell": employeeToUpdate.reference_cell,
+                    //     "reference_cnic": employeeToUpdate.reference_cnic,
+                    //     "salary_type": employeeToUpdate.salary_type,
+                    //     "salary": employeeToUpdate.salary,
+                    //     "is_overtime_allow": employeeToUpdate.is_overtime_allow,
+                    //     "over_time": employeeToUpdate.over_time,
+                    //     "designation_id": employeeToUpdate.designationUpdate.value,
+                    //     "advance_percentage": employeeToUpdate.advance_percentage,
+                    //     "allowed_holidays": employeeToUpdate.allowed_holidays,
+                    //     "holiday_assigned": employeeToUpdate.holiday_assigned,
+                    //     "shift_id": employeeToUpdate.shiftUpdate.value,
+                    //     "salary_department_id": employeeToUpdate.salaryDepUpdate.salary_value,
+                    //     "advance_department_id": employeeToUpdate.advanceDepUpdate.advance_value,
+                    //     "expense_department_id": employeeToUpdate.expenseDepUpdate.expense_value,
+                    //     "loan_department_id": employeeToUpdate.loanDepUpdate.loan_value,
 
 
-                        "status": employeeToUpdate.status,
-                        "benefits": [
-                            {
-                                "benefit_id": employeeToUpdate.benefits.benefit_id,
-                                "amount": employeeToUpdate.benefits.amount
-                            },
-                            {
-                                "benefit_id": employeeToUpdate.benefits.benefit_id,
-                                "amount": employeeToUpdate.benefits.amount
-                            },
-                            {
-                                "benefit_id": employeeToUpdate.benefits.benefit_id,
-                                "amount": employeeToUpdate.benefits.amount
-                            }
-                        ]
-                    }
+                    //     "status": employeeToUpdate.status,
+                    //     "benefits": [
+                    //         {
+                    //             "benefit_id": employeeToUpdate.benefits.benefit_id,
+                    //             "amount": employeeToUpdate.benefits.amount
+                    //         },
+                    //         {
+                    //             "benefit_id": employeeToUpdate.benefits.benefit_id,
+                    //             "amount": employeeToUpdate.benefits.amount
+                    //         },
+                    //         {
+                    //             "benefit_id": employeeToUpdate.benefits.benefit_id,
+                    //             "amount": employeeToUpdate.benefits.amount
+                    //         }
+                    //     ]
+                    // }
 
 
-                    var sortedEmpConst = unSorted.sort(
-                        (a, b) => a.name.localeCompare(b.name)
-                    );
-                    setListOfEmployee(sortedEmpConst)
-                    setEmployeeStatusState(sortedEmpConst)
-                    setAllEmpListConst(sortedEmpConst)
+                    // var sortedEmpConst = unSorted.sort(
+                    //     (a, b) => a.name.localeCompare(b.name)
+                    // );
+                    // setListOfEmployee(sortedEmpConst)
+                    // setEmployeeStatusState(sortedEmpConst)
+                    // setAllEmpListConst(sortedEmpConst)
 
 
                     // setBenefitsRecordsValue([{

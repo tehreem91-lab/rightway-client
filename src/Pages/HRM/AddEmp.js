@@ -702,12 +702,13 @@ console.log(props);
                                                             const objectData = props.benefitsRecordsValue;
                                                             objectData[index] = {
                                                                 ...objectData[index],
-                                                                amount: e.target.value
+                                                                amount: Number(e.target.value)
                                                             }
                                                             props.setBenefitsRecordsValue(objectData)
                                                             setReRender(!reRender)
                                                         }} />
                                                 }))}
+                                                {console.log(props?.benefitsRecordsValue)}
 
                                                 {isValidateValue === false && ((props.benefitsRecordsValue[index]?.amount == undefined ) || (props.benefitsRecordsValue[index]?.amount =='0' )|| (props.benefitsRecordsValue[index]?.amount =='' ))&& <span className="text-danger">Must enter benefit amount </span>}
                                           
@@ -867,7 +868,7 @@ console.log(props);
                                             }}
                                         />
                                                 {isValidateValue === false && (Number(props?.selectEmployee?.holiday_assigned) ===  0)&& <span className="text-danger">First Select this </span>}
-                                 {console.log(props?.EmployeeToUpdate)}
+                                
                                     </div>
                                 </div>
                             </div>

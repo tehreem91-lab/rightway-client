@@ -267,14 +267,14 @@ const StoreOpeningBalances = () => {
 
 
                   <button
-                    className="btn btn-dark fa fa-edit pl-3"
+                    className="btn btn-dark pl-3"
                     type="submit"
                     style={{ backgroundColor: "#003A4D" }}
                     onClick={() => {
                       handleGetOnSelection();
                     }}
                   >
-                    Apply Changes
+                   Submit
                     {applyChangesLoader &&
                       <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
                     }
@@ -300,7 +300,7 @@ const StoreOpeningBalances = () => {
                     <div className="col-9 col-md-9 col-sm-9" align="right">
                       {visableDiv === "true" && (
                         <button
-                          className="btn btn-dark fa fa-upload pl-3"
+                          className="btn btn-dark  pl-3"
                           type="button" style={{ backgroundColor: "#003A4D" }}
                           onClick={(e) => {
                             setDivToVisable("false");
@@ -586,33 +586,7 @@ const StoreOpeningBalances = () => {
                 </div>
               </div>
 
-              <div className="col-md-12 col-sm-12" align="right">
-                {visableDiv === "true" && (
-                  <button
-                    className="btn btn-dark fa fa-edit pl-3"
-                    type="button" style={{ backgroundColor: "#003A4D" }}
-                    onClick={(e) => {
-                      setDivToVisable("false");
-                      <input disabled="false" />;
-                    }}
-                  >
-                    Edit
-                  </button>
-                )}
-
-                {visableDiv === "false" && (
-                  <button
-                    className="btn btn-primary fa fa-save pl-3"
-                    type="submit"
-                    onClick={() => {
-                      editBalance();
-                      setDivToVisable("true");
-                    }}
-                  >
-                    Update
-                  </button>
-                )}
-              </div>
+             
             </div>
           </>
         )}

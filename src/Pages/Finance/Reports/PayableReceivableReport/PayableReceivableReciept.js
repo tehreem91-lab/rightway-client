@@ -7,7 +7,7 @@ const PLStatementReciept = React.forwardRef(({ getPayable, getReceivable, setTog
     return (
         <div>
             <div className="x_content px-0  mb-3">
-                <Tabs
+                <Tabs style={{backgroundColor: 'white'}}
                     defaultActiveKey="profile"
                     id="justify-tab-example"
                     className="mb-3"
