@@ -591,7 +591,7 @@ const GatePassOutward= () => {
                 </div>
                 <div className="field item form-group">
                   <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
-                    Select Inward Type
+                    Select Outward Type
                     <span className="required">*</span>
                   </label>
                   <div className="col-md-8 col-sm-6">

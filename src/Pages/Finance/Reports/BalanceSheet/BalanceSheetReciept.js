@@ -10,8 +10,8 @@ const BalanceSheetReciept = React.forwardRef(
     ) => {
         return (
             <div>
-                <div className="x_content px-0  mb-3">
-                    <Tabs
+                <div className="x_content px-0  mb-3" >
+                    <Tabs style={{backgroundColor:'white'}}
                         defaultActiveKey="profile"
                         id="justify-tab-example"
                         className="mb-3"
