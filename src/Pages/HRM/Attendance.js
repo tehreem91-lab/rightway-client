@@ -302,7 +302,7 @@ const Attendance = () => {
                             <div className="field item form-group col-md-9 col-sm-12">
 
 
-                                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                <label className="col-form-label col-md-1 col-sm-2 label-align">
                                     Select Date <span className="required">*</span>
                                 </label>
                                 <div className="col-md-3 col-sm-3">
@@ -324,7 +324,7 @@ const Attendance = () => {
                                     </div>
                                 </div>
 
-                                {/* <label className="col-form-label col-md-2 col-sm-2 label-align">
+                                {/* <label className="col-form-label col-md-1 col-sm-2 label-align">
                                     Select Department <span className="required">*</span>
                                 </label>
                                 <div className="col-md-3 col-sm-3">
@@ -398,7 +398,7 @@ const Attendance = () => {
                                                     <div className="col-md-9 col-sm-9" align="right">
                                                         {visableDiv === "true" && (
                                                             <button
-                                                                className="btn btn-dark fa fa-edit pl-3"
+                                                                className="btn btn-dark  pl-3"
                                                                 type="button" style={{ backgroundColor: "#003A4D" }}
                                                                 onClick={(e) => {
                                                                     setDivToVisable("false");
@@ -492,78 +492,103 @@ const Attendance = () => {
 
 
                                             {/* //////////////////////////Form Structure///////////////////////////////// */}
-                                            <div id="report" >
-                                                <div className="table-responsive px-3 pb-2 " ref={componentRef}>
-                                                    <table className="table ">
-                                                        <thead>
-                                                            <tr className="headings reportTableHead">
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Employee Code
-                                                                </th>
-                                                                <th className="column-title  right-border-1" width="10%" >
-                                                                    Employee Name
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Department
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Designation
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Shift Name
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Shift Start Time
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Shift End Time
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center" width="10%">
-                                                                    Date/Time In
-                                                                </th>
-                                                                <th className="column-title text-center right-border-1" width="10%">
-                                                                    Date/Time Out
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Duty Time
-                                                                </th>
+                                            <div id="report" ref={componentRef} >
+                                            
+                                            <div className="container-fluid">
+                  <div
+                    className=" row   reportTableHead bottom-border-1   "
+                    style={{ fontSize: 11 }}
+                  >
+                     <div className="col-md-1 col-1  p-2 right-border-2 border-light border   ">
+                          SR.
+                        </div>
+                        <div className="col-md-1 col-1  text-center py-1 px-1  right-border-2 border-light border  ">
+                        Employee Code
+                        </div>
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border  ">
+                        Employee Name
+                        </div>
 
-                                                                <th className="column-title text-center" width="10%">
-                                                                    Over Time
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        Department	
+                        </div>
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        Designation
+                        </div>
 
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        Shift Name
+                        </div>
 
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border   ">
+                        Shift Start Time
+                        </div>
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border  ">
+                        Shift End Time
+                        </div>
 
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        Date/Time In	
+                        </div>
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        Date/Time Out
+                        </div>
 
-                                                        {/* //////////////////////////Form Entries///////////////////////////////// */}
-                                                        <tbody>
-                                                            {attendenceData.map((item, index) => {
-                                                                return (
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        Duty Time
+                        </div>
 
+                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border   ">
+                        Over Time
+                        </div>
+                  </div>
 
+                  {attendenceData.length === 0 ? (
+                    <div
+                      className="row   reportTableBody bottom-border-2"
+                      style={{ fontSize: 11 }}
+                    >
+                      <div className=" col-md-12   col-12   px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
+                        No Data Available
+                      </div>
+                    </div>
+                  ) : (<>
+                   {attendenceData.map((item,index) =>(
+                      <div
+                        className=" row   reportTableBody bottom-border-2  "
+                        style={{ fontSize: 11 }}
+                      > 
+                      
+                        <div  className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  p-2   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  p-2   ' : 'col-md-1 col-1  text-center py-1 px-1    ')} >
+                          {index+1}
+                        </div>
+                        <div  className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.employee_code}
+                        </div>
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1     ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.employee_name}
+                        </div>
 
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.department_title}
+                        </div>
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.designation_title}
+                        </div>
 
-                                                                    <tr className="even pointer" key={index}>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.employee_code}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.employee_name} </td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.department_title}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.designation_title}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_title}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
-                                                                            {" "}
-                                                                            <input
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1     ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.shift_title}
+                        </div>
+
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.shift_start_time?.slice(8, 19)}
+                        </div>
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.shift_end_time?.slice(8, 19)}
+                        </div>
+
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1   ')}  >
+                        <input
                                                                                 type="datetime-local"
                                                                                 value={item?.in_date}
                                                                                 className="form-control border-none"
@@ -596,13 +621,10 @@ const Attendance = () => {
                                                                             />
                                                                             {isValidateValue === false && Number(item.in_date) === 0 && <span className="text-danger">First Select this </span>}
 
-
-                                                                            {/* {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""} */}
-                                                                        </td>
-
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
-                                                                            {" "}
-                                                                            <input
+	
+                        </div>
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1     ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        <input
                                                                                 type="datetime-local"
                                                                                 value={item?.out_date}
                                                                                 className="form-control border-none"
@@ -636,16 +658,21 @@ const Attendance = () => {
                                                                             />
                                                                             {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
 
-                                                                            {/* {(attendenceData.at(item.in_date) == null || attendenceData.at(item.out_date) == null) ? <span className="text-danger">Please Select Both Dates </span> : ""} */}
-                                                                        </td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.total_hour}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.extra_hour}</td>
-                                                                    </tr>
-                                                                );
-                                                            })}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                        </div>
+
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.total_hour}
+                        </div>
+
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        {item.extra_hour}
+                        </div>
+                      </div>))}</>
+                   
+                  )}
+                </div>
+                                         
+                                                
                                             </div>
 
 

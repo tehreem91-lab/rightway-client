@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { CSVLink } from "react-csv";
+import { customStyles } from '../../Components/reactCustomSelectStyle';
 const GatePassHistory = () => {
     const location = useLocation();
     const [isValidateOK, setIsValidateOK] = useState(true)
@@ -228,6 +229,7 @@ const GatePassHistory = () => {
                                     <div className="col-md-8 col-sm-6">
 
                                         <Select
+                                        styles={customStyles}
                                             value={InvType.value}
                                             isSearchable={true}
 

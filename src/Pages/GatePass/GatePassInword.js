@@ -596,7 +596,7 @@ const GatePassInward = () => {
                     <span className="required">*</span>
                   </label>
                   <div className="col-md-8 col-sm-6">
-                    <Select options={InwardType} value={InwardType.find(e => e.value.toLowerCase() == GatePass.inward_type) || ''} onChange={(e) => { setGatePass({ ...GatePass, inward_type: e.value }) }} />
+                    <Select styles={customStyles} options={InwardType} value={InwardType.find(e => e.value.toLowerCase() == GatePass.inward_type) || ''} onChange={(e) => { setGatePass({ ...GatePass, inward_type: e.value }) }} />
                     {!isValidateAllStates && (GatePass.InwardType == "") && <span className="text-danger">First Select this </span>}
                   </div>
                 </div>
@@ -605,7 +605,7 @@ const GatePassInward = () => {
                     Party Name<span className="required">*</span>
                   </label>
                   <div className="col-md-8 col-sm-6">
-                    <Select options={Partyname} value={Partyname.find(e => e.value == GatePass.party_chart_id) || ''} onChange={(e) => { setPartyInfo(PartyApi.filter(data => data.chart_id == e.value)); setGatePass({ ...GatePass, party_chart_id: e.value }) }} />
+                    <Select styles={customStyles} options={Partyname} value={Partyname.find(e => e.value == GatePass.party_chart_id) || ''} onChange={(e) => { setPartyInfo(PartyApi.filter(data => data.chart_id == e.value)); setGatePass({ ...GatePass, party_chart_id: e.value }) }} />
                     {!isValidateAllStates && (GatePass.party_chart_id == 0) && <span className="text-danger">First Select this </span>}
                   </div>
                 </div>
@@ -722,7 +722,7 @@ const GatePassInward = () => {
                     Rent Type<span className="required">*</span>
                   </label>
                   <div className="col-md-8 col-sm-6">
-                    <Select options={Rent_type} value={Rent_type.find(e => e.value == GatePass.rent_type) || ''} onChange={(e) => { setGatePass({ ...GatePass, rent_type: e.value }) }} />
+                    <Select styles={customStyles} options={Rent_type} value={Rent_type.find(e => e.value == GatePass.rent_type) || ''} onChange={(e) => { setGatePass({ ...GatePass, rent_type: e.value }) }} />
                     {!isValidateAllStates && (GatePass.rent_type == "") && <span className="text-danger">First Select this </span>}
                   </div>
                 </div>
@@ -779,7 +779,7 @@ const GatePassInward = () => {
                     {stockEntries?.map((data, id) => (
                       <tr key={id}>
 
-                        <td><Select isSearchable={true} options={stockAccount} styles={customStyles} value={stockAccount.find(e => e.value == data.stock_chart_id) || ''}
+                        <td><Select   isSearchable={true} options={stockAccount} styles={customStyles} value={stockAccount.find(e => e.value == data.stock_chart_id) || ''}
                           onChange={(e) => { handlePacket(id, e) }} />
                           {!isValidateAllStates && (stockEntries[id].stock_chart_id == 0) && <span className="text-danger">First Select this </span>}
                         </td>
