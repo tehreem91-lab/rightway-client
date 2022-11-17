@@ -699,7 +699,7 @@ const MultiVoucherGlobalTemplate = ({
                                     <div className="col-md-8 col-sm-8">
                                     {!voucherDetail && 
                 (
-                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 text-customOrange" style={{fontSize:'18px'}}></i>
+                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 " style={{fontSize:'18px'}}></i>
                 ) ||
             
                                         <input
@@ -737,7 +737,7 @@ const MultiVoucherGlobalTemplate = ({
                                     <div className="col-md-8 col-sm-8">
                                     {!voucherDetail && 
                 (
-                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 text-customOrange" style={{fontSize:'18px'}}></i>
+                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 " style={{fontSize:'18px'}}></i>
                 ) ||
             
                                         <input
@@ -751,11 +751,11 @@ const MultiVoucherGlobalTemplate = ({
                                     </div>
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">
-                                    <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Last Voucher Date <span className="required">*</span></label>
+                                    <label className="col-form-label col-md-3 col-sm-3 label-align pl-0 pr-0">Last Voucher Date <span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
                                     {!voucherDetail && 
                 (
-                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 text-customOrange" style={{fontSize:'18px'}}></i>
+                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 " style={{fontSize:'18px'}}></i>
                 ) ||
                                         <input
                                             disabled
@@ -855,7 +855,8 @@ const MultiVoucherGlobalTemplate = ({
                                     <table className="table table-striped jambo_table bulk_action">
                                         <thead >
                                             <tr className="headings">
-                                                <th className="column-title   text-center" width="20%">ACCOUNT <span className="required">*</span></th>
+                                            <th className="column-title   text-center" width="2%">Sr </th>
+                                                <th className="column-title   text-center" width="18%">ACCOUNT <span className="required">*</span></th>
                                                 <th className="column-title   text-center" width="15%">A/C BALANCE</th>
                                                 <th className="column-title   text-center" width="32%">NARATION <span className="required">*</span></th>
                                                 <th className="column-title   text-center" width="13%">DEBIT(RS) <span className="required">*</span></th>
@@ -872,7 +873,8 @@ const MultiVoucherGlobalTemplate = ({
 
                                                                 <tbody>
                                                                     <tr className="even pointer"   >
-                                                                        <td className=" " width="20%">
+                                                                    <td  className="text-left " width='2%'><div className="row mt-1">{index +1}.</div></td>
+                                                                        <td className=" " width="18%">
                                                                             <div className="row">
                                                                                 <div className="col-md-11">
                                                                                     <Select

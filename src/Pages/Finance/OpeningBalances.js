@@ -73,6 +73,7 @@ const OpeningBalances = () => {
   const handleChange = (value) => {
     setSelectedValue(value);
     fetchAllData(value);
+    console.log(value);
   };
 
   const fetchData = async () => {

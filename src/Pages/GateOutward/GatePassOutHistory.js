@@ -14,7 +14,7 @@ const GatePassOutHistory = () => {
     const navigate = useNavigate();
     const [flag, setflag] = useState(false);
     const [LadgerDataCSV, setLadgerDataCSV] = useState([{}]);
-    const InvType = [{ label: 'All', value: 'all' }, { label: 'Cmt', value: 'cmt' }, { label: 'Purchase', value: 'purchase' }]
+    const InvType = [{ label: 'All', value: 'all' }, { label: 'Sale', value: 'sale' }, { label: 'Purchase return', value: 'purchasereturn' }]
     var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
     var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
     var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -135,7 +135,7 @@ const GatePassOutHistory = () => {
 
             var config = {
                 method: 'get',
-                url: `http://rightway-api.genial365.com/api/GatePassOutward/GetGatePassInvHistory?date_from=${dateFrom}T00:00:00.928Z&date_to=${dateTo}T00:00:00.928Z&inward_type=${invType}`,
+                url: `http://rightway-api.genial365.com/api/GatePassOutward/GetGatePassInvHistory?date_from=${dateFrom}T00:00:00.928Z&date_to=${dateTo}T00:00:00.928Z&outward_type=${invType}`,
                 headers: {
                     'Authorization': `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
                 }

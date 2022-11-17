@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import ReactToPrint from "react-to-print";
 import { useRef } from "react";
 import CustomInnerHeader from "../../Components/CustomInnerHeader.jsx";
+
 const Attendance = () => {
 
     const showNavMenu = useSelector((state) => state.NavState);
