@@ -632,8 +632,8 @@ const AddStore = () => {
                   <div className="row px-4 mt-2">
                     <div className="col-md-6 col-sm-6">
                       <label className="col-form-label col-md-3 col-sm-3 label-align">
-                        {" "}
-                        Select Attachments 
+                       
+                         Attachments
                       </label>
                       <div className="col-md-7">
                         <input
@@ -675,7 +675,7 @@ const AddStore = () => {
 
                     <div className="col-md-6 col-sm-6">
                       <label className="col-form-label col-md-4 col-sm-4 label-align">
-                        {" "}
+                       
                         Select Image <span className="required">*</span>
                       </label>
                       <div className="col-md-7">
@@ -926,15 +926,13 @@ const AddStore = () => {
                 <div className="col-6">
                   <i className="fa fa-list"></i>&nbsp;Listing
                 </div>
-                <div className="col-6 ">
-                <div className='col-6 text-right'>
-                <label>search:</label>
-                </div>
-                <div className='col-6 text-right'>
+                <div className="col-6   bg-dark ">
+                <div className="col-5">sdd</div>
+                <div className='col-6 '>
                 <input
                 className="form-control"
                 type="text"
-                placeholder='seach ...'
+                placeholder='Seach ...'
                 onChange={(e) => searchItem(e.target.value)}
                 />
                 </div>

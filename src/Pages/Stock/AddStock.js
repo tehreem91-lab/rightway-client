@@ -602,7 +602,7 @@ axios(config)
     </div>
     <div className="col-md-6 col-sm-6">
     <label className="col-form-label col-md-4 col-sm-4 label-align"> Quantity in grams <span className="required">*</span></label>
-    <div className='col-md-6'>
+    <div className='col-md-8'>
     <input
     type="number"
     min="0"
@@ -634,7 +634,7 @@ axios(config)
     </div>
     <div className="col-md-6 col-sm-6">
     <label className="col-form-label col-md-4 col-sm-4 label-align"> Opening Quantity <span className="required">*</span></label>
-    <div className='col-md-6'>
+    <div className='col-md-8'>
     <input
     type='number'
     min="0"
@@ -651,8 +651,8 @@ axios(config)
 
      <div className="row px-4 mt-2">
      <div className="col-md-6 col-sm-6">
-    <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Attachments <span className="required">*</span></label>
-    <div className='col-md-8'>
+    <label className="col-form-label col-md-3 col-sm-3 label-align">  Attachments </label>
+    <div className='col-md-7'>
     <input 
     ref={ref}
     type="file"
@@ -681,7 +681,7 @@ axios(config)
 
     <div className="col-md-6 col-sm-6">
     <label className="col-form-label col-md-4 col-sm-4 label-align"> Select Image <span className="required">*</span></label>
-    <div className='col-md-4'>
+    <div className='col-md-7'>
     <input  
     type="file"
     className="form-control form-control-sm customStyleForInput"
