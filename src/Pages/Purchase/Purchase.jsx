@@ -8,6 +8,7 @@ import ReactToPrint from 'react-to-print'
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useLocation } from 'react-router-dom';
+import { customStyles } from '../../Components/reactCustomSelectStyle';
 const Purchase = () => {
     const showNavMenu = useSelector((state) => state.NavState);
     const location = useLocation();
@@ -202,7 +203,7 @@ const Purchase = () => {
                                         <Select
                                             value={status.value}
                                             isSearchable={true}
-
+                                            styles={customStyles}
                                             options={status}
                                             onChange={(e) => setStatus(e.value)}
                                         />

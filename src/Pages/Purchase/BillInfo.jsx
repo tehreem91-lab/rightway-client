@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import CustomInnerHeader from '../../Components/CustomInnerHeader';
 import { useLocation } from 'react-router-dom';
 import { toast } from "react-toastify";
+
 const BillInfo = () => {
   const location = useLocation();
   const navigate = useNavigate();
