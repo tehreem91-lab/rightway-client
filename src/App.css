@@ -742,3 +742,24 @@ td {
     display: none;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+.scr_loader_main{
+  background-color: #FBFBFB !important;
+  /* display: flex; */
+  /* height: 100vh; */
+ width: 100vw; 
+ height: 100vh;
+ margin: auto;
+ text-align: center;
+padding-top:300px;
+}

@@ -17,6 +17,8 @@ import { doGetNavigation } from "./store/actions/Navigation";
 import PrivateRoute from "./Layout/PrivateRoute";
 import { endPoint } from "./config/Config";
 import ROUTES from "./config/ROUTES";
+import loaderForMainScreen from '../src/Layout/loader_main.gif'
+
 function App() {  const [isLogin, setisLogin] = useState(null);
   const [showMainLoader, setShowMainLoader] = useState(true);
   const dispatch = useDispatch();
@@ -90,7 +92,9 @@ function App() {  const [isLogin, setisLogin] = useState(null);
       ) : (
         <>
           {showMainLoader ? (
-            <div className="lds-dual-ring-ForMain-Page "></div>
+            <div className="scr_loader_main">
+                <img src={loaderForMainScreen} alt="loading..."  className="scr_loader_main_gif"/>
+            </div>
           ) : (
             <>
               <div className="container body">
