@@ -742,3 +742,38 @@ td {
     display: none;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+.scr_loader_main{
+  background-color: #FBFBFB !important;
+  /* display: flex; */
+  /* height: 100vh; */
+ width: 100vw; 
+ height: 100vh;
+ margin: auto;
+ text-align: center;
+padding-top:370px;
+}
+
+.nav-md ul.nav.child_menu li:before {
+  background: #f0f6f8;
+  bottom: auto;
+  content: "";
+  height: 8px;
+  left: 23px;
+  margin-top: 15px;
+  position: absolute;
+  right: auto;
+  width: 8px;
+  z-index: 1;
+  border-radius: 50%;
+}
