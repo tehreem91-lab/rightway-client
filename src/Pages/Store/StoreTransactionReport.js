@@ -426,7 +426,7 @@ const csvReport = {
   
                       <div className="form-group col-md-3">
                         <button
-                          className="btn btn-sm  borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
+                          className="btn btn-sm  ml-1 mr-1 borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
                           onClick={downloadPdf}
                           type="button"
                         >
@@ -435,7 +435,7 @@ const csvReport = {
                       </div>
                       <div className="form-group col-md-3">
                         <CSVLink {...csvReport}>
-                          <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
+                          <button className="btn btn-sm ml-2 borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
                             <i
                               className="fa fa-file-excel-o"
                               aria-hidden="true"
