@@ -697,16 +697,24 @@ const MultiVoucherGlobalTemplate = ({
                                 <div className="field item form-group col-md-6 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align"> Voucher # <span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
+                                    {!voucherDetail && 
+                (
+                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 text-customOrange" style={{fontSize:'18px'}}></i>
+                ) ||
+            
                                         <input
+                                        
                                             disabled
                                             className="form-control"
                                             data-validate-length-range={6}
                                             data-validate-words={2}
                                             name="next_voucher"
-                                            placeholder="BP-2344"
+                                         
                                             value={voucherDetail?.next_voucher_inv}
-                                        />
+                                        />}
+                                   
                                     </div>
+                                    {console.log(voucherDetail,'jd')}
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align"> Date <span className="required">*</span></label>
@@ -727,6 +735,11 @@ const MultiVoucherGlobalTemplate = ({
                                 <div className="field item form-group col-md-6 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align">Last Voucher # <span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
+                                    {!voucherDetail && 
+                (
+                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 text-customOrange" style={{fontSize:'18px'}}></i>
+                ) ||
+            
                                         <input
                                             disabled
                                             className="form-control"
@@ -734,12 +747,16 @@ const MultiVoucherGlobalTemplate = ({
                                             data-validate-words={2}
                                             name="last_voucher_inv"
                                             value={voucherDetail?.last_voucher_inv}
-                                        />
+                                        />}
                                     </div>
                                 </div>
                                 <div className="field item form-group col-md-6 col-sm-6">
                                     <label className="col-form-label col-md-3 col-sm-3 label-align pl-0">Last Voucher Date <span className="required">*</span></label>
                                     <div className="col-md-8 col-sm-8">
+                                    {!voucherDetail && 
+                (
+                  <i class="fa fa-circle-o-notch fa-spin mx-2 my-1 text-customOrange" style={{fontSize:'18px'}}></i>
+                ) ||
                                         <input
                                             disabled
                                             type="date"
@@ -748,7 +765,7 @@ const MultiVoucherGlobalTemplate = ({
                                             data-validate-words={2}
                                             name="last_voucher_created_date"
                                             value={dateFormaterForInput(voucherDetail?.last_voucher_created_date)}
-                                        />
+                                        />}
                                     </div>
                                 </div>
                             </div>

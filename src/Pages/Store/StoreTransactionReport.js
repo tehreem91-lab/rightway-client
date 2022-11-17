@@ -262,7 +262,7 @@ const csvReport = {
                         value={StoreAccountvalue}
                         onChange={(e)=>setStoreAccountvalue(e) }
                       />
-                      {validationState === false && StoreAccountOption === "" && (
+                      {validationState === false && Number(StoreAccountvalue) === 0 && (
                         <span className="text-danger">First Select this </span>
                       )}
                     </div>
@@ -366,7 +366,7 @@ const csvReport = {
                     </div>
                  
                 </div>
-                <div className="col-md-6 text-right">
+                <div className="col-md-6 text-right mr-3">
                   
                 <button
                         className="btn bg-customBlue text-light mt-2 "
@@ -375,7 +375,7 @@ const csvReport = {
                           Get_Transaction_Report()
                         }}
                       >
-                        Run Report
+                       Submit
                         {!isLoader && (
                           <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
                         )}
