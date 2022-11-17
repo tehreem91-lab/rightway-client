@@ -743,7 +743,7 @@ const ProductionReciept = () => {
                             <div className="table-responsive " style={{ height: '350px', overflowY: 'scroll' }}>
                                 <table className="table table-striped jambo_table bulk_action">
                                     <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
-                                        <tr className="headings">
+                                        <tr className=" bg-customBlue text-light">
                                             <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
                                             <th className="column-title  right-border-1 text-center" > Name</th>
                                             <th className="column-title  right-border-1 text-center" >

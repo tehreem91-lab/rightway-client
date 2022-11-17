@@ -205,7 +205,7 @@ setPro(Products);
                    <td colspan="9" className="text-center"> No data available</td>
                                                 </tr> 
               ) : (<>{AvailableReport.map((data,id)=>(
-                  <tr className="headings bg-customBlue">
+                  <tr className="">
                         <td
                           className="column-title  right-border-1 text-center"
                           widtd="10%"
