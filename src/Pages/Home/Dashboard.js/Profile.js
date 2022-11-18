@@ -4,6 +4,10 @@ import CustomInnerHeader from '../../../Components/CustomInnerHeader';
 const Profile = () => {
     const showNavMenu = useSelector((state) => state.NavState);
   return (
+    <>
+    <div className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""}   `} >
+                <CustomInnerHeader moduleName={"User Profile"} isShowSelector={true} />
+            </div>
     <div
     className={`right_col  h-10 heightFixForFAult  ${
       showNavMenu == false ? "right_col-margin-remove" : " "
@@ -22,6 +26,7 @@ const Profile = () => {
       </div>
     </div>
   </div>
+  </>
   )
 }
 
