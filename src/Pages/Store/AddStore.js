@@ -47,15 +47,15 @@ const AddStore = () => {
         var allData = FilterStockData;
         setStoreData(FilterStockData);
         var filteredData = allData.filter((obj) => {
-            var data = Object.keys(obj)
-                .filter((key) => obj[key].toString().toLowerCase().includes(e))
-                .reduce((cur, key) => {
-                    return Object.assign(cur, { [key]: obj[key] });
-                }, {});
-            if (Object.keys(data).length !== 0) {
-                return obj;
-            }
-        });
+          var data = Object.keys(obj.store_account)
+          .filter((key) => obj.store_account[key].toString().toLowerCase().includes(e))
+          .reduce((cur, key) => {
+              return Object.assign(cur, { [key]: obj.store_account[key] });
+          }, {});
+      if (Object.keys(data).length !== 0) {
+          return obj;
+      }
+  });
         setStoreData(filteredData);
     };
     
@@ -926,20 +926,22 @@ const AddStore = () => {
                 <div className="col-6">
                   <i className="fa fa-list"></i>&nbsp;Listing
                 </div>
-                <div className="col-6   bg-dark ">
-                <div className="col-5">sdd</div>
-                <div className='col-6 '>
-                <input
-                className="form-control"
-                type="text"
-                placeholder='Seach ...'
-                onChange={(e) => searchItem(e.target.value)}
-                />
-                </div>
-                 
-                  
-              
-                </div>
+                <div className="col-md-6 ">
+                                    <div className='col-md-6 text-right'>
+                                    
+                                    </div>
+                                    <div className='col-md-6 text-right'>
+                                    <input
+                                    className="form-control"
+                                    type="text"
+                                    placeholder='Search ...'
+                                    onChange={(e) => searchItem(e.target.value)}
+                                    />
+                                    </div>
+                                     
+                                      
+                                  
+                                    </div>
               </div>
             </span>
             <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll' ,height: '400px'}}>

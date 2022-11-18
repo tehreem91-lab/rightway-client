@@ -95,7 +95,7 @@ useEffect(() => {
                                     </div>
                                     <div className="col-md-6 ">
                                     <div className='col-md-6 text-right'>
-                                    <label>search:</label>
+                                    <label>Search:</label>
                                     </div>
                                     <div className='col-md-6 text-right'>
                                     <input

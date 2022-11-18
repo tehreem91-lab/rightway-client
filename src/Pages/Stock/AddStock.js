@@ -46,13 +46,14 @@ const AddStock = () => {
      const [FilterStockData, setFilterStockData] = useState([]);
 
 const searchItem = (e) => {
+
     var allData = FilterStockData;
     setStockdata(FilterStockData);
     var filteredData = allData.filter((obj) => {
-        var data = Object.keys(obj)
-            .filter((key) => obj[key].toString().toLowerCase().includes(e))
+        var data = Object.keys(obj.stock_account)
+            .filter((key) => obj.stock_account[key].toString().toLowerCase().includes(e))
             .reduce((cur, key) => {
-                return Object.assign(cur, { [key]: obj[key] });
+                return Object.assign(cur, { [key]: obj.stock_account[key] });
             }, {});
         if (Object.keys(data).length !== 0) {
             return obj;
@@ -920,13 +921,13 @@ onClick={() =>{UpdateStock(stockid)
                                     </div>
                                     <div className="col-md-6 ">
                                     <div className='col-md-6 text-right'>
-                                    <label>search:</label>
+                                    
                                     </div>
                                     <div className='col-md-6 text-right'>
                                     <input
                                     className="form-control"
                                     type="text"
-                                    placeholder='seach ...'
+                                    placeholder='Search ...'
                                     onChange={(e) => searchItem(e.target.value)}
                                     />
                                     </div>
