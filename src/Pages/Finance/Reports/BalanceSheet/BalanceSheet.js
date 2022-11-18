@@ -317,8 +317,8 @@ const Balance = () => {
                           <div className="col-md-5"> </div>
                           <div className="col-md-4  text-left "> </div>
                           <div className="col-md-3 p-2">
-                          <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end ">
-                          <div className="form-group col-md-3">
+                          <ul className="mr-4 nav navbar-right panel_toolbox d-flex justify-content-end ">
+                          <div className="form-group col-md-3 mr-2">
       
                             <ReactToPrint className="form-group col-md-3"
                               trigger={() => {
@@ -333,18 +333,18 @@ const Balance = () => {
                             />
                           </div>
       
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-md-3 mr-1">
                             <button
-                              className="btn btn-sm  borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
+                              className="btn btn-sm borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
                               onClick={downloadPdf}
                               type="button"
                             >
                               <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                             </button>
                           </div>
-                          <div className="form-group col-md-3">
+                          <div className="form-group col-md-3 mr-1 ">
                             <CSVLink {...csvReport}>
-                              <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
+                              <button className="btn btn-sm   borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
                                 <i
                                   className="fa fa-file-excel-o"
                                   aria-hidden="true"

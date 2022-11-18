@@ -410,7 +410,7 @@ const DeptWiseAtten = () => {
                                                     <div className="col-md-9 col-sm-9" align="right">
                                                         {visableDiv === "true" && (
                                                             <button
-                                                                className="btn  fa fa-edit pl-3"
+                                                                className="btn   pl-3"
                                                                 type="button" style={{ backgroundColor: "#003A4D", color: "white" }}
                                                                 onClick={(e) => {
                                                                     setDivToVisable("false");
@@ -494,7 +494,7 @@ const DeptWiseAtten = () => {
                                                         <CSVLink {...csvReport}>
                                                             <button className="btn btn-sm  borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
                                                                 <i
-                                                                    className="fa fa-table"
+                                                                    className="fa fa-file-excel-o"
                                                                     aria-hidden="true"
                                                                 ></i>
                                                             </button>

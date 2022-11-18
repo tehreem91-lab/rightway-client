@@ -265,7 +265,7 @@ const OpeningBalances = () => {
                 <div className="col-md-7 col-sm-7" align="right">
                   {visableDiv === "true" && (
                     <button
-                      className="btn  btn-primary fa fa-edit pl-3"
+                      className="btn  btn-primary  pl-3"
                       type="button"
                       onClick={(e) => {
                         setDivToVisable("false");

@@ -855,7 +855,7 @@ const MultiVoucherGlobalTemplate = ({
                                     <table className="table table-striped jambo_table bulk_action">
                                         <thead >
                                             <tr className="headings">
-                                            <th className="column-title   text-center" width="2%">Sr </th>
+                                           
                                                 <th className="column-title   text-center" width="18%">ACCOUNT <span className="required">*</span></th>
                                                 <th className="column-title   text-center" width="15%">A/C BALANCE</th>
                                                 <th className="column-title   text-center" width="32%">NARATION <span className="required">*</span></th>
@@ -873,7 +873,7 @@ const MultiVoucherGlobalTemplate = ({
 
                                                                 <tbody>
                                                                     <tr className="even pointer"   >
-                                                                    <td  className="text-left " width='2%'><div className="row mt-1">{index +1}.</div></td>
+                                                                   
                                                                         <td className=" " width="18%">
                                                                             <div className="row">
                                                                                 <div className="col-md-11">

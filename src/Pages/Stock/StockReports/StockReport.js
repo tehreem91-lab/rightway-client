@@ -202,7 +202,7 @@ const StockReport = () => {
                         <div className="col-md-4  text-left "> </div>
                         <div className="col-md-3 pr-4">
                           <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                            <div className="form-group col-4" >
+                            <div className="form-group col-4 mr-1" >
                             <ReactToPrint
                             trigger={() =>  
                             <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
