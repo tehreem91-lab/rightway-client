@@ -428,7 +428,7 @@ const GatePassOutward= () => {
     axios(config)
       .then(function (response) {
 
-      
+      console.log(response.data);
         setGatePass({
           party_chart_id: response.data.party_chart_id,
           date: response.data.voucher_date.slice(0, 10),
@@ -527,7 +527,7 @@ const GatePassOutward= () => {
         total_weight: 0
       }])
     }
-
+console.log(location?.state?.id,location?.state?.flag);
     if ((location?.state?.id) && (location?.state?.flag)) {
       fetchIdData()
 

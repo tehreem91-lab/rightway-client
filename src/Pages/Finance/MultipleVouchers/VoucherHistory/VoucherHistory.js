@@ -322,7 +322,7 @@ const VoucherHistory = () => {
                                                             trigger={() => {
                                                                 return (
                                                                     <button
-                                                                        className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                                                                        className="btn btn-sm bg-customBlue text-light my-2 pt-1 borderRadiusRound"
                                                                     >
                                                                         <i className="fa fa-print"></i>
                                                                     </button>
@@ -335,14 +335,14 @@ const VoucherHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-warning my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm bg-customBlue text-light my-2 pt-1 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
                                                         ><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm bg-customBlue text-light my-2 pt-1 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
                                                             onClick={() => {
                                                                 navigate('/JournalVoucherAccess', {
@@ -358,7 +358,7 @@ const VoucherHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm bg-customBlue text-light my-2 pt-1 borderRadiusRound"
                                                             data-toggle="tooltip" data-placement="top" title="View Attachments"
                                                             onClick={() => setshowAttachment(!showAttachment)}
                                                         >
@@ -367,7 +367,7 @@ const VoucherHistory = () => {
                                                     </li>
                                                     <li>
                                                         <button
-                                                            className="btn btn-sm btn-info my-2 pt-1 borderRadiusRound"
+                                                            className="btn btn-sm bg-customBlue text-light my-2 pt-1 borderRadiusRound"
                                                             onClick={() => {
                                                                 navigate(`/${voucherTypes.find(
                                                                     (o) => o.voucher_id === selectedVoucher.voucher_type_id

@@ -144,7 +144,7 @@ const GatePassOutHistory = () => {
 
             axios(config)
                 .then(function (response) {
-              
+              console.log(response.data);
                     setisShowInv(true)
                     setGatepassInv(response.data)
                     setSearchInv(response.data)
@@ -336,9 +336,10 @@ const GatePassOutHistory = () => {
                                                     <li>
                                                         <button
                                                             className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound" title="Edit Record"
-                                                            onClick={() => { navigate('/GatePassOutwardAccess', { state: { id: ReportData.inward_gatepass_main_id, flag: true } }) }}
+                                                            onClick={() => { navigate('/GatePassOutwardAccess', { state: { id: ReportData.outward_gatepass_main_id, flag: true } }) }}
                                                         >
                                                             <i className="fa fa-edit" ></i>
+                                                            
                                                         </button>
                                                     </li>
                                                 </ul>
@@ -456,16 +457,16 @@ const GatePassOutHistory = () => {
                                                 return <tr className="even pointer" style={{ cursor: "pointer" }} key={index}>
 
                                                     <td className='text-left pb-0 pt-1'
-                                                        onClick={() => GatePassReport(each_voucher_record.inward_gatepass_main_id)}
+                                                        onClick={() => GatePassReport(each_voucher_record.outward_gatepass_main_id)}
                                                     >
                                                         <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_date.slice(0, 10)}</strong></div>
                                                         <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_inv}</strong></div>
                                                     </td>
                                                     <td className='text-right pb-0 pt-1' >
-                                                        <div> <strong style={{ fontSize: '12px' }} onClick={() => GatePassReport(each_voucher_record.inward_gatepass_main_id)}><span className="badge bg-warning">{each_voucher_record.status || each_voucher_record.purchase_status}</span> {each_voucher_record.party_name}</strong> </div>
+                                                        <div> <strong style={{ fontSize: '12px' }} onClick={() => GatePassReport(each_voucher_record.outward_gatepass_main_id)}><span className="badge bg-warning">{each_voucher_record.status || each_voucher_record.purchase_status}</span> {each_voucher_record.party_name}</strong> </div>
                                                         <div className='py-0'>
                                                             <span className='text-customOrange'>
-                                                                <u onClick={() => { navigate('/GatePassOutwardAccess', { state: { id: each_voucher_record.inward_gatepass_main_id, flag: true } }) }
+                                                                <u onClick={() => { navigate('/GatePassOutwardAccess', { state: { id: each_voucher_record.outward_gatepass_main_id, flag: true } }) }
                                                                 }
                                                                 > Edit</u>
                                                             </span>
