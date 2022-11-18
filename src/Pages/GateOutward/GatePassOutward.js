@@ -401,11 +401,11 @@ const GatePassOutward= () => {
 
             setinfo(response.data);
 
-            const stock_account = response.data.map((each_voucher) => {
+            const stock_account = response.data.stock_account.map((each_voucher) => {
               return {
-                label: each_voucher.stock_account.stock_account_label,
-                value: each_voucher.stock_account.stock_account_value,
-                unit: each_voucher.stock_account.stock_account_unit
+                label: each_voucher.stock_account_label,
+                value: each_voucher.stock_account_value,
+                unit: each_voucher.stock_account_unit
               }
 
             })
@@ -537,19 +537,19 @@ const GatePassOutward= () => {
 
   const handlePacket = (id, e) => {
 
-    info.map((each_voucher) => {
-      if (each_voucher.packets_details[0]?.chart_id == e.value) {
+    info.packets_details.map((each_voucher) => {
+      if (each_voucher?.chart_id == e.value) {
 
-        let packetOptions = each_voucher.packets_details.map((data) => {
-          return {
-            label: data.packet_title,
-            value: data.pair_base_unit,
-            chartid: data.chart_id
-          }
-        })
+        let packetOptions =  [{
+            label: each_voucher.packet_title,
+            value: each_voucher.pair_base_unit,
+            chartid: each_voucher.chart_id
+          }]
+       
         let data = [...packetsDetails];
         data[id] = packetOptions
         setpacketsDetails(data)
+       
         const list = [...stockEntries];
         list[id].item_chart_id = e.value;
         list[id].item_unit_id = e.unit
@@ -796,7 +796,9 @@ const GatePassOutward= () => {
                           onChange={(e) => { handlePacket(id, e) }} />
                           {!isValidateAllStates && (stockEntries[id].item_chart_id == 0) && <span className="text-danger">First Select this </span>}
                         </td>
-                        <td style={{ width: '20%' }}><Select styles={customStyles} options={packetsDetails[id]} value={packetsDetails[id]?.find(e => e.value == data.pair_unit_id) || ''} onChange={(e) => {
+                        <td style={{ width: '20%' }}><Select styles={customStyles} options={packetsDetails[id]} 
+                        value={packetsDetails[id]?.find(e => e.value == data.pair_unit_id) || ''}
+                         onChange={(e) => {
                           const list = [...stockEntries];
                           list[id].pair_unit_id = e.value
                           setstockEntries(list);
