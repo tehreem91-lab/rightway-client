@@ -498,150 +498,176 @@ const EmployeeWiseAttendance = () => {
 
 
                                             {/* //////////////////////////Form Structure///////////////////////////////// */}
-                                            <div id="report" ref={componentRef}>
-                                                <div className="table-responsive px-3 pb-2 ">
-                                                    <table className="table ">
-                                                        <thead>
-                                                            <tr className="headings reportTableHead">
+                                            <div id="report" ref={componentRef} >
 
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Date
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Shift Name
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Shift Start Time
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Shift End Time
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center" width="10%">
-                                                                    Date/Time In
-                                                                </th>
-                                                                <th className="column-title text-center right-border-1" width="10%">
-                                                                    Date/Time Out
-                                                                </th>
-                                                                <th
-                                                                    className="column-title right-border-1 text-center " width="10%" >
-                                                                    Duty Time
-                                                                </th>
+<div className="container-fluid">
+    <div
+        className=" row   reportTableHead bottom-border-1   "
+        style={{ fontSize: 11 }}
+    >
+        <div className="col-md-1 col-1  text-center p-2 right-border-2 border-light border   ">
+            SR.
+        </div>
 
-                                                                <th className="column-title text-center" width="10%">
-                                                                    Over Time
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
+        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border  ">
+           Date
+        </div>
 
 
+        
+
+        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+            Shift Name
+        </div>
+
+        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border   ">
+            Shift Start Time
+        </div>
+        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border  ">
+            Shift End Time
+        </div>
+
+        <div className="col-md-2 col-2 text-center py-1 px-1  right-border-2 border-light border    ">
+            Date/Time In
+        </div>
+        <div className="col-md-2 col-2 text-center py-1 px-1  right-border-2 border-light border    ">
+            Date/Time Out
+        </div>
+
+        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+            Duty Time
+        </div>
+
+        <div className="col-md-2 col-2 text-center py-1 px-1  right-border-2 border-light border   ">
+            Over Time
+        </div>
+    </div>
+
+    {attendenceData.length === 0 ? (
+        <div
+            className="row   reportTableBody bottom-border-2"
+            style={{ fontSize: 11 }}
+        >
+            <div className=" col-md-12   col-12   px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
+                No Data Available
+            </div>
+        </div>
+    ) : (<>
+        {attendenceData.map((item, index) => (
+            <div
+                className=" row   reportTableBody bottom-border-2  "
+                style={{ fontSize: 11 }}
+            >
+
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 text-center col-1  p-2   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-center text-white col-md-1 col-1  p-2   ' : 'col-md-1 col-1  text-center py-1 px-1    ')} >
+                    {index + 1}
+                </div>
+
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1     ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                {item.Date?.slice(0, 10)}
+                </div>
 
 
-                                                        {/* //////////////////////////Form Entries///////////////////////////////// */}
-                                                        <tbody>
-                                                            {attendenceData.map((item, index) => {
-                                                                return (
-                                                                    <tr className="even pointer" key={index}>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.Date?.slice(0, 10)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_title}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_start_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.shift_end_time?.slice(8, 19)}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
-                                                                            {" "}
-                                                                            <input
-                                                                                type="datetime-local"
-                                                                                value={item?.in_date}
-                                                                                className="form-control border-none"
-                                                                                disabled={visableDiv == "true" ? true : false}
-                                                                                onKeyPress={(e) => preventMinus(e)}
-                                                                                onChange={(e) => {
-                                                                                    const limit = new Date(`${item.Date}`)
-                                                                                    const setDate = new Date(e.target.value)
-                                                                                    if (setDate < limit) {
-                                                                                        e.target.value = `${item.Date}`
-                                                                                    }
-                                                                                    let arr = attendenceData;
-                                                                                    let selected_index = arr.findIndex(
-                                                                                        (obj) =>
-                                                                                            obj.Date ==
-                                                                                            item.Date
-                                                                                    ); //it tells us about index of selected account in array of attendenceData
+                
 
-                                                                                    arr[selected_index] = {
-                                                                                        ...arr[selected_index],
-                                                                                        in_date: e.target.value,
-                                                                                        //out_date: e.target.value,
-                                                                                    };
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1     ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                    {item.shift_title}
+                </div>
 
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                    {item.shift_start_time?.slice(8, 19)}
+                </div>
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                    {item.shift_end_time?.slice(8, 19)}
+                </div>
 
-                                                                                    setAttendenceData(arr);
-                                                                                    setreRender(!reRender);
-                                                                                    setindate(e.target.value);
-                                                                                }}
-                                                                            />
-                                                                            {isValidateValue === false && Number(item.in_date) === 0 && <span className="text-danger">First Select this </span>}
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-2 col-2  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-2 col-2  text-center py-1 px-1    ' : 'col-md-2 col-2  text-center py-1 px-1   ')}  >
+                    <input
+                        type="datetime-local"
+                        value={item?.in_date}
+                        className="form-control border-none"
+                        disabled={visableDiv == "true" ? true : false}
+                        min="0"
+                        onKeyPress={(e) => preventMinus(e)}
+                        onChange={(e) => {
+                            const limit = new Date(`${selectedDate}T00:00:00`)
+                            const setDate = new Date(e.target.value)
+                            if (setDate < limit) {
+                                e.target.value = `${selectedDate}T00:00:00`
+                            }
+                            let arr = attendenceData;
+                            let selected_index = arr.findIndex(
+                                (obj) =>
+                                    obj.employee_id ==
+                                    item.employee_id
+                            ); //it tells us about index of selected account in array of attendenceData
 
+                            arr[selected_index] = {
+                                ...arr[selected_index],
+                                in_date: e.target.value,
+                                //out_date: e.target.value,
+                            };
 
-
-                                                                        </td>
-
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} >
-                                                                            {" "}
-                                                                            <input
-                                                                                type="datetime-local"
-                                                                                value={item?.out_date}
-                                                                                className="form-control border-none"
-                                                                                disabled={visableDiv == "true" ? true : false}
-                                                                                min="0"
-                                                                                onKeyPress={(e) => preventMinus(e)}
-                                                                                onChange={(e) => {
-                                                                                    let limit = new Date(`${item.Date}`)
-                                                                                    limit = new Date(limit.setDate(limit.getDate() + 2))
-                                                                                    const setDate = new Date(e.target.value)
-                                                                                    if (setDate > limit) {
-                                                                                        const month = limit.toLocaleDateString(undefined, { month: "2-digit" });
-                                                                                        const year = limit.toLocaleDateString(undefined, { year: "numeric" });
-                                                                                        const day = limit.toLocaleDateString(undefined, { day: "2-digit" });
-                                                                                        const stringLimit = `${year}-${month}-${day}T00:00`
-                                                                                        e.target.value = stringLimit
-                                                                                    }
-                                                                                    let arr = attendenceData;
-                                                                                    let selected_index = arr.findIndex(
-                                                                                        (obj) =>
-                                                                                            obj.Date ==
-                                                                                            item.Date
-                                                                                    );
-                                                                                    arr[selected_index] = {
-                                                                                        ...arr[selected_index],
-                                                                                        //in_date: e.target.value,
-                                                                                        out_date: e.target.value,
-
-                                                                                    };
-
-                                                                                    setAttendenceData(arr);
-                                                                                    setreRender(!reRender);
-                                                                                    setoutdate(e.target.value);
-                                                                                }}
+                            setAttendenceData(arr);
+                            setreRender(!reRender);
+                            setindate(e.target.value);
+                        }}
+                    />
+                    {isValidateValue === false && Number(item.in_date) === 0 && <span className="text-danger">First Select this </span>}
 
 
-                                                                            />
-                                                                            {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
+                </div>
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-2 col-2  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-2 col-2  text-center py-1 px-1     ' : 'col-md-2 col-2  text-center py-1 px-1    ')}  >
+                    <input
+                        type="datetime-local"
+                        value={item?.out_date}
+                        className="form-control border-none"
+                        disabled={visableDiv == "true" ? true : false}
+                        min="0"
+                        onKeyPress={(e) => preventMinus(e)}
+                        onChange={(e) => {
+                            let limit = new Date(`${selectedDate}T00:00:00`)
+                            limit = new Date(limit.setDate(limit.getDate() + 2))
+                            const setDate = new Date(e.target.value)
+                            if (setDate < limit) {
+                                e.target.value = `${selectedDate}T00:00:00`
+                            }
+                            let arr = attendenceData;
+                            let selected_index = arr.findIndex(
+                                (obj) =>
+                                    obj.employee_id ==
+                                    item.employee_id
+                            );
+                            arr[selected_index] = {
+                                ...arr[selected_index],
+                                //in_date: e.target.value,
+                                out_date: e.target.value,
+
+                            };
+
+                            setAttendenceData(arr);
+                            setreRender(!reRender);
+                            setoutdate(e.target.value);
+                        }}
+                    />
+                    {isValidateValue === false && Number(item.out_date) === 0 && <span className="text-danger">First Select this </span>}
+
+                </div>
+
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                    {item.total_hour}
+                </div>
+
+                <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-2 col-2  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-2 col-2  text-center py-1 px-1    ' : 'col-md-2 col-2  text-center py-1 px-1    ')}  >
+                    {item.extra_hour}
+                </div>
+            </div>))}</>
+
+    )}
+</div>
 
 
-                                                                        </td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.total_hour}</td>
-                                                                        <td className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white' : '')} > {item.extra_hour}</td>
-                                                                    </tr>
-                                                                );
-                                                            })}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+</div>
 
 
                                             <div className="col-md-12 col-sm-12" align="right">
