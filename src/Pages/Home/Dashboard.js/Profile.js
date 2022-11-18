@@ -21,9 +21,32 @@ const Profile = () => {
         <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
         <div className="clearfix" />
       </div>
-      <div className="x_content m-3">
-       
-      </div>
+      <div class="x_content">
+									<br />
+									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+										<div class="item form-group">
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">First Name <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 ">
+												<input type="text" id="first-name" required="required" class="form-control " />
+											</div>
+										</div>
+										<div class="item form-group">
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Last Name <span class="required">*</span>
+											</label>
+											<div class="col-md-6 col-sm-6 ">
+												<input type="text" id="last-name" name="last-name" required="required" class="form-control" />
+											</div>
+										</div>
+										
+										
+										
+										<div class="ln_solid"></div>
+										
+
+									</form>
+								</div>
     </div>
   </div>
   </>
