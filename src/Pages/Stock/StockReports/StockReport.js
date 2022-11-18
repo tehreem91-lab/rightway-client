@@ -198,14 +198,14 @@ const StockReport = () => {
                     <i className="fa fa-list mx-1 mt-2"></i>&nbsp;Report Data
                   </div>
                   <div className="col-7 text-right px-0 ">
-                        <div className="col-md-5"> </div>
+                        <div className="col-md-4"> </div>
                         <div className="col-md-4  text-left "> </div>
-                        <div className="col-md-3 pr-4">
+                        <div className="col-md-4 pr-4">
                           <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                            <div className="form-group col-4 mr-1" >
+                            <div className="form-group col-4 " >
                             <ReactToPrint
                             trigger={() =>  
-                            <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
+                            <button className="btn btn-sm ml-4 borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
                             <i className="fa fa-print"></i>
                             </button>}
                             content={() => componentRef.current}
@@ -214,7 +214,7 @@ const StockReport = () => {
                             </div>
 
                             <div className="form-group col-4">
-                                  <button className="btn btn-sm  borderRadiusRound text-white" 
+                                  <button className="btn btn-sm ml-3 borderRadiusRound text-white" 
                                   onClick={downloadPdf}
                                   type="button"
                                   style={{ backgroundColor: "#003A4D" }}>
@@ -226,7 +226,7 @@ const StockReport = () => {
                             </div>
                             <div className="form-group col-4">
                             <CSVLink {...csvReport}>
-                                  <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
+                                  <button className="btn btn-sm ml-1 borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
                                     <i
                                       className="fa fa-file-excel-o"
                                       aria-hidden="true"

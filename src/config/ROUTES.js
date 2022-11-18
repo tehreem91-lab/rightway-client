@@ -78,6 +78,7 @@ import JobWiseStockIssueReport from "../Pages/Production/StockIssue/JobWiseStock
 import StoreTransactionReport from "../Pages/Store/StoreTransactionReport";
 import GatePassOutward from "../Pages/GateOutward/GatePassOutward";
 import GatePassOutHistory from "../Pages/GateOutward/GatePassOutHistory";
+import Profile from "../Pages/Home/Dashboard.js/Profile";
 
 
 
@@ -163,6 +164,7 @@ const ROUTES = {
 
  GatePassOutHistory: { id: "81", element: GatePassOutHistory, path: "GatePassOutwardHistoryAccess" },
   GatePassOutward: { id: "82", element: GatePassOutward, path: "GatePassOutwardAccess" },
+Profile:{id: "83", element: Profile, path: "UserProfile"}
 };
 export default ROUTES;
 
