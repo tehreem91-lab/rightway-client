@@ -681,8 +681,8 @@ axios(config)
     </div>
 
     <div className="col-md-6 col-sm-6">
-    <label className="col-form-label col-md-4 col-sm-4 label-align"> Select Image <span className="required">*</span></label>
-    <div className='col-md-7'>
+    <label className="col-form-label col-md-3 col-sm-3 label-align"> Select Image <span className="required">*</span></label>
+    <div className='col-md-5 col-md-5'>
     <input  
     type="file"
     className="form-control form-control-sm customStyleForInput"
@@ -709,7 +709,7 @@ axios(config)
    
     </div>
     </div>
-    <div className="col-md-1  " style={{ paddingTop: "1.5px" }}>
+    <div className="col-md-4 col-sm-4  " style={{ paddingTop: "1.5px" }}>
     
     {
       imguploader ? <div className="spinner-border  text-customOrange " role="status">
@@ -736,30 +736,7 @@ axios(config)
 
     {/*attachments*/}
 
-    <div className="row px-4 mt-2">
-    {fileEntity.length !== 0 && 
-      <div className="field item form-group col-md-6 col-sm-6 ">
-    <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
-    <div className="col-md-8 col-sm-8  ">
-     {fileEntity.map((each_file, index) => {
-            return <button className="btn btn-sm  bg-info  text-light"
-            >
-            <a href={`${endPoint + each_file}`} target="_blank" rel="noopener noreferrer" className='text-light'>
-            {((each_file.split("_"))[0]).slice(15)} {index + 1}</a>
-        <i className="fa fa-times   text-light ml-1 " aria-hidden="true"
-        onClick={() => removeAttchments(index)}
-        ></i>
-            </button>
-        })
-
-      }
-    
-    </div>
-</div>}
- 
-    
-   
-     </div>
+  
 
     <div className="row px-4 mt-2">
     <div className="col-md-6 col-sm-6">
@@ -773,12 +750,35 @@ axios(config)
     />
     </div>
     </div>
-    <div className="col-md-6 col-sm-6">
-     <div className='col-md-4'></div>
-     <div className='col-md-6'>
-     
-     </div>
-   </div>
+    {fileEntity.length !== 0 && (
+      <div className="field item form-group col-md-6 col-sm-6">
+      <label className="col-form-label col-md-3 col-sm-3 label-align">Attachments</label>
+        <div className="col-md-8 col-sm-8 ">
+          {fileEntity.map((each_file, index) => {
+            return (
+              <button className="btn btn-sm  bg-customBlue  text-light">
+                <a
+                  href={`${endPoint + each_file}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-light
+
+"
+                >
+                  {each_file.split("_")[0].slice(15)}{" "}
+                  {index + 1}
+                </a>
+                <i
+                  className="fa fa-times   text-light ml-1 "
+                  aria-hidden="true"
+                  onClick={() => removeAttchments(index)}
+                ></i>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    )}
    
    </div>
 
@@ -937,15 +937,15 @@ onClick={() =>{UpdateStock(stockid)
                                     </div>
                                 </div>
                             </span>
-                            <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll' ,height: '400px'}} >
+                            <div className="table-responsive px-3 pb-2" style={{ overflowY: 'scroll'  ,height: '400px'}} >
                                 <table className="table table-striped jambo_table bulk_action"  >
                                     <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                         <tr className="headings reportTableHead">
-                                        <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
-                                            <th className="column-title  right-border-1 text-center" width="20%"> Name </th>
-                                            <th className="column-title  right-border-1 text-center" width="20%">Code</th>
-                                            <th className="column-title  right-border-1 text-center" width="10%">Unit</th>
-                                            <th className="column-title text-center" width="10%">
+                                        <th className="column-title  right-border-1 text-center" > Sr. </th>
+                                            <th className="column-title  right-border-1 text-center"> Name </th>
+                                            <th className="column-title  right-border-1 text-center" >Code</th>
+                                            <th className="column-title  right-border-1 text-center" >Unit</th>
+                                            <th className="column-title text-center">
                                                 Action
                                             </th>
                                         </tr>

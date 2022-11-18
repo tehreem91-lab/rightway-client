@@ -546,7 +546,7 @@ const ProductionReciept = () => {
                                         isFileUploadingModeOn ? <div className="spinner-border  text-customOrange" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </div> :
-                                            <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => updateData()}><i className="fa fa-upload"></i></button>
+                                            <button className="btn btn-sm btn-outline-success" type="button" onClick={() => updateData()}><i className="fa fa-upload"></i></button>
                                     }
                                 </div>
 
@@ -744,7 +744,7 @@ const ProductionReciept = () => {
                                 <table className="table table-striped jambo_table bulk_action">
                                     <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
                                         <tr className=" bg-customBlue text-light">
-                                            <th className="column-title  right-border-1 text-center" width="10%"> Sr. </th>
+                                            <th className="column-title  right-border-1 text-center" > Sr. </th>
                                             <th className="column-title  right-border-1 text-center" > Name</th>
                                             <th className="column-title  right-border-1 text-center" >
                                                 Code
@@ -761,16 +761,16 @@ const ProductionReciept = () => {
                                             return (
                                                 <>
                                                     <tr className="even pointer"   >
-                                                        <td className="text-right " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}>{id + 1}</td>
+                                                        <td className="text-left " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}>{id + 1}</td>
                                                         <td className="text-left " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}> {data.product_account.product_account_label} </td>
                                                         <td
-                                                            className="text-right    " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}
+                                                            className="text-left    " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}
                                                         >
                                                             {data.product_account.product_account_code}
                                                         </td>
-                                                        <td className="text-right " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}>   {data.product_bare_code}</td>
+                                                        <td className="text-left " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}>   {data.product_bare_code}</td>
                                                         <td
-                                                            className=" " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}
+                                                            className="text-center " style={{ height: '2px', paddingBottom: '0px', paddingTop: '3px' }}
                                                         >
                                                             <i className="fa fa-trash-o btn " style={{ color: 'red' }}>
                                                             </i>

@@ -759,7 +759,7 @@ const AddStore = () => {
                         <div className="col-md-8 col-sm-8 ">
                           {fileEntity.map((each_file, index) => {
                             return (
-                              <button className="btn btn-sm  bg-info  text-light">
+                              <button className="btn btn-sm  bg-customBlue text-light">
                                 <a
                                   href={`${endPoint + each_file}`}
                                   target="_blank"
