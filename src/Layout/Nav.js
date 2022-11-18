@@ -23,7 +23,7 @@ const Nav = ({ navigationResult, isLogin }) => {
             {" "}
             {showNavMenu == true ? (
               <>
-                <div className="col-md-3 left_col">
+                <div className="col-md-3 left_col" style={{zIndex:'1000'}}>
                   <div className="left_col scroll-view">
                     {/* Logo */}
                     <div className="navbar nav_title" style={{ border: 0 }}>

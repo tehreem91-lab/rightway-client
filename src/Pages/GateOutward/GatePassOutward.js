@@ -109,7 +109,7 @@ const GatePassOutward= () => {
 
       isValidationOk = false
     }
-    if (stockEntries.total_stock_pieces == 0) {
+    if (stockEntries.total_item_pieces == 0) {
 
       isValidationOk = false
     }
@@ -126,7 +126,7 @@ const GatePassOutward= () => {
 
     if (isValidationOk === true) {
       stockEntries.map((data => {
-        data.total_stock_pieces = data.total_stock_pieces * data.pair_unit_id;
+        data.total_item_pieces = data.total_item_pieces * data.pair_unit_id;
         data.total_weight = data.total_weight * data.weight_per_piece;
       }))
       setGatePass({ ...GatePass, items_entries: stockEntries })
@@ -189,7 +189,7 @@ const GatePassOutward= () => {
             item_chart_id: 0,
             item_unit_id: 0,
             pair_unit_id: 0,
-            total_stock_pieces: 0,
+            total_item_pieces: 0,
             weight_per_piece: 0,
             total_weight: 0
           }])
@@ -260,7 +260,7 @@ const GatePassOutward= () => {
 
       isValidationOk = false
     }
-    if (stockEntries.total_stock_pieces == 0) {
+    if (stockEntries.total_item_pieces == 0) {
 
       isValidationOk = false
     }
@@ -277,7 +277,7 @@ const GatePassOutward= () => {
 
     if (isValidationOk === true) {
       stockEntries.map((data => {
-        data.total_stock_pieces = data.total_stock_pieces * data.pair_unit_id;
+        data.total_item_pieces = data.total_item_pieces * data.pair_unit_id;
 
       }))
       setstockEntries(stockEntries)
@@ -341,7 +341,7 @@ const GatePassOutward= () => {
             item_chart_id: 0,
             item_unit_id: 0,
             pair_unit_id: 0,
-            total_stock_pieces: 0,
+            total_item_pieces: 0,
             weight_per_piece: 0,
             total_weight: 0
           }])
@@ -447,7 +447,7 @@ const GatePassOutward= () => {
         setgatePassInward(response.data.voucher_inv);
         if (response.data?.attachments)
           setfilearray(response.data?.attachments?.split(','));
-       let a = response.data.items_entries.map((data, id) => {
+       response.data.stock_entries.map((data, id) => {
  
           let packetOptions = [{
             label: data.pair_unit_id?.packet_title,
@@ -461,12 +461,12 @@ const GatePassOutward= () => {
           let record =stockEntries
           record[id]={
            
-              item_unit_id: data.item_unit_id,
+              item_unit_id: data.stock_unit_id,
               pair_unit_id: data.pair_unit_id?.stock_packet_id,
-              total_stock_pieces: data.total_stock_pieces / data.pair_unit_id?.stock_packet_id,
+              total_item_pieces: data.total_stock_pieces / data.pair_unit_id?.stock_packet_id,
               weight_per_piece: data.weight_per_piece,
               total_weight: data.total_weight,
-              item_chart_id: data.item_chart_id
+              item_chart_id: data.stock_chart_id
             }
        
             setstockEntries(record)
@@ -522,7 +522,7 @@ const GatePassOutward= () => {
         item_chart_id: 0,
         item_unit_id: 0,
         pair_unit_id: 0,
-        total_stock_pieces: 0,
+        total_item_pieces: 0,
         weight_per_piece: 0,
         total_weight: 0
       }])
@@ -809,10 +809,10 @@ console.log(location?.state?.id,location?.state?.flag);
 
 
                           <input className="form-control" type="number" min="0"
-                            value={stockEntries[id].total_stock_pieces}
+                            value={stockEntries[id].total_item_pieces}
                             onChange={(e) => {
                               const list = [...stockEntries];
-                              list[id].total_stock_pieces = Number(e.target.value) ;
+                              list[id].total_item_pieces = Number(e.target.value) ;
                               list[id].total_weight = Number(e.target.value) * stockEntries[id].weight_per_piece * stockEntries[id].pair_unit_id
                               setstockEntries(list);
                             }}
@@ -821,13 +821,13 @@ console.log(location?.state?.id,location?.state?.flag);
 
 
 
-                          {!isValidateAllStates && (stockEntries[id].total_stock_pieces == "") && <span className="text-danger">First Select this </span>}</td>
+                          {!isValidateAllStates && (stockEntries[id].total_item_pieces == "") && <span className="text-danger">First Select this </span>}</td>
                         <td ><input className="form-control" type="number" min="0"
                           value={stockEntries[id].weight_per_piece}
                           onChange={(e) => {
                             const list = [...stockEntries];
                             list[id].weight_per_piece = Number(e.target.value)
-                            list[id].total_weight = stockEntries[id].total_stock_pieces * stockEntries[id].weight_per_piece * stockEntries[id].pair_unit_id
+                            list[id].total_weight = stockEntries[id].total_item_pieces * stockEntries[id].weight_per_piece * stockEntries[id].pair_unit_id
 
                       
                             setstockEntries(list);
@@ -838,7 +838,7 @@ console.log(location?.state?.id,location?.state?.flag);
 
                             const list = [...stockEntries];
                             list[id].total_weight = Number(e.target.value);
-                            list[id].total_stock_pieces=Number(e.target.value)/(list[id].weight_per_piece*list[id].pair_unit_id)
+                            list[id].total_item_pieces=Number(e.target.value)/(list[id].weight_per_piece*list[id].pair_unit_id)
                             setstockEntries(list);
                        
 
@@ -857,7 +857,7 @@ console.log(location?.state?.id,location?.state?.flag);
                     )}
                     <tr><td></td>
                       <td></td>
-                      <td><b>Total Pieces: {stockEntries?.map(data => data.total_stock_pieces).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)}</b></td>
+                      <td><b>Total Pieces: {stockEntries?.map(data => data.total_item_pieces).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)}</b></td>
                       <td></td>
                       <td><b>Total Weight:{stockEntries?.map(data => data.total_weight).reduce((prev, curr) => Number(prev) + Number(curr), 0).toFixed(2)}</b></td></tr>
                   </tbody>
@@ -871,7 +871,7 @@ console.log(location?.state?.id,location?.state?.flag);
                     item_chart_id: 0,
                     item_unit_id: 0,
                     pair_unit_id: 0,
-                    total_stock_pieces: 0,
+                    total_item_pieces: 0,
                     weight_per_piece: 0,
                     total_weight: 0
                   }])

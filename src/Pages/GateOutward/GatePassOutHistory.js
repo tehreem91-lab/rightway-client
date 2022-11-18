@@ -415,7 +415,7 @@ const GatePassOutHistory = () => {
                                                         <div className="col-md-2  text-left col-2  font-size-12    py-1  right-border-2 pt-1    ">
                                                             {each_entry.stock_unit_name}</div>
                                                         <div className="col-md-2  col-2 text-right font-size-12    py-1  right-border-2 pt-1    ">
-                                                            {each_entry.total_stock_piece}</div>
+                                                            {each_entry.total_item_piece}</div>
                                                         <div className="col-md-2  col-2 text-right font-size-12    py-1  right-border-2 pt-1    ">
                                                             {each_entry.total_weight}</div>
                                                         <div className="col-md-2 col-2 text-right  font-size-12    py-1  right-border-2 pt-1    ">

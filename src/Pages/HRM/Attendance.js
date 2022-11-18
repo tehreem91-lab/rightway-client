@@ -499,19 +499,15 @@ const Attendance = () => {
                     className=" row   reportTableHead bottom-border-1   "
                     style={{ fontSize: 11 }}
                   >
-                     <div className="col-md-1 col-1  p-2 right-border-2 border-light border   ">
+                     <div className="col-md-1 col-1  text-center p-2 right-border-2 border-light border   ">
                           SR.
                         </div>
-                        <div className="col-md-1 col-1  text-center py-1 px-1  right-border-2 border-light border  ">
-                        Employee Code
-                        </div>
+                        
                         <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border  ">
                         Employee Name
                         </div>
 
-                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
-                        Department	
-                        </div>
+                       
                         <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
                         Designation
                         </div>
@@ -527,10 +523,10 @@ const Attendance = () => {
                         Shift End Time
                         </div>
 
-                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        <div className="col-md-2 col-2 text-center py-1 px-1  right-border-2 border-light border    ">
                         Date/Time In	
                         </div>
-                        <div className="col-md-1 col-1 text-center py-1 px-1  right-border-2 border-light border    ">
+                        <div className="col-md-2 col-2 text-center py-1 px-1  right-border-2 border-light border    ">
                         Date/Time Out
                         </div>
 
@@ -559,19 +555,15 @@ const Attendance = () => {
                         style={{ fontSize: 11 }}
                       > 
                       
-                        <div  className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  p-2   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  p-2   ' : 'col-md-1 col-1  text-center py-1 px-1    ')} >
+                        <div  className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 text-center col-1  p-2   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-center text-white col-md-1 col-1  p-2   ' : 'col-md-1 col-1  text-center py-1 px-1    ')} >
                           {index+1}
                         </div>
-                        <div  className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
-                        {item.employee_code}
-                        </div>
+                       
                         <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1     ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
                         {item.employee_name}
                         </div>
 
-                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
-                        {item.department_title}
-                        </div>
+                        
                         <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
                         {item.designation_title}
                         </div>
@@ -587,7 +579,7 @@ const Attendance = () => {
                         {item.shift_end_time?.slice(8, 19)}
                         </div>
 
-                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-1 col-1  text-center py-1 px-1    ' : 'col-md-1 col-1  text-center py-1 px-1   ')}  >
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-2 col-2  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white  col-md-2 col-2  text-center py-1 px-1    ' : 'col-md-2 col-2  text-center py-1 px-1   ')}  >
                         <input
                                                                                 type="datetime-local"
                                                                                 value={item?.in_date}
@@ -623,7 +615,7 @@ const Attendance = () => {
 
 	
                         </div>
-                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-1 col-1  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-1 col-1  text-center py-1 px-1     ' : 'col-md-1 col-1  text-center py-1 px-1    ')}  >
+                        <div className={" " + ((item.in_date == null && item.out_date == null) ? ' bg-danger text-white col-md-2 col-2  text-center py-1 px-1   ' : (item.in_date == null || item.out_date == null) ? ' btn-primary text-white col-md-2 col-2  text-center py-1 px-1     ' : 'col-md-2 col-2  text-center py-1 px-1    ')}  >
                         <input
                                                                                 type="datetime-local"
                                                                                 value={item?.out_date}
