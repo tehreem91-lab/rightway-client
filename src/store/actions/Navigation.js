@@ -12,7 +12,8 @@ export const doGetNavigation = (setShowMainLoader) => async (dispatch) => {
       localStorage.setItem("selectedBranch_idLabel", res?.data?.prefered_user_info?.branch_prefer?.label);
       localStorage.setItem("selectedFiscalYear_value", res?.data?.prefered_user_info?.fiscal_year_prefer?.value);
       localStorage.setItem("selectedFiscalYear_label", `${res?.data?.prefered_user_info?.fiscal_year_prefer?.start_year.slice(0 , 10)}__${res?.data?.prefered_user_info?.fiscal_year_prefer?.end_year.slice(0 , 10)} `);
-
+      localStorage.setItem("role_name", res?.data?.RoleName);
+      localStorage.setItem("user_name", res?.data?.userName)
 
       setShowMainLoader(false);
       return res.data;

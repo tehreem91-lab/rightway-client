@@ -159,7 +159,8 @@ const Purchase = () => {
             <div role="main" style={{ padding: '0px' }} className={`right_col  h-100  heightFixForFAult${showNavMenu === false ?
                 "right_col-margin-remove" : " "} `}>
                 <div className="row">
-                    <div className="col-md-5 ">
+                <div className="col-md-5">
+                    <div className="col-md-12 ">
                         <div className="x_panel px-0">
                             <div className="x_content  ">
                                 <span className="section pl-4">
@@ -236,8 +237,59 @@ const Purchase = () => {
                                         }}
                                     >
 
-                                        Search <i className="ml-2 fa fa-search"></i>
+                                        Search <i className="ml-2 "></i>
                                     </button></div></div></div>
+                    </div>
+                    {isShowInv && 
+                    <div className="col-md-12 ">
+                        <div className="x_panel px-0">
+                            <div className="x_content  ">
+                                <div className="table-responsive" style={{ height: '400px', overflow: 'scroll' }}>
+                                    <table className="table table-striped jambo_table bulk_action">
+                                        <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
+                                            <tr className="headings bg-customBlue positionFixed">
+                                                <th className="column-title   text-left" width="50%">Purchase Inv</th>
+                                                <th className="column-title     text-right " width="50%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {
+                                                GatepassInv.length === 0 && <tr className="even pointer" style={{ cursor: "pointer" }}>
+                                                    <td className='text-left pb-0 pt-1 text-center' colSpan={2}>
+                                                        <span > No Data Available</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            {GatepassInv.map((each_voucher_record, index) => {
+                                                return <tr className="even pointer" style={{ cursor: "pointer" }} key={index}>
+
+                                                    <td className='text-left pb-0 pt-1'
+                                                         onClick={() => PurchaseReport(each_voucher_record.finance_main_id)}
+                                                    >
+                                                        <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_date.slice(0, 10)}</strong></div>
+                                                        <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_inv}</strong></div>
+                                                    </td>
+                                                    <td className='text-right pb-0 pt-1' >
+                                                        <div> <strong style={{ fontSize: '12px' }}
+                                                         onClick={() => PurchaseReport(each_voucher_record.finance_main_id)}
+                                                        >
+                                                         <span className="badge bg-warning">{each_voucher_record.status || each_voucher_record.purchase_status}</span> 
+                                                         {each_voucher_record.gate_pass_no}</strong> </div>
+                                                        <div className='py-0'>
+                                                            <span className='text-customOrange'>
+                                                                <u onClick={() => { navigate('/billinfoaccess', { state: { id: each_voucher_record.finance_main_id,flag: true } }) }
+                                                                }
+                                                                > Edit</u>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div></div></div>
+                    </div>}
                     </div>
                     {
                         isShowVoucher && <div className="col-md-7">
@@ -256,7 +308,7 @@ const Purchase = () => {
                                                             trigger={() => {
                                                                 return (
                                                                     <button
-                                                                        className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound" title="Print Doc"
+                                                                        className="btn btn-sm bg-customBlue text-light my-2 pt-1 borderRadiusRound" title="Print Doc"
                                                                     >
                                                                         <i className="fa fa-print"></i>
                                                                     </button>
@@ -393,56 +445,7 @@ const Purchase = () => {
                         </div>
                     }
                     </div>
-                    {isShowInv && <div className="row">
-                    <div className="col-md-5 ">
-                        <div className="x_panel px-0">
-                            <div className="x_content  ">
-                                <div className="table-responsive" style={{ height: '400px', overflow: 'scroll' }}>
-                                    <table className="table table-striped jambo_table bulk_action">
-                                        <thead  style={{position: 'sticky', top: '0',zIndex: '1'}}>
-                                            <tr className="headings positionFixed">
-                                                <th className="column-title   text-left" width="50%">Purchase Inv</th>
-                                                <th className="column-title     text-right " width="50%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            {
-                                                GatepassInv.length === 0 && <tr className="even pointer" style={{ cursor: "pointer" }}>
-                                                    <td className='text-left pb-0 pt-1 text-center' colSpan={2}>
-                                                        <span > No Data Available</span>
-                                                    </td>
-                                                </tr>
-                                            }
-                                            {GatepassInv.map((each_voucher_record, index) => {
-                                                return <tr className="even pointer" style={{ cursor: "pointer" }} key={index}>
-
-                                                    <td className='text-left pb-0 pt-1'
-                                                         onClick={() => PurchaseReport(each_voucher_record.finance_main_id)}
-                                                    >
-                                                        <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_date.slice(0, 10)}</strong></div>
-                                                        <div> <strong style={{ fontSize: '12px' }}> {each_voucher_record.voucher_inv}</strong></div>
-                                                    </td>
-                                                    <td className='text-right pb-0 pt-1' >
-                                                        <div> <strong style={{ fontSize: '12px' }}
-                                                         onClick={() => PurchaseReport(each_voucher_record.finance_main_id)}
-                                                        >
-                                                         <span className="badge bg-warning">{each_voucher_record.status || each_voucher_record.purchase_status}</span> 
-                                                         {each_voucher_record.gate_pass_no}</strong> </div>
-                                                        <div className='py-0'>
-                                                            <span className='text-customOrange'>
-                                                                <u onClick={() => { navigate('/billinfoaccess', { state: { id: each_voucher_record.finance_main_id,flag: true } }) }
-                                                                }
-                                                                > Edit</u>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            })}
-                                        </tbody>
-                                    </table>
-                                </div></div></div>
-                    </div></div>}
+                    
                     </div>
     </>
   )
