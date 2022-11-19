@@ -8,25 +8,25 @@ const Profile = () => {
     const role = (localStorage.getItem("role_name"))
     const user = (localStorage.getItem("user_name"))
     const userId = (localStorage.getItem("user_id")).replace(/['"]+/g, '')
-    const [isValidateAllStates,setisValidateAllStates]=useState(true)
-    const [newPassVal,setnewPassVal]=useState(true)
+    const [isValidateAllStates, setisValidateAllStates] = useState(true)
+    const [newPassVal, setnewPassVal] = useState(true)
     console.log(userId);
+    
     const [Password, setPassword] = useState({ old: '', new: '' })
+    
     const changePass = (e) => {
 
         e.preventDefault()
         var axios = require('axios');
         //
-        var pass = Password.new;
-let validation=true;
-if(Password.new=='' || Password.old ==''){
-    validation=false;
-}
-setisValidateAllStates(validation)
-if(validation===true){
-        var reg = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-        var test = reg.test(pass);
-        if (test) {
+
+        let validation = true;
+        if (Password.new == '' || Password.old == '') {
+            validation = false;
+        }
+        setisValidateAllStates(validation)
+        if (validation === true) {
+
             setnewPassVal(true)
             var config = {
                 method: 'post',
@@ -36,28 +36,26 @@ if(validation===true){
                         }`,
                 }
             };
-    
+
             axios(config)
                 .then(function (response) {
                     toast.success(
                         "Password has been " +
                         ("Changed" + " successfully!")
                     );
-                   
+
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-        } else {
-            setnewPassVal(false)
-        }
-      
+        } 
 
 
 
 
 
-    }
+
+
 
     }
 
@@ -106,18 +104,28 @@ if(validation===true){
                                 <div className="col-md-6 col-sm-6 ">
                                     <input type="password" required="required" className="form-control" value={Password.old} onChange={(e) => setPassword({ ...Password, old: e.target.value })} />
                                     {!isValidateAllStates && (Password.old == "") && <span className="text-danger">First Select this </span>}
-                               
+
                                 </div>
                             </div>
                             <div className="item form-group">
                                 <label className="col-form-label col-md-3 col-sm-3 label-align" for="last-name">New Password  <span className="required">*</span>
                                 </label>
                                 <div className="col-md-6 col-sm-6 ">
-                                    <input type="password" required="required" className="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" value={Password.new} onChange={(e) => setPassword({ ...Password, new: e.target.value })} />
+                                    <input type="password" required="required" className="form-control"  value={Password.new} onChange={(e) => 
+                                    {var pass = Password?.new;
+    var reg = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+    var test = reg.test(pass);
+    if (test) {
+        setnewPassVal(true)
+    }
+    else{
+        setnewPassVal(false)
+    }
+    setPassword({ ...Password, new: e.target.value })} }/>
                                     {!isValidateAllStates && (Password.new == "") && <span className="text-danger">First Select this </span>}
-                                    {!newPassVal  && <span className="text-danger">Password must be of (8 to 15) characters which must be alphanumeric and must contain special characters </span>}
-                                   
-                                    
+                                    {!newPassVal && <span className="text-danger">Password must be of (8 to 15) characters which must be alphanumeric and must contain special characters </span>}
+
+
                                 </div>
                             </div>
                             <div className="item form-group">
