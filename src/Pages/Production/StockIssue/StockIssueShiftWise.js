@@ -32,7 +32,7 @@ const StockIssueShiftWise = () => {
 
   const [date, setDate] = useState(dateToday);
 
-  const [IsValidation, setIsValidation] = useState(true);
+  const [IsValidation, setIsValidation] = useState(false);
   const [selectedshiftIncharge, setselectedshiftIncharge] = useState("");
   const [Item_options, setItem_option] = useState([]);
 
@@ -238,8 +238,7 @@ const StockIssueShiftWise = () => {
         setstockissuedata([response.data]);
         setEntity(response.data.job);
         console.log([response.data]);
-        // setExtraEntity(response.data.entity)
-        // console.log(ExtraEntity)
+      
         setisLoader(true);
         setHidden(true);
         setIsValidation(true);
@@ -330,18 +329,7 @@ const StockIssueShiftWise = () => {
     setEntity(values);
   };
 
-  const [arrdata, setArrdata] = useState([]);
-
-  const dataInput = () => {
-    setArrdata((id) => {
-      return [
-        {
-          type: "number",
-          value: "",
-        },
-      ];
-    });
-  };
+ 
 
   const Submit_Issue_Stock = (e) => {
     var axios = require("axios");
@@ -395,9 +383,7 @@ const StockIssueShiftWise = () => {
         console.log(error);
       });
   };
-  const check = () => {
-    console.log(selectedshiftIncharge);
-  };
+ 
 
   //update stock
   const Update_Issue_Stock = (e) => {
@@ -534,7 +520,7 @@ const StockIssueShiftWise = () => {
                           Get_Stock_Issue(shiftvalue.value);
                         }}
                       >
-                        Show Report
+                        Submit
                         {!isLoader && (
                           <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
                         )}
@@ -682,28 +668,7 @@ const StockIssueShiftWise = () => {
                                           <span class="slider round"></span>
                                         </label>
                                         <span>&nbsp; ON</span>
-                                        {/*
-                         <button className="btn-sm bg-danger btn  mt-3 text-white "
-                            onClick={()=>{
-                              let a = Entity
-                              if( a[i].stock_issue_status ==="close"){
-                               a[i].stock_issue_status="active"
-                              }
-                              else{
-                                a[i].stock_issue_status="close"
-                              }
-                              console.log(a[i] ,i)
-          
-                               setEntity(a)
-                               setReRenderState(!reRenderState)
-          
-                              
-                            }}
-                            >
-                          {item.stock_issue_status}
-                            </button>
-                        
-                        */}
+                               
                                       </div>
                                     </div>
                                   </div>
@@ -712,8 +677,14 @@ const StockIssueShiftWise = () => {
                                       <table className="table table-striped jambo_table bulk_action ">
                                         <thead>
                                           <tr className="headings">
+                                          <th
+                                          className="column-title "
+                                          width="4%"
+                                        >
+                                        Sr.
+                                        </th>
                                             <th
-                                              className="column-title   text-center"
+                                              className="column-title   "
                                               width="18%"
                                             >
                                               Item Name{" "}
@@ -722,7 +693,7 @@ const StockIssueShiftWise = () => {
                                               </span>
                                             </th>
                                             <th
-                                              className="column-title   text-center"
+                                              className="column-title   "
                                               width="16%"
                                             >
                                               Stock Unit{" "}
@@ -731,7 +702,7 @@ const StockIssueShiftWise = () => {
                                               </span>{" "}
                                             </th>
                                             <th
-                                              className="column-title   text-center"
+                                              className="column-title  "
                                               width="15%"
                                             >
                                               Quantity{" "}
@@ -740,7 +711,7 @@ const StockIssueShiftWise = () => {
                                               </span>
                                             </th>
                                             <th
-                                              className="column-title   text-center"
+                                              className="column-title   "
                                               width="18%"
                                             >
                                               Weight Per Piece{" "}
@@ -749,7 +720,7 @@ const StockIssueShiftWise = () => {
                                               </span>
                                             </th>
                                             <th
-                                              className="column-title   text-center"
+                                              className="column-title  "
                                               width="18%"
                                             >
                                               Total Weight{" "}
@@ -758,14 +729,14 @@ const StockIssueShiftWise = () => {
                                               </span>{" "}
                                             </th>
                                             <th
-                                              className="column-title   text-center"
+                                              className="column-title   "
                                               width="13%"
                                             >
                                               Remarks
                                             </th>
 
                                             <th
-                                              className="column-title   text-center"
+                                              className="column-title  "
                                               width="2%"
                                             >
                                               &nbsp;
@@ -774,259 +745,535 @@ const StockIssueShiftWise = () => {
                                         </thead>
 
                                         <tbody>
-                                          {item?.stock_entries?.map(
-                                            (data, id) => {
-                                              return (
-                                                <>
-                                                  <tr key={id}>
-                                                    <td>
-                                                      <Select
-                                                        isSearchable={true}
-                                                        disabled={false}
-                                                        // isDisabled = {true}
-                                                        placeholder={
-                                                          "Select Item"
-                                                        }
-                                                        styles={customStyles}
-                                                        value={Item_options.find(
-                                                          (e) =>
-                                                            e.value ===
-                                                            data.item_id
-                                                        )}
-                                                        options={Item_options}
-                                                        //  onChange={event => handleChange(i, id, event)}
-                                                        onChange={(e) => {
-                                                          const values = [
-                                                            ...Entity,
-                                                          ];
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].item_id = e.value;
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].item_name = e.label;
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].stock_unit_name =
-                                                            e.unit;
+                                        {item.stock_entries.length === 0 ? (
+                                       <>
+                                       {stock_entries.map(
+                                        (data, id) => {
+                                          return (
+                                            <>
+                                              <tr key={id}>
+                                              <td>{id+1}</td>
+                                                <td>
+                                                  <Select
+                                                    isSearchable={true}
+                                                    disabled={false}
+                                                    // isDisabled = {true}
+                                                    placeholder={
+                                                      "Select Item"
+                                                    }
+                                                    styles={customStyles}
+                                                    value={Item_options.find(
+                                                      (e) =>
+                                                        e.value ===
+                                                        data.item_id
+                                                    )}
+                                                    options={Item_options}
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].item_id = e.value;
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].item_name = e.label;
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].stock_unit_name =
+                                                        e.unit;
 
-                                                          setEntity(values);
+                                                      setEntity(values);
 
-                                                          //set stock unit
-                                                          const value = [
-                                                            ...Entity,
-                                                          ];
-                                                          value[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].stock_unit_name =
-                                                            e.unit;
-                                                          setEntity(value);
+                                                      //set stock unit
+                                                      const value = [
+                                                        ...Entity,
+                                                      ];
+                                                      value[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].stock_unit_name =
+                                                        e.unit;
+                                                      setEntity(value);
 
-                                                          // set job id
-                                                          const list = [
-                                                            ...Entity,
-                                                          ];
-                                                          list[i].job_id =
-                                                            item?.job_id;
-                                                          setEntity(list);
-                                                          console.log(
-                                                            list[i].job_id
-                                                          );
-                                                        }}
-                                                      />
-                                                      {!IsValidation &&
-                                                        Entity[i].stock_entries[
-                                                          id
-                                                        ].item_id === 0 && (
-                                                          <span className="text-danger">
-                                                            First Select this{" "}
-                                                          </span>
-                                                        )}
-                                                    </td>
-                                                    <td>
-                                                      <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        disabled
-                                                        value={
-                                                          data.stock_unit_name
-                                                        }
-                                                        onChange={(e) => {
-                                                          const values = [
-                                                            ...Entity,
-                                                          ];
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].stock_unit_name =
-                                                            e.target.value;
-                                                          setEntity(values);
-                                                        }}
-                                                      />
-                                                    </td>
-                                                    <td>
-                                                      <input
-                                                        type="number"
-                                                        disabled={toggle}
-                                                        min="0"
-                                                        // name="item_quantity"
-                                                        className="form-control"
-                                                        value={
-                                                          data.item_quantity
-                                                        }
-                                                        //  onChange={event => handleChange(i, id, event)}
-                                                        onChange={(e) => {
-                                                          const values = [
-                                                            ...Entity,
-                                                          ];
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].item_quantity = Number(
-                                                            e.target.value
-                                                          );
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].total_weight =
-                                                            values[i]
-                                                              .stock_entries[id]
-                                                              .item_quantity *
-                                                            values[i]
-                                                              .stock_entries[id]
-                                                              .weight_per_piece;
-                                                          setEntity(values);
-                                                        }}
-                                                      />
-                                                      {!IsValidation &&
-                                                        Entity[i].stock_entries[
-                                                          id
-                                                        ].item_quantity ===
-                                                          0 && (
-                                                          <span className="text-danger">
-                                                            First Select this{" "}
-                                                          </span>
-                                                        )}
-                                                    </td>
+                                                      // set job id
+                                                      const list = [
+                                                        ...Entity,
+                                                      ];
+                                                      list[i].job_id =
+                                                        item?.job_id;
+                                                      setEntity(list);
+                                                      console.log(
+                                                        list[i].job_id
+                                                      );
+                                                    }}
+                                                  />
+                                                  {!IsValidation &&
+                                                    Entity[i].stock_entries[
+                                                      id
+                                                    ].item_id === 0 && (
+                                                      <span className="text-danger">
+                                                        First Select this{" "}
+                                                      </span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    disabled
+                                                    value={
+                                                      data.stock_unit_name
+                                                    }
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].stock_unit_name =
+                                                        e.target.value;
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="number"
+                                                    disabled={toggle}
+                                                    min="0"
+                                                    // name="item_quantity"
+                                                    className="form-control"
+                                                    value={
+                                                      data.item_quantity
+                                                    }
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].item_quantity = Number(
+                                                        e.target.value
+                                                      );
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].total_weight =
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .item_quantity *
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .weight_per_piece;
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                  {!IsValidation &&
+                                                    Entity[i].stock_entries[
+                                                      id
+                                                    ].item_quantity ===
+                                                      0 && (
+                                                      <span className="text-danger">
+                                                        First Select this{" "}
+                                                      </span>
+                                                    )}
+                                                </td>
 
-                                                    <td>
-                                                      <input
-                                                        type="number"
-                                                        disabled={false}
-                                                        min="0"
-                                                        // name="weight_per_piece"
-                                                        className="form-control"
-                                                        value={
-                                                          data.weight_per_piece
-                                                        }
-                                                        //  onChange={event => handleChange(i, id, event)}
-                                                        onChange={(e) => {
-                                                          const values = [
-                                                            ...Entity,
-                                                          ];
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].weight_per_piece = Number(
-                                                            e.target.value
-                                                          );
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].total_weight =
-                                                            values[i]
-                                                              .stock_entries[id]
-                                                              .weight_per_piece *
-                                                            values[i]
-                                                              .stock_entries[id]
-                                                              .item_quantity;
+                                                <td>
+                                                  <input
+                                                    type="number"
+                                                    disabled={false}
+                                                    min="0"
+                                                    // name="weight_per_piece"
+                                                    className="form-control"
+                                                    value={
+                                                      data.weight_per_piece
+                                                    }
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].weight_per_piece = Number(
+                                                        e.target.value
+                                                      );
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].total_weight =
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .weight_per_piece *
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .item_quantity;
 
-                                                          setEntity(values);
-                                                        }}
-                                                      />
-                                                      {!IsValidation &&
-                                                        Entity[i].stock_entries[
-                                                          id
-                                                        ].weight_per_piece ===
-                                                          0 && (
-                                                          <span className="text-danger">
-                                                            First Select this{" "}
-                                                          </span>
-                                                        )}
-                                                    </td>
-                                                    <td>
-                                                      <input
-                                                        type="number"
-                                                        disabled={false}
-                                                        min="0"
-                                                        className="form-control"
-                                                        value={
-                                                          data.item_quantity *
-                                                          data.weight_per_piece
-                                                        }
-                                                        //  value={item[i]?.stock_entries[id]?.Item_quantity * item[i]?.stock_entries[id]?.weight_per_piece}
-                                                        //  onChange={event => handleChange(i, id, event)}
-                                                        onchange={(e) => {
-                                                          const values = [
-                                                            ...Entity,
-                                                          ];
-                                                          values[
-                                                            i
-                                                          ].stock_entries[
-                                                            id
-                                                          ].total_weight = Number(
-                                                            e.target.value
-                                                          );
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                  {!IsValidation &&
+                                                    Entity[i].stock_entries[
+                                                      id
+                                                    ].weight_per_piece ===
+                                                      0 && (
+                                                      <span className="text-danger">
+                                                        First Select this{" "}
+                                                      </span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="number"
+                                                    disabled={false}
+                                                    min="0"
+                                                    className="form-control"
+                                                    value={
+                                                      data.item_quantity *
+                                                      data.weight_per_piece
+                                                    }
+                                                    //  value={item[i]?.stock_entries[id]?.Item_quantity * item[i]?.stock_entries[id]?.weight_per_piece}
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onchange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].total_weight = Number(
+                                                        e.target.value
+                                                      );
 
-                                                          setEntity(values);
-                                                        }}
-                                                      />
-                                                    </td>
-                                                    <td>
-                                                      <input
-                                                        type="text"
-                                                        disabled={false}
-                                                        name="remarks"
-                                                        className="form-control"
-                                                        value={data.remarks}
-                                                        onChange={(event) =>
-                                                          handleChange(
-                                                            i,
-                                                            id,
-                                                            event
-                                                          )
-                                                        }
-                                                      />
-                                                    </td>
-                                                    <td>
-                                                      <i
-                                                        class="fa fa-times pt-2 text-danger font-size-18"
-                                                        aria-hidden="true"
-                                                        onClick={() =>
-                                                          handleRemove(i, id)
-                                                        }
-                                                      ></i>
-                                                    </td>
-                                                  </tr>
-                                                </>
-                                              );
-                                            }
-                                          )}
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="text"
+                                                    disabled={false}
+                                                    name="remarks"
+                                                    className="form-control"
+                                                    value={data.remarks}
+                                                    onChange={(event) =>
+                                                      handleChange(
+                                                        i,
+                                                        id,
+                                                        event
+                                                      )
+                                                    }
+                                                  />
+                                                </td>
+                                                <td>
+                                                {id > 0 && (
+                                                  <i
+                                                    style={{ cursor: "pointer" }}
+                                                    className="fa fa-times btn text-danger  mx-0 p-1  "
+                                                    onClick={() =>
+                                                      handleRemove(i, id)
+                                                    }
+                                                  ></i>
+                                                )}
+                                                
+                                                </td>
+                                              </tr>
+                                            </>
+                                          );
+                                        }
+                                      )}
+
+                                       </>
+
+                                        
+                                        ) : (
+                                       <>
+                                       {item?.stock_entries?.map(
+                                        (data, id) => {
+                                          return (
+                                            <>
+                                              <tr key={id}>
+                                              <td>{id+1}</td>
+                                                <td>
+                                                  <Select
+                                                    isSearchable={true}
+                                                    isDisabled ={Entity[i].stock_issue_status === "close" ? true : false}
+                                                    placeholder={
+                                                      "Select Item"
+                                                    }
+                                                    styles={customStyles}
+                                                    value={Item_options.find(
+                                                      (e) =>
+                                                        e.value ===
+                                                        data.item_id
+                                                    )}
+                                                    options={Item_options}
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].item_id = e.value;
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].item_name = e.label;
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].stock_unit_name =
+                                                        e.unit;
+
+                                                      setEntity(values);
+
+                                                      //set stock unit
+                                                      const value = [
+                                                        ...Entity,
+                                                      ];
+                                                      value[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].stock_unit_name =
+                                                        e.unit;
+                                                      setEntity(value);
+
+                                                      // set job id
+                                                      const list = [
+                                                        ...Entity,
+                                                      ];
+                                                      list[i].job_id =
+                                                        item?.job_id;
+                                                      setEntity(list);
+                                                      console.log(
+                                                        list[i].job_id
+                                                      );
+                                                    }}
+                                                  />
+                                                  {!IsValidation &&
+                                                    Entity[i].stock_entries[
+                                                      id
+                                                    ].item_id === 0 && (
+                                                      <span className="text-danger">
+                                                        First Select this{" "}
+                                                      </span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    disabled
+                                                    value={
+                                                      data.stock_unit_name
+                                                    }
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].stock_unit_name =
+                                                        e.target.value;
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="number"
+                                                    disabled={Entity[i].stock_issue_status === "close" ? true : false}
+                                                    min="0"
+                                                    // name="item_quantity"
+                                                    className="form-control"
+                                                    value={
+                                                      data.item_quantity
+                                                    }
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].item_quantity = Number(
+                                                        e.target.value
+                                                      );
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].total_weight =
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .item_quantity *
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .weight_per_piece;
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                  {!IsValidation &&
+                                                    Entity[i].stock_entries[
+                                                      id
+                                                    ].item_quantity ===
+                                                      0 && (
+                                                      <span className="text-danger">
+                                                        First Select this{" "}
+                                                      </span>
+                                                    )}
+                                                </td>
+
+                                                <td>
+                                                  <input
+                                                    type="number"
+                                                    disabled={Entity[i].stock_issue_status === "close" ? true : false}
+                                                    min="0"
+                                                    // name="weight_per_piece"
+                                                    className="form-control"
+                                                    value={
+                                                      data.weight_per_piece
+                                                    }
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onChange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].weight_per_piece = Number(
+                                                        e.target.value
+                                                      );
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].total_weight =
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .weight_per_piece *
+                                                        values[i]
+                                                          .stock_entries[id]
+                                                          .item_quantity;
+
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                  {!IsValidation &&
+                                                    Entity[i].stock_entries[
+                                                      id
+                                                    ].weight_per_piece ===
+                                                      0 && (
+                                                      <span className="text-danger">
+                                                        First Select this{" "}
+                                                      </span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="number"
+                                                    disabled={Entity[i].stock_issue_status === "close" ? true : false}
+
+
+                                                    min="0"
+                                                    className="form-control"
+                                                    value={
+                                                      data.item_quantity *
+                                                      data.weight_per_piece
+                                                    }
+                                                    //  value={item[i]?.stock_entries[id]?.Item_quantity * item[i]?.stock_entries[id]?.weight_per_piece}
+                                                    //  onChange={event => handleChange(i, id, event)}
+                                                    onchange={(e) => {
+                                                      const values = [
+                                                        ...Entity,
+                                                      ];
+                                                      values[
+                                                        i
+                                                      ].stock_entries[
+                                                        id
+                                                      ].total_weight = Number(
+                                                        e.target.value
+                                                      );
+
+                                                      setEntity(values);
+                                                    }}
+                                                  />
+                                                </td>
+                                                <td>
+                                                  <input
+                                                    type="text"
+                                                    disabled={Entity[i].stock_issue_status === "close" ? true : false}
+
+                                                    name="remarks"
+                                                    className="form-control"
+                                                    value={data.remarks}
+                                                    onChange={(event) =>
+                                                      handleChange(
+                                                        i,
+                                                        id,
+                                                        event
+                                                      )
+                                                    }
+                                                  />
+                                                </td>
+                                                <td>
+                                                {id > 0 && (
+                                                  <i
+                                                    style={{ cursor: "pointer" }}
+                                                    className="fa fa-times btn text-danger  mx-0 p-1  "
+                                                    onClick={() =>
+                                                      handleRemove(i, id)
+                                                    }
+                                                  ></i>
+                                                )}
+                                                
+                                                </td>
+                                              </tr>
+                                            </>
+                                          );
+                                        }
+                                      )}
+                                       
+                                       
+                                       </>
+
+                                        )}
+                                        
 
                                           <tr>
+                                          <td></td>
                                             <td></td>
                                             <td></td>
                                             <td>
@@ -1205,6 +1452,8 @@ const StockIssueShiftWise = () => {
                                           stockissuedata[index]
                                             .shift_incharge_id
                                         );
+                                        setRemarks(Remarks)
+                                        setFileEntity(fileEntity.split(","));
                                         Update_Issue_Stock(shiftvalue.value);
                                       }}
                                     >

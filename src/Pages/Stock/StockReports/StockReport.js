@@ -169,9 +169,65 @@ const StockReport = () => {
                 </div>
               </div>
             </div>
-            <div
+            </div>
+          </div>
+              
+             {!isLoading &&(
+
+                <div className="x_panel  ">
+                <div className="x_content">
+                <span className="section mb-0  mt-2 ">
+                <div className="row">
+                  <div className="col-5 ">
+                    <i className="fa fa-list mx-1 mt-2"></i>&nbsp;Report Data
+                  </div>
+                  <div className="col-7 text-right px-0 ">
+                          <div className="col-md-5"> </div>
+                          <div className="col-md-4  text-left "> </div>
+                          <div className="col-md-3 pr-4">
+                          <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                          <div className="form-group col-4" >
+                          <ReactToPrint
+                          trigger={() =>  
+                          <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
+                          <i className="fa fa-print"></i>
+                          </button>}
+                          content={() => componentRef.current}
+                          documentTitle='new docs'
+                        />
+                          </div>
+
+                          <div className="form-group col-4">
+                                <button className="btn btn-sm  borderRadiusRound text-white" 
+                                onClick={downloadPdf}
+                                type="button"
+                                style={{ backgroundColor: "#003A4D" }}>
+                                  <i
+                                    className="fa fa-file-pdf-o"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                          </div>
+                          <div className="form-group col-4">
+                          <CSVLink {...csvReport}>
+                                <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
+                                  <i
+                                    className="fa fa-file-excel-o"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                </CSVLink>
+                          </div>
+                        </ul>
+                          </div>
+                        </div>
+                </div>
+              </span>
+           
+              <div
               id="report"
               className="x_content mt-4  "
+              ref={componentRef}
             >
               <div className="displayPropertyForPrint">
                 <h2 className="text-dark text-center font-weight-bold  ">
@@ -188,58 +244,7 @@ const StockReport = () => {
                   </div>
                 </div>
               </div>
-              
-             {!isLoading &&(
-
-                <>
-                <span className="section mb-0 pb-1 mt-4 ">
-                <div className="row">
-                  <div className="col-5 ">
-                    <i className="fa fa-list mx-1 mt-2"></i>&nbsp;Report Data
-                  </div>
-                  <div className="col-7 text-right px-0 ">
-                        <div className="col-md-4"> </div>
-                        <div className="col-md-4  text-left "> </div>
-                        <div className="col-md-4 pr-4">
-                          <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                            <div className="form-group col-4 " >
-                            <ReactToPrint
-                            trigger={() =>  
-                            <button className="btn btn-sm ml-4 borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
-                            <i className="fa fa-print"></i>
-                            </button>}
-                            content={() => componentRef.current}
-                            documentTitle='new docs'
-                          />
-                            </div>
-
-                            <div className="form-group col-4">
-                                  <button className="btn btn-sm ml-3 borderRadiusRound text-white" 
-                                  onClick={downloadPdf}
-                                  type="button"
-                                  style={{ backgroundColor: "#003A4D" }}>
-                                    <i
-                                      className="fa fa-file-pdf-o"
-                                      aria-hidden="true"
-                                    ></i>
-                                  </button>
-                            </div>
-                            <div className="form-group col-4">
-                            <CSVLink {...csvReport}>
-                                  <button className="btn btn-sm ml-1 borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
-                                    <i
-                                      className="fa fa-file-excel-o"
-                                      aria-hidden="true"
-                                    ></i>
-                                  </button>
-                                  </CSVLink>
-                            </div>
-                          </ul>
-                        </div>
-                      </div>
-                </div>
-              </span>
-                <div>
+              <div className="container-fluid">
             <div className="row   reportTableHead bottom-border-1 mt-3 "  >
               <div className=" col-md-2 col-2  font-size-12   right-border-1  text-center  left-border-2 p-1 my-1">
                 Shift No
@@ -263,7 +268,6 @@ const StockReport = () => {
 
               {/* ---------- */}
             </div>
-          </div>
           {AvailableReport.length === 0 ? (
                 <div className="row   reportTableBody bottom-border-2 ">
                   <div className=" col-md-12   col-12   px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
@@ -301,16 +305,15 @@ const StockReport = () => {
           </div>
                 </>
               )}
-                
-                </>
+              </div>
+              </div>
+              </div>
+              </div>
              ) }
             
             
-            </div>
-            {/* ---------- */}
-          </div>
+           
         </div>
-      </div>
     </>
   );
 };

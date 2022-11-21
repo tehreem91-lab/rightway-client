@@ -9,6 +9,8 @@ import CustomInnerHeader from "../../../Components/CustomInnerHeader";
 import { customStyles } from "../../../Components/reactCustomSelectStyle";
 import ReactToPrint from "react-to-print";
 import { CSVLink } from "react-csv";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const JobWiseStockIssueReport = () => {
   let componentRef = useRef();
@@ -23,7 +25,7 @@ const JobWiseStockIssueReport = () => {
   const [validationState, setValidationState] = useState(true);
   const [dateFrom, setdateFrom] = useState(dateToday);
   const [dateto, setdateTo] = useState(dateToday);
-  const [AvailableReport, setAvailableReport] = useState([1]);
+  const [AvailableReport, setAvailableReport] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [isLoader, setisLoader] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
@@ -86,6 +88,43 @@ const JobWiseStockIssueReport = () => {
       });
 
   }
+  const downloadPdf = async () => {
+   
+    var data = document.getElementById("report");
+    //$("pdfOpenHide").attr("hidden", true);
+    // To disable the scroll
+    document.getElementById("report").style.overflow = "inherit";
+    document.getElementById("report").style.maxHeight = "inherit";
+
+    await html2canvas(data).then((canvas) => {
+      const contentDataURL = canvas.toDataURL("image/png", 1.0);
+      // enabling the scroll
+      //document.getElementById("report").style.overflow = "scroll";
+      //document.getElementById("report").style.maxHeight = "150px";
+
+      let pdf = new jsPDF("l", "mm", "a4"); // A4 size page of PDF
+
+      let imgWidth = 300;
+      let pageHeight = pdf.internal.pageSize.height;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      window.open(
+        pdf.output("bloburl", { filename: "new-file.pdf" }),
+        "_blank"
+      );
+    });
+  };
   return (
     <>
       <div
@@ -122,88 +161,72 @@ const JobWiseStockIssueReport = () => {
                 </button>
               </div>
             </div>
-            <div className="row  mx-3">
+            <div className="row">
               <div className="field item form-group col-md-12 col-sm-12">
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
-                        From Date <span className="required">*</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <input
-                        className="form-control"
-                        type="date"
-                        value={dateFrom}
-                        styles={customStyles}
-                        onChange={(e) => {
-                          setdateFrom(e.target.value);
-                        }}
-                      />
+                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                  From Date <span className="required">*</span>
+                </label>
+                <div className="col-md-3 col-sm-3">
+                  <input
+                    className="form-control"
+                    type="date"
+                    value={dateFrom}
+                    styles={customStyles}
+                    onChange={(e) => {
+                      setdateFrom(e.target.value);
+                    }}
+                  />
 
-                      {validationState === false && dateFrom === "" && (
-                        <span className="text-danger">First Select this </span>
-                      )}
-                    </div>
-                  </div>
+                  {validationState === false && dateFrom === "" && (
+                    <span className="text-danger">First Select this </span>
+                  )}
+
+                  {/* // its show fiscal year initial value */}
                 </div>
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
-                        Date To : <span className="required">*</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <input
-                        className="form-control"
-                        type="date"
-                        value={dateto}
-                        styles={customStyles}
-                        onChange={(e) => {
-                          setdateTo(e.target.value);
-                        }}
-                      />
+                <label className="col-form-label col-md-2 col-sm-2 label-align">
+                  Date To <span className="required">*</span>
+                </label>
+                <div className="col-md-3 col-sm-3">
+                  <input
+                    className="form-control"
+                    type="date"
+                    value={dateto}
+                    styles={customStyles}
+                    onChange={(e) => {
+                      setdateTo(e.target.value);
+                    }}
+                  />
 
-                      {validationState === false && dateto === "" && (
-                        <span className="text-danger">First Select this </span>
-                      )}
-                    </div>
-                  </div>
+                  {validationState === false && dateFrom === "" && (
+                    <span className="text-danger">First Select this </span>
+                  )}
+
+                  {/* // its show fiscal year initial value */}
                 </div>
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12"></div>
-                  </div>
-                  <div className="row mt-4">
-                    <div className="col-md-12">
-                      <button
-                        className="btn bg-customBlue text-light mt-2"
-                        type="submit"
-                        onClick={() => {
-                          fetchData()
-
-                        }}
-                      >
-                        Run Report
-                        {!isLoader && (
-                          <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
-                        )}
-                      </button>
-                    </div>
-                  </div>
+                <div className="col-md-2 text-left mt-1">
+                  <button
+                    className="btn bg-customBlue text-light"
+                    type="submit"
+                    onClick={()=>{
+                        setisLoading(false)
+                        setisLoader(false)
+                    }}
+                  >
+                    Run Report
+                    {!isLoader && (
+                      <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
-
+            </div>
+            </div>
 
             {!isLoading && (
               <>
+              <div className="x_panel  ">
+              <div className="x_content">
                 <span className="section mb-0 pb-1 mt-4 ">
                   <div className="row">
                     <div className="col-5 ">
@@ -224,7 +247,17 @@ const JobWiseStockIssueReport = () => {
                               documentTitle='new docs'
                             />
                           </div>
-
+                          <div className="form-group col-4">
+                          <li>
+                          <button
+                              className="btn btn-sm bg-customBlue text-light borderRadiusRound"
+                              data-toggle="tooltip" data-placement="top" onClick={downloadPdf}
+                          ><i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                          </button>
+                      </li>
+                        </div>
+                          
+                        
 
                           <div className="form-group col-4">
                             <CSVLink {...csvReport}>
@@ -290,7 +323,7 @@ const JobWiseStockIssueReport = () => {
                         ASSIGNED PERSON
                       </div>
 
-                      <div className="col-md-2 col-2 text-center p-1  right-border-1 my-1   ">
+                      <div className="col-md-2 col-2 text-center p-1   my-1   ">
                         DESCRIPTION
                       </div>
 
@@ -342,11 +375,12 @@ const JobWiseStockIssueReport = () => {
                     )}
                   </div>
                 </div>
+                </div>
+                </div>
               </>
             )}
             {/* ---------- */}
-          </div>
-        </div>
+       
       </div>
     </>
   );

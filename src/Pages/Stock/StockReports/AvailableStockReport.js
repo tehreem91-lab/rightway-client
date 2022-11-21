@@ -152,14 +152,16 @@ const AvailableStockReport = () => {
               </div>
             </div>
            
-            
+            </div>
+            </div>
             
              
            
 
               {!isLoading && (
                 <>
-               
+                <div className="x_panel  ">
+                <div className="x_content">
                 <span className="section mb-0 pb-1 mt-4 ">
                   <div className="row">
                     <div className="col-5 ">
@@ -336,14 +338,14 @@ const AvailableStockReport = () => {
               )}
               </div>
             </div>
-
+            </div>
+            </div>
                 </>
               )}
                
         
             {/* ---------- */}
-          </div>
-        </div>
+       
       </div>
     </>
   );

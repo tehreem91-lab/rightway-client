@@ -375,7 +375,7 @@ const csvReport = {
                           Get_Transaction_Report()
                         }}
                       >
-                       Submit
+                       Run Report
                         {!isLoader && (
                           <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
                         )}
@@ -394,214 +394,222 @@ const csvReport = {
               
             
             </div>
+            </div>
+            </div>
            
 
             {!isLoading && (
               <>
-              <span className="section mb-0 pb-1 mt-4 ">
+              <div className="x_panel  ">
+              <div className="x_content">
+              <span className="section mb-0 pb-1 mt-2 ">
               <div className="row">
                 <div className="col-5 ">
-                  <i className="fa fa-list mx-1 mt-4"></i>&nbsp;Report Data
+                  <i className="fa fa-list mx-1 mt-2"></i>&nbsp;Report Data
                 </div>
                 <div className="col-7 text-right px-0 ">
                       <div className="col-md-5"> </div>
                       <div className="col-md-4  text-left "> </div>
-                      <div className="col-md-3 p-2">
+                      <div className="col-md-3 pr-4">
                       <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                      <div className="form-group col-md-3">
-  
-                        <ReactToPrint className="form-group col-md-3"
-                          trigger={() => {
-                            return (
-                              <button className="btn btn-sm  borderRadiusRound" title="Print" style={{ backgroundColor: "#003A4D", color: "white" }}>
-                                <i className="fa fa-print"></i>
-                              </button>
-                            );
-                          }}
-                          content={() => componentRef.current}
-                          documentTitle="new docs"
-                          pageStyle="print"
-                        />
+                      <div className="form-group col-4" >
+                      <ReactToPrint
+                      trigger={() =>  
+                      <button className="btn btn-sm   borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
+                      <i className="fa fa-print"></i>
+                      </button>}
+                      content={() => componentRef.current}
+                      documentTitle='new docs'
+                    />
                       </div>
-  
-                      <div className="form-group col-md-3">
-                        <button
-                          className="btn btn-sm  ml-1 mr-1 borderRadiusRound" title="Download as PDF" style={{ backgroundColor: "#003A4D", color: "white" }}
-                          onClick={downloadPdf}
-                          type="button"
-                        >
-                          <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                        </button>
+
+                      <div className="form-group col-4">
+                            <button className="btn btn-sm  mr-2 borderRadiusRound text-white" 
+                            onClick={downloadPdf}
+                            type="button"
+                            style={{ backgroundColor: "#003A4D" }}>
+                              <i
+                                className="fa fa-file-pdf-o"
+                                aria-hidden="true"
+                              ></i>
+                            </button>
                       </div>
-                      <div className="form-group col-md-3">
-                        <CSVLink {...csvReport}>
-                          <button className="btn btn-sm ml-2 borderRadiusRound" title="Download as CSV" style={{ backgroundColor: "#003A4D", color: "white" }}>
-                            <i
-                              className="fa fa-file-excel-o"
-                              aria-hidden="true"
-                            ></i>
-                          </button>
-                        </CSVLink>
+                      <div className="form-group col-4">
+                      <CSVLink {...csvReport}>
+                            <button className="btn btn-sm  borderRadiusRound text-white" style={{ backgroundColor: "#003A4D" }}>
+                              <i
+                                className="fa fa-file-excel-o"
+                                aria-hidden="true"
+                              ></i>
+                            </button>
+                            </CSVLink>
                       </div>
                     </ul>
                       </div>
                     </div>
               </div>
             </span>
-                <div id="report" className="x_content mt-3 " ref={componentRef}>
-                  <div className="displayPropertyForPrint">
-                    <h2 className="text-dark text-center font-weight-bold  ">
-                      Store Transaction Report
-                    </h2>
-                    <div className="row pb-2">
-                      <div className="col-md-6 col-6 text-dark ">
-                        {" "}
-                        Date From :{" "}
-                        <strong className="text-dark  font-weight-bold ">
-                          {" "}
-                          {dateFrom}
-                        </strong>{" "}
-                      </div>
-                      <div className="col-md-6 col-6 text-dark text-right">
-                        {" "}
-                        Date To :{" "}
-                        <strong className="text-dark  font-weight-bold ">
-                          {" "}
-                          {dateto}
-                        </strong>{" "}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="container p-2">
-                  <div
-                    className=" row   reportTableHead bottom-border-1   "
-                    style={{ fontSize: 11 }}
-                  >
-                    <div className="col-md-1 col-1  p-1 right-border-1 my-1">
-                      DATE
-                    </div>
-                    <div className="col-md-2 col-2  text-center p-1  right-border-1 my-1 ">
-                      INVOICE NO
-                    </div>
-                    <div className="col-md-3 col-3 text-center p-1  right-border-1 my-1  ">
-                      ACCOUNT TITLE
-                    </div>
-                    <div className="col-md-2 col-2   text-center  p-1 right-border-1 my-1   ">
-                      NARRATION
-                    </div>
-                    <div className="col-md-1 col-1 text-center p-1  right-border-1 my-1   ">
-                      STORE IN
-                    </div>
-                    <div className="col-md-1 col-1 text-center p-1 right-border-1 my-1   ">
-                      STORE OUT
-                    </div>
+            <div id="report" className="x_content mt-3  " ref={componentRef}>
+            <div className="displayPropertyForPrint">
+              <h2 className="text-dark text-center font-weight-bold  ">
+                Stock Transaction Report
+              </h2>
+              <div className="row pb-2">
+                <div className="col-md-6 col-6 text-dark ">
+                  {" "}
+                  Date From :{" "}
+                  <strong className="text-dark  font-weight-bold ">
+                    {" "}
+                    {dateFrom}
+                  </strong>{" "}
+                </div>
+                <div className="col-md-6 col-6 text-dark text-right">
+                  {" "}
+                  Date To :{" "}
+                  <strong className="text-dark  font-weight-bold ">
+                    {" "}
+                    {dateto}
+                  </strong>{" "}
+                </div>
+              </div>
+            </div>
+           <div className="container p-2">
+            <div
+              className=" row   reportTableHead bottom-border-1   "
+              style={{ fontSize: 11 }}
+            >
+              <div className="col-md-1 col-1  p-1 right-border-1 my-1">
+                DATE
+              </div>
+              <div className="col-md-2 col-2  text-center p-1  right-border-1 my-1 ">
+                INVOICE NO
+              </div>
+              <div className="col-md-3 col-3 text-center p-1  right-border-1 my-1  ">
+                ACCOUNT TITLE
+              </div>
+              <div className="col-md-2 col-2   text-center  p-1 right-border-1 my-1   ">
+                NARRATION
+              </div>
+              <div className="col-md-1 col-1 text-center p-1  right-border-1 my-1   ">
+                STOCK IN
+              </div>
+              <div className="col-md-1 col-1 text-center p-1 right-border-1 my-1   ">
+                STOCK OUT
+              </div>
 
-                    <div className="col-md-1 col-1 text-center p-1  right-border-1 my-1   ">
-                      RATE
-                    </div>
+              <div className="col-md-1 col-1 text-center p-1  right-border-1 my-1   ">
+                RATE
+              </div>
 
-                    <div className="col-md-1 col-1 text-center p-1    my-1 ">
-                      AMOUNT
-                    </div>
-                  </div>
+              <div className="col-md-1 col-1 text-center p-1    my-1 ">
+                AMOUNT
+              </div>
+            </div>
 
-                  {ReportData.length === 0 ? (
-                    <div
-                      className="row   reportTableBody bottom-border-2"
-                      style={{ fontSize: 11 }}
-                    >
-                      <div className=" col-md-12   col-12   px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
-                        No Data Available
-                      </div>
-                    </div>
-                  ) : (
+            {ReportData.length === 0 ? (
+              <div
+                className="row   reportTableBody bottom-border-2"
+                style={{ fontSize: 11 }}
+              >
+                <div className=" col-md-12   col-12   px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
+                  No Data Available
+                </div>
+              </div>
+            ) : (
+              <>
+              {ReportData.map((data,i)=>{
+                  return(
                     <>
-                    {ReportData.map((data,i)=>{
-                        return(
-                          <>
-                          <div
-                          className=" row   reportTableBody bottom-border-2  "
-                          style={{ fontSize: 12, border: "black" }}
-                        >
-                          <div className="col-md-1 col-1  p-1 left-border-2 text-left right-border  ">
-                            {`${data.voucher_date.slice(
-                              8,
-                              10
-                            )}-${data.voucher_date.slice(
-                              5,
-                              7
-                            )}-${data.voucher_date.slice(0, 4)}`}
-                          </div>
-                          <div className="col-md-2 col-2   p-1  left-border-2 text-left  right-border-2  ">
-                            {data.voucher_inv}
-                          </div>
-                          <div className="col-md-3 col-3  p-1  right-border-2  ">
-                            {data.item_name}
-                          </div>
-                          <div className="col-md-2 col-2     p-1 text-right  right-border-2    ">
-                             Naration
-                          </div>
-                          <div className="col-md-1 col-1   p-1 text-right  right-border-2    ">
-                            {data.stock_in}
-                          </div>
-                          <div className="col-md-1 col-1    p-1 text-right  right-border-2    ">
-                            {data.stock_out}
-                          </div>
-  
-                          <div className="col-md-1 col-1  p-1 text-right   right-border-2    ">
-                            Rate
-                          </div>
-  
-                          <div className="col-md-1 col-1  p-1 text-right   right-border-2   ">
-                            {data.amount}
-                          </div>
-                        </div>
-
-                      
-                          
-                          </>
-                        )
-                      
-                    })}
                     <div
                     className=" row   reportTableBody bottom-border-2  "
                     style={{ fontSize: 12 }}
                   >
-                    <div className="col-md-1 col-1  p-2 left-border-2  ">
-                  
+                    <div className="col-md-1 col-1  p-2 left-border-2 text-left  ">
+                      {`${data.voucher_date.slice(
+                        8,
+                        10
+                      )}-${data.voucher_date.slice(
+                        5,
+                        7
+                      )}-${data.voucher_date.slice(0, 4)}`}
                     </div>
-                    <div className="col-md-2 col-2   p-1 left-border-2  right-border-2  ">
+                    <div className="col-md-2 col-2   p-1  left-border-2 text-left  right-border-2  ">
+                      {data.voucher_inv}
                     </div>
-                    <div className="col-md-3 col-3    p-1  right-border-2  ">
+                    <div className="col-md-3 col-3  p-1  right-border-2  ">
+                      {data.item_name}
                     </div>
-                    <div className="col-md-2 col-2    p-1  text-right right-border-2    ">
-                      Grand Total:
+                    <div className="col-md-2 col-2     p-1 text-right  right-border-2    ">
+                       Naration
                     </div>
-                    <div className="col-md-1 col-1  p-1  text-right   right-border-2    ">
-                      {ReportData.map(data => data.stock_in).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+                    <div className="col-md-1 col-1   p-1 text-right  right-border-2    ">
+                      {data.stock_in}
                     </div>
-                    <div className="col-md-1 col-1  p-1  text-right  right-border-2    ">
-                      {ReportData.map(data => data.stock_out).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+                    <div className="col-md-1 col-1    p-1 text-right  right-border-2    ">
+                      {data.stock_out}
                     </div>
 
-                    <div className="col-md-1 col-1 text-right p-1  text-right  right-border-2    ">
-                      Rate
+                    <div className="col-md-1 col-1    p-1 text-right   right-border-2    ">
+                    {data.rate = data.amount/data.stock_in }
                     </div>
 
-                    <div className="col-md-1 col-1 text-right p-1  right-border-2   ">
-                      {ReportData.map(data => data.amount).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+                    <div className="col-md-1 col-1  p-1 text-right   right-border-2   ">
+                      {data.amount}
                     </div>
                   </div>
-                      
+
+                
+                    
+                    
                     </>
-                  )}
-                  </div>
-                </div>
+                  )
+                
+              })}
+
+              <div
+              className=" row   reportTableBody bottom-border-2  "
+              style={{ fontSize: 12 }}
+            >
+              <div className="col-md-1 col-1  p-2 left-border-2  ">
+            
+              </div>
+              <div className="col-md-2 col-2   p-1 left-border-2  right-border-2  ">
+              </div>
+              <div className="col-md-3 col-3    p-1 right-border-2  ">
+              </div>
+              <div className="col-md-2 col-2    p-1 text-right right-border-2    ">
+                Grand Total:
+              </div>
+              <div className="col-md-1 col-1  p-1 text-right   right-border-2    ">
+                {ReportData.map(data => data.stock_in).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+              </div>
+              <div className="col-md-1 col-1  p-1 text-right  right-border-2    ">
+                {ReportData.map(data => data.stock_out).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+              </div>
+
+              <div className="col-md-1 col-1 text-right p-1    right-border-2    ">
+              {ReportData.map(data => data.rate).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+              </div>
+              <div className="col-md-1 col-1 text-right p-1  right-border-2   ">
+                {ReportData.map(data => data.amount).reduce((prev, curr) => Number(prev) + Number(curr), 0 ) }
+              </div>
+            </div>
+                
+
+                
+              </>
+            )}
+          </div>
+         </div>
+
+              </div>
+              </div>
+             
+              
               </>
             )}
             {/* ---------- */}
-          </div>
-        </div>
+        
       </div>
     </>
   );

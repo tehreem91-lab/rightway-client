@@ -42,23 +42,24 @@ const AddStore = () => {
 
   const [FilterStockData, setFilterStockData] = useState([]);
 
-    
-    const searchItem = (e) => {
-        var allData = FilterStockData;
-        setStoreData(FilterStockData);
-        var filteredData = allData.filter((obj) => {
-          var data = Object.keys(obj.store_account)
-          .filter((key) => obj.store_account[key].toString().toLowerCase().includes(e))
-          .reduce((cur, key) => {
-              return Object.assign(cur, { [key]: obj.store_account[key] });
-          }, {});
+  const searchItem = (e) => {
+    var allData = FilterStockData;
+    setStoreData(FilterStockData);
+    var filteredData = allData.filter((obj) => {
+      var data = Object.keys(obj.store_account)
+        .filter((key) =>
+          obj.store_account[key].toString().toLowerCase().includes(e)
+        )
+        .reduce((cur, key) => {
+          return Object.assign(cur, { [key]: obj.store_account[key] });
+        }, {});
       if (Object.keys(data).length !== 0) {
-          return obj;
+        return obj;
       }
-  });
-        setStoreData(filteredData);
-    };
-    
+    });
+    setStoreData(filteredData);
+  };
+
   const Get_StoreAccount = () => {
     var axios = require("axios");
     var data = "";
@@ -75,7 +76,7 @@ const AddStore = () => {
     };
 
     axios(config).then(function (response) {
-      setStoreData(response.data)
+      setStoreData(response.data);
       setFilterStockData(response.data);
       setisLoading(false);
     });
@@ -142,8 +143,8 @@ const AddStore = () => {
       setpackets_detail([{ packet_name: "", pair_base_unit: "" }]);
       setFileEntity([]);
       Get_StoreAccount();
-      setImageEntity([])
-      setimgPreview(false)
+      setImageEntity([]);
+      setimgPreview(false);
       toast.success("Your response has been submitted successfully");
     });
   };
@@ -252,7 +253,7 @@ const AddStore = () => {
         setFileEntity([]);
         setupdate(false);
         Get_StoreAccount();
-        setimgPreview(false)
+        setimgPreview(false);
         toast.success("Your response has been Updated successfully");
       })
       .catch(function (error) {
@@ -333,13 +334,10 @@ const AddStore = () => {
     ]);
   };
 
-  let removeFormFields = (i) => {
-    let newFormValues = [...packets_detail];
-
-    // at position i remove 1 element
-    newFormValues.splice(i, 1);
-    setpackets_detail(newFormValues);
+  const removeFormFields = (deli) => {
+    setpackets_detail(packets_detail.filter((del, i) => deli !== i + 1));
   };
+
   let removeAttchments = (i) => {
     let newAttachValues = [...fileEntity];
     // at position i remove 1 element
@@ -632,8 +630,7 @@ const AddStore = () => {
                   <div className="row px-4 mt-2">
                     <div className="col-md-6 col-sm-6">
                       <label className="col-form-label col-md-3 col-sm-3 label-align">
-                       
-                         Attachments
+                        Attachments
                       </label>
                       <div className="col-md-7">
                         <input
@@ -675,10 +672,10 @@ const AddStore = () => {
 
                     <div className="col-md-6 col-sm-6">
                       <label className="col-form-label col-md-4 col-sm-4 label-align">
-                       
+                        {" "}
                         Select Image <span className="required">*</span>
                       </label>
-                      <div className="col-md-7">
+                      <div className="col-md-5">
                         <input
                           type="file"
                           className="form-control form-control-sm customStyleForInput"
@@ -724,8 +721,8 @@ const AddStore = () => {
                         {imgPreview ? (
                           <img
                             className="my-0"
-                            width="50"
-                            height="35"
+                            width="55"
+                            height="45"
                             src={imgsrc}
                           />
                         ) : null}
@@ -735,7 +732,7 @@ const AddStore = () => {
 
                   {/*attachments*/}
 
-                  <div className="row px-4 mt-2">
+                  <div className="row px-4 ">
                     <div className="col-md-6 col-sm-6">
                       <label className="col-form-label col-md-3 col-sm-3 label-align">
                         Description
@@ -750,23 +747,22 @@ const AddStore = () => {
                         />
                       </div>
                     </div>
-
                     {fileEntity.length !== 0 && (
-                      <div className="field item form-group col-md-6 col-sm-6">
-                        <label className="col-form-label col-md-3 col-sm-3 label-align">
+                      <div className="form-group col-md-6 col-sm-6">
+                        <label className="col-form-label col-md-4 col-sm-4 label-align">
                           Attachments
                         </label>
-                        <div className="col-md-8 col-sm-8 ">
+                        <div className="col-md-6 col-sm-6 ">
                           {fileEntity.map((each_file, index) => {
                             return (
-                              <button className="btn btn-sm  bg-customBlue text-light">
+                              <button className="btn btn-sm  bg-customBlue  text-light ">
                                 <a
                                   href={`${endPoint + each_file}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="text-light
-          
-            "
+
+"
                                 >
                                   {each_file.split("_")[0].slice(15)}{" "}
                                   {index + 1}
@@ -793,9 +789,15 @@ const AddStore = () => {
                   </span>
                   <div className="row">
                     <div className="col-md-12 ">
-                      <table className="table table-striped jambo_table bulk_action ">
+                      <table className="table jambo_table bulk_action ">
                         <thead>
                           <tr className="headings reportTableHead">
+                            <th
+                              className="column-title"
+                              style={{ width: "4%" }}
+                            >
+                              Sr.
+                            </th>
                             <th className="column-title   ">Packet Name</th>
                             <th className="column-title   ">Pair Base unit</th>
                             <th className="column-title   ">&nbsp;</th>
@@ -806,6 +808,7 @@ const AddStore = () => {
                             return (
                               <>
                                 <tr>
+                                  <td>{index + 1}</td>
                                   <td>
                                     <input
                                       type="text"
@@ -838,11 +841,15 @@ const AddStore = () => {
                                       )}
                                   </td>
                                   <td>
-                                    <i
-                                      class="fa fa-times pt-2 text-danger"
-                                      aria-hidden="true"
-                                      onClick={() => removeFormFields(index)}
-                                    ></i>
+                                    {index > 0 && (
+                                      <i
+                                        style={{ cursor: "pointer" }}
+                                        className="fa fa-times btn text-danger  mx-0 p-1  "
+                                        onClick={() =>
+                                          removeFormFields(index + 1)
+                                        }
+                                      ></i>
+                                    )}
                                   </td>
                                 </tr>
                               </>
@@ -927,26 +934,24 @@ const AddStore = () => {
                   <i className="fa fa-list"></i>&nbsp;Listing
                 </div>
                 <div className="col-md-6 ">
-                                    <div className='col-md-6 text-right'>
-                                    
-                                    </div>
-                                    <div className='col-md-6 text-right'>
-                                    <input
-                                    className="form-control"
-                                    type="text"
-                                    placeholder='Search ...'
-                                    onChange={(e) => searchItem(e.target.value)}
-                                    />
-                                    </div>
-                                     
-                                      
-                                  
-                                    </div>
+                  <div className="col-md-6 text-right"></div>
+                  <div className="col-md-6 text-right">
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Search ..."
+                      onChange={(e) => searchItem(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
             </span>
-            <div className="table-responsive px-3 pb-2" style={{ overflow: 'scroll' ,height: '400px'}}>
+            <div
+              className="table-responsive px-3 pb-2"
+              style={{ overflowY: "scroll", height: "400px" }}
+            >
               <table className="table table-striped jambo_table bulk_action">
-                <thead style={{position: 'sticky', top: '0',zIndex: '1'}}>
+                <thead style={{ position: "sticky", top: "0", zIndex: "1" }}>
                   <tr className="headings reportTableHead">
                     <th
                       className="column-title  right-border-1 text-center"

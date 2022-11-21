@@ -105,14 +105,14 @@ const CMTStockInOut = () => {
         <div className="x_panel  ">
           <div className="x_content">
             <span className="section ">
-              <div className="row   pt-3">
+              <div className="row   pt-2">
                 <div className="col-md-3">
                   <i className="fa fa-filter "></i>&nbsp;Report Filter
                 </div>
                 <div className="col-md-9 text-right "></div>
               </div>
             </span>
-            <div className="row mx-4  ">
+            <div className="row   ">
             <div className="field form-group col-md-12 col-sm-12   ">
              
                     <button
@@ -124,89 +124,73 @@ const CMTStockInOut = () => {
                
             </div>
           </div>
-            <div className="row  mx-3">
-              <div className="field item form-group col-md-12 col-sm-12">
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
-                        From Date <span className="required">*</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <input
-                        className="form-control"
-                        type="date"
-                        value={dateFrom}
-                        styles={customStyles}
-                        onChange={(e) => {
-                          setdateFrom(e.target.value);
-                        }}
-                      />
+          <div className="row">
+          <div className="field item form-group col-md-12 col-sm-12">
+            <label className="col-form-label col-md-2 col-sm-2 label-align">
+              From Date <span className="required">*</span>
+            </label>
+            <div className="col-md-3 col-sm-3">
+              <input
+                className="form-control"
+                type="date"
+                value={dateFrom}
+                styles={customStyles}
+                onChange={(e) => {
+                  setdateFrom(e.target.value);
+                }}
+              />
 
-                      {validationState === false && dateFrom === "" && (
-                        <span className="text-danger">First Select this </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <label className="col-form-label">
-                        Date To : <span className="required">*</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row ">
-                    <div className="col-md-12">
-                      <input
-                        className="form-control"
-                        type="date"
-                        value={dateto}
-                        styles={customStyles}
-                        onChange={(e) => {
-                          setdateTo(e.target.value);
-                        }}
-                      />
+              {validationState === false && dateFrom === "" && (
+                <span className="text-danger">First Select this </span>
+              )}
 
-                      {validationState === false && dateto === "" && (
-                        <span className="text-danger">First Select this </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-2">
-                  <div className="row ">
-                    <div className="col-md-12"></div>
-                  </div>
-                  <div className="row mt-4">
-                    <div className="col-md-12">
-                      <button
-                        className="btn bg-customBlue text-light mt-2"
-                        type="submit"
-                        onClick={() => {
-                          setisLoading(false);
-                          setisLoader(false);
-                        }}
-                      >
-                        Run Report
-                        {!isLoader && (
-                          <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* // its show fiscal year initial value */}
             </div>
-           
+            <label className="col-form-label col-md-2 col-sm-2 label-align">
+              Date To <span className="required">*</span>
+            </label>
+            <div className="col-md-3 col-sm-3">
+              <input
+                className="form-control"
+                type="date"
+                value={dateto}
+                styles={customStyles}
+                onChange={(e) => {
+                  setdateTo(e.target.value);
+                }}
+              />
 
+              {validationState === false && dateFrom === "" && (
+                <span className="text-danger">First Select this </span>
+              )}
+
+              {/* // its show fiscal year initial value */}
+            </div>
+            <div className="col-md-2 text-left mt-1">
+              <button
+                className="btn bg-customBlue text-light"
+                type="submit"
+                onClick={()=>{
+                    setisLoading(false)
+                    setisLoader(false)
+                }}
+              >
+                Run Report
+                {!isLoader && (
+                  <i class="fa fa-circle-o-notch fa-spin mx-1"></i>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+           
+        </div>
+        </div>
             {!isLoading && (
               <>
-                <span className="section mb-0 pb-1 mt-4 ">
+              <div className="x_panel  ">
+              <div className="x_content">
+                <span className="section mb-0 pb-1  ">
                   <div className="row">
                     <div className="col-5 ">
                       <i className="fa fa-list mx-1 mt-2"></i>&nbsp;Report Data
@@ -352,11 +336,12 @@ const CMTStockInOut = () => {
                   )}
                 </div>
                 </div>
+                </div>
+                </div>
               </>
             )}
             {/* ---------- */}
-          </div>
-        </div>
+         
       </div>
     </>
   );
